@@ -1,0 +1,391 @@
+   ****************************************************************************
+   ** wmwwm030.dat:  Production Manifold with Minimum Pressure Constraint    **
+   ****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   wmwwm030.dat                                                             **
+   **                                                                                  **
+   ** MODEL:  9x5x3 GRID.          TWO GATHERING CENTRE MODEL WITH GAS INJECTION.      **
+   **         PRODUCTION MANIFOLDS.   MINIMUM MANIFOLD PRESSURE GROUP CONSTRAINT.      **
+   **         PRESSURE TRANSLATION OF GROUP PRESSURE TARGETS.                          **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 9x5x3 cartesian grid gas injection problem with two gathering centres. **
+   ** One gathering centre has a minimum production manifold pressure specified;       **
+   ** the group enforces this pressure as the target once the constraint has been      **
+   ** violated.  The other production group has no pressure constraint defined.        **
+   ** Gas injection is under voidage replacement group control.                        **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Production Manifold Option Test'
+   *TITLE2
+   'Minimum Pressure Constraint for a Production Manifold.'
+   *TITLE3
+   'Voidage Replacement Gas Injection Target'
+
+
+   *INUNIT *FIELD
+                 
+   *WPRN   *WELL 1
+   *WPRN   *GRID 0
+   *WPRN   *ITER *BRIEF
+   *OUTPRN *WELL *BRIEF
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID *SO *SG *SW *PRES
+
+   *WSRF   *GRID   0
+   *WSRF   *WELL   1
+   *OUTSRF *WELL *GGASIP2   **Add group/well gas production IP
+   *OUTSRF *WELL *GOILIP3   **Add group/well oil production IP
+   *OUTSRF *WELL *DWB       **Add well average drawdown
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART  9   5    3
+   *DI *CON 1000.0
+   *DJ *CON 1000.0
+   *DK *KVAR
+    50.0 30.0 20.0
+
+   *DEPTH 1 1 1 8400.0
+
+   *POR *CON 0.3
+
+   *CPOR   3.0E-6
+   *PRPOR 14.7
+
+   *PERMI *KVAR
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       20.0   40.0   60.0
+
+
+   *MODEL *BLACKOIL
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35200  2591.000 0.2030000 0.0470000   
+
+      *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5 
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.9400002   0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+   *PB *CON    4014.7
+   *REFDEPTH   8400.
+   *REFPRES    4800.
+   *DWOC       9500.
+   *DGOC       7000.  
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        1000.
+   *MAXSTEPS       100
+   *NORM *PRESS  1000.0
+   *NORM *SATUR    0.20
+   *AIM *OFF
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *GROUP 'Gather-1' 'Gather-2' *ATTACHTO 'Field'  **Define the gathering centres.
+
+   *PTUBE1  1                                      ** Hydraulics table for
+   *DEPTH  8400.0                                  ** producing wells
+   *GOR
+   ** gor(1)   gor(2)
+       500.     1000.
+   *OIL
+   ** oil(1) oil(2)  oil(3)  oil(4)
+       0.0  4000.0  8000.0  16000.0
+   *WCUT
+   ** wcut(1)  wcut(2)
+       0.0      0.5
+   *ALQ
+       1.0
+   *WHP
+   ** whp(1)   whp(2)   whp(3)
+      200.0    900.0    1600.0
+   *BHP
+   **iflo igfr iwfr iadd  bhp(1)   bhp(2)   bhp(3)
+      1    1    1    1    2176.1   2873.7   3573.7
+      1    2    1    1    1997.7   2670.9   3370.9
+      1    1    2    1    2646.7   3344.7   4044.7
+      1    2    2    1    2447.7   3124.7   3824.7
+      2    1    1    1    2135.5   2876.6   3576.6
+      2    2    1    1    1682.7   2674.6   3374.6
+      2    1    2    1    2618.0   3351.2   4051.2
+      2    2    2    1    2189.0   3132.3   3832.3
+      3    1    1    1    2133.6   2884.2   3584.2
+      3    2    1    1    1463.1   2684.5   3384.5
+      3    1    2    1    2630.9   3368.4   4068.4
+      3    2    2    1    2022.0   3152.8   3852.8
+      4    1    1    1    2160.1   2912.5   3612.5
+      4    2    1    1    1425.7   2721.3   3421.3
+      4    1    2    1    2696.4   3433.4   4133.4
+      4    2    2    1    2080.0   3231.0   3931.0   
+
+  
+   *WELL 1  'Producer 1' *ATTACHTO 'Gather-1'
+
+   *PRODUCER  1
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO 10000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP      
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 1
+   ** if     jf     kf     ff                         
+      1      1      1     1.0   
+
+   *WELL 2  'Producer 2' *ATTACHTO 'Gather-1'   
+
+   *PRODUCER  2
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO 10000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff                         
+      1      5      1     1.0
+
+   *WELL 3  'Injector 1' *ATTACHTO 'Gather-1'
+
+   *INJECTOR  *UNWEIGHT  3
+   *INCOMP *GAS
+   *OPERATE  *MAX  *STG  1.0E+8 *CONT *REPEAT
+   *OPERATE  *MAX  *BHP  1.0E+8 *CONT *REPEAT
+   *MONITOR  *BACKFLOW *STOP   
+
+   *PERF 3
+   ** if     jf     kf     wi 
+      3      3      3      1.0E+5
+
+   *WELL 4  'Producer 3' *ATTACHTO 'Gather-1'   
+
+   *PRODUCER  4
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO  5000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 4
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *WELL 5  'Producer 4' *ATTACHTO 'Gather-1'
+
+   *PRODUCER  5
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO  5000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+   
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 5
+   ** if     jf     kf     ff                         
+      5      5      1     0.5   
+
+   *WELL 6  'Injector 2' *ATTACHTO 'Gather-2'   
+
+   *INJECTOR  *UNWEIGHT  6
+   *INCOMP *GAS
+   *OPERATE  *MAX  *STG  1.0E+8  *CONT *REPEAT
+   *OPERATE  *MAX  *BHP  1.0E+8  *CONT *REPEAT
+   *MONITOR  *BACKFLOW *STOP
+
+   *PERF 6
+   ** if     jf     kf     wi 
+      7      3      3      1.0E+5
+
+   *WELL 7  'Producer 5' *ATTACHTO 'Gather-2'   
+
+   *PRODUCER  7
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO 10000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 7
+   ** if     jf     kf     ff                         
+       9      1     1     1.0   
+
+   *WELL 8  'Producer 6' *ATTACHTO 'Gather-2'
+
+   *PRODUCER  8
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO 10000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+   
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 8
+   ** if     jf     kf     ff                         
+       9      5     1     1.0   
+
+   ** Wells 9 and 10 are the same as wells 4 and 5.  They are being duplicated
+   ** to share production.
+
+   *WELL 9  'Producer 3a' *ATTACHTO 'Gather-2'
+
+   *PRODUCER  9
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO  5000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP   
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 9
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *WELL 10  'Producer 4a' *ATTACHTO 'Gather-2'   
+
+   *PRODUCER 10
+   *PWELLBORE 8400. 1
+   *OPERATE *MAX  *STO  5000.0 *CONT *REPEAT
+   *OPERATE *MIN  *BHP  200.0 *CONT *REPEAT
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP   
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 10
+   ** if     jf     kf     ff                         
+      5      5      1     0.5
+
+   ** Define production and injection targets for gathering centres.
+
+   *MANIFOLD *PROD 'Gather-1' *ON  ** Define production of 'Gather-1' as going
+                                   ** through a manifold   
+   *PCON-MANIFOLD *PROD 'Gather-1' *ON ** Specify that group pressure targets
+                                       ** should be translated into well head
+                                       ** pressure well constraints
+                     
+   *GCONP 'Gather-1'
+      *GTARGET *STO  18750.0
+      *MIN *MNP 700. *CONT  ** When production manifold pressure falls below
+                            ** 700 psi, 'Gather-1' will go on to pressure
+                            ** target.
+
+   *GCONP 'Gather-2'
+     *GTARGET *STO   18750.0
+
+   *GCONI 'Gather-1' 'Gather-2'
+      *VREP  *GAS  0.9   **Voidage replacement ratio is 0.9
+
+   *APPOR-METHOD  *PROD  'Gather-1' 'Gather-2'  *IP
+   *APPOR-METHOD  *GASI  'Gather-1' 'Gather-2'  *IP
+
+   *AIMSET *CON 1
+
+   *TIME 3650.0
+   *STOP

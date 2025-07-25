@@ -1,0 +1,279 @@
+
+
+**                                 OVERVIEW
+**                                 ========
+
+***********************************************************************************
+** Flux Boundary Reduced Run STGRO086.DAT                                        **
+***********************************************************************************
+**                                                                               **
+** This template demonstrates the application of flux boundary options. A flux   **
+** boundary is defined with keyword *FLXB-NAMES and assigned to grid cells       **
+** with keyword *FLXB-DEF. Keyword *FLXB-ACTIVE identifies the active flux       **
+** boundary. Keyword *FLXB-IN specifies the name of flux boundary input file     **
+** for this reduced run.                                                         **
+**                                                                               **
+** Flux boundary input file "stgro085.flxb" is required for this template.       **
+**                                                                               **
+***********************************************************************************
+   
+   
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Grid Option Template No. 86'
+*TITLE2 'Test/Illustrate Flux Boundary Options'
+*TITLE3 'Reduced Run (Input: stgro085.flxb)'
+
+*INUNIT FIELD    **  Output units same is input
+
+*OUTPRN *GRID NONE
+*OUTPRN *WELL *ALL
+*OUTPRN *ITER *NEWTON
+*WPRN *GRID 1
+*WPRN *ITER 1
+
+OUTSRF GRID  PRES SW SO SG TEMP VISO VISG
+OUTSRF WELL  COMPONENT ALL  DOWNHOLE
+OUTSRF SPECIAL AVGVAR PRES
+
+WSRF SECTOR TIME
+WSRF WELL 1
+WRST TIME
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+*GRID *VARI 22 1 5
+
+*DI *IVAR 130.8 3*92.41 17*68.21 80.32
+*DJ *CON 96.21
+*DK *IVAR 35.7 35.2 34.8 34.5 34.6 34.2 33.7 32.9 32.2 31.3
+          30.7 7*30.1 29.8 29.1 28.6 28
+*DTOP 3865 3859 3854 3849 3845 3844 3841 3839 3837 3834 3831
+      3826 3823 3820 3817 3815 3814 3813 3812 3811 3812 3813
+
+*POR *CON 0.19264
+*PERMI *KVAR 3*872 2*697.6   
+*PERMJ *EQUALSI   
+*PERMK *EQUALSI / 10
+
+*FLXB-NAMES 'flxb-1' 1
+*FLXB-DEF *IJK 11:22 1:1 1:5 1
+   
+*FLXB-IN 'stgro085.flxb'
+*FLXB-ACTIVE 'flxb-1'
+
+
+*END-GRID
+
+*CPOR 6.123E-5
+*PRPOR 1000
+*ROCKCP 35.6
+*THCONR 36
+*THCONW 36
+*THCONO 36
+*THCONG 36
+*HLOSSPROP OVERBUR 35.6 36 UNDERBUR 35.6 36
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 4 4 4   **  Standard water properties plus three oils
+
+*COMPNAME     'Water'   'Hevy Oil'  'Lite Oil'  'Soln Gas'
+**            --------  ----------  ----------  ----------
+
+*CMM            18        378.93      152.23      16.043
+*PCRIT        3217.1      149.65      267.54      361.96
+*TCRIT        705.47     1107.81      738.68     -116.59
+*ACEN         0.3480     1.042         0.4902      0.0115
+
+*MOLDEN          0        0.1515      0.3485       2.746
+*CP              0        1.5E-5      1.5E-5      1.5E-5
+*CT1             0       5.93E-4     3.11E-4     0.00123
+
+*AVG          1.169E-5   4.04E-6     4.04E-6      6.22E-5
+*BVG           1.075      1.1027      1.1027      0.8197
+*AVISC           0       3.4238E-6   0.010807     0.0138
+*BVISC           0       10733.6       2459        205.9
+
+*CPG1            0        189.15     28.93349     9.17179
+*CPG2            0         0      -9.93255E-03  -9.44330E-03
+*CPG3            0         0       1.73755E-04   2.03661E-05
+*CPG4            0         0      -1.31270E-07  -9.79740E-09
+*CPG5            0         0       3.05694E-11   1.56039E-12
+
+
+**  Reference conditions
+*PRSR 14.65
+*TEMR 77
+*PSURF 14.65
+*TSURF 62
+*XNACL 0.015
+
+*KVTABLIM 50 1450 90 690   ** Low/high p & T
+
+*KVTABLE 'Hevy Oil'    ** Hev_Oil  (nonvapourizable at low T)
+
+8*0
+8*0
+8*0
+8*0
+8*0
+0.0007   0.0002   0.0002   0.0001    0.0001   0.0001   0.0001   0.0001
+0.006    0.002    0.0014   0.0012    0.0011   0.001    0.001    0.001
+
+*KVTABLE 'Lite Oil'    ** Lit_Oil  (more vapourizable liquid part)
+
+0.0017   0.0005   0.0004   0.0004    0.0004   0.0004   0.0005   0.0005
+0.0247   0.0063   0.0044   0.0038    0.0036   0.0035   0.0035   0.0035
+0.1609   0.0381   0.0249   0.0201    0.0177   0.0165   0.0158   0.0158
+0.6295   0.1425   0.0893   0.0693    0.0592   0.0532   0.0495   0.0495
+1.7392   0.3864   0.2363   0.1792    0.1495   0.1316   0.1199   0.1199
+3.6816   0.8238   0.4988   0.3733    0.3072   0.2667   0.2397   0.2397
+6.3836   1.4416   0.8744   0.6515    0.5325   0.4588   0.4089   0.4089
+
+*KVTABLE 'Soln Gas'    ** Soln_Gas  (soluble hydrocarbon gas - CH4)
+
+ 95.853  19.9007  11.4608   8.2140   6.4946   5.4297   4.7052   4.7052
+124.741  25.6380  14.6273  10.3914   8.1470   6.7584   5.8130   5.8130
+144.301  29.4742  16.7317  11.8309   9.2360   7.6293   6.5365   6.5365
+154.848  31.4554  17.8091  12.5629   9.7860   8.0672   6.8984   6.8984
+158.334  31.7949  17.9853  12.6776   9.8683   8.1295   6.9474   6.9474
+157.186  30.7469  17.3906  12.2659   9.5532   7.8737   6.7318   6.7318
+150.630  28.7399  16.1894  11.4273   8.9123   7.3561   6.2979   6.2979
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      ------     ------      ------
+    0.230       0.0         1.0        2.05
+    0.275      0.0075      0.840       1.4
+    0.343      0.022       0.625       0.8
+    0.376      0.037       0.545       0.61
+    0.444      0.080       0.362       0.4
+    0.484      0.117       0.268       0.36
+    0.511      0.143       0.216       0.34
+    0.557      0.220       0.131       0.31
+    0.586      0.262       0.082       0.29
+    0.611      0.316       0.059       0.27
+    0.647      0.382       0.034       0.25
+    0.685      0.453       0.013       0.22
+    0.697      0.475       0.0068      0.21
+    0.711      0.500        0.0        0.2
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg         Krog
+**  -----     -------      ------
+    0.519      0.400        0.0
+    0.586      0.318       0.0051
+    0.615      0.284       0.0097
+    0.649      0.249       0.018
+    0.685      0.206       0.030
+    0.720      0.169       0.049
+    0.748      0.140       0.069
+    0.788      0.111       0.105
+    0.815      0.090       0.141
+    0.841      0.072       0.172
+    0.863      0.056       0.207
+    0.885      0.041       0.243
+    0.905      0.030       0.295
+    0.929      0.018       0.366
+    0.943      0.012       0.445
+    0.954      0.0087      0.517
+    0.973      0.0038      0.670
+    0.988     0.00012      0.830
+     1.0        0.0         1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+
+*REFPRES 717
+*REFDEPTH 4026.48
+
+*DWOC 3980
+*DGOC 3850
+
+*TEMP *CON 94
+
+*MFRAC_OIL 'Hevy Oil' *CON 0.65175
+*MFRAC_OIL 'Lite Oil' *CON 0.2947
+*MFRAC_OIL 'Soln Gas' *CON 0.05355
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+
+*NORM      PRESS 50  SATUR .1   TEMP 10  Y .1   X .1
+
+*DTMAX 0.5
+*MAXSTEPS 1000000
+
+*CONVERGE MAXRES
+
+*RUN
+
+
+**  ==============  RECURRENT DTAA  ======================
+
+
+*DATE 2000 1 1
+
+   DTWELL 0.01
+
+   WELL 1 'INJECTOR1'  VERT 2 1  
+   WELL 2 'PRODUCER2'  VERT 21 1 
+
+   INJECTOR 'INJECTOR1'
+   TINJW 518
+   QUAL .675
+   INCOMP  WATER  1.0  0.0  0.0  0.0
+   OPERATE     STW 350 
+   OPERATE MAX BHP 1750
+   PERFV 'INJECTOR1' 
+           ** K  WI
+             1:4  10646
+
+   PRODUCER 'PRODUCER2'
+   OPERATE     BHP    50
+   OPERATE MAX STL    500
+   OPERATE MAX STEAM  200 SHUTIN
+   GEOMETRY K  .4 .2488 1 0  ** RW CC FF SS
+   PERFV KH 'PRODUCER2'
+               ** K  KH  
+                   1   4258
+                   2   2129
+                   3   5323
+                   4  10646
+
+*DATE 2001 1 1
+*DATE 2002 1 1
+*DATE 2003 1 1
+*DATE 2004 1 1
+*DATE 2005 1 1
+*DATE 2006 1 1
+*DATE 2007 1 1
+*DATE 2008 1 1
+*DATE 2009 1 1
+*DATE 2010 1 1
+STOP

@@ -1,0 +1,185 @@
+**--------------------------------------------------------------------**
+** GMGHG003.DAT:  CO2 Sequestration - Henry Constants from Li-Nghiem  **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMGHG003.DAT                                                **
+**                                                                    **
+** MODEL: CART 9x9x24 GRID              CO2 INJECTION INTO AN         **
+**        2 COMPONENTS                  AQUIFER WITHOUT GEOCHEMISTRY  **
+**        WATER-GAS MDEL                                              **
+**        FIELD UNITS                                                 **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set is constructed to model gas sequestration   **
+** into an  aquifer.  CO2 injection is done for first 25 years.       **
+** The injector is shutin thereafter and the fate of CO2 is modelled  **
+** for next 225 years.                                                **
+**                                                                    **
+** Gem's internal Li and Nghiem correlation is used for Henry         **
+** constants. Note that no user components should be used for this    **
+** correlation to work. No geochemical reactions are modelled.        **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES *OUTPUT *SRFOUT *RESTARTOUT *INDEX-OUT *MAINRESULTSOUT
+*TITLE1 'GEM-GHG'
+*TITLE2 'CO2 Sequestration into an Aquifer'
+*TITLE3 'Library components and Internal Correlation'
+*CASEID 'CASE 1'
+*INUNIT *FIELD
+
+*WSRF   *GRID  *TIME
+*WSRF   *WELL  1
+*WRST   0
+*WPRN   *ITER  *BRIEF
+*OUTPRN *GRID  *NONE
+*OUTSRF *WELL  *PAVG
+*OUTSRF *GRID  *PRES *SG *SW *DENG  *Z 'CO2' *W 'CO2' *DENW
+
+**--------------------------- RESERVOIR DATA ----------------------------
+
+*GRID  *CART  9  9  24
+*KDIR *DOWN
+*DI  *CON  293.3
+*DJ  *CON  293.3
+*DK  *KVAR  50.  50.  30.  30. 20*25.
+*DEPTH  *TOP 1 1 1  7425.00
+*POR  *CON  0.13
+*PERMI *KVAR 150. 20. 40. 130. 20*100.
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  *  0.10
+*CPOR  4.0E-06
+*PRPOR  3550.0
+
+**---------------------------- FLUID COMPONENT DATA --------------------
+*MODEL   *PR
+*NC    2   0 ** Use nuser = 0; All internal library components.
+*TRES      200.000
+*COMPNAME  'CO2'          'FC6'
+*SOLUBILITY ** This keyword is necessary to have solubility in the model.
+*TRACE-COMP 2
+*PHASEID *GAS
+
+**---------------------------- ROCK FLUID -------------------------------
+*ROCKFLUID
+*RPT
+*SGT
+      0.005     0.0      0.
+      0.040     0.005    0.
+      0.080     0.013    0.
+      0.120     0.026    0.
+      0.160     0.040    0.
+      0.200     0.058    0.
+      0.240     0.078    0.
+      0.280     0.100    0.
+      0.320     0.126    0.
+      0.360     0.156    0.
+      0.400     0.187    0.
+      0.440     0.222    0.
+      0.480     0.260    0.
+      0.520     0.300    0.
+      0.560     0.348    0.
+      0.600     0.400    0.
+      0.640     0.450    0.
+      0.680     0.505    0.
+      0.720     0.562    0.
+      0.760     0.620    0.
+      0.800     0.680    0.
+      0.840     0.740    0.
+*SWT
+      0.160     0.0      0.
+      0.200     0.002    0.
+      0.240     0.010    0.
+      0.280     0.020    0.
+      0.320     0.033    0.
+      0.360     0.049    0.
+      0.400     0.066    0.
+      0.440     0.090    0.
+      0.480     0.119    0.
+      0.520     0.150    0.
+      0.560     0.186    0.
+      0.600     0.227    0.
+      0.640     0.277    0.
+      0.680     0.330    0.
+      0.720     0.390    0.
+      0.760     0.462    0.
+      0.800     0.540    0.
+      0.840     0.620    0.
+      0.880     0.710    0.
+      0.920     0.800    0.
+      0.960     0.900    0.
+      0.995     1.0      0.
+**-------------------------------- INITIAL CONDITION --------
+*INITIAL
+*VERTICAL *DEPTH_AVE *WATER_GAS
+*REFPRES  3550.0
+*REFDEPTH 7500.0
+*DWGC     100.0
+
+*ZGAS     0.0001  0.9999
+
+*SEPARATOR
+           14.70000  60.00000
+**--------------------------------  NUMERICAL --------------
+*NUMERICAL
+*NORM      *PRESS     50.
+*NORM      *SATUR  0.005
+*NORM      *GMOLAR 0.005
+
+*CONVERGE *PRESS  1.E-04
+*CONVERGE *HC     5.E-05
+*CONVERGE *WATER  5.E-05
+
+*MAXCHANGE *PRESS 50000.
+*MAXCHANGE  *GMOLAR 0.8
+*MAXCHANGE  *SATUR  0.8
+*CONVERGE   *MAXRES 1.E-04
+
+*NORTH 60
+
+*DTMIN    1.E-06
+*DTMAX    182.5
+**-------------------------------  WELL DATA  -----------
+*RUN
+*DATE 2000 1 1
+      *DTWELL   0.01
+      *AIMWELL  *WELLNN
+      *WELL 1 'INJ'
+      *INJECTOR  1
+      *INCOMP  *SOLVENT 1. 0.
+         *OPERATE  *MAX  *STG 6.67E+06
+         *OPERATE  *MAX  *BHP   5000.000
+      *GEOMETRY  *K  1.0  0.34  1.0  0.0
+      *PERF *GEO 1
+                 5  5  23  1.0
+                 5  5  24  1.0
+      *WELL 2  'PROD'
+      *PRODUCER 2
+        *OPERATE *MIN *BHP 5000
+      *GEOMETRY  *K  1.0  0.34  1.0  0.0
+      *PERF *GEO 2
+               9  9  1  1.0
+*DATE 2001 1 1
+*DATE 2002 1 1
+*DATE 2005 1 1
+*DATE 2010 1 1
+*DATE 2015 1 1
+*DATE 2025 1 1
+ *SHUTIN 1
+*DATE 2150 1 1
+*DATE 2160 1 1
+*DATE 2170 1 1
+*DATE 2180 1 1
+*DATE 2190 1 1
+*DATE 2200 1 1
+*DATE 2210 1 1
+*DATE 2220 1 1
+*DATE 2230 1 1
+*DATE 2240 1 1
+*DATE 2250 1 1
+*STOP

@@ -1,0 +1,369 @@
+**--------------------------------------------------------------------**
+** GMSPR032.DAT:  Fractured Shale Reservoir LGR MODEL                 **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMSPR032.DAT                                               **
+**                                                                    **
+** MODEL:  VARI 101x101x1 GRID     7 COMPONENTS  FRACTURED RESERVOIR  **
+**         DUALPERM METHOD         FIELD UNITS                        **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template models a single well completed in a hydrofractured   ** 
+** shale stimulated reservoir volume. A standard DUALPERM model is    **
+** used to represent a shale gas system in this case.                 **
+**                                                                    **
+** Keywords *BLOCKGROUP and *BG are used to simplify the input        **
+** specification of matrix and fracture properties.                   **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1
+'4.0 md-ft fractured shale LGR model'
+*TITLE2
+'Fracture width = 2 ft, nonDarcy Flow'
+
+** assume fracture thickness = 0.001 ft (pseudoized to 10 ft)
+
+** assume stimulated   facture length = 200 ft 1/2 length = 100 ft
+** assume unstimulated facture length = 200.0 ft 1/2 length = 100.0 ft
+
+** assume 4.0 mD-ft stimulated fracture and 0.0010 md-ft unstimulated fracture conductivity
+** assume matrix reservoir perm = 0.0001 md
+
+** stimulated   fracture perm  = 4.0 md-ft / 0.001 ft = 4000 md
+** unstimulated fracture perm  = 0.001 md-ft / 0.001 ft =  1 md
+
+
+*INUNIT *FIELD             
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*WSRF   *GRID   TNEXT
+*OUTSRF *RES *ALL
+*WSRF   *WELL   1
+*OUTSRF *GRID *PRES *SW *SG  *RFG 
+*WRST 0
+
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION          0.0000  **$  (DEGREES)
+
+**--------- Reservoir Description -----------------------------
+
+*GRID *VARI 101 101 1
+*KDIR *DOWN
+
+*DUALPERM
+
+** Stimulated region defined in a 9x9 region centered on 51,51,1
+*REFINE 47:55 47:55 1 *INTO 9 9 1
+
+** Outside of the stimulated region fracture spacing is 200 ft
+** Inside  of the stimulated region fracture spacing is 200 ft
+** All fracures are vertical
+*DIFRAC *CON 200
+*DJFRAC *CON 200   
+*DKFRAC *CON 0  
+
+*NULL *CON 0
+*MOD 6:96 6:96 1 = 1
+
+*DI *IVAR
+  101*200.
+  *DI *RG 47:55 47:55 1 *IVAR    68.38 21.62 6.84 2.16  2.0 2.16 6.84 21.62 68.38
+
+*DJ *JVAR 
+ 101*200.
+ *DJ *RG 47:55 47:55 1 *JVAR    68.38 21.62 6.84 2.16  2.0 2.16 6.84 21.62 68.38
+
+*DK *KVAR
+ 300
+*DTOP
+ 10201*950
+
+*CPOR  *MATRIX  1.0E-6            
+*PRPOR *MATRIX 3600.0              
+*CPOR  *FRACTURE  1.0E-6            
+*PRPOR *FRACTURE 3600.0              
+
+** Inside  SRV actual frac perm is pseudoized to so k x 2.0ft = 4000 x 0.001 ft = 2.00 (asigned to Dual Perm matrix)
+** Outside SRV actual frac perm is pseudoized to so k x 200.0ft = 1 x 0.001 ft = 0.000005 (normal Dual Perm assumption)
+
+*BLOCKGROUP 'SHALE' *RG 47:55 47:55 1 *ALL           4*1 0 4*1
+                                                     4*1 0 4*1
+                                                     4*1 0 4*1
+                                                     4*1 0 4*1
+                                                        9*0
+                                                     4*1 0 4*1
+                                                     4*1 0 4*1
+                                                     4*1 0 4*1
+                                                     4*1 0 4*1
+
+*BLOCKGROUP 'CONDUIT' *RG 47:55 47:55 1 *ALL         4*0 1 4*0
+                                                     4*0 1 4*0
+                                                     4*0 1 4*0
+                                                     4*0 1 4*0
+                                                        9*1
+                                                     4*0 1 4*0
+                                                     4*0 1 4*0
+                                                     4*0 1 4*0
+                                                     4*0 1 4*0
+
+**Assign DK matrix blocks permeability everywhere 
+**(will be overwriten in the matrix blocks in the SRV which represents the fracture)
+
+*PERMI *MATRIX *CON    1e-4
+*PERMJ *MATRIX *CON    1e-4
+*PERMK *MATRIX *CON    1e-4
+
+** Assign DK fracture blocks permeability everywhere 
+** (will be overwriten in the Dual Permeability fracture blocks within the SRV which have smaller fracture spacing)
+
+*PERMI *FRACTURE *CON  0.000005
+*PERMJ *FRACTURE *CON  0.000005
+*PERMK *FRACTURE *CON  0.000005
+
+** Perm in outer dk region = 0.001 md-ft /200 ft = 0.000005 md (as before)
+** use 0.0 as fracture perm in the explicitly modelled fracture
+** whole stimulated region
+                                                    
+*PERMI  *FRACTURE *BG  'CONDUIT'   *CON 0.0 
+*PERMI  *MATRIX   *BG  'CONDUIT'   *CON 2.0 
+
+*PERMI  *FRACTURE *BG  'SHALE'     *CON 0.000005 
+*PERMI  *MATRIX   *BG  'SHALE'     *CON 1e-4 
+
+*PERMJ  *FRACTURE *BG  'CONDUIT'   *CON 0.0 
+*PERMJ  *MATRIX   *BG  'CONDUIT'   *CON 2.0 
+
+*PERMJ  *FRACTURE *BG  'SHALE'     *CON 0.000005 
+*PERMJ  *MATRIX   *BG  'SHALE'     *CON 1e-4 
+
+*PERMK  *FRACTURE *BG  'CONDUIT'   *CON 0.0 
+*PERMK  *MATRIX   *BG  'CONDUIT'   *CON 2.0 
+
+*PERMK  *FRACTURE *BG  'SHALE'     *CON 0.000005                              
+*PERMK  *MATRIX   *BG  'SHALE'     *CON 1e-4
+                                     
+** Matrix perm in the "explicit fracture" will be used to represent the discretized fracture
+** all other matrix blocks represent the matrix
+
+
+** Porosity in the Dual Perm fracture outside the SRV is based on 200 ft fracture spacing in 200 x 200 x 300 ft blocks
+** We have:
+** 2 crossed fractures x 200 ft x 0.001 ft x 300 ft fracture volume in a 300 ft x 200 ft x 200 ft block
+** or 120 ft3 in a 12.0e6 block so porosity = 120/12e6 = 0.00001
+
+
+*POR *FRACTURE *CON    0.00001 
+*POR *MATRIX   *CON    0.03 
+
+*POR  *FRACTURE *BG 'CONDUIT' *CON 0  
+*POR  *MATRIX   *BG 'CONDUIT' *CON 0.03 
+
+*POR  *FRACTURE *BG 'SHALE'   *CON 0.00001
+*POR  *MATRIX   *BG 'SHALE'   *CON 0.03 
+
+** Matrix por in matrix is kept to 0.03 even in block with discretized fracture as fracture width is only 0.001 ft thick
+
+          
+** -----------------  Component Property Section  --------------------------
+*MODEL   *PR
+*NC    6    6
+*TRES       135.000
+*COMPNAME
+           'N2-C1'        'CO2-C2'       'C3'           'IC4-NC4'
+           'IC5-NC5'      'C6+'
+*SG         3.0130652E-01  3.7054157E-01  5.0700000E-01  5.7181217E-01
+            6.2738626E-01  7.4290000E-01
+*TB        -2.5759262E+02 -1.1474736E+02 -4.3690000E+01  1.9209647E+01
+            8.7968521E+01  2.8224269E+02
+*PCRIT      4.5355206E+01  4.9037092E+01  4.1900000E+01  3.6633731E+01
+            3.3362240E+01  2.7517975E+01
+*VCRIT      9.8961763E-02  1.4519067E-01  2.0300000E-01  2.5956134E-01
+            3.0519948E-01  4.4727492E-01
+*TCRIT      1.9033264E+02  3.0535271E+02  3.6980000E+02  4.1532111E+02
+            4.6406185E+02  5.7665684E+02
+*AC         8.1266760E-03  1.0416505E-01  1.5200000E-01  1.8328571E-01
+            2.3660000E-01  3.5214629E-01
+*MW         1.6090385E+01  3.0746699E+01  4.4097000E+01  5.8124000E+01
+            7.2151000E+01  1.1400000E+02
+*HCFLAG     0              0              0              0
+            0              0
+*BIN
+            2.4441751E-03
+            8.5461672E-03  1.8694605E-03
+            1.5311918E-02  5.6004473E-03  1.0060669E-03
+            2.0797675E-02  9.1334053E-03  2.7651711E-03  4.3710309E-04
+            3.6834764E-02  2.0757491E-02  1.0317307E-02  4.9166600E-03
+            2.4301116E-03
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      8.7210000E-02  1.2465000E-01  2.0300000E-01  2.3641000E-01
+            2.8765000E-01  4.3279000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02
+*PCHOR      7.6857489E+01  1.0654369E+02  1.5030000E+02  1.8510000E+02
+            2.2760000E+02  3.2390000E+02
+
+*DENWS  63.021
+*DENW   62.807     **  *BWI   1.0034
+*CW    3.0E-6
+*REFPW 3600
+*VISW   0.96
+
+*PHASEID *GAS
+
+** --------------- Rock-Fluid Property Section --------------------------------
+
+*ROCKFLUID
+*RPT 1
+*SWT
+**$        Sw         krw        krow
+          0.2           0           1
+      0.24375  0.00149536    0.878906
+       0.2875  0.00598145    0.765625
+      0.33125   0.0134583    0.660156
+        0.375   0.0239258      0.5625
+      0.41875    0.037384    0.472656
+       0.4625    0.053833    0.390625
+      0.50625   0.0732727    0.316406
+         0.55   0.0957031        0.25
+      0.59375    0.121124    0.191406
+       0.6375    0.149536    0.140625
+      0.68125    0.180939   0.0976563
+        0.725    0.215332      0.0625
+      0.76875    0.252716   0.0351562
+       0.8125    0.293091    0.015625
+      0.85625    0.336456  0.00390625
+          0.9    0.382812           0
+         0.95    0.439453           0
+            1         0.5           0
+*SGT
+**$        Sg         krg        krog
+            0           0           1
+      0.04375  0.00299072    0.878906
+       0.0875   0.0119629    0.765625
+      0.13125   0.0269165    0.660156
+        0.175   0.0478516      0.5625
+      0.21875   0.0747681    0.472656
+       0.2625    0.107666    0.390625
+      0.30625    0.146545    0.316406
+         0.35    0.191406        0.25
+      0.39375    0.242249    0.191406
+       0.4375    0.299072    0.140625
+      0.48125    0.361877   0.0976563
+        0.525    0.430664      0.0625
+      0.56875    0.505432   0.0351563
+       0.6125    0.586182    0.015625
+      0.65625    0.672913  0.00390625
+          0.7    0.765625           0
+         0.75    0.878906           0
+          0.8           1           0
+                               
+*RTYPE *CON      1
+
+*NONDARCY *GENERAL 0.5
+1.485e9     1.021 0  
+1.485e9     1.021 0  
+
+**ND correction
+**   1704.9 = (4000/2)**(2-1.021)
+**  154777  = (1/0.000005)**(2-1.021)
+
+*NDARCYCOR *FRACTURE *CON      0
+*NDARCYCOR *MATRIX   *CON      0
+*NDARCYCOR *MATRIX *BG 'CONDUIT' *CON 1704.9     
+
+** --------------  initilization -------------------------------------
+*INITIAL
+*VERTICAL *BLOCK_CENTER  *WATER_gas  
+*REFDEPTH   1050.          
+*REFPRES    3000.          
+*DWGC       1300.
+*ZGAS     7.2315080E-01  9.5114969E-02  7.0181919E-02  9.0497738E-02
+          1.8468926E-02  2.5856496E-03
+
+** ------------------ Numerical Control Section -------------------------------
+
+*NUMERICAL
+*DTMAX       30.
+*DTMIN       1.E-09
+*AIM *STAB *AND-THRESH 1 0.001
+** -------------- Well and Recurrent Data Section  ----------------------------
+
+*RUN
+*DATE 2000 01 01
+*DTWELL 1.E-06
+
+*WELL  'Producer1'
+*PRODUCER 'Producer1'
+*OPERATE  *MAX  *STG  3.E+06  *CONT *REPEAT
+*OPERATE  *MIN  *BHP  1000.   *CONT *REPEAT
+** kf     ff
+**$          rad  geofac  wfrac  skin
+*GEOMETRY  *K 0.125  0.37  1.  0.
+*PERF   'Producer1'
+**$ UBA               wi  Status  Connection  
+    51 51 1 / 5 5 1 100000  OPEN    FLOW-TO  'SURFACE'
+
+*DATE 2000 02 01
+*DATE 2000 03 01
+*DATE 2000 04 01
+*DATE 2000 05 01
+*DATE 2000 06 01
+*DATE 2000 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2001 01 01
+*DATE 2001 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2002 01 01
+*DATE 2002 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2003 01 01
+*DATE 2003 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2004 01 01
+*DATE 2004 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2005 01 01
+*DATE 2005 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2006 01 01
+*DATE 2006 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2007 01 01
+*DATE 2007 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2008 01 01
+*DATE 2008 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2009 01 01
+*DATE 2009 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2010 01 01
+*STOP
+
+
+

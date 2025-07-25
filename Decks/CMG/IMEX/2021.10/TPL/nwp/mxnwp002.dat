@@ -1,0 +1,245 @@
+   ************************************************************************************* 
+   ** mxnwp002.dat:           Oil Well Water Coning (Fractured Reservoir)             **
+   ************************************************************************************* 
+   *************************************************************************************************
+   **                                                                                             **
+   ** FILE:  (a demo template)              MXNWP002.DAT                                          **
+   **                                                                                             **
+   ** MODEL: RAD 9x1x15   1 OIL WELL SPACING   DUAL PERM.(FRACTURED)   OIL WELL W/ BOTTOM AQUIFER **
+   **        FRACTURED    DUAL PERMEABILITY    SHAPE (GK)                                         **                                       
+   **                                                                                             **
+   ** USAGE: OPTIMUM  RATE  VS  WATER  CONING  FOR  FRACTURED  RESERVOIR                          **
+   **                                                                                             **
+   *************************************************************************************************
+   **                                                                                             ** 
+   ** THIS TEMPLATE IS SIMILAR TO THE TEMPLATE No. 1 (OIL WELL WATER CONING, MXNWP001.DAT) BUT IN **
+   ** A FRACTURED RESERVOIR. IN THIS CASE, RUN RESULTS INDICATE THAT HIGH WATER CUT IS INEVITABLE **
+   ** AND IMPROVEMENT IN OIL RECOVERY BY CONTROLLING OIL RATE OR WORKOVERS IS VERY LIMITED DUE TO **
+   ** THE EXTENSIVE FRACTURING.  HIGHER RECOVERY MAY BE EXPECTED  IF  THE  RESERVOIR  HAS  BETTER **
+   ** HORIZONTAL TRANSMISIBILITIES.  THIS MAY BE SEEN BY ASSIGNING HIGHER HORIZONTAL PERMEABILITY **
+   ** OR HORIZONTAL TRANSMISIBILITY TO EITHER THE MATRIX SYSTEM OR THE FRACTURE SYSTEM. MODEL MAY **
+   ** BE ADAPTED FOR EVALUATING THESE PROPERTIES THROUGH HISTORY MATCHING  PROCESS  IF  PODUCTION **
+   ** HISTORY IS AVAILABLE.                                                                       **
+   **                                                                                             **
+   *************************************************************************************************
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+ 
+RESULTS SIMULATOR IMEX
+
+       *FILENAMES *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+ 
+ 
+   ** I/O CONTROL SECTION-----------------------------------------------------------------
+ 
+ 
+       *TITLE1  'OIL WELL WATER CONING (FRACT.), MXNWP002'
+       *TITLE2  'OIL WELL WATER CONING, FRACTURED MODEL'
+       *TITLE3  'CRITICAL OIL RATE STUDY'
+       *CASEID  'MXNWP002'
+ 
+       *INUNIT  *FIELD
+ 
+       *WRST          *TIME
+       *WPRN    *WELL *TIME
+       *WPRN    *GRID *TIME
+       *OUTPRN  *WELL *LAYER
+       *OUTPRN  *GRID *IMEXMAP *SG      *SO     *SW      *PRES
+       *WSRF    *WELL *TIME
+       *WSRF    *GRID *TIME
+       *OUTSRF  *GRID *SG *SO  *SW      *PRES
+       *OUTDIARY      *BRIEF   *PRESAQ  *HEADER  20
+ 
+ 
+   **---GRID DESCRIPTION SECTION--------------------------------------------------------
+ 
+       *GRID    *RADIAL  9 1 15   *RW 0.25
+       *KDIR    *DOWN
+       *DEPTH   1 1 1    1641.0
+ 
+       *DI *IVAR 
+             2.0  3.0  6.0  12.0  25.0  50.0  100.0  200.0  350.0 
+ 
+       *DJ *CON 360.0
+ 
+       *DK *KVAR
+            30.0  8.0  6.0  5.0  7.0  4.0  5.0 3.0 3.0  4.0  5.0  4.0  7.0  5.0  7.0
+ 
+       *DUALPERM
+       *SHAPE   *GK
+ 
+       *DIFRAC  *IVAR   2.0  3.0  6.0  12.0 25.0 50.0 100.0 200.0 350.0 
+       *DJFRAC  *CON   50.0
+       *DKFRAC  *KVAR  30.0  8.0  6.0   5.0  7.0  4.0   5.0   3.0   3.0 4.0 5.0 4.0 7.0 5.0 7.0
+ 
+       *POR     *MATRIX  *KVAR
+                 0.18 0.10 0.13 0.12 0.13 0.14 0.16 0.09 0.17 0.19 0.10 0.11 0.13 0.19 0.16
+ 
+       *POR     *FRACTURE *CON
+                 0.08
+ 
+       *PRPOR   *MATRIX   14.73
+       *CPOR    *MATRIX    3.0E-6
+ 
+       *PRPOR   *FRACTURE 14.73
+       *CPOR    *FRACTURE  3.0E-6
+ 
+       *PERMI   *MATRIX   *CON   20.0
+       *PERMJ   *MATRIX   *CON   20.0
+       *PERMK   *MATRIX   *CON    3.0
+ 
+       *PERMI   *FRACTURE *CON   20.0
+       *PERMJ   *FRACTURE *CON   20.0
+       *PERMK   *FRACTURE *CON  500.0
+ 
+       *TRANSI  *FRACTURE *CON    0.1
+       *TRANSJ  *FRACTURE *CON    0.1
+       *TRANSK  *FRACTURE *CON    1.0
+ 
+       *AQUIFER *BOTTOM
+       **        THICK  PORO   PERM  RADIUS  ANGLE  **SET PROPERTY TO MODEL
+       *AQPROP   350.0  0.18   500.0 20000.0  1.0   **AN ACTIVE AQUIFER
+ 
+ 
+   **---PVT DESCRIPTION SECTION--------------------------------------------------------
+ 
+       *MODEL  *BLACKOIL
+ 
+       *PVT
+           ** P      RS     BO      EG         VO       VG
+            915.0   140.0  1.148  320.000     1.810    0.0132
+           1215.0   177.0  1.170  429.923     1.600    0.0143
+           1515.0   210.0  1.190  539.957     1.413    0.0153
+           2015.0   269.0  1.223  739.645     1.196    0.0173
+           2515.0   329.0  1.257  930.233     0.990    0.0193
+           3015.0   389.0  1.293 1109.878     0.880    0.0212
+           3515.0   453.0  1.331 1270.648     0.790    0.0232
+           4015.0   521.0  1.372 1420.455     0.725    0.0253
+ 
+       *DENSITY    *OIL    56.700
+       *DENSITY    *GAS     0.057
+       *DENSITY    *WATER  62.400
+ 
+       *CO       9.28E-6
+       *CVO      4.60E-5
+       *BWI        1.07
+       *CW       3.50E-6
+       *REFPW     14.73
+       *VWI        0.35
+       *CVW        0.00
+ 
+ 
+   **---ROCK-FLUID PROPERTY SECTION-------------------------------------------
+ 
+       *ROCKFLUID
+       *RPT  1  **FRACTURE
+          *SWT
+            **  Sw     krw    krow
+               0.05   0.00    1.00
+               0.25   0.25    0.75
+               0.50   0.50    0.50
+               0.75   0.75    0.25
+               0.95   0.95    0.05
+               1.00   1.00    0.00
+          *SLT
+             ** Sl     krg    krog
+               0.05   1.00    0.00
+               0.25   0.75    0.25
+               0.50   0.50    0.50
+               0.75   0.25    0.75
+                0.95   0.05    0.95
+                1.00   0.00    1.00
+ 
+       *RPT 2   **MATRIX
+               *SWT
+             ** Sw     krw      krow    Pcow
+               0.20   0.0000   1.0000   5.00
+               0.25   0.0004   0.6027   4.00
+               0.30   0.0024   0.4490   3.00
+               0.31   0.0033   0.4165   2.80
+               0.35   0.0075   0.3242   2.50
+               0.40   0.0167   0.2253   2.00
+               0.45   0.0310   0.1492   1.80
+               0.50   0.0515   0.0927   1.60
+               0.60   0.1146   0.0265   1.40
+               0.70   0.2133   0.0031   1.20
+               0.80   0.3542   0.0000   1.00
+               0.90   0.5438   0.0000   0.50
+               1.00   0.7885   0.0000   0.00
+          *SLT
+             ** Sl    krg       krog     Pcog
+               0.30   0.6345   0.00000   1.92
+               0.40   0.5036   0.00002   1.15
+               0.50   0.3815   0.00096   0.77
+               0.60   0.2695   0.00844   0.50
+               0.70   0.1692   0.03939   0.32
+               0.80   0.0835   0.13010   0.22
+               0.85   0.0477   0.21670   0.18
+               0.90   0.0183   0.34540   0.15
+               0.95   0.0000   0.53020   0.12
+               1.00   0.0000   1.00000   0.10
+ 
+       *RTYPE *FRACTURE *CON  1
+       *RTYPE *MATRIX   *CON  2
+ 
+ 
+   **---INITIALIZATION SECTION-------------------------------------------------------
+ 
+       *INITIAL
+       *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+       *GASZONE  *OIL
+       *PB       *FRACTURE *CON  0.0
+       *PB       *MATRIX   *CON  0.0
+       *REFPRES   3000.0
+       *REFDEPTH  1671.0
+       *DGOC      1635.0
+       *DWOC      1725.0
+ 
+ 
+   **---NUMERICAL CONTROL SECTION----------------------------------------------------
+ 
+       *NUMERICAL
+       *DTMAX 121.0
+       *NCUTS   8
+ 
+ 
+   **---RECURRENT (WELL AND PRODUCTION/INJECTION DATA) SECTION-----------------------
+ 
+       *RUN
+       *DATE 1995 01 01
+       *DTWELL   0.1
+ 
+       *WELL 1  'PRODUCER'  *VERT 1 1
+ 
+       *PRODUCER 1
+       *OPERATE *MAX  *STL      750.0
+       *OPERATE *MIN  *BHP      500.0   *STOP
+       *MONITOR *WCUT             0.95  *STOP
+       *MONITOR *MIN  *STO       30.0   *STOP
+ 
+       **             RAD  GERFAC  WFRAC  SKIN
+       *GEOMETRY *K  0.25   0.500   1.00   0.0
+       *PERFV *GEO 1
+         **  kf    ff
+            1:3    1.0
+ 
+       *ALTER    1
+                500.0
+ 
+       *DATE 1995 01 02
+       **STOP
+ 
+       *OUTPRN *WELL *LAYER
+       *OUTPRN *GRID *SO *SW *PRES
+ 
+       *DATE 1995 01 31
+       *DATE 1995 02 28
+       *DATE 1995 03 31
+       *DATE 1995 06 30
+       *DATE 1995 12 31
+
+   ********************************************************************
+   **MET CUTOFF WATERCUT 
+   ********************************************************************
+       *STOP

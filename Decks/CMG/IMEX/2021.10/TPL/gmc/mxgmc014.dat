@@ -1,0 +1,225 @@
+   *****************************************************************************
+   ** Template (mxgmc014.dat):  3D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC014.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **                                                          13X10X10 RADIAL GRID    **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **               Different rock types are assigned in the geomechanics              **
+   **               section due to different Young's modulus on each layer.            **
+   **               Different constitutive models are assigned on rock layers.         **
+   **               Linear elastic model and nonlinear elastic model 1                 **
+   **               (hypoelastic model) are used.                                      **
+   **               Output stresses, subsidence and displacement vector.               **
+   **                                                                                  **
+   **               The value of Young's modulus is obtained from the formula given by **
+   **               Settari and Mourits (SPEJ, pp. 219-226,1998)                       **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #014'
+*TITLE2
+   '3D Cylindrical Grids'
+*TITLE3
+   'Two Constitutive Models'
+
+*INUNIT *FIELD
+
+*OUTPRN *GRID PRES
+*OUTPRN *WELL *ALL
+
+*WPRN *GRID TIME  
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+OUTSRF GRID  PRES POROS YOUNG
+             STRESI STRESJ STRESK VDISPL STRESSH STRESMXP *STRESEFF
+             VERDSPLGEO SUBSIDGEO
+
+*OUTSRF *SPECIAL 2,1,3 *PRES       
+*OUTSRF *SPECIAL 2,1,3 *POROS      
+*OUTSRF *SPECIAL 2,1,3 *VERDSPLGEO 
+*OUTSRF *SPECIAL 2,1,3 *STRESI     
+*OUTSRF *SPECIAL 2,1,3 *STRESK     
+*OUTSRF *SPECIAL 2,1,3 *STRESSHIJ  
+*OUTSRF *SPECIAL 2,1,3 *STRESSHJK  
+*OUTSRF *SPECIAL 2,1,3 *STRESSHIK  
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 13 10 10 *RW 0.00001
+
+*DI *IVAR  3 10*10 40 120
+
+*DJ *CON 36
+
+*DK *KVAR 20 25 10 10 5 5 5 10 30  20
+*KDIR DOWN
+
+*DEPTH 1 1 1 10.0
+
+*POR KVAR
+   0.00  0.00  0.2 0.3  0.25  0.25 0.28  0.31 0.0 0.0
+
+*PERMI *KVAR 100  100 100 2000 1000 500 2000 2000 100 100
+*PERMJ *EQUALSI
+*PERMK *EQUALSI / 2
+
+*CPOR 5E-6
+*PRPOR 75
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+     5000.000   335.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER   63.02
+   *CO               1.0E-5        ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0           ** Water formation volume factor
+   *CW               0.0           ** Water compressibility
+   *REFPW            14.7          ** Reference pressure
+   *VWI              0.96          ** Water viscosity at reference pressure
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 125
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**    Sw        Krw       Krow
+**  ------    ------    -------
+    0.265     0.0        1.0
+    0.3292    0.0006     0.9
+    0.3875    0.0017     0.685
+    0.4458    0.005      0.49
+    0.5042    0.011      0.325
+    0.545     0.018      0.215
+    0.5917    0.056      0.1
+    0.6208    0.1        0.043
+    0.685     0.16       0.0
+    1.0       1.0        0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      ------     -------
+
+    0.5        1.00       0.0
+    0.95       0.0        0.75
+    1.0        0.0        1.0
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 100.
+*SW *CON 1.0
+*SO *CON 0.0
+*PB *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*SDEGREE GAUSS
+*DTMAX 100.0
+
+*NORM     *PRESS 200
+*CONVERGE *PRESS 1.0
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+
+*GEOM3D           ** 3D Finite elements
+
+**  Linear elastic rock
+*GEOROCK 1           ** rock type # 1
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+
+** Nonlinear elastic rock
+*GEOROCK 2           ** rock type # 2
+NLINEAR 1            ** For nonlinear elastic model 1
+ELASTMOD 3.95e5      ** Young modulus 
+POISSRATIO 0.3       ** Poisson ratio
+
+GAMMA       6125.0   ** Gamma coefficient     
+GEXPONENTN  0.4      ** Exponential n
+GULBULKMOD  0        ** Unload bulk modulus
+
+** Assign constitutive model on rock layer
+*GEOTYPE   IJK
+**         i      j   k    rocktype
+           1:13   1:10   1:2     1      ** rock type 1 for layers 1 to 2
+           1:13   1:10   3:8     2      ** rock type 2 for layers 3 to 8
+           1:13   1:10   9:10    1      ** rock type 1 for layers 9 to 10
+
+** Initial stresses: sigmaxx  sigmayy  sigmazz  sigmaxy  sigmayz  sigmaxz
+*STRESS3D 1000.0 1000.0 1000.0 0.0 0.0 0.0
+
+*PRESCBC3D           ** Prescribed boundary conditions
+  *IJK  1:13  1:10  10
+**local node  direction    displ 
+        5:8     03          0.0
+  *IJK   13  1:10  1:10
+**local node  direction    displ 
+        2:3     01:02       0.0
+        6:7     01:02       0.0
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 1973 9 25.5
+
+   DTWELL .02
+
+   WELL 1 'prod1' VERT 1 1
+   PRODUCER 'prod1'
+   OPERATE     STL 1000
+   OPERATE MIN BHP 17
+   GEOMETRY K  .3 .5 1 0
+   PERFV GEO 'prod1'
+         **  k
+             5   1.0
+             6   1.0
+             7   1.0
+
+TIME 30
+TIME 40
+TIME 365
+
+STOP

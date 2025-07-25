@@ -1,0 +1,352 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    This is data set verifies and illustrates the *BINARY_DATA option for
+**    matrix/fracture array input.
+
+**    Note:  This data set was created for illustration and verification purposes
+**           only.  Consequently, the data contained here is quite artificial and
+**           should not be used for engineering purposes.
+
+**  Features:
+
+**  1) This data set is merely STSMO020 loaded into Builder and then written in
+**     binary form via "File/Save As.../Array Saving Method/Binary File Format
+**     (*.cmgbin)".
+
+**  2) The *BINARY_DATA option is available only for grid array data that uses the
+**     *ALL data reading option.  Therefore, to exercise the *BINARY_DATA option
+**     for the full range of grid array options, the text data for each representative
+**     grid array keyword must be in *ALL format.  In addition, the *ALL data must
+**     be non-uniform enough to prevent Builder from converting it to a simpler format
+**     like *CON or *IVAR.
+
+**  3) The results of this run should be very close to those of STSMO020.  A little
+**     deviation is expected since grid array data saved in text form has less
+**     precision than the binary form.
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS 200600
+
+*interrupt *stop
+
+*TITLE1 'STARS Simulator Options No. 21'
+*TITLE2 'Test/Illustrate *BINARY_DATA with Natural Fracture'
+*TITLE3 'Based on STSMO020'
+
+inunit field
+
+outprn grid pres sw so sg temp y obhloss
+outprn well all
+outprn iter newton
+wprn grid 400
+wprn iter 400
+prntorien 2 0
+OUTSRF GRID PRES SG SO SW TEMP 
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+
+WRST 15
+
+
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 5 1 10
+KDIR UP
+DI IVAR 
+ 5 10 15 20 25
+DJ JVAR 
+ 5
+DK ALL
+ 50*3
+DTOP
+ 5*0
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+DUALPERM 
+SHAPE GK
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL MATRIX CON            1
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL FRACTURE CON            1
+**$ Property: Fracture Spacing I (ft)   Max: 1.633  Min: 1.633
+DIFRAC CON        1.633
+DJFRAC EQUALSI
+**$ Property: Fracture Spacing K (ft)   Max: 0  Min: 0
+DKFRAC CON            0
+**$ Property: Porosity  Max: 0.329  Min: 0.28
+POR MATRIX BINARY_DATA 
+**$ Property: Porosity  Max: 0.0329  Min: 0.028
+POR FRACTURE BINARY_DATA 
+**$ Property: Permeability I (md)   Max: 50  Min: 50
+PERMI MATRIX CON           50
+**$ Property: Permeability I (md)   Max: 2000  Min: 2000
+PERMI FRACTURE CON         2000
+**$ Property: Permeability J (md)   Max: 50  Min: 50
+PERMJ MATRIX CON           50
+**$ Property: Permeability J (md)   Max: 2000  Min: 2000
+PERMJ FRACTURE CON         2000
+**$ Property: Permeability K (md)   Max: 50  Min: 50
+PERMK MATRIX CON           50
+**$ Property: Permeability K (md)   Max: 2000  Min: 2000
+PERMK FRACTURE CON         2000
+**$ Property: Trans Multiplier I  Max: 3.5  Min: 1
+TRANSI MATRIX BINARY_DATA 
+**$ Property: Trans Multiplier K  Max: 4.5  Min: 1
+TRANSK MATRIX BINARY_DATA 
+**$ Property: Trans Multiplier I  Max: 3.6  Min: 1
+TRANSI FRACTURE BINARY_DATA 
+**$ Property: Trans Multiplier K  Max: 4.6  Min: 1
+TRANSK FRACTURE BINARY_DATA 
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*end-grid
+
+** Instrinsic formation/rock properties
+cpor 5e-4
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+HLOSSPROP OVERBUR 35 24
+         UNDERBUR 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**              -----    --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       8.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+
+visctable
+
+**    Temp
+      70          0     2.9666e5
+      80          0     1.3466e5
+      90          0       65248
+     100          0       33500
+     125          0        7839
+     150          0        2349
+     175          0       853.2
+     200          0       360.7
+     250          0        90.7
+     300          0        31.7
+     350          0        13.9
+     400          0        7.22
+     450          0        4.23
+     500          0        2.71
+     550          0        1.87
+
+** Reference conditions
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0
+    1.0        1.0          0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+**   Assign rel perm sets
+**$ Property: Rel Perm Set Number  Max: 1  Min: 1
+KRTYPE MATRIX CON            1
+**$ Property: Rel Perm Set Number  Max: 2  Min: 2
+KRTYPE FRACTURE CON            2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+initial
+VERTICAL OFF
+
+INITREGION 1
+** Fractures in layer 5 will have initial pressure of 150 psi
+** Pressure in other layers (matrix and fracture) will be adjusted
+** according to gravity
+**$ Property: Pressure (psi)   Max: 159.941  Min: 148.25
+PRES FRACTURE BINARY_DATA 
+**$ Property: Pressure (psi)   Max: 172.819  Min: 148.427
+PRES MATRIX BINARY_DATA 
+**$ Property: Temperature (F)   Max: 357.398  Min: 75.0197
+TEMP MATRIX BINARY_DATA 
+**$ Property: Temperature (F)   Max: 357.93  Min: 75.0197
+TEMP FRACTURE BINARY_DATA 
+**$ Property: Water Saturation  Max: 0.947868  Min: 0
+SW FRACTURE BINARY_DATA 
+**$ Property: Water Saturation  Max: 0.544168  Min: 0.447529
+SW MATRIX BINARY_DATA 
+**$ Property: Oil Saturation  Max: 0.552471  Min: 0.359498
+SO MATRIX BINARY_DATA 
+**$ Property: Oil Saturation  Max: 1  Min: 0
+SO FRACTURE BINARY_DATA 
+**$ Property: Gas Saturation  Max: 0.999579  Min: 0
+SG FRACTURE BINARY_DATA 
+**$ Property: Gas Saturation  Max: 0.121204  Min: 0
+SG MATRIX BINARY_DATA 
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+newtoncyc 10
+sdegree 1
+sorder rcmrb
+dtmax 90
+upstream klevel
+maxsteps 20
+
+norm      press 200  satur  .2   temp 180  y .2   x .2
+
+
+
+run
+
+**  ==============  RECURRENT DATA  ======================
+
+date 1973 9 25.5
+
+   dtwell .004
+                            ** Horizontal well in J direction
+   WELL  'Injector 1'
+
+   injector mobweight 'Injector 1'
+   incomp water 1.0  0.0
+   tinjw 360.77
+   qual .7
+   operate     bhp   155    ** Start on BHP
+   operate max stw   1000   ** Maximum water rate
+          ** i j k wi = 0.007082 *k * h / ln(0.5 * re / rw)
+                             **41.62
+PERF  WI  'Injector 1'
+**$ UBA    wi       Status  Connection  
+    1 1 2  36926.1  OPEN    FLOW-FROM  'SURFACE'
+                            **             "
+   WELL  'Producer 1'
+
+   producer 'Producer 1'
+   operate     bhp    154   ** Start on BHP
+   operate max stl    1000  ** Maximum liquid rate
+   operate max steam  5e-2  cont  ** maximum steam rate
+                         ** rw cc ff ss
+              ** i j k
+**$          rad  geofac  wfrac  skin
+GEOMETRY  J  0.3  0.5  1.  0.
+PERF  GEO  'Producer 1'
+**$ UBA    ff  Status  Connection  
+    1 1 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+time 45 
+**$ Property: Trans Multiplier I  Max: 0.5  Min: 0.5
+TRANSI MATRIX IJK 
+  1:2     1:1     5:5    0.5         
+**$ Property: Trans Multiplier I  Max: 0.6  Min: 0.6
+TRANSI FRACTURE IJK 
+  1:2     1:1     5:5    0.6         
+**$ Property: Trans Multiplier K  Max: 1.6  Min: 1.6
+TRANSK FRACTURE IJK 
+  1:2     1:1     5:5    1.6         
+
+time 90
+time 150
+time 210
+time 365
+time 730
+
+RESULTS SPEC 'Fracture Spacing J'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 0
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC STOP
+

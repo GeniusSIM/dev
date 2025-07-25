@@ -1,0 +1,72 @@
+   ImportGrid( Vendor = "Eclipse",   &
+      Location = "C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.EGRID",   &
+      Grid = "Grid1",  PropManager = "PropManager1" )
+   ReadProperties( Vendor = "Eclipse",   &
+      Location = "C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.X0001, &
+MinReportStep, 1, MaxReportSTep, 5, RestartProperty",   &
+      PropManager = "PropManager1",  DefaultToPropUnits = "TRUE",   &
+      ReadNow = "FALSE" )
+   ImportWells( Vendor = "Eclipse",   &
+      Location = "C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.X0001, &
+MinReportStep, 1, MaxReportSTep, 5",  Grid = "Grid1",  Wells = "Wells1",   &
+      ReadNow = "FALSE" )
+   ReadRestartFiles(  )
+   UpdateGridUnits( Grid = "Grid1" )
+   UpdateWellUnits( Wells = "Wells1" )
+   ReportGridDimensions( Grid = "Grid1" )
+   AddSimulationToView( Viewer = "3DViewer1",  Grid = "Grid1",   &
+      GridComposite = "GridComposite1",  Wells = "Wells1",   &
+      WellComposite = "WellComposite1" )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 2 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 3 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 4 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 5 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 6 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 7 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 8 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 9 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 10 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 11 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 12 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 13 )
+   Exaggerate( Viewer = "3DViewer1",  X = 1,  Y = 1,  Z = 14 )
+   SimGridAppearance( Viewer = "3DViewer1",  Grid = "Grid1",   &
+      DisplayCells = "FALSE",  DisplayCellOutlines = "TRUE" )
+   Normalise( Viewer = "3DViewer1",  Setting = "FALSE",  Factor = 0.94999999,   &
+      Side = "BIGGEST",  Normalise = "TRUE" )
+   Normalise( Viewer = "3DViewer1",  Setting = "FALSE",  Factor = 0.94999999,   &
+      Side = "BIGGEST",  Normalise = "TRUE" )
+   SetView( Viewer = "3DViewer1",  View = "Top" )
+   SetView( Viewer = "3DViewer1",  View = "Bottom" )
+   SetView( Viewer = "3DViewer1",  View = "Front" )
+   SetView( Viewer = "3DViewer1",  View = "Back" )
+   SimGridAppearance( Viewer = "3DViewer1",  Grid = "Grid1",   &
+      DisplayCells = "FALSE",  DisplayCellOutlines = "FALSE" )
+   SimGridAppearance( Viewer = "3DViewer1",  Grid = "Grid1",   &
+      DisplayCells = "FALSE",  DisplayCellOutlines = "TRUE" )
+   SimGridAppearance( Viewer = "3DViewer1",  Grid = "Grid1",   &
+      DisplayCells = "TRUE",  DisplayCellOutlines = "TRUE" )
+   WellViewEdit( Viewer = "3DViewer1",  Wells = "Wells1",  RenderMode = 0,   &
+      ShowStatus = "FALSE",  ShowConnections = "FALSE",  Width = 1,   &
+      HeightFactor = 1,  LevelOfDetail = 1,  ShowAllWells = "FALSE" )
+   WellViewEdit( Viewer = "3DViewer1",  Wells = "Wells1",  RenderMode = 2,   &
+      ShowStatus = "FALSE",  ShowConnections = "FALSE",  Width = 1,   &
+      HeightFactor = 1,  LevelOfDetail = 1,  ShowAllWells = "FALSE" )
+   Axes( Viewer = "3DViewer1",  Axes = "FALSE",  BoundingBox = "FALSE",   &
+      ColouredAxes = "FALSE",  AxisLabels = "FALSE",  Tickmarks = "FALSE",   &
+      Ticklabels = "FALSE",  GridLines = "FALSE",  GridLinesRed = 1,   &
+      GridLinesGreen = 0.50196081,  GridLinesBlue = 1,   &
+      SelectedExtent = "FALSE" )
+   Axes( Viewer = "3DViewer1",  Axes = "TRUE",  BoundingBox = "TRUE",   &
+      ColouredAxes = "TRUE",  AxisLabels = "TRUE",  Tickmarks = "FALSE",   &
+      Ticklabels = "TRUE",  GridLines = "FALSE",  GridLinesRed = 1,   &
+      GridLinesGreen = 0.50196081,  GridLinesBlue = 1,   &
+      SelectedExtent = "FALSE" )
+   Freeze( Viewer = "3DViewer1",  Freeze = "TRUE" )
+   Freeze( Viewer = "3DViewer1",  Freeze = "FALSE" )
+   Lights( Viewer = "3DViewer1",  Directional = "FALSE" )
+   Lights( Viewer = "3DViewer1",  Directional = "TRUE" )
+   SetTimeStep( Viewer = "3DViewer1",  TimeStep = 1 )
+   SetTimeStep( Viewer = "3DViewer1",  TimeStep = 2 )
+   SetTimeStep( Viewer = "3DViewer1",  TimeStep = 3 )
+   SetTimeStep( Viewer = "3DViewer1",  TimeStep = 4 )

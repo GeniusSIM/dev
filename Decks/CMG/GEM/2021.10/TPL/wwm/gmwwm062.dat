@@ -1,0 +1,244 @@
+**--------------------------------------------------------------------**
+** GMWWM062.DAT: Base case for Pumped-off Well Modelling              **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMWWM062.DAT                                               **
+**                                                                    **
+** MODEL:  10x1x15       Producer Not Pumped Off                      **
+**         FIELD UNITS   *BHPDEPTH and *BHPGRAD                       **
+**         *KDIR *DOWN   BASED ON GMWWM033                            **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This data set models a simple production-water injection scenario. **
+** A producer in on BHP control, a water injector on rate control.    **
+** This data set is the companion to gmwwm063.dat in which the        **
+** producer is modelled as being pumped off.  The pumping increases   **
+** the cumulative oil produced in the two years simulated here by     **
+** about 10%.                                                         **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES
+*TITLE1
+'GMWWM062: Base Case for'
+*TITLE2
+'Model of Pumped-off'
+*TITLE3
+'Oil Producer'
+
+*INUNIT    *FIELD
+
+*WPRN      *WELL 1 **5
+*WPRN      *GRID *TIME
+
+*OUTPRN    *GRID *IMPL *SO *SG *SW *PRES
+*OUTPRN    *WELL *ALL
+*OUTPRN *RES *ALL
+
+*WSRF      *GRID 5
+*WSRF      *WELL 1
+
+*WRST 0
+
+**--------------------------------------------------------------------**
+** Reservoir description Section                                      **
+**--------------------------------------------------------------------**
+
+*GRID *CART    10    1   15   ** This is an x-z cross sectional problem
+
+*KDIR *DOWN
+
+*DI *CON  200.0
+
+*DJ *CON 2500.0
+
+*DK *KVAR                       ** Block z dimensions vary with layer
+  20.0  15.0  26.0  15.0  16.0  14.0  2*8.0   ** Total thickness : 359 ft.
+  18.0  12.0  19.0  18.0  20.0  50.0  100.0
+
+*DEPTH *TOP 1    1   1  9000.   ** Depth to top center of first
+                                ** block in shallowest layer
+
+*POR  *KVAR                     ** Porosities vary with layer
+  0.087  0.097  0.111  0.16  0.13
+  2*0.17 0.08   0.14   0.13  0.12
+  0.105  0.12   0.116  0.157
+
+*PRPOR 3600.0                   ** Rock compressibility and
+*CPOR  4.0E-6                   ** reference pressure
+
+** Each of the I, J, and K permeabilities are constant within each layer
+** of the reservoir but vary from layer to layer. Hence the use of *KVAR
+** to input them layer by layer. Note that the first K layer is at
+** the  top of the reservoir.
+
+*PERMI *KVAR
+   35.0   47.5  148.0  202.0   90.0
+  418.5  775.0   60.0  682.0  472.0
+  125.0  300.0  137.5  191.0  350.0
+
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.10
+
+**--------------------------------------------------------------------**
+** Component Properties Section                                       **
+**--------------------------------------------------------------------**
+
+*MODEL *PR
+
+*NC 6 6
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69       18.       17.
+*VCRIT 0.099800  0.200500  0.369800  0.629700       0.7       0.8
+*TCRIT    190.6     369.8     507.4     617.7      720.     850.
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*BIN         0.
+           2*0.
+           3*0.
+           0.10     0.008      2*0.
+           0.10     0.008      3*0.
+*TRES 222.
+
+*DENW 63.02
+*CW      3.0E-06
+*REFPW   14.7
+*VISW    0.96
+
+**--------------------------------------------------------------------**
+** Rock-fluid Property Section                                        **
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*RPT
+
+  *KROIL *STONE1  ** Use Stone's 1st Model to compute oil relative
+                  ** permeability when three phases are present.
+
+*SWT              ** Water-oil relative permeability table.
+**   sw    krw    krow    pcow
+   0.22    0.0    1.0     7.0
+   0.30    0.07   0.4     4.0
+   0.40    0.15   0.125   3.0
+   0.50    0.24   0.0649  2.5
+   0.60    0.33   0.0048  2.0
+   0.80    0.65   0.0     1.0
+   0.90    0.83   0.0     0.5
+   1.00    1.0    0.0     0.0
+
+*SLT              ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog
+   0.22    1.0     0.0      3.9
+   0.30    0.8125  0.0      3.5
+   0.40    0.5     0.0      3.0
+   0.50    0.42    0.0      2.5
+   0.60    0.34    0.0      2.0
+   0.70    0.24    0.02     1.5
+   0.80    0.1     0.1      1.0
+   0.90    0.022   0.33     0.5
+   0.96    0.0     0.6      0.2
+   1.0     0.0     1.0      0.0
+
+**--------------------------------------------------------------------**
+** Initial Conditions Section                                         **
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+*REFPRES  3600.0                ** Set reference pressure
+*REFDEPTH 9070.0                ** at the reference depth.
+*DWOC     9370.0                ** Set water-oil contact
+*DGOC     9070.0                ** Set gas-oil contact
+
+** Initial oil composition :
+*ZOIL 0.50   0.07    0.03     0.20    0.15     0.05
+
+** Initial gas composition :
+*ZGAS 0.9304 0.04638 0.006924 0.01473 0.001512 0.0000314
+
+**--------------------------------------------------------------------**
+** Numerical Control Section                                          **
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+
+*NORM *GMOLAR 0.02  ** Crossflow may induce rapid composition changes.
+                    ** Setting *NORM keeps timesteps from exceeding
+                    ** convergence limits
+*NORM *SATUR  0.05
+*MAXCHANGE *GMOLAR 0.30
+*CONVERGE *MAXRES 0.0001
+*ITERMAX 40
+*NORTH 20
+**--------------------------------------------------------------------**
+** Well Data Section                                                  **
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE 1994 01 01
+
+*DTMAX    120.
+*DTWELL   0.1  **0.5
+
+*WELL 1 'Producer 1'
+*WELL 2 'Injector 1' *VERT 10 1
+
+*BHPDEPTH 1    ** Refer BHP of well 1 to the initial
+   9370.       ** water-oil contact depth.
+
+*BHPGRAD 1     ** For well 1 use 0.5 psi/ft as
+   0.5         ** pressure gradient for BHP
+
+*WELLINIT *ITER
+*AIMSET *CON 3
+
+
+*PRODUCER 1
+*PWELLBORE *MODEL
+ 9000. 9000. 0.0001 60.  222.  0.5 
+*OPERATE *MIN *BHP 3000. *CONT     ** Producer 1 on BHP control.
+
+*INJECTOR 2
+*INCOMP *WATER
+*OPERATE *MAX *WATER 2000.00       ** Water injector on rate control.
+
+**             rad      geofac   wfrac  skin
+*GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+*PERF *GEO 1
+** kf      ff
+2 1   6    1.000         ** Reference completion of well 1
+2 1   7    1.000         ** is in block 2 1 6 at depth of 9099
+2 1   8    1.000         ** ft.
+2 1   9    1.000
+2 1  10    1.000
+2 1  11    1.000
+2 1  12    1.000
+2 1  13    1.000
+                           
+
+**LAYERGRAD 'Producer 1'  ** In the "pumped-off"
+**2 1  7   0.             ** model (gmwwm063.dat)
+**2 1  8   0.             ** these lines are uncommented
+**2 1  9   0.             ** to simulate the effect
+**2 1 10   0.             ** of removal of liquid from
+**2 1 11   0.             ** the wellbore.
+**2 1 12   0.
+
+
+*PERFV *GEO 2
+** kf      ff
+  13:15    1.000   ** Water injector on rate control.
+
+**SHUTIN 2
+
+*AIMWELL *WELLN
+
+*DATE 1996 01 01
+*STOP

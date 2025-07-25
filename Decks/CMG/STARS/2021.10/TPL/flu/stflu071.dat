@@ -1,0 +1,467 @@
+*****************************************************************************
+** Template  (stflu071.dat): STARS Example of Polymer Drive                **
+*****************************************************************************
+*****************************************************************************
+** MODEL:  Polymer flooding with the following options:                    **
+**	   Incomplete mixing              				   **
+**	   Inaccessible water saturation				   **
+**	   Phase dependent residual resistance			           **
+**                                                                         **
+** Injection Sequence:                                                     **
+**                                                                         **
+**         4 years of water flooding to establish a baseline		   **
+**         4 years of polymer flooding			                   **
+**         5 years of water flooding					   **
+**                                                                         **
+*****************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #71'
+*TITLE2 'Verify/Illustrate *SWIPV, OMEGA_PW, *RRFTW(O/G)'
+
+*INUNIT SI
+*OUTUNIT *SI
+
+*WSRF WELL 1
+*WSRF GRID TIME
+*WSRF SECTOR TIME
+                      
+*OUTSRF GRID ADSORP MASS ADSPCMP FPOROS KRG KRO KRW MASDENG 
+            MASDENO MASDENW MOLDENG MOLDENO MOLDENW PRES RFG RFO RFW SG 
+            SO SW TEMP VELOCRC VISG VISO VISW VPOROS W X Y Z
+
+*OUTSRF *GRID 
+*OUTSRF WELL DOWNHOLE
+*OUTSRF WELL LAYER ALL
+*REWIND 2
+
+*WPRN GRID 0
+*OUTPRN RES NONE
+*WRST TIME
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =============
+
+*GRID VARI 10 1 50
+ 
+*KDIR DOWN
+*DI CON 100
+*DJ CON 1000
+*DK CON 1.0
+*DTOP
+ 10*3000
+
+*NULL CON 1
+*POR CON 0.3
+
+*PERMI CON 300.0
+*PERMJ EQUALSI * 1
+*PERMK EQUALSI * 0.1
+*PINCHOUTARRAY CON 1
+
+*END-GRID
+
+*PRPOR 8576
+*CPOR 1.8E-5
+*ROCKCP 2.347e6
+
+*THCONR 1.5e5
+*THCONW 5.35e4
+*THCONO 1.15e4
+*THCONG 4000
+*THCONMIX SIMPLE
+
+*HLOSSPROP OVERBUR 2.35e6 1.5e5
+           UNDERBUR 2.35e6 1.5e5
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+  
+*MODEL 4 4 4 3
+
+*COMPNAME 'Water' 'Polymer' 'Tracer' 'Dead_Oil'
+
+*CMM       0        8         0       0.269625
+*PCRIT     0        0         0         0
+*TCRIT     0        0         0         0
+
+*PRSR 101.325
+*TEMR 86.1111
+*PSURF 101.325
+*TSURF 15.5556
+
+*MASSDEN  1009.16       1009.16      1009.16      863.319
+*CP       3.95953e-007  3.95953e-007 3.95953e-007 1.21542e-006 
+*CT1      0.000462331   0.000462331  0.000462331  0.000999258 
+
+*AVISC     0.42          10.8         0.42         17.2172  
+*VSMIXCOMP 'Polymer'
+*VSMIXENDP 0 1.69064e-006 
+*VSMIXFUNC 0 0.163319 0.326638 0.489957 0.653064 0.698784 0.744503 0.797517 0.865012 0.932506 1 
+
+** Polymer incomplete mixing with default *LEGACY option
+*OMEGA_PW *LEGACY 0.7
+
+
+**  ==============  ROCK-FLUID PROPERTIES  =====================
+
+*ROCKFLUID
+
+*RPT 1 LININTERP WATWET
+**$        Sw          krw        krow
+SWT
+        0.186               0              1         0
+        0.209  0.001129032258   0.9300458716         0
+        0.231  0.002258064516   0.8623853211         0
+        0.253  0.003387096774   0.7958715596         0
+        0.276  0.004516129032   0.7316513761         0
+        0.298  0.009032258065   0.6685779817         0
+        0.321   0.01580645161   0.6066513761         0
+        0.343   0.02483870968   0.5470183486         0
+        0.365   0.03838709677   0.4885321101         0
+        0.388    0.0564516129   0.4334862385         0
+         0.41   0.07903225806    0.378440367         0
+        0.433    0.1061290323   0.3268348624         0
+        0.455            0.14   0.2775229358         0
+        0.477    0.1806451613   0.2293577982         0
+          0.5    0.2291935484   0.1857798165         0
+        0.522    0.2856451613   0.1433486239         0
+        0.544            0.35   0.1055045872         0
+        0.567     0.424516129  0.06995412844         0
+        0.589    0.5091935484  0.04013761468         0
+        0.612    0.6051612903  0.01490825688         0
+        0.633             .68              0         0
+         .775              .9              0         0
+            1               1              0         0
+
+**        Sl             krg           krog      Pcog
+SLT
+        0.495             0.2              0         0
+       0.5153    0.1851666667  0.01527522936         0
+       0.5355    0.1708333333   0.0376146789         0
+       0.5558    0.1567333333  0.06372706422         0
+        0.576    0.1431166667  0.09262614679         0
+       0.5963          0.1299   0.1238073394         0
+       0.6165    0.1171333333   0.1569151376         0
+       0.6368    0.1048166667   0.1917316514         0
+        0.657         0.09295   0.2280848624         0
+       0.6773   0.08158333333   0.2658256881         0
+       0.6975   0.07071666667   0.3048394495         0
+       0.7178   0.06036666667   0.3450573394         0
+        0.738          0.0506   0.3863761468         0
+       0.7583   0.04141666667        0.42875         0
+       0.7785   0.03286666667   0.4721100917         0
+       0.7988           0.025   0.5164105505         0
+        0.819   0.01788333333   0.5616055046         0
+       0.8393   0.01161833333   0.6076605505         0
+       0.8595        0.006325   0.6545298165         0
+       0.8798  0.002236666667    0.702190367         0
+          0.9          0.0015   0.7506077982         0
+            1               0              1         0
+
+*ADSCOMP 'Polymer' WATER
+*ADSTABLE ** 	33.00	mg/100g rock
+0		0.000000000	
+1.0e-7   	1.0e-10
+5.0e-7   	5.0e-10
+1.0e-6   	1.0e-9
+1.3e-6   	1.7e-9
+1.69064e-006	2.0e-9	
+
+*ADSROCK 1
+*ADMAXT 	2.0e-9	
+*ADRT   	2.0e-9	
+
+** Inaccessible pore volume and inaccessible water saturation
+** SWIPV is an alternative option to PORFT
+** Always less than Sw_con/ Sw_res
+*SWIPV .15
+
+** Disproportionate permeability via phase dependent resistance
+** Alternative to RRFT
+*RRFTW 20 
+*RRFTO 5
+*RRFTG 1
+
+
+**  ==============  INITIAL CONDITIONS  ========================
+
+*INITIAL
+
+*VERTICAL DEPTH_AVE
+
+*INITREGION 1
+*REFPRES  8000.0
+*REFDEPTH 3004.0
+
+**$ Property: Temperature (C)   Max: 70  Min: 70
+*TEMP CON           86.1111
+*MFRAC_OIL 'Dead_Oil' CON     1.0
+*MFRAC_WAT 'Water' CON     1.0
+
+
+**  ==============  NUMERICAL CONTROL  =========================
+
+*NUMERICAL
+
+*NCUTS 20
+*ITERMAX 200
+*NORTH 200
+*MAXPRES 25000.0
+*ISOTHERMAL
+*TFORM ZT
+*NORM PRESS 100 SATUR 0.1
+
+
+**  ==============  RECURRENT DATA  ============================
+
+*RUN
+
+*DATE 2012 1 1
+
+*DTWELL 0.1
+
+*GROUP 'Group-1' ATTACHTO 'Field'
+
+*WELL  'Producer1' ATTACHTO 'Group-1'
+*PRODUCER 'Producer1'
+*OPERATE  MAX  STO  1200.0  CONT
+*OPERATE  MIN  BHP  2000.0  CONT REPEAT
+** UBA       ff   Status  Connection  
+**          rad  geofac  wfrac  skin
+*GEOMETRY  K  0.114  0.249  1.0  0.0
+      PERF      GEOA  'Producer1'
+** UBA               ff          Status  Connection  
+    10 1 1          1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    10 1 2          1.0  OPEN    FLOW-TO  1
+    10 1 3          1.0  OPEN    FLOW-TO  2
+    10 1 4          1.0  OPEN    FLOW-TO  3
+    10 1 5          1.0  OPEN    FLOW-TO  4
+    10 1 6          1.0  OPEN    FLOW-TO  5
+    10 1 7          1.0  OPEN    FLOW-TO  6
+    10 1 8          1.0  OPEN    FLOW-TO  7
+    10 1 9          1.0  OPEN    FLOW-TO  8
+    10 1 10         1.0  OPEN    FLOW-TO  9
+    10 1 11         1.0  OPEN    FLOW-TO  10
+    10 1 12         1.0  OPEN    FLOW-TO  11
+    10 1 13         1.0  OPEN    FLOW-TO  12
+    10 1 14         1.0  OPEN    FLOW-TO  13
+    10 1 15         1.0  OPEN    FLOW-TO  14
+    10 1 16         1.0  OPEN    FLOW-TO  15
+    10 1 17         1.0  OPEN    FLOW-TO  16
+    10 1 18         1.0  OPEN    FLOW-TO  17
+    10 1 19         1.0  OPEN    FLOW-TO  18
+    10 1 20         1.0  OPEN    FLOW-TO  19
+    10 1 21         1.0  OPEN    FLOW-TO  20
+    10 1 22         1.0  OPEN    FLOW-TO  21
+    10 1 23         1.0  OPEN    FLOW-TO  22
+    10 1 24         1.0  OPEN    FLOW-TO  23
+    10 1 25         1.0  OPEN    FLOW-TO  24
+    10 1 26         1.0  OPEN    FLOW-TO  25
+    10 1 27         1.0  OPEN    FLOW-TO  26
+    10 1 28         1.0  OPEN    FLOW-TO  27
+    10 1 29         1.0  OPEN    FLOW-TO  28
+    10 1 30         1.0  OPEN    FLOW-TO  29
+    10 1 31         1.0  OPEN    FLOW-TO  30
+    10 1 32         1.0  OPEN    FLOW-TO  31
+    10 1 33         1.0  OPEN    FLOW-TO  32
+    10 1 34         1.0  OPEN    FLOW-TO  33
+    10 1 35         1.0  OPEN    FLOW-TO  34
+    10 1 36         1.0  OPEN    FLOW-TO  35
+    10 1 37         1.0  OPEN    FLOW-TO  36
+    10 1 38         1.0  OPEN    FLOW-TO  37
+    10 1 39         1.0  OPEN    FLOW-TO  38
+    10 1 40         1.0  OPEN    FLOW-TO  39
+    10 1 41         1.0  OPEN    FLOW-TO  40
+    10 1 42         1.0  OPEN    FLOW-TO  41
+    10 1 43         1.0  OPEN    FLOW-TO  42
+    10 1 44         1.0  OPEN    FLOW-TO  43
+    10 1 45         1.0  OPEN    FLOW-TO  44
+    10 1 46         1.0  OPEN    FLOW-TO  45
+    10 1 47         1.0  OPEN    FLOW-TO  46
+    10 1 48         1.0  OPEN    FLOW-TO  47
+    10 1 49         1.0  OPEN    FLOW-TO  48
+    10 1 50         1.0  OPEN    FLOW-TO  49
+
+*XFLOW-MODEL  'Producer1'  FULLY-MIXED 
+
+*WELL  'InjWater' ATTACHTO 'Group-1'
+**Inject water only
+*INJECTOR MOBWEIGHT IMPLICIT 'InjWater'
+**         COMPNAME    'Water'  	 'Polymer' 	'Tracer'	'Dead_Oil'
+**           		-------		--------  	----------	----------	
+*INCOMP WATER    	1.0	           0.0		 0.0		 0.0	
+*TINJW  86.1111
+*PINJW  8000.0
+*OPERATE  MAX  STW  1500.0  CONT REPEAT
+*OPERATE  MAX  BHP  15000.0  CONT REPEAT
+** UBA      ff    Status  Connection  
+**          rad  geofac  wfrac  skin
+*GEOMETRY  K  0.114  0.249  1.0  0.0
+      PERF      GEOA  'InjWater'
+** UBA              ff          Status  Connection  
+    1 1 1          1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    1 1 2          1.0  OPEN    FLOW-FROM  1
+    1 1 3          1.0  OPEN    FLOW-FROM  2
+    1 1 4          1.0  OPEN    FLOW-FROM  3
+    1 1 5          1.0  OPEN    FLOW-FROM  4
+    1 1 6          1.0  OPEN    FLOW-FROM  5
+    1 1 7          1.0  OPEN    FLOW-FROM  6
+    1 1 8          1.0  OPEN    FLOW-FROM  7
+    1 1 9          1.0  OPEN    FLOW-FROM  8
+    1 1 10         1.0  OPEN    FLOW-FROM  9
+    1 1 11         1.0  OPEN    FLOW-FROM  10
+    1 1 12         1.0  OPEN    FLOW-FROM  11
+    1 1 13         1.0  OPEN    FLOW-FROM  12
+    1 1 14         1.0  OPEN    FLOW-FROM  13
+    1 1 15         1.0  OPEN    FLOW-FROM  14
+    1 1 16         1.0  OPEN    FLOW-FROM  15
+    1 1 17         1.0  OPEN    FLOW-FROM  16
+    1 1 18         1.0  OPEN    FLOW-FROM  17
+    1 1 19         1.0  OPEN    FLOW-FROM  18
+    1 1 20         1.0  OPEN    FLOW-FROM  19
+    1 1 21         1.0  OPEN    FLOW-FROM  20
+    1 1 22         1.0  OPEN    FLOW-FROM  21
+    1 1 23         1.0  OPEN    FLOW-FROM  22
+    1 1 24         1.0  OPEN    FLOW-FROM  23
+    1 1 25         1.0  OPEN    FLOW-FROM  24
+    1 1 26         1.0  OPEN    FLOW-FROM  25
+    1 1 27         1.0  OPEN    FLOW-FROM  26
+    1 1 28         1.0  OPEN    FLOW-FROM  27
+    1 1 29         1.0  OPEN    FLOW-FROM  28
+    1 1 30         1.0  OPEN    FLOW-FROM  29
+    1 1 31         1.0  OPEN    FLOW-FROM  30
+    1 1 32         1.0  OPEN    FLOW-FROM  31
+    1 1 33         1.0  OPEN    FLOW-FROM  32
+    1 1 34         1.0  OPEN    FLOW-FROM  33
+    1 1 35         1.0  OPEN    FLOW-FROM  34
+    1 1 36         1.0  OPEN    FLOW-FROM  35
+    1 1 37         1.0  OPEN    FLOW-FROM  36
+    1 1 38         1.0  OPEN    FLOW-FROM  37
+    1 1 39         1.0  OPEN    FLOW-FROM  38
+    1 1 40         1.0  OPEN    FLOW-FROM  39
+    1 1 41         1.0  OPEN    FLOW-FROM  40
+    1 1 42         1.0  OPEN    FLOW-FROM  41
+    1 1 43         1.0  OPEN    FLOW-FROM  42
+    1 1 44         1.0  OPEN    FLOW-FROM  43
+    1 1 45         1.0  OPEN    FLOW-FROM  44
+    1 1 46         1.0  OPEN    FLOW-FROM  45
+    1 1 47         1.0  OPEN    FLOW-FROM  46
+    1 1 48         1.0  OPEN    FLOW-FROM  47
+    1 1 49         1.0  OPEN    FLOW-FROM  48
+    1 1 50         1.0  OPEN    FLOW-FROM  49
+ 
+*XFLOW-MODEL  'InjWater'  FULLY-MIXED   
+  
+*DATE 2013 1 1
+*DATE 2014 1 1
+*DATE 2015 1 1
+*DATE 2016 1 1
+
+*DTWELL 0.0001
+
+**Inject polymer, and tracer solution
+*INJECTOR MOBWEIGHT IMPLICIT 'InjWater'
+**         COMPNAME    'Water'  	 'Polymer' 	'Tracer'	'Dead_Oil'
+**           		-------		--------  	----------	--------
+*INCOMP WATER    	0.999989	1.1435E-06	1.0E-05		0.0
+*TINJW  86.1111
+*PINJW  8000.0
+*OPERATE  MAX  STW  2000.0  CONT REPEAT
+*OPERATE  MAX  BHP  15000.0  CONT REPEAT
+      
+*DATE 2016 4 1
+*DATE 2016 7 1
+*DATE 2016 10 1
+*DATE 2017 1 1
+*DATE 2017 4 1
+*DATE 2017 7 1
+*DATE 2017 10 1
+*DATE 2018 1 1
+*DATE 2018 4 1
+*DATE 2018 7 1
+*DATE 2018 10 1
+*DATE 2019 1 1
+*DATE 2019 4 1
+*DATE 2019 7 1
+*DATE 2019 10 1
+*DATE 2020 1 1
+
+*DTWELL 0.0001
+
+**Inject water
+*INJECTOR MOBWEIGHT IMPLICIT 'InjWater'
+**         COMPNAME    'Water'  	 'Polymer' 	'Tracer'	'Dead_Oil'
+**           		-------		--------  	----------	--------
+*INCOMP WATER    	1.0	           0.0		 0.0		 0.0	
+*TINJW  86.1111
+*PINJW  8000.0
+*OPERATE  MAX  STW  2000.0  CONT REPEAT
+*OPERATE  MAX  BHP  15000.0  CONT REPEAT
+      
+*DATE 2020 4 1
+*DATE 2020 7 1
+*DATE 2020 10 1
+*DATE 2021 1 1
+*DATE 2021 4 1
+*DATE 2021 7 1
+*DATE 2021 10 1
+*DATE 2022 1 1
+*DATE 2022 4 1
+*DATE 2022 7 1
+*DATE 2022 10 1
+*DATE 2023 1 1
+*DATE 2023 4 1
+*DATE 2023 7 1
+*DATE 2023 10 1
+*DATE 2024 1 1
+*DATE 2024 4 1
+*DATE 2024 7 1
+*DATE 2025 1 1
+
+*STOP
+
+*DATE 2026 1 1
+*DATE 2027 1 1
+*DATE 2028 1 1
+*DATE 2029 1 1
+*DATE 2030 1 1
+*DATE 2031 1 1
+*DATE 2032 1 1
+*DATE 2033 1 1
+*DATE 2034 1 1
+*DATE 2035 1 1
+*DATE 2036 1 1
+*DATE 2037 1 1
+*DATE 2038 1 1
+*DATE 2039 1 1
+*DATE 2040 1 1
+*DATE 2041 1 1
+*DATE 2042 1 1
+*DATE 2043 1 1
+*DATE 2044 1 1
+*DATE 2045 1 1
+*DATE 2046 1 1
+*DATE 2047 1 1
+*DATE 2048 1 1
+*DATE 2049 1 1
+*DATE 2050 1 1
+*DATE 2051 1 1
+*DATE 2052 1 1
+*DATE 2053 1 1
+*DATE 2054 1 1
+*DATE 2055 1 1
+*DATE 2056 1 1
+*DATE 2057 1 1
+*DATE 2058 1 1
+*DATE 2059 1 1
+*DATE 2060 1 1
+
+*STOP
+

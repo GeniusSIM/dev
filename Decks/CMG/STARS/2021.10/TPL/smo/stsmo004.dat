@@ -1,0 +1,392 @@
+
+*****************************************************************************
+** Template (stsmo004.dat): Laboratory Steam Process with Bottom Aquifer   **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STSMO004.DAT                                                             **
+**                                                                                  **
+** MODEL:  MODIFIED STEAM PROCESS                             8X1X13 RADIAL GRID    ** 
+**         MODIFIED COATS AND MODINE RADIAL NINEPOINT         FIELD UNITS           ** 
+**         FINITE THERMAL AQUIFER REPLACES LOWER GRID BLOCKS                        **
+**                                                                                  **
+** USAGE:  MODELS THE IMPACT OF A FINITE BOTTOM AQUIFER ON STEAM FLOOD PROCESS      **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       BOTTOM WATER MODELLED USING THERMAL AQUIFER OPTION                         **
+**       --------------------------------------------------                         **
+**                                                                                  **
+**       Steam injection into a laboratory physical simulator is matched.           **
+**       See paper 86-37-43, 37th CIM Tech meeting, by T. Stone and J. Ivory.       **
+**       A large 150 cm diameter pressure vessel with packed oil sand               **
+**       over 500 thermocouples in bed provided temperature profiles.               **
+**       Fourteen hours of steam injection is simulated here,                       **
+**       followed by 14 hours of steam plus dual additive injection                 **
+**       and a further 12 hours of production without injection.                    **
+**       The experiment continues with multiple cycles of dual additive             **
+**       (CO2 and naptha) injection and drawdown.                                   ** 
+**                                                                                  **
+**       Here a modified data set is used without additives but with                **
+**       bottom aquifer to illustrate thermal aquifer option                        **
+**                                                                                  **
+**       Special Features:                                                          **
+**                                                                                  **
+**       1)  High permeability, high water saturation communication                 **
+**           path separates injector and producer.                                  **
+**                                                                                  **
+**       2)  Injection well in centre and a ring of producers results               **
+**           in an approximately radial flow pattern.                               **
+**                                                                                  **
+**       3)  Two-dimensional 8x1x13 radial cross sectional grid is                  **
+**           employed with 3 layers in communication path to define                 **
+**           vertical steam chamber extent.                                         **
+**                                                                                  **
+**       4)  Modified coats and modine (SPE 12248) radial 9-point                   **
+**           transmissibility calculation can be employed to better                 **
+**           define steam chamber evolution.                                        **
+**                                                                                  **
+**       5)  Athabasca bitumen properties obtained at ARC.                          **
+**                                                                                  **
+**       6)  Bottom blocks of original model are replaced by aquifer                **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 25'
+*TITLE2 'Verify/Illustrate *BOTTOM Aquifer Model for Radial Grid'
+*TITLE3 'Based on Test Bed No. 17'
+
+*INUNIT *FIELD *EXCEPT  6 1  ** darcy instead of md
+               *EXCEPT 11 1  ** ft3 instead of bbl
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *VISO *KRO *KRG *KRW
+              *AQWATCUM *AQHEATCUM *AQWATRATE *AQHEATRATE
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+*PRNTORIEN 2 0
+
+*OUTSRF *GRID  *AQWATCUM *AQHEATCUM *AQWATRATE *AQHEATRATE
+
+outsrf special blockvar aqwatcum 1,1,1
+               blockvar aqheatcum 1,1,1
+               blockvar aqwatrate 1,1,1
+               blockvar aqheatrate 1,1,1
+
+*AQSTAT *ON
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 8 1 13   *RW 0   ** Radial cross-sectional grid
+                               ** Zero inner radius matches previous treatment
+
+*DI *IVAR 0.16732 4*0.30184 0.24934 2*0.43471
+*DJ *CON 360   ** Full circle
+*DK *KVAR 3*0.16678 3*0.11155 2*0.19685 4*0.3937 0.7874
+
+*POR *CON 0.34
+*PERMI *CON 1             ** Standard bed permeability
+  *MOD 1:6 1 4:6 =  15    ** Higher perm commumication path
+         1 1 4:6 = 700    ** Injector block has highest permeability
+         6 1 4:6 = 700    ** Producer block has highest permeability
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*AQUIFER *BOTTOM
+*AQMETHOD *FETKOVITCH
+*AQGEOM *RECTANG *FINITE
+*AQPROP  1.1674  0.34  1.0  0.0 0.0 1.52 
+*AQVISC 0.5
+*AQCOMP 2.3913E-06
+*HFPROP 34.0 23.0 
+*AQLEAK *ON
+
+*END-GRID
+
+*CPOR 2E-6
+*PRPOR 14.7
+*ROCKCP 34
+*THCONR 23
+*THCONW 23
+*THCONO 23
+*THCONG 23
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   **  Standard water properties plus
+               **  ARC parameters for bitumen, CO2 and naptha
+
+*COMPNAME   'Water'  'Bitumen'
+**          -------   -------
+*CMM         18.02      500
+*MOLDEN        0      0.127468
+*CP            0        5e-6
+*CT1           0      3.374e-4
+*PCRIT       3208      125.5
+*TCRIT       705.1     1218
+
+*CPG1          0         7
+*CPL1          0        175
+*RANGECHECK *OFF
+*HVAPR         0      4.3925e5
+*RANGECHECK *ON
+
+
+*VISCTABLE   ** Tabular bitumen, CO2, naptha viscosity from arc correlation
+** Temp
+    70         0      296660
+    80         0      134660
+    90         0       65248
+   100         0       33500
+   125         0        7839
+   150         0        2349
+   175         0       853.2
+   200         0       360.7
+   250         0        90.7
+   300         0        31.7
+   350         0        13.9
+   400         0        7.22
+   450         0        4.23
+   500         0        2.71
+   550         0        1.87
+   800         0        1.87
+   
+**  Reference conditions
+*PRSR 14.7
+*TEMR 75
+*PSURF 14.7
+*TSURF 62
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw         Krow
+**  ----       ------      ------
+    0.15        0.0        0.650
+    0.20       0.009       0.447
+    0.25       0.016       0.326
+    0.30       0.023       0.247
+    0.35       0.033       0.192
+    0.40       0.046       0.143
+    0.45       0.060       0.091
+    0.50       0.080       0.058
+    0.55       0.099       0.036
+    0.60       0.109       0.019
+    0.65       0.120       0.010
+    0.70       0.132       0.005
+    0.75       0.147       0.002
+    0.80       0.204        0.0
+    0.85       0.403        0.0
+    0.90       0.602        0.0
+    0.95       0.801        0.0
+    1.0         1.0         0.0
+
+*SLT *NOSWC     **  Liquid-gas relative permeabilities
+
+**   Sl         Krg         Krog
+**  ----       ------      ------
+    0.0         1.0         0.0
+    0.10       0.658        0.0
+    0.15       0.488        0.0
+    0.20       0.317        0.0
+    0.25       0.174       0.002
+    0.30       0.144       0.009
+    0.35       0.119       0.019
+    0.40       0.107       0.032
+    0.45       0.096       0.047
+    0.50       0.087       0.064
+    0.55       0.078       0.08
+    0.60       0.065       0.098
+    0.65       0.05        0.12
+    0.70       0.039       0.141
+    0.75       0.027       0.156
+    0.80       0.019       0.195
+    0.85       0.01        0.236
+    0.90       0.002       0.356
+    0.95       0.001       0.499
+    1.0         0.0        0.65
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+** Automatic static vertical equilibrium
+*VERTICAL *DEPTH_AVE
+*REFPRES 980.1
+*REFBLOCK 1 1 13
+
+*SW *CON 0.2
+    *MOD 1:6 1 4:6 = 0.9   ** Communication path;  So by difference
+         1:8 1 1 = 1.0
+*TEMP *CON 75
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*DTMAX 0.1
+
+*NORM     *PRESS 50   *SATUR .2   *TEMP 70  *Y .2   *X .2   *W .3
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL 1E-4
+
+   *WELL 1 'INJECT 1'  *VERT 1 1
+   *WELL 2 'PRODUCE 1' *VERT 6 1
+
+   *INJECTOR 'INJECT 1'
+   *INCOMP WATER 1.0  0.0
+   *TINJW 545
+   *QUAL .9
+   *OPERATE *STW 12.972  
+   *PERFV 'INJECT 1'  **  K   WI
+              4:6  29
+
+   *PRODUCER 'PRODUCE 1'
+   *OPERATE *BHP 1022.1
+   *PERFV 'PRODUCE 1'  **  K   WI
+              4:6   0.474063086 ** 3
+
+*TIME .0416667
+
+   *DTWELL .001  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          11.62 1023.7
+
+*TIME .0833333
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1'
+          10.26
+
+*TIME .125
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          10.09 1023.3
+
+*TIME .1666667
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1'
+          9.921
+
+*TIME .2083333
+
+   *DTWELL .01  
+
+   ALTER 'PRODUCE 1'
+          1023.8
+
+   *WRST *TNEXT
+
+*TIME .25
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          9.667 1024
+
+*TIME .29167
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          8.732 1024.6
+
+*TIME .33333
+
+   *DTWELL .01 
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          9.073 1023.6
+
+*TIME .375
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          10.77 1023
+
+*TIME .41667
+
+   *DTWELL .001 
+
+   ALTER 'INJECT 1'
+          14.41
+
+   *WRST *TNEXT
+
+*TIME .4175
+
+   *DTWELL 1E-4 
+
+   SHUTIN 'INJECT 1'
+
+*TIME .45083
+
+   *DTWELL 1E-4 
+
+   OPEN 'INJECT 1'
+
+*TIME .45833
+
+   *DTWELL .001 
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          13.57 1024.1
+
+*TIME .5
+
+   *DTWELL .001 
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          5.426 1023.7
+
+*TIME .54167
+
+   *DTWELL .01  
+
+   ALTER 'INJECT 1' 'PRODUCE 1'
+          7.373 1024.7
+
+*TIME .58333
+*STOP
+

@@ -1,0 +1,428 @@
+*****************************************************************************  
+** Template  (st_pvt.dat):  SAGD with two pvt regions  **
+*****************************************************************************
+*****************************************************************************
+** FILE : ST_PVT.DAT                                                       **
+**                                                                         **
+** This is a 2-D model with a typical athabasca heavy oil. Reservoir       **
+** consistof two completely hydraulically seperated pvt regions. there are **  
+** two well pairs in each pvt region. This data set was created to test    **
+** multiple pvt regions unctionality of CMG STARTS.                        **
+**                                                                         **
+*****************************************************************************
+*****************************************************************************
+RESULTS SIMULATOR STARS 
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #57'
+*TITLE2 'Verify/Illustrate *PVTSET/*PTYPE for Heavy Oil SAGD'
+
+INUNIT SI
+
+WSRF WELL 1
+WSRF GRID TIME
+WSRF SECTOR TIME
+OUTSRF GRID PRES SG SO SW TEMP 
+OUTSRF WELL LAYER NONE
+
+OUTSRF SPECIAL 	*SUBCOOL 'Prod' MIN
+		*SUBCOOL 'Prod' AVE
+
+WPRN GRID TIME
+OUTPRN GRID PRES SW SO SG TEMP
+OUTPRN RES NONE
+
+WRST TIME
+
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+
+
+** ========= GRID AND RESERVOIR PROPERTIES ============
+
+GRID VARI 21 1 20   **TWO DIMENSIONAL GRID
+KDIR DOWN
+DI IVAR 
+ 10*50 1 10*50 
+DJ JVAR 
+  1*76
+DK KVAR
+  20*1
+ 
+DTOP
+ 21*300
+
+PERMI CON         4000
+
+NULL CON            1
+MOD 11:11 1:1 1:20 = 0
+POR CON          0.3
+
+PERMJ CON         4000
+
+PERMK CON         1000
+
+PINCHOUTARRAY CON            1
+
+END-GRID
+
+ROCKTYPE 1
+PRPOR 650
+CPOR 1.8E-5
+ROCKCP 2e6 0
+THCONR 1.50e5
+THCONW 5.35e4
+THCONO 1.15e4
+THCONG 140
+THCONMIX SIMPLE
+HLOSST 15
+HLOSSPROP OVERBUR 5e6 2e5
+         UNDERBUR 5e6 2e5
+
+
+		 
+** ============ FLUID PROPERTIES ==================
+
+MODEL 3 3 3 1
+COMPNAME 	'H2O'	'CH4'	 	'HOIL' 
+**          -----   --------    -------
+CMM    		0 		0.016043 	0.6458    ** MOLECULAR MASS Kg/gm MOLE
+PCRIT  		0 		4600 	 	924.16    ** CRITICAL PRESSURE  kPa 
+TCRIT  		0 		-82.55 	 	514.37    ** CRITICAL TEMPERATURE C 
+kv1         0       0.4391E5   	0   
+kv2         0       0      		0   
+kv3         0       1.97   		0   
+kv4         0       -.19589E3   0   
+kv5         0       -273.16   	0   
+
+PRSR 101.325
+TEMR 15
+PSURF 101.325
+TSURF 15.556
+
+MASSDEN     0		289.76 		1000.34 
+CP          0 		7.028e-06 	4.918e-07 
+CT1         0 		0.001537 	-6.417e-05 
+CT2         0 		6.827e-06 	1.129e-06 
+CPT         0 		-4.623e-06 	-4.535e-09 
+VISCTABLE
+**$      temp                                    
+            5         0    0.06225     1.475e+007
+           17         0    0.057768    1.8906e+006
+           29         0    0.051032     323640
+           41         0    0.045977      70470
+           53         0    0.040667      18768
+           65         0    0.035297       5923
+           77         0    0.030044     2158.3
+           89         0    0.025055     889.01
+          101         0    0.020448     406.69
+          113         0    0.016307     203.61
+          125         0    0.012683     110.21
+          137         0    0.0095986      63.82
+          149         0    0.0070495     39.196
+          161         0    0.0050078     25.339
+          173         0    0.0034278     17.134
+          185         0    0.0022506     12.051
+          197         0    0.0014099     8.7742
+          209         0    0.00083742     6.5862
+          221         0    0.00046813     5.0785
+          233         0    0.00024412     4.0099
+          245         0    0.0001175      3.233
+          257         0    5.15E-05     2.6552
+          269         0    2.03E-05     2.2162
+          281         0    7.03E-06     1.8763
+          293         0    2.09E-06     1.6095
+          305         0    5.21E-07     1.3973
+PVTSET 2 COPY 1
+
+PTYPE IVAR 11*1 10*2
+
+** =========== ROCK FLUID PROPERTIES ===============
+
+ROCKFLUID
+RPT 1 WATWET
+SWT
+**$        Sw          krw      krow
+** ----------------------------------
+         0.15            0         1
+        0.185  0.000499773      0.99
+          0.2  0.001100844      0.98
+         0.25  0.005107475      0.94
+          0.3  0.012533499       0.9
+         0.35  0.023696635     0.825
+          0.4   0.03883698      0.75
+         0.45  0.058150404      0.64
+          0.5  0.081803696      0.56
+         0.55         0.11     0.465
+          0.6         0.15      0.37
+        0.651       0.2112    0.2986
+          0.7         0.27      0.23
+         0.75         0.36     0.161
+          0.8         0.45     0.092
+         0.85         0.57     0.046
+          0.9         0.69         0
+         0.95        0.845         0
+            1            1         0
+SLT
+**$        Sl         krg        krog
+** -----------------------------------
+         0.25         0.2           0
+     0.295625    0.175781  0.00390625
+      0.34125    0.153125    0.015625
+     0.386875    0.132031   0.0351563
+       0.4325      0.1125      0.0625
+     0.478125   0.0945313   0.0976563
+      0.52375    0.078125    0.140625
+     0.569375   0.0632812    0.191406
+        0.615        0.05        0.25
+     0.660625   0.0382812    0.316406
+      0.70625    0.028125    0.390625
+     0.751875   0.0195313    0.472656
+       0.7975      0.0125      0.5625
+     0.843125  0.00703125    0.660156
+      0.88875    0.003125    0.765625
+     0.934375  0.00078125    0.878906
+         0.98           0           1
+
+
+		 
+** =========== INITIAL CONDITIONS ===================
+
+INITIAL
+VERTICAL DEPTH_AVE
+
+INITREGION 1
+   REFPRES 1000
+   REFDEPTH 310
+
+INITREGION 2
+   REFPRES 1000
+   REFDEPTH 310
+
+INTYPE IVAR 11*1 10*2
+
+**SW CON         0.15  ** Region #1  ???
+**SO CON         0.85  **   "
+SW CON         0.25
+SO CON         0.75
+MFRAC_OIL 'HOIL' CON     0.972884
+MFRAC_OIL 'CH4' CON     0.027116
+**MFRAC_GAS 'CH4' CON            1
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+NUMERICAL
+
+
+RUN
+
+** ===================== Recurrent Data ==============
+
+DATE 2012 1 1
+DTWELL 0.1
+
+WELL  'Inj'
+INJECTOR MOBWEIGHT IMPLICIT 'Inj'
+INCOMP  WATER  1.  0.  0.
+TINJW  205.
+QUAL  0.85
+OPERATE  MAX  STW  150.  CONT REPEAT
+OPERATE  MAX  BHP  3500.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.086  0.249  1.  0.
+PERF  GEOA  'Inj'
+**$ UBA     ff  Status  Connection  
+    2 1 13  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    3 1 13  1.  OPEN    FLOW-FROM  1
+    4 1 13  1.  OPEN    FLOW-FROM  2
+    5 1 13  1.  OPEN    FLOW-FROM  3
+    6 1 13  1.  OPEN    FLOW-FROM  4
+    7 1 13  1.  OPEN    FLOW-FROM  5
+    8 1 13  1.  OPEN    FLOW-FROM  6
+    9 1 13  1.  OPEN    FLOW-FROM  7
+
+**$
+WELL  'Prod'
+PRODUCER 'Prod'
+OPERATE  MIN  BHP  200.  CONT REPEAT
+OPERATE  MAX  STL  450.  CONT REPEAT
+OPERATE  MAX  STEAM 20 
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.086  0.249  1.  0.
+PERF  GEOA  'Prod'
+**$ UBA     ff  Status  Connection  
+    2 1 18  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    3 1 18  1.  OPEN    FLOW-TO  1
+    4 1 18  1.  OPEN    FLOW-TO  2
+    5 1 18  1.  OPEN    FLOW-TO  3
+    6 1 18  1.  OPEN    FLOW-TO  4
+    7 1 18  1.  OPEN    FLOW-TO  5
+    8 1 18  1.  OPEN    FLOW-TO  6
+    9 1 18  1.  OPEN    FLOW-TO  7
+    
+WELL  'Inj2'
+INJECTOR MOBWEIGHT IMPLICIT 'Inj2'
+INCOMP  WATER  1.  0.  0.
+TINJW  205.
+QUAL  0.85
+OPERATE  MAX  STW  150.  CONT REPEAT
+OPERATE  MAX  BHP  3500.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.086  0.249  1.  0.
+PERF  GEOA  'Inj2'
+**$ UBA      ff  Status  Connection  
+    13 1 13  1.  OPEN    FLOW-FROM  'SURFACE'
+    14 1 13  1.  OPEN    FLOW-FROM  1
+    15 1 13  1.  OPEN    FLOW-FROM  2
+    16 1 13  1.  OPEN    FLOW-FROM  3
+    17 1 13  1.  OPEN    FLOW-FROM  4
+    18 1 13  1.  OPEN    FLOW-FROM  5
+    19 1 13  1.  OPEN    FLOW-FROM  6
+    20 1 13  1.  OPEN    FLOW-FROM  7
+**$
+WELL  'Prod2'
+PRODUCER 'Prod2'
+OPERATE  MIN  BHP  200.  CONT REPEAT
+OPERATE  MAX  STL  900.  CONT REPEAT
+OPERATE  MAX  STEAM 20
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.086  0.249  1.  0.
+PERF  GEOA  'Prod2'
+**$ UBA      ff  Status  Connection  
+    13 1 18  1.  OPEN    FLOW-TO  'SURFACE'
+    14 1 18  1.  OPEN    FLOW-TO  1
+    15 1 18  1.  OPEN    FLOW-TO  2
+    16 1 18  1.  OPEN    FLOW-TO  3
+    17 1 18  1.  OPEN    FLOW-TO  4
+    18 1 18  1.  OPEN    FLOW-TO  5
+    19 1 18  1.  OPEN    FLOW-TO  6
+    20 1 18  1.  OPEN    FLOW-TO  7
+	
+SHUTIN 'Inj'
+SHUTIN 'Prod'	
+SHUTIN 'Inj2'
+SHUTIN 'Prod2'
+
+UHTR   *IJK 2:9 1 13 4.5E+8
+TMPSET *IJK 2:9 1 13 200
+UHTR   *IJK 2:9 1 18 4.5E+8
+TMPSET *IJK 2:9 1 18 200
+
+UHTR   *IJK 13:20 1 13 4.5E+8
+TMPSET *IJK 13:20 1 13 200
+UHTR   *IJK 13:20 1 18 4.5E+8
+TMPSET *IJK 13:20 1 18 200
+	
+DATE 2012 2  1.00000
+DATE 2012 3  1.00000
+DTWELL .1
+
+UHTR   *IJK 2:9 1 13 0
+UHTR   *IJK 2:9 1 18 0
+UHTR   *IJK 13:20 1 13 0
+UHTR   *IJK 13:20 1 18 0
+
+OPEN 'Inj'
+OPEN 'Prod'
+OPEN 'Inj2'
+OPEN 'Prod2'
+
+
+DATE 2012 4  1.00000
+DATE 2012 5  1.00000
+DATE 2012 6  1.00000
+DATE 2012 7  1.00000
+DATE 2012 8  1.00000
+DATE 2012 9  1.00000
+DATE 2012 10  1.00000
+DATE 2012 11  1.00000
+DATE 2012 12  1.00000
+DATE 2013 1  1.00000
+DATE 2013 2  1.00000
+DATE 2013 3  1.00000
+DATE 2013 4  1.00000
+DATE 2013 5  1.00000
+DATE 2013 6  1.00000
+DATE 2013 7  1.00000
+DATE 2013 8  1.00000
+DATE 2013 9  1.00000
+DATE 2013 10  1.00000
+DATE 2013 11  1.00000
+DATE 2013 12  1.00000
+DATE 2014 1  1.00000
+DATE 2014 2  1.00000
+DATE 2014 3  1.00000
+DATE 2014 4  1.00000
+DATE 2014 5  1.00000
+DATE 2014 6  1.00000
+DATE 2014 7  1.00000
+DATE 2014 8  1.00000
+DATE 2014 9  1.00000
+DATE 2014 10  1.00000
+DATE 2014 11  1.00000
+DATE 2014 12  1.00000
+DATE 2015 1  1.00000
+DATE 2015 2  1.00000
+DATE 2015 3  1.00000
+DATE 2015 4  1.00000
+DATE 2015 5  1.00000
+DATE 2015 6  1.00000
+DATE 2015 7  1.00000
+DATE 2015 8  1.00000
+DATE 2015 9  1.00000
+DATE 2015 10  1.00000
+DATE 2015 11  1.00000
+DATE 2015 12  1.00000
+DATE 2016 1  1.00000
+DATE 2016 2  1.00000
+DATE 2016 3  1.00000
+DATE 2016 4  1.00000
+DATE 2016 5  1.00000
+DATE 2016 6  1.00000
+DATE 2016 7  1.00000
+DATE 2016 8  1.00000
+DATE 2016 9  1.00000
+DATE 2016 10  1.00000
+DATE 2016 11  1.00000
+DATE 2016 12  1.00000
+DATE 2017 1  1.00000
+DATE 2017 2  1.00000
+DATE 2017 3  1.00000
+DATE 2017 4  1.00000
+DATE 2017 5  1.00000
+DATE 2017 6  1.00000
+DATE 2017 7  1.00000
+DATE 2017 8  1.00000
+DATE 2017 9  1.00000
+DATE 2017 10  1.00000
+DATE 2017 11  1.00000
+DATE 2017 12  1.00000
+DATE 2018 1  1.00000
+DATE 2018 2  1.00000
+DATE 2018 3  1.00000
+DATE 2018 4  1.00000
+DATE 2018 5  1.00000
+DATE 2018 6  1.00000
+DATE 2018 7  1.00000
+DATE 2018 8  1.00000
+DATE 2018 9  1.00000
+DATE 2018 10  1.00000
+DATE 2018 11  1.00000
+DATE 2018 12  1.00000
+
+RESULTS SPEC 'Grid Top'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'Layer 1 - Whole layer'
+RESULTS SPEC REGIONTYPE 'REGION_LAYER'
+RESULTS SPEC LAYERNUMB 1
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC CON 300         
+RESULTS SPEC STOP
+

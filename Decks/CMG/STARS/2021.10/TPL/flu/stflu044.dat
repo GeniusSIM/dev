@@ -1,0 +1,360 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate *SHEARTAB with the White Castle polymer flood polymer flood.
+
+**    Modified White Castle polymer flood described in paper by:
+**    Shahin, G.T.,, and Thigpen, D.R., "Injecting Polyacrylamide Into Gulf Coast Sands:
+**    The White Castle Polymer Injectivity Test", paper SPE/DOE 24119, presented at the
+**    SPE/DOE 8th Symposium on Enhanced Oil Recovery, Tulsa, Oklahoma, April 1992.
+
+**    Example of polymer shear thickening and thinning using tabular input viscosity
+**    relation (*SHEARTAB keyword).
+**    Uses *SHEAR_FAC keyword, factor for reporting Darcy velocity in units of shear rate
+**    Radial Model.
+
+**    Distance between wells is 65.76 m;  reservoir thickness is 3.048 m.
+**    Same as stflu037 except viscosity is a function of shear rate
+**    not velocity and variable permeability.
+**    This template demonstrates how variable permeability requires using
+**    viscosity as a function of shear rate and not velocity.
+
+
+
+** ============== INPUT/OUTPUT CONTROL =========================
+
+RESULTS SIMULATOR STARS
+
+INTERRUPT *STOP
+
+TITLE1 'STARS Fluid Model Template #44'
+TITLE2 'Test/Illustrate *SHEARTAB (Shear rate, Variable Perm) - White Castle'
+TITLE3 'Const polymer, flow = 1360 m3/day'
+
+*INUNIT *SI
+
+** Viscosity is a function of shear rate
+*SHEAREFFEC *SHR
+
+*MASSBASIS 
+
+*WPRN *SECTOR 1  
+*WPRN *GRID   1  
+*WPRN *ITER   1 
+
+*OUTPRN *WELL *ALL
+*OUTPRN *GRID PRES SW SO SG W X Y
+*OUTPRN *ITER *newton
+
+*WSRF *GRID   1
+*WSRF *WELL   1
+
+OUTSRF GRID KRO KRW MASDENO MASDENW MOLDENO MOLDENW PRES RFO RFW SG SO
+            SW VISO VISW W X Y SHEARW SHEARO SHEARG VISCVELW VISCVELO VISCVELG
+            SHEARSTRSW SHEARSTRSO SHEARSTRSG
+OUTSRF WELL MASS COMPONENT ALL
+
+SHEAR_FAC 2
+
+RESULTS XOFFSET 0
+RESULTS YOFFSET 0
+RESULTS ROTATION 0
+
+
+
+** ========= RESERVOIR DESCRIPTION ====================================
+
+GRID RADIAL 11 5 5 rw 0.1
+
+KDIR DOWN
+
+DI IVAR 1.02576, 1.411176, 1.941407, 2.670863, 3.674398, 5.054998,
+        6.954337, 9.567337, 13.16211, 14.20757, 6.11
+DJ CON 72  ** whole circle
+DK CON .6096 
+
+POR CON 0.32
+
+** RESULTS PROP PERMI  Units: md
+PERMI KVAR 
+ 5855 1171 2*117.1 1171
+**PERMI CON 2000
+PERMJ EQUALSI 
+PERMK EQUALSI 
+
+END-GRID 
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+** model total number of components                 ncomp
+**       number of components in the fluid phases   numy
+**       number of components in the liquid phases  numx
+**       number of components in the aqueous phase  numw
+
+*MODEL 5 5 4 4
+
+*COMPNAME      'Water'   'Polymer'   'Surfact'   'Chloride'      'N2'
+
+** MW of polymer (polyacrylamide is not given, use 5000 but might be 10,000-15,000
+*CMM            0.018       5000      0.500       0.03545       0.028
+*MASSDEN         0.0        1000       1000       1000
+
+
+*PCRIT          2.165E+4    2.165E+4   2.165E+4    0     3.394E+3 
+*TCRIT          3.74E+2     3.74E+2    3.74E+2     0    -1.47E+2 
+*Solid_den 'Polymer' 2740 0 0
+
+*avisc          1.0         3.8         1.0     1.0
+
+** Viscosity versus Concentration for Polymer
+** 500 ppm polymer solution has viscosity of 3.8 cp
+** mixing function not given - just use existing non-linear mixing function
+*VSMIXCOMP 'Polymer'
+*VSMIXENDP 0.0 0.0005
+*VSMIXFUNC
+**0.00 0.00100 0.002 0.00300 0.00400 0.00500 0.0060 0.00700 0.00800 0.009000 0.01
+  0.00 0.236   0.4   0.527   0.650   0.739   0.81   0.868   0.918   0.9616   1.0
+
+** the following is the optional method of using power law relations for shear thickening and thinning
+**SHEARTHIN    .75   .047
+**SHEARTHICK    2   3  15
+
+** The following is the tabular input for shear thickening and thinning
+*SHEARTAB
+** Conversion between velocity and shear rate is:
+** shear rate = velocity*shear_fac/sqrt(perm*por*Sw)
+** shear rate = velocity*2/sqrt(2Darcy*.9868e-12m2/Darcy*0.32*1)
+**vel (m/day)  visc(cp)
+**0.0001  3.80E+00
+**0.04    4.00E+00
+**0.05    3.99E+00
+**0.06    3.87E+00
+**0.07    3.79E+00
+**0.08    3.73E+00
+**0.09    3.68E+00
+**0.1     3.65E+00
+**0.2     3.65E+00
+**0.3     3.89E+00
+**0.4     4.22E+00
+**0.5     4.60E+00
+**0.7     5.43E+00
+**0.76    5.69E+00
+**0.8     5.87E+00
+**1       6.77E+00
+**2       1.15E+01
+**3       1.63E+01
+**4       1.63E+01
+**5       1.62E+01
+**6       1.61E+01
+**7       1.61E+01
+**shear rate (1/day)  visc(cp)
+2.52E+02	3.80E+00
+1.01E+05	4.00E+00
+1.26E+05	3.99E+00
+1.51E+05	3.87E+00
+1.76E+05	3.79E+00
+2.01E+05	3.73E+00
+2.26E+05	3.68E+00
+2.52E+05	3.65E+00
+5.03E+05	3.65E+00
+7.55E+05	3.89E+00
+1.01E+06	4.22E+00
+1.26E+06	4.60E+00
+1.76E+06	5.43E+00
+1.91E+06	5.69E+00
+2.01E+06	5.87E+00
+2.52E+06	6.77E+00
+5.03E+06	1.15E+01
+7.55E+06	1.63E+01
+1.01E+07	1.63E+01
+1.26E+07	1.62E+01
+1.51E+07	1.61E+01
+1.76E+07	1.61E+01
+
+** Reference conditions
+** surface temperature and pressure not given, use typical value
+*PRSR 101
+*TEMR 23
+*PSURF 101
+*TSURF 23
+
+**  Zero K values for all condensible components
+*kvtablim 500 200000  10 100
+*kvtable 'Water'
+    0    0
+    0    0
+*kvtable 'Polymer'
+    0    0
+    0    0
+*kvtable  'Surfact'
+    0    0
+    0    0
+
+
+** ================= ROCK-FLUID PROPERTIES ==========================
+
+*ROCKFLUID
+
+*SWT    **  Water-oil relative permeabilities
+**   Sw            krw           kro             Pc
+**  ----          ----           ------          ------
+2.00E-01        0               9.28E-01        1.70E+02
+3.00E-01        1.63E-02        6.93E-01        6.07E+01
+0.4             3.96E-02        4.92E-01        2.92E+01
+0.5             7.25E-02        3.25E-01        1.66E+01
+0.6             1.32E-01        1.92E-01        1.04E+01
+0.7             2.37E-01        9.30E-02        7.05E+00
+0.8             4.03E-01        2.80E-02        5.02E+00
+0.9             6.48E-01        0.00E+00        3.72E+00
+1               9.90E-01        0.00E+00        2.85E+00
+
+*slt
+** Sl           krg             kro             PC
+2.00E-01        9.99E-01        0               0.00E+00
+3.00E-01        7.48E-01        5.00E-04        0.00E+00
+0.4             5.33E-01        3.20E-02        0.00E+00
+0.5             3.55E-01        9.75E-02        0.00E+00
+0.6             2.13E-01        1.97E-01        0.00E+00
+0.7             1.08E-01        3.31E-01        0.00E+00
+0.8             3.88E-02        4.98E-01        0.00E+00
+0.9             6.20E-03        7.00E-01        0.00E+00
+1               0               9.28E-01        0.00E+00
+
+
+
+** ============== INITIALIZATION =================================
+
+*INITIAL
+
+**$ RESULTS PROP PRES  Units: kPa
+**vertical *depth_ave ** Should be able to use for initial saturations.
+**REFPRES 5000
+**REFBLOCK 1 1 19
+** Reservoir is 1% brine
+*SW CON 1
+*SO CON 0
+*SG CON 0
+**dwoc 1.95
+**dgoc 1.95 
+
+** reservoir values not given
+TEMP CON 50
+PRES *CON 1000
+
+*MFRAC_WAT 'Water' CON .9895
+*MFRAC_WAT 'Chloride' CON .01
+*MFRAC_WAT 'Polymer' CON .0005
+
+
+
+** ============  NUMERICAL CONTROL ================================
+
+*NUMERICAL
+
+*TFORM ZT
+*ISOTHERMAL 
+
+rangecheck off
+*norm      zaq 4 zncg 4
+*converge  zaq 1 zncg 1
+*matbaltol 0.1
+rangecheck on
+
+
+
+RUN
+
+** ============  RECURRENT DATA  =================================
+
+
+*TIME 0.0
+
+*DTWELL .05  
+
+*WELL 1 'PROD1'
+*WELL 2 'INJECTOR' 
+*WELL 3 'PROD2'
+*WELL 4 'PROD3'
+*WELL 5 'PROD4'
+*WELL 6 'PROD5'
+
+*PRODUCER 1
+*OPERATE  *MIN *BHP 800 
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.075    0.2  1.  0.
+PERF  GEO  1
+**$ UBA     ff  Status  Connection  
+    11 1 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 1 2  1.  OPEN    FLOW-TO  1  **2
+    11 1 3  1.  OPEN    FLOW-TO  2  **3
+    11 1 4  1.  OPEN    FLOW-TO  3  **4
+    11 1 5  1.  OPEN    FLOW-TO  4  **5
+ 
+*PRODUCER 3
+*OPERATE  *MIN *BHP 800 
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.075    0.2  1.  0.
+PERF  GEO  3 
+ 11 2 1  1.  OPEN    **FLOW-TO  'SURFACE'  **6
+    11 2 2  1.  OPEN    **FLOW-TO  1  **7
+    11 2 3  1.  OPEN    **FLOW-TO  2  **8
+    11 2 4  1.  OPEN    **FLOW-TO  3  **9
+    11 2 5  1.  OPEN    **FLOW-TO  4  **10
+ 
+*PRODUCER 4
+*OPERATE  *MIN *BHP 800 
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.075    0.2  1.  0.
+PERF  GEO  4
+11 3 1  1.  OPEN    FLOW-TO  'SURFACE'  **11
+    11 3 2  1.  OPEN    FLOW-TO  1 **12
+    11 3 3  1.  OPEN    FLOW-TO  2 **13
+    11 3 4  1.  OPEN    FLOW-TO  3 **14
+    11 3 5  1.  OPEN    FLOW-TO  4 **15
+ 
+ *PRODUCER 5
+ *OPERATE  *MIN *BHP 800 
+ **$          rad  geofac  wfrac  skin
+ GEOMETRY  K  0.075    0.2  1.  0.
+PERF  GEO  5 
+ 11 4 1  1.  OPEN    FLOW-TO  'SURFACE'  **16
+    11 4 2  1.  OPEN    FLOW-TO  1 **17
+    11 4 3  1.  OPEN    FLOW-TO  2 **18
+    11 4 4  1.  OPEN    FLOW-TO  3 **19
+    11 4 5  1.  OPEN    FLOW-TO  4 **20
+ 
+ *PRODUCER 6
+ *OPERATE  *MIN *BHP 800 
+ **$          rad  geofac  wfrac  skin
+ GEOMETRY  K  0.075    0.2  1.  0.
+PERF  GEO  6 
+ 11 5 1  1.  OPEN    FLOW-TO  'SURFACE'  **21
+    11 5 2  1.  OPEN    FLOW-TO  1 **22
+    11 5 3  1.  OPEN    FLOW-TO  2 **23
+    11 5 4  1.  OPEN    FLOW-TO  3 **24
+    11 5 5  1.  OPEN    FLOW-TO  4 **25
+
+
+*INJECTOR *MOBWEIGHT 2    ** inject polymer
+*TINJW 50  
+**INCOMP *WATER  0.99  0.0  0.0  0.01
+**$          rad  geofac  wfrac  skin
+**OPERATE MAX BHP 10000
+*INCOMP  *WATER 0.9895 0.0005 0.00 0.01
+*OPERATE *STW 1360.32  
+GEOMETRY  K  0.212   0.2  1.  0.
+PERF  GEO  2
+**$ UBA    ff  Status  Connection  
+    1 1 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    1 1 2  1.  OPEN    FLOW-FROM  1
+    1 1 3  1.  OPEN    FLOW-FROM  2
+    1 1 4  1.  OPEN    FLOW-FROM  3
+    1 1 5  1.  OPEN    FLOW-FROM  4
+
+
+*TIME 121
+*STOP

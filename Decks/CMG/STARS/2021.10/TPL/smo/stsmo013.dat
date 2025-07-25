@@ -1,0 +1,414 @@
+
+*****************************************************************************
+** Template (stsmo013.dat):  Surface K values, G-L and L-L                 **
+*****************************************************************************
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate surface K values option.
+
+**  Special Features:
+
+**  1)  Based on Test Bed #17.
+
+**  2)  Keywords *K_SURF and *KL_SURF allow you to enter directly the
+**      K values used for surface conditions.  These keywords are used
+**      only for the *KVALUE option of *SURFLASH.
+
+**  3)  Use *VERTICAL option *BLOCK_CENTER.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 13'
+*title2 'G-L and L-L Surface K Values'
+*title3 'Based on Test Bed #17'
+
+*inunit field except  6 1  ** darcy instead of md
+              except 11 1  ** ft3 instead of bbl
+
+*outprn *grid pres sw so sg temp
+*outprn *well all
+outprn iter newton
+*wrst 500
+*wprn *grid 500
+*wprn *iter 500
+*prntorien 2 0
+
+outsrf well  component all  layer all
+outsrf grid  pres sw so sg temp
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 8 1 12 *rw 0.0  ** Radial cross-sectional grid
+                              ** Zero inner radius matches previous treatment
+
+*di *ivar 0.16732 4*0.30185 0.24934 2*0.43471
+*dj *con 360   ** Full circle
+*dk *kvar 2*0.6671 2*0.16678 3*0.11155 2*0.19685 2*0.7874 0.7874
+
+*por *con 0.34
+*permi *con 1           ** Standard bed permeability
+  *mod 1:6 1 5:7 =  15    ** Higher perm commumication path
+         1 1 5:7 = 700    ** Injector block has highest permeability
+         6 1 5:7 = 700    ** Producer block has highest permeability
+*permj *equalsi
+*permk *equalsi
+
+*end-grid
+
+*cpor 2e-6
+*prpor 14.7
+*rockcp 34
+*thconr 23
+*thconw 23
+*thcono 23
+*thcong 23
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 4 4 4   **  Standard water properties plus
+               **  ARC parameters for bitumen, CO2 and naptha
+
+*compname   'Water'  'Bitumen'   'CO2'    'Naphtha'
+**          -------   -------   -------   ---------
+*cmm         18.02      500       44         113
+*molden        0      0.127468  1.4485     0.56402
+*cp            0        5e-6       0          0
+*ct1           0              3*3.374e-4
+*pcrit       3208      125.5     1070        353
+*tcrit       705.1     1218       88         565
+
+*cpg1          0         7         7          7
+*cpl1          0       218.2     35.2       35.2
+*cpl2          0      0.1316       0          0
+*rangecheck *off
+*hvapr         0     4.3925e5   4392.5     4392.5
+*rangecheck *on
+
+*watphase     ** Default water component viscosity in water phase
+*visctable   ** Tabular bitumen, CO2, naptha viscosity from arc correlation
+** Temp
+    70    0.0    296660      640        640
+    80    0.0     134660      250        250
+    90    0.0      65248      127        127
+   100    0.0      33500       71         71
+   125    0.0       7839     28.4       28.4
+   150    0.0       2349     13.9       13.9
+   175    0.0      853.2      8.0        8.0
+   200    0.0      360.7      3.8        3.8
+   250    0.0       90.7     1.83       1.83
+   300    0.0       31.7     1.00       1.00
+   350    0.0       13.9     0.723      0.723
+   400    0.0       7.22     0.540      0.540
+   450    0.0       4.23     0.345      0.345
+   500    0.0       2.71     0.250      0.250
+   550    0.0       1.87     0.200      0.200
+   600    0.0       1.87     0.200      0.200
+*oilphase    ** Use read in values for water component in oil phase
+*visctable
+** Temp
+    70  296660    296660      640        640
+    80  134660    134660      250        250
+    90   65248     65248      127        127
+   100   33500     33500       71         71
+   125    7839      7839     28.4       28.4
+   150    2349      2349     13.9       13.9
+   175   853.2     853.2      8.0        8.0
+   200   360.7     360.7      3.8        3.8
+   250    90.7      90.7     1.83       1.83
+   300    31.7      31.7     1.00       1.00
+   350    13.9      13.9     0.723      0.723
+   400    7.22      7.22     0.540      0.540
+   450    4.23      4.23     0.345      0.345
+   500    2.71      2.71     0.250      0.250
+   550    1.87      1.87     0.200      0.200
+   600    1.87      1.87     0.200      0.200
+**  Reference conditions
+*prsr 14.7
+*temr 75
+*psurf 14.7
+*tsurf 62
+
+*gasliqkv
+
+*kvtablim  20 1420  25 575   ** Low/high p & T
+
+*kvtable 'CO2'   ** Gas/liquid K value y/x table for CO2
+
+52.013   5.5640   3.3521   2.5673   2.1653   1.9209   1.7567   1.6387
+52.013   5.5640   3.3521   2.5673   2.1653   1.9209   1.7567   1.6387
+62.017   6.4735   3.8285   2.8900   2.4093   2.1171   1.9207   1.17796
+72.916   7.4642   4.3475   3.2416   2.6751   2.3308   2.0994   1.9331
+84.708   8.5363   4.9090   3.6220   2.9627   2.5620   2.2927   2.0992
+97.394   9.6895   5.5131   4.0312   3.2721   2.8108   2.5007   2.2779
+110.97   10.924   6.1598   4.4693   3.6034   3.0770   2.7233   2.4692
+125.45   12.240   6.8490   4.9361   3.9564   3.3608   2.9606   2.6730
+140.82   13.673   7.5808   5.4319   4.3312   3.6622   3.2125   2.8895
+157.08   15.115   8.3552   5.9564   4.7278   3.9810   3.4791   3.1185
+174.23   16.675   9.1721   6.5098   5.1463   4.3174   3.7603   3.3601
+192.28   18.316   10.032   7.0921   5.5865   4.6713   4.0562   3.6143
+
+*kvtable 'Naphtha'   ** Gas/liquid K value y/x table for naphtha
+
+.15356   .02622   .01433   .009861  .007516  .006072  .005094  .004387
+.15356   .02622   .01433   .009861  .007516  .006072  .005094  .004387
+.21669   .03820   .02095   .01443   .01100   .008895  .007464  .006429
+.31540   .05622   .03087   .02127   .01623   .01312   .01101   .009482
+.48820   .08443   .04621   .03181   .02425   .01960   .01644   .01416
+.86083   .13123   .07103   .04869   .03704   .02989   .02505   .02156
+1.50     .21629   .11368   .07711   .05834   .04692   .03923   .03371
+2.25     .39740   .19380   .12816   .09573   .07640   .06356   .05442
+3.00     .94105   .36668   .22770   .16512   .12952   .10655   .09050
+3.65     1.45     .84335   .43928   .29698   .22430   .18022   .15062
+4.35     2.00     1.3000   .88886   .51497   .36250   .27969   .22767
+5.00     2.50     1.8500   1.4402   .68479   .49919   .33420   .26609
+
+
+*liqliqkv
+
+*kvtablim  20 1420  25 575   ** High/low p & T
+
+*kvtable 'Water'   ** Liquid/liquid K value x/w table for water component in oil phase
+
+.008556  .008401  .008245  .008089  .007934  .007778  .007622  .007467
+.008556  .008401  .008245  .008089  .007934  .007778  .007622  .007467
+.003401  .003339  .003278  .003216  .003154  .003092  .00303   .002968
+.01512   .01485   .01457   .01430   .01402   .01375   .01347   .01320
+.04372   .04293   .04213   .04134   .04054   .03975   .03895   .03816
+.08920   .08758   .08595   .08433   .08271   .08109   .07946   .07784
+.15155   .14880   .14604   .14328   .14053   .13777   .13501   .13225
+.23078   .22659   .22239   .21819   .21399   .20979   .20559   .20140
+.32689   .32094   .31500   .30905   .30311   .29716   .29121   .28527
+.43988   .43187   .42387   .41587   .40787   .39987   .39187   .38386
+.56974   .55937   .54901   .53865   .52828   .51792   .50755   .49719
+.71648   .70344   .69041   .67738   .66434   .65131   .63828   .62525
+
+*kvtable 'CO2'   ** Liquid/liquid K value w/x table for CO2 in water phase
+
+.01756   .01756   .01756   .01756   .01756   .01756   .01756   .0175
+.01756   .01756   .01756   .01756   .01756   .01756   .01756   .0175
+.02162   .02162   .02162   .02162   .02162   .02162   .02162   .0216
+.02323   .02323   .02323   .02323   .02323   .02323   .02323   .0232
+.02365   .02365   .02365   .02365   .02365   .02365   .02365   .0237
+.02417   .02417   .02417   .02417   .02417   .02417   .02417   .0242
+.02614   .02614   .02614   .02614   .02614   .02614   .02614   .0261
+.02910   .02910   .02910   .02910   .02910   .02910   .02910   .0291
+.03420   .03420   .03420   .03420   .03420   .03420   .03420   .0342
+.04248   .04248   .04248   .04248   .04248   .04248   .04248   .0425
+.05555   .05555   .05555   .05555   .05555   .05555   .05555   .0556
+.06758   .06758   .06758   .06758   .06758   .06758   .06758   .0676
+
+*kvtable 'Naphtha'   ** Liquid/liquid K value x/w table for naphtha in water phase
+
+1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.21e-6
+1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.208e-6 1.21e-6
+3.265e-6 3.265e-6 3.265e-6 3.265e-6 3.265e-6 3.265e-6 3.265e-6 3.27e-6
+6.902e-6 6.902e-6 6.902e-6 6.902e-6 6.902e-6 6.902e-6 6.902e-6 6.90e-6
+1.319e-5 1.319e-5 1.319e-5 1.319e-5 1.319e-5 1.319e-5 1.319e-5 1.32e-5
+2.425e-5 2.425e-5 2.425e-5 2.425e-5 2.425e-5 2.425e-5 2.425e-5 2.43e-5
+4.448e-5 4.448e-5 4.448e-5 4.448e-5 4.448e-5 4.448e-5 4.448e-5 4.45e-5
+8.329e-5 8.329e-5 8.329e-5 8.329e-5 8.329e-5 8.329e-5 8.329e-5 8.33e-5
+1.620e-4 1.620e-4 1.620e-4 1.620e-4 1.620e-4 1.620e-4 1.620e-4 1.62e-4
+3.314e-4 3.314e-4 3.314e-4 3.314e-4 3.314e-4 3.314e-4 3.314e-4 3.31e-4
+7.198e-4 7.198e-4 7.198e-4 7.198e-4 7.198e-4 7.198e-4 7.198e-4 7.20e-4
+.00167   .00167   .00167   .00167   .00167   .00167   .00167   .00167
+
+** Change Naphtha and CO2 surface phase to water, their injection phase
+surflash kvalue
+k_surf 'CO2' 100
+kl_surf 'CO2' .03
+k_surf 'Naphtha' .3
+kl_surf 'Naphtha' 1e-4
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw         Krow
+**  ----       ------      ------
+    0.15        0.0        0.650
+    0.20       0.009       0.447
+    0.25       0.016       0.326
+    0.30       0.023       0.247
+    0.35       0.033       0.192
+    0.40       0.046       0.143
+    0.45       0.060       0.091
+    0.50       0.080       0.058
+    0.55       0.099       0.036
+    0.60       0.109       0.019
+    0.65       0.120       0.010
+    0.70       0.132       0.005
+    0.75       0.147       0.002
+    0.80       0.204        0.0
+    0.85       0.403        0.0
+    0.90       0.602        0.0
+    0.95       0.801        0.0
+    1.0         1.0         0.0
+
+*slt *noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg         Krog
+**  ----       ------      ------
+    0.0         1.0         0.0
+    0.10       0.658        0.0
+    0.15       0.488        0.0
+    0.20       0.317        0.0
+    0.25       0.174       0.002
+    0.30       0.144       0.009
+    0.35       0.119       0.019
+    0.40       0.107       0.032
+    0.45       0.096       0.047
+    0.50       0.087       0.064
+    0.55       0.078       0.08
+    0.60       0.065       0.098
+    0.65       0.05        0.12
+    0.70       0.039       0.141
+    0.75       0.027       0.156
+    0.80       0.019       0.195
+    0.85       0.01        0.236
+    0.90       0.002       0.356
+    0.95       0.001       0.499
+    1.0         0.0        0.65
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*VERTICAL *BLOCK_CENTER
+*refpres 980.1
+*refblock 1 1 12
+
+*sw *con 0.2
+    *mod 1:6 1 5:7 = 0.9   ** Communication path;  So by difference
+
+*temp *con 75
+
+*mfrac_oil 'Bitumen' *con 1   ** Start with 100% bitumen
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*dtmax 0.1
+*sdegree *gauss
+
+*rangecheck *off
+*norm     press 50   satur .45  temp 50  y .3   x .3   w .3
+*rangecheck *on
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1901 1 1.5
+
+   dtwell 1e-5
+
+   well 1 'INJ1'
+   well 2 'PRO1'
+
+   producer 'PRO1'
+   operate bhp 1022.1
+   perf 'PRO1'  **  i j  k   wi
+              6 1 5:7  0.474063086 ** 3
+
+   injector 'INJ1'
+   incomp water 1.0  0.0  0.0  0.0
+   tinjw 545
+   qual .9
+   operate stw 12.972  
+   perf 'INJ1'  **  i j  k   wi
+              1 1 5:7  2.9
+
+time .04167
+
+   alter 'INJ1' 'PRO1'
+         11.62 1023.7   ** Alter inj rate and prod bhp
+
+time .08333
+
+   alter 'INJ1' 'PRO1'
+         10.26 1023.7
+
+time .125
+
+   alter 'INJ1' 'PRO1'
+         10.09 1023.7
+
+time .16667
+
+   alter 'INJ1' 'PRO1'
+         9.921 1023.3
+
+time .20833
+
+   alter 'PRO1'
+         1023.8
+
+time .25
+
+   alter 'INJ1' 'PRO1'
+         9.667 1024
+
+time .29167  
+
+   injector 'INJ1'
+   incomp water .99842 0 .0014 1.8e-4
+   tinjw 545
+   qual .9
+   operate stw 12.972  
+   alter 'INJ1' 'PRO1'
+         7.304 1025.3
+
+time .333 
+
+   injector 'INJ1'
+   incomp water .9723  0 .022  .0057
+   tinjw 545
+   qual .9
+   operate stw 12.972  
+   alter 'INJ1' 'PRO1'
+         6.6203 1025.3
+
+time .375
+time .41666  
+
+   injector 'INJ1'
+   incomp water .97334 0 .022  .00465
+   tinjw 545
+   qual .9
+   operate stw 12.972
+   alter 'INJ1' 'PRO1'
+         7.667 1023.8
+
+time .58333
+stop

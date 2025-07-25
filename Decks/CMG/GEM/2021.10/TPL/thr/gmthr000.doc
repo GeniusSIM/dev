@@ -1,0 +1,29 @@
+              THERMAL MODELS
+              --------------
+
+
+
+Templates in the Thermal Models (THR) directory:
+
+GMTHR001.DAT -- 3rd SPE Problem: Condensate with Thermal Effects 
+GMTHR002.DAT -- 3rd SPE Problem: Thermal Condensate with zero porosity blocks
+GMTHR003.DAT -- 3rd SPE Problem: Thermal Condensate w/ aquifer and heat loss
+GMTHR004.DAT -- 3rd SPE Problem: Thermal Condensate w/ aquifer and no heat loss
+GMTHR005.DAT –- Restart from gmthr001.dat
+GMTHR006.DAT -- 3rd SPE Problem: Thermal Condensate w/ INJ-TEMP for injection
+GMTHR007.DAT –- Asphaltene precipitation with thermal effects
+GMTHR008.DAT -- Asphaltene deposition with thermal effects 
+GMTHR009.DAT -- Thermal Slim Tube with Two Rock Types 
+GMTHR010.DAT –- CO2 EOR and Underground Storage with Thermal Effects
+GMTHR011.DAT -- Use of Dittman correlation for calculation of enthalpy for saline aqueous phase.
+
+Cross references to templates in other directories:
+
+GMGHG022.DAT -- CO2 Sequestration With Geochemistry and Thermal effects
+GMGHG023.DAT -- Brine Injection with varying salinity and temperature
+GMGMC025.DAT –- Pressure boundary: geomechanics domain/reservoir region (thermal)
+GMGMC027.DAT -- Barton-Bandis - thermal case with hot water injection
+GMGMC028.DAT -- Grid deformation - thermal case 
+GMGMC029.DAT -- Barton-Bandis - thermal case with cold water injection
+GMGMC030.DAT -- Geomech with porosity correction – thermal case
+

@@ -1,0 +1,283 @@
+******************************************************************************
+** mxsmo055.dat: Gas Water Model                                            **
+** This data set demonstrates use of Gas Desorption in a single porosity    **
+** explicitly gridded fracture network in a shale gas scenerio              **
+******************************************************************************
+**************************************************************************************
+**   Keywords Tested                                                                **
+**                                                                                  **
+** ADGCSTV, ADGMAXV, ADGMAXV, ROCKDEN, GADSORB                                      **
+**                                                                                  **
+**************************************************************************************
+** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+**************************************************************************************
+                                
+RESULTS SIMULATOR IMEX 200600
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'4 md-ft fractured shale LGR model'
+*TITLE2
+'Fracture width = 1 ft, Darcy Flow'
+
+** facture length = 200 ft 1/2 length = 100 ft
+** reservoir perm = 0.0001 md
+** fracture perm  = 4000 md
+** fracture thickness =  = 0.001 ft
+
+** (kfbf)d = 4000 x 0.001 / (0.0001 * 100) = 400
+** kf x bf = 4.0 md-ft
+
+
+INUNIT FIELD             
+WPRN   WELL TIME
+WPRN   GRID TIME
+WSRF   SECTOR 1
+OUTPRN GRID PRES  SW SG GADSORB
+OUTPRN TABLES *ALL
+WSRF   GRID   TIME
+OUTSRF RES ALL
+OUTPRN RES ROCKDEN ADGMAXV ADGCSTV 
+WSRF   WELL   1
+
+wrst freq 20
+
+outsrf well downhole
+OUTSRF GRID pres sw sg  rfg  GADSORB
+wprn iter matrix
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 61 61 1
+KDIR DOWN
+
+refine 27:35 27:35 1 into 7 7 1
+
+DI IVAR
+61*200.0
+
+DI RG 27:35 27:35 1 IVAR     75.5 20.0 4.0 1.0 4.0 20.0 75.5  
+
+DJ JVAR 
+61*200
+
+DJ RG 27:35 27:35 1 JVAR     75.5 20.0 4.0 1.0 4.0 20.0 75.5  
+
+DK KVAR
+ 300
+DTOP
+ 3721*950
+
+CPOR   1.0E-6            
+PRPOR  3600.0              
+
+PERMI CON    1e-4
+PERMJ CON    1e-4
+PERMK CON    1e-4
+PERMI RG 27:35 27:35 1 ALL  3*1e-4 4.000 3*1e-4   
+                            3*1e-4 4.000 3*1e-4      
+                            3*1e-4 4.000 3*1e-4       
+                            7*4.000
+                            3*1e-4 4.000 3*1e-4        
+                            3*1e-4 4.000 3*1e-4       
+                            3*1e-4 4.000 3*1e-4     
+  
+PERMJ RG 27:35 27:35 1 ALL  3*1e-4 4.000 3*1e-4    
+                            3*1e-4 4.000 3*1e-4    
+                            3*1e-4 4.000 3*1e-4        
+                            7*4.000
+                            3*1e-4 4.000 3*1e-4        
+                            3*1e-4 4.000 3*1e-4        
+                            3*1e-4 4.000 3*1e-4    
+   
+PERMK RG 27:35 27:35 1 ALL  3*1e-4 4.000 3*1e-4     
+                            3*1e-4 4.000 3*1e-4      
+                            3*1e-4 4.000 3*1e-4       
+                            7*4.000
+                            3*1e-4 4.000 3*1e-4   
+                            3*1e-4 4.000 3*1e-4      
+                            3*1e-4 4.000 3*1e-4      
+
+POR CON   0.03  
+     
+MODEL GASWATER            
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+TRES 100
+PVTG  *ZG
+  14.7        1.0      .02
+   100        1.0      .02
+   200        1.0      .02
+   400        1.0      .02
+   800        1.0      .02
+  1200        1.0      .02
+  1600        1.0      .02
+  2000        1.0      .02
+  2400        1.0      .02
+  2800        1.0      .02
+  3200        1.0      .02
+  3600        1.0      .02
+  4000        1.0      .02
+  9000        1.0      .02
+GRAVITY GAS     0.818
+DENSITY WATER  63.021
+BWI   1.0034
+CW    3.0E-6
+REFPW 3600
+VWI   0.96
+CVW   0.0
+
+ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+RPT 1
+   SWT *smoothend off 
+**                         
+   ** sw         krw     
+      0.2       0.000   
+      0.7       *INT    
+      0.75      0.005  
+      0.8       0.010   
+      0.85      0.080   
+      0.9       0.180   
+      0.95      0.350   
+      1.0       1.000   
+
+   SLT *smoothend off
+   ** sl         krg  
+      0.20      1.000    
+      0.70      1.000  
+      0.75      0.580   
+      0.8       0.300  
+      0.85      0.120   
+      0.90      0.035   
+      0.95      0.010  
+      1.000     0.000   
+
+** Intrinsic Density used so not as function of porosity
+** Gas Adsorbed per bulk volume = ADGMAXV x (1-por(i)) x ROCKDEN X ADGCSTV x P/(1+ADGCSTV x P)
+
+** ADGCSTV = Langmuir Pressure Constant (psia-1)
+** ADGMAXV = Langmuir Isotherm constant (SCF/Lb)
+** ROCKDEN = Instrinsic (not Bulk) Rock Density Lb/Ft3    
+
+** Notes:
+** Divide SCF/Ton by 2000 to obtain SCF/Lb 
+** If given bulk rock density,  intrinsic density = bulk density /(1-porosity)
+** multiply density in gm/cc by 62.3719 to obtain Lb/Ft3
+
+** This Model uses input of intrinsic rock density, so assuming a bulk density of 2.39996 gm/cc
+** and a porosity of 0.03 we obtain an intrinsic rock density of
+** 2.39996/(1-0.03)*62.3719 = 154.3196 Lb/Ft3
+
+** if Langmuir Isotherm Constant is given in units of SCF/Ft3 (Vl) rather than SCF/Lb (Vm)
+** Vm = Vl / (Bulk Rock Density), Note units must be consistant.
+
+
+ADGCSTV   CON 0.0035     **1/psia
+ADGMAXV   CON 0.060     **SCF/LB (Bulk)
+ADGMAXV RG 27:35 27:35 1 ALL 3*0.06 0.000 3*0.06     
+                             3*0.06 0.000 3*0.06      
+                             3*0.06 0.000 3*0.06       
+                             7*0.000
+                             3*0.06 0.000 3*0.06   
+                             3*0.06 0.000 3*0.06      
+                             3*0.06 0.000 3*0.06      
+
+ROCKDEN   CON 154.3196 **bulk den = 149.69, intrinsic den = 149.69/(1-0.03) = 154.3196
+
+INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+VERTICAL DEPTH_AVE     
+**$ Property: Bubble Point Pressure (psi)   Max: 400  Min: 400
+REFDEPTH   1050.          
+REFPRES    3000.          
+DWGC       1800. 
+        
+NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+AIM OFF
+DTMAX       60.
+DTMIN       0.000000001
+NORTH       80
+ITERMAX     80
+NORM PRESS  100.0
+NCUTS       12
+SDEGREE     2
+
+RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+DATE 2000 01 01
+DTWELL 0.0000001
+WELL  'Producer1'
+PRODUCER 'Producer1'
+OPERATE  MAX  STG  3e6  CONT
+OPERATE  MIN  BHP  1000.  CONT
+** kf     ff
+GEOMETRY  K 0.125  0.37  1.  0.
+PERF   'Producer1'
+    31 31 1 / 4 4 1 100000  OPEN    FLOW-TO  'SURFACE'
+
+AIMSET CON 1
+DATE 2000 02 01
+DATE 2000 03 01
+DATE 2000 04 01
+DATE 2000 05 01
+DATE 2000 06 01
+DATE 2000 07 01
+DATE 2000 08 01
+DATE 2000 09 01
+DATE 2000 10 01
+DATE 2000 11 01
+DATE 2000 12 01
+
+DATE 2001 01 01
+DATE 2001 02 01
+DATE 2001 04 01
+DATE 2001 06 01
+DATE 2001 08 01
+DATE 2001 10 01
+DATE 2001 12 01
+DATE 2002 01 01
+DATE 2002 07 01
+DATE 2003 01 01
+DATE 2003 07 01
+
+DATE 2004 01 01
+DATE 2004 07 01
+
+DATE 2005 01 01
+DATE 2005 07 01
+
+DATE 2006 01 01
+DATE 2006 07 01
+
+DATE 2007 01 01
+DATE 2007 07 01
+
+DATE 2008 01 01
+DATE 2008 07 01
+
+DATE 2009 01 01
+DATE 2009 07 01
+
+DATE 2010 01 01
+STOP
+
+
+

@@ -1,0 +1,477 @@
+
+***************************************************************************** 
+** Template  (stgeo080.dat):  Stress-Dependent Fracture Perm Multipliers   **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGEO080.DAT                                                             **
+**                                                                                  ** 
+** MODEL:  INVERTED 5 SPOT STEAM DRIVE  FIELD UNITS    8X8X10 CARTESIAN GRID        **
+**         3D FRACTURE NETWORK          1/4 PATTERN                                 **
+**         CAPILLARY PRESSURES AFFECT MATRIX-FRACTURE TRANSFER                      **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  THERMAL DUAL POROSITY MODEL WITH CAPILLARY PRESSURE EFFECTS             **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       In this test problem, table lookup table is used in a dual                 **
+**       porosity model for fracture closure.                                       **
+**       Steam at 70% quality is injected by a single horizontal well into          **
+**       dead oil.  The reservoir is fractured in all directions and the            **
+**       Dual Porosity model is used to simulate the reservoir behaviour.           **
+**       Production is from the same horizontal well.                               **
+**                                                                                  **
+**       Gas-oil and oil-water capillary pressures in both the matrix and           **
+**       fracture affect matrix-fracture transfer term.                             **
+**                                                                                  **
+**       Features:                                                                  **
+**       Horizontal well in unfractured 5'x5'x75' blocks                            **
+**       Normal effective stress-dependent fracture permeability                    **
+**       Lookup tables are used on assigned fracture blocks                         **
+**       Model 100' of overburden                                                   **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*title1 'STARS Geomechanics Template #80'
+*title2 'Test/Illustrate Fracture Perm Multiplier Tables *GPERMNEX/Z'
+*title3 'Fracture Permeability Varies with Normal Effective Stress'
+
+*INUNIT *FIELD *EXCEPT 11 1  ** ft3 instead of bbl
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP
+*OUTPRN *WELL *ALL
+*WPRN *GRID time
+*WPRN *ITER time
+*wsrf *grid *time
+**wsrf *griddeform 1
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP  *VPOROS  *VDISPL *PERMI *PERMJ *PERMK
+               *STRESMXP *STRESMNP *STRESEFF *STRESSM *VMSTRESS
+               *STRNEPL *STRAINI *STRAINJ *STRAINK *STRAINSH *STRNMXP *STRNMNP
+               *STRESNORM  *STRAINVOL *STRESI  *STRESJ  *STRESK *TSTRESI  *TSTRESJ  *TSTRESK
+
+outsrf special blockvar temp 4,4,4 mt
+               blockvar temp 4,4,4 fr
+               blockvar stresi 4,4,4 mt
+               blockvar permi 4,4,4 fr
+               blockvar permj 4,4,4 fr
+               blockvar permk 4,4,4 fr
+
+               blockvar permi 1,4,10 fr
+               blockvar permj 1,4,10 fr
+               blockvar permk 1,4,10 fr
+               blockvar stresi 1,4,10 mt
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 8 8 10       
+
+** Well blocks (1:8,4,3) are 75' long, 5' wide, 5' high
+*DI *CON 75
+*DJ *jvar 3*75 5 4*75
+*DK *kvar 5*5   ** 25 ft pay
+          5*20  ** 100 ft overburden
+
+**  The whole reservoir is fractured in all 3 directions.
+**  The element size in all directions is 10 ft.
+*DUALPERM
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *EQUALSI
+
+*POR MATRIX   KVAR 5*0.19
+                   5*0.10
+*POR FRACTURE CON 0.01        **  Fracture properties
+
+*PERMI *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMI *FRACTURE *CON 1     **  Fracture properties
+*PERMJ *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMJ *FRACTURE *CON 1     **  Fracture properties
+*PERMK *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMK *FRACTURE *CON 1     **  Fracture properties
+
+*TRANSI *MATRIX ijk 3:4 2 1 1.6
+*TRANSJ *MATRIX ijk 3:4 2 1 1.6
+*TRANSI *FRACTURE ijk 3:4 2 1 1.5
+*TRANSJ *FRACTURE ijk 3:4 2 1 0.5
+
+*END-GRID
+
+** Intrinsic formation/rock properties
+*rocktype 1
+*CPOR 3E-6
+*ROCKCP 35
+*THCONR 24
+*THCONW 24
+*THCONO 24
+*THCONG 24
+CTPOR  54.8E-06 
+*HLOSSPROP *OVERBUR 35 24 *UNDERBUR 35 24
+
+** Fracture rock type for geomechanics
+*ROCKTYPE 2 *COPY 1
+
+*THTYPE *MATRIX   *CON 1
+*THTYPE *FRACTURE *CON 2
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'  'DEAD_OIL'
+**              -----    --------
+*CMM              18        200
+*MOLDEN         3.55555    0.262
+*CP                0       1.1e-5
+*TCRIT           647.4       0
+*IDEALGAS
+
+*VISCTABLE
+
+**    Temp
+      40          0         14
+      50          0        5.21
+      60          0        2.45
+      70          0        1.36
+      80          0       .844
+      90          0       .57
+     100          0       .41
+     200          0       .08388
+     300          0       .06
+     400          0       .05617
+     500          0       .05532
+     600          0       .05509
+     700          0       .05502
+     800          0       .05499
+    1000          0       .05495
+    1200          0       .05492
+** Reference conditions
+*PRSR 14.7
+*TEMR 120
+*PSURF 14.71
+*TSURF 58.14
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*KRTYPE *MATRIX *CON 1
+*KRTYPE *FRACTURE *CON 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*PRES *MATRIX   *CON 500
+*PRES *FRACTURE *CON 500
+
+*SW *MATRIX   *CON 0.25   ** So by difference, since Sg = 0
+*SW *FRACTURE *CON 0.25   ** So by difference, since Sg = 0
+
+*TEMP *MATRIX   *CON 120
+*TEMP *FRACTURE *CON 120
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+*NORM      *PRESS 250  *SATUR  .3   *TEMP 80  *Y .4   *X .4
+
+tform zt
+isothermal
+
+
+** **  ============== GEOMECHANICS SECTION =====================
+ *GEOMECH          ** Main keyword for geomechanic option
+ *GEOM3D           ** 3D Finite elements
+ *NITERGEO 200
+ *FORCETOL 0.01
+ *GEOROCK 1           ** rock type # 1 for matrix
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06 
+    *USTRESCUR       ** using current stress
+    *GPERMTS    
+    ** Mean total stress  kx/kx0   ky/ky0     kz/kz0     
+              0.0         1.6        1.6        1.4
+            100.0         1.50       1.50       1.35
+            200.0         1.4        1.4        1.3
+            300.0         1.30       1.30       1.20
+            400.0         1.20       1.20       1.15
+            500.0         1.15       1.15       1.10
+            600.0         1.1        1.1        1.05
+            700.0         1.0        1.0        1.0
+            800.0         0.9        0.9        0.85
+            900.0         0.8        0.8        0.70
+           1000.0         0.7        0.7        0.65
+           1200.0         0.6        0.6        0.6
+ *GEOROCK 2           ** rock type # 2 for fracture
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06
+    *USTRESCUR       ** using current stress
+    *GULOGINT        ** using log interpolation
+    *GPERMNEX        ** normal effective stress in I direction
+       -100.0    10E4
+          0.0    10E3
+         50.0    10E2
+        100.0    10E1
+        200.0    1.0
+        300.0    0.8
+        400.0    0.6
+        500.0    0.5
+        600.0    0.4
+    *GPERMNEY        ** normal effective stress in J direction
+        600.0    0.4
+        500.0    0.5
+        400.0    0.6
+        300.0    0.8
+        200.0    1.0
+        100.0    10E1
+         50.0    10E2
+          0.0    10E3
+       -100.0    10E4
+    *GPERMNEZ       ** normal effective stress in K direction
+       -100.0    10E4
+          0.0    10E3
+         50.0    10E2
+        100.0    10E1
+        200.0    1.0
+        300.0    0.9
+        400.0    0.8
+        500.0    0.6
+        600.0    0.5
+ *GEOROCK 3           ** rock type # 3 for fracture
+     *ELASTMOD 3.95E5
+     *POISSRATIO 0.3
+     *COHESION 100000
+     *THEXPCOEF 54.8E-06
+     *GULOGINT        ** using log intepolation
+     *GPERMNTX     **kx/kx0   ** using difference in normal total stress in I direction 
+        -300.0      1E3       ** accending stress difference
+        -200.0      5E2
+        -100.0      1E2
+           0.0      1E0
+          50.0      1E-1
+         100.0      1E-2
+         200.0      1E-3
+         300.0      5E-3
+ 
+     *GPERMNTY    **ky/ky0    ** using difference in normal total stress in J direction
+        -300.0      1E3       ** accending stress difference
+        -200.0      5E2
+        -100.0      1E2
+           0.0      1E0
+          50.0      1E-1
+         100.0      1E-2
+         200.0      1E-3
+         300.0      1E-4
+ 
+     *GPERMNTZ    **kz/kz0    ** using difference in normal total stress in K direction 
+         300.0      5E-3      ** Note: decending stress difference
+         200.0      1E-3
+         100.0      1E-2
+          50.0      1E-1
+           0.0      1E0
+        -100.0      1E2
+        -200.0      5E2
+        -300.0      1E3
+ 
+     *GEOROCK 4           ** rock type # 4 for matrix
+     *ELASTMOD 3.95E5
+     *POISSRATIO 0.3
+     *COHESION 100000
+     *THEXPCOEF 54.8E-06
+     *GULOGINT        ** using log intepolation
+     *GPERMNTX_MT     **kx/kx0   ** using difference in normal total stress in I direction 
+             -300.0      1E1       ** accending stress difference
+             -200.0      5E0
+             -100.0      2E0
+                0.0      1E0
+               50.0      1E-1
+              100.0      2E-1
+              200.0      5E-1
+              300.0      1E-2
+      
+          *GPERMNTY_MT    **ky/ky0    ** using difference in normal total stress in J direction
+             -300.0      1E1       ** accending stress difference
+             -200.0      5E0
+             -100.0      2E0
+                0.0      1E0
+               50.0      1E-1
+              100.0      2E-1
+              200.0      5E-1
+              300.0      1E-2
+      
+          *GPERMNTZ_MT    **kz/kz0    ** using difference in normal total stress in K direction 
+              300.0      5E-1      ** decending stress difference
+              200.0      1E-1
+              100.0      5E0
+               50.0      2E0
+                0.0      1E0
+             -100.0      1E0
+             -200.0      2E0
+             -300.0      5E0
+       
+ *stress3d  200   200  200  0  0  0 
+ *geotype   *matrix   *ijk 1:8  1:8  1:10   4
+                           1:8  3:5  1:10   1
+ *geotype   *fracture *ijk 1:8  1:8  1:10   3
+                           1:8  4    1:10   2
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*DATE 1901 1 1.5
+
+   *DTWELL 0.1
+   *DTMAX 5
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR *MOBWEIGHT 'INJTR'
+   *INCOMP  *WATER  1.0  0.0
+   *TINJW 600
+   *QUAL .7
+   *OPERATE *MAX *BHP 5000  ** Steam saturation pressure at 600 F
+   *OPERATE *MAX *STW 200
+   *PERF *GEO 'INJTR'  **  i  j k  ff
+                          1:8 4 3  1.
+
+   *PRODUCER 'PRODN'
+   *OPERATE     *STL 100
+   *OPERATE *MIN *BHP    50   **STOP   ** Stop run when min bhp exceeded
+   *GEOMETRY K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'PRODN'  **  i  j k  ff
+                          1:8 4 3  1
+   shutin 'PRODN'
+
+*TIME 200
+
+   dtwell 0.01
+   *shutin 1  ** Soak for 15 days
+
+   *wrst *tnext
+
+*time 300
+
+   dtwell 0.1
+   *DTMAX 5
+   *open 2
+
+*TIME 750
+*STOP

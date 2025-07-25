@@ -1,0 +1,12 @@
+** This example shows how to obtain the oil rate at surface conditions
+** for well 'W-1'.  This example will produce one table containing two columns.
+** The first column contains the time since the beginning of the simulation
+** and the second column cotains the oil rate.
+
+*TABLE-FOR
+   *COLUMN-FOR  
+      *FILES      'mxdrm005.sr3'
+      *WELLS      'W-1'
+      *PARAMETERS 'Oil Rate SC'
+*TABLE-END   
+

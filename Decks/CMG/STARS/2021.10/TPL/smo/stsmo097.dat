@@ -1,0 +1,229 @@
+
+
+**                              OVERVIEW
+**                              ========
+
+**    Verify and illustrate the interpolation option *INTERP_SCAL.
+**    Special features:
+
+**    1) Specify *CP_IMBIB *OIL-WAT to indicate Pcow in tables are imbibition curves.
+**    2) Specify *PCOW_CRV to use *OCRV and *DTRAPN only in interpolation of Pcow.
+**    3) Nonlinear nature of interpolation can be tested by changing *WCRV and *OCRV.
+**    4) Relperm and Pcow behavior can be visualized by plotting the special history.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ===================
+
+RESULTS SIMULATOR STARS 
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 97'
+*TITLE2 'Verify/Illustrate *INTERP_SCAL with *CP_IMBIB and *PCOW_CRV'
+ 
+*INUNIT *SI
+
+*WPRN *GRID *TIME
+*WPRN *SECTOR *TIME
+*OUTPRN *GRID PRES SW SO Y X W 
+ 
+outsrf special blockvar w 1,1,1 'CHEM'
+outsrf special blockvar sw 1,1,1
+outsrf special blockvar krw 1,1,1
+outsrf special blockvar kro 1,1,1
+outsrf special blockvar pcow 1,1,1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  ==========
+ 
+*GRID *CART  240 1 1
+*KDIR *DOWN
+
+*DI *IVAR  240*0.0005
+*DJ *JVAR  0.035
+*DK *ALL   240*0.035
+
+*DTOP  240*0.0
+ 
+*NULL *CON  1                                 
+*POR *CON  0.215
+
+*PERMI *ALL 1*4000  238*15.0  1*4000
+*PERMJ EQUALSI
+*PERMK *CON   150
+
+*PINCHOUTARRAY *CON  1                        
+
+*END-GRID
+
+*PRPOR 7.0E+03
+*CPOR 2E-6
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL  3  3  3  2
+
+*COMPNAME  'WATER'     'CHEM'           'OIL'
+ 
+*CMM       0.01802     0.01802          0.2256
+*PCRIT     220.48E+02  220.48E+02       220.48E+02
+*TCRIT     374.15      374.15           374.15
+
+*KV1       0.0         0.0              0.0
+*KV2       0.0         0.0              0.0
+*KV3       0.0         0.0              0.0
+*KV4       1.0         1.0              0.0
+*KV5       0.0         0.0              0.0
+
+*PRSR 7.0E+03
+*TEMR 20.0
+*PSURF 1.01E+02
+*TSURF 20.0
+  
+*MASSDEN   1000.0      1000.0           812.54
+*CP        45.89E-08   45.89E-08        45.89E-08
+*CT1       6.17067E-10 6.17067E-10      7.176E-10
+*CT2       0.0         0.0              0.0
+
+*VISCTABLE
+5     1.0   1.0   31.0
+95    1.0   1.0   31.0
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ==================
+
+*ROCKFLUID
+ 
+*RPT 1 *STONE2 
+                                                                                                       
+*INTCOMP 'CHEM' *WATER
+ 
+*KRINTRP 1
+ 
+*DTRAPW 0.00
+*DTRAPN 0.00
+*OCRV 1.0
+*WCRV 1.0
+
+**        Sw       krw           krow      Pcow
+SWT
+          0.2         0              1       1.0
+         0.23     0.002   0.8964143426      0.91
+         0.25     0.005   0.8432934927      0.85
+          0.3      0.02   0.7290836653       0.7
+         0.34     0.039   0.6533864542      0.58
+         0.38     0.065   0.5710491368      0.46
+          0.4      0.08   0.5338645418       0.4
+         0.44     0.115   0.4594953519      0.28
+          0.5      0.18   0.3479415671       0.1
+         0.54     0.231   0.2722443559     -0.02
+         0.58     0.289    0.197875166     -0.14
+          0.6      0.32   0.1646746348      -0.2
+         0.64     0.387  0.08764940239     -0.32
+         0.68     0.461  0.02656042497     -0.44
+          0.7       0.5              0      -0.5
+          1.0       1.0              0      -0.5
+**        Sl       krg      krog      Pcog
+SLT
+          0.2       1.0       0.0       0.0
+          1.0       0.0       1.0       0.0
+KRINTRP 2
+ 
+*DTRAPW 0.1
+*DTRAPN 0.1
+**        Sw       krw           krow          Pcow
+**        Sw          krw           krow          Pcow
+SWT
+          0.2            0              1           1.0
+         0.22       0.0005   0.9721115538          0.95
+         0.25        0.003   0.9335989376         0.875
+          0.3        0.012   0.8725099602          0.75
+         0.35        0.028   0.8140770252         0.625
+          0.4         0.05   0.7569721116           0.5
+         0.45        0.078   0.6932270916         0.375
+          0.5        0.112    0.625498008          0.25
+         0.55        0.153   0.5524568393         0.125
+          0.6          0.2   0.4860557769  4.16334e-017
+         0.65        0.253   0.4156706507        -0.125
+          0.7        0.312   0.3519256308         -0.25
+         0.75  0.374501992   0.2855245684        -0.375
+          0.8         0.45   0.2257636122          -0.5
+          0.9        0.612   0.1049136786         -0.75
+         0.95        0.703  0.04780876494        -0.875
+         0.99         0.78  0.01195219124        -0.975
+            1          0.8              0            -1
+**        Sl       krg      krog
+SLT
+          0.2       1.0       0.0
+          1.0       0.0       1.0
+
+*INTERP_SCAL *ON
+*CP_IMBIB *OIL-WAT      ** Pcow entered are imbibition curves
+*PCOW_CRV               ** Pcow interpolation to use *OCRV only  
+
+
+**  ==============  INITIAL CONDITIONS  =====================
+
+*INITIAL                                              
+*VERTICAL *OFF
+ 
+*SW   ALL 240*0.2
+*SO   ALL 240*0.8
+ 
+*PRES *CON  70.0E+02
+*TEMP *CON  20.0
+ 
+*MFRAC_WAT 'WATER' *CON 0.95
+*MFRAC_WAT 'CHEM'  *CON 0.05
+*MFRAC_OIL 'OIL'   *CON 1.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+ 
+*NUMERICAL
+
+*TFORM *ZT 
+*ISOTHERMAL
+  
+*CONVERGE *TOTRES *TIGHTER
+*MATBALTOL 1.0E-7
+                                               
+*ITERMAX 100
+*NORTH 100
+
+
+**  ==============  RECURRENT DATA  =========================
+
+*RUN
+
+*DATE  2015  01  01
+*DTWELL  1.0E-04
+
+*WELL 1  'Injector'
+*INJECTOR *MOBWEIGHT *IMPLICIT 'Injector'
+*INCOMP   *WATER  0.95  0.05  0.0
+*OPERATE  *MAX  *STW  1.44E-04  *CONT *REPEAT
+*OPERATE  *MAX  *BHP  50000  STOP
+*MONITOR  *MIN  *STW  1.00E-04  SHUTIN                     
+ 
+*GEOMETRY  K  0.0004  0.34  1.0  0.0
+*PERF  GEO  'Injector'
+    1 1 1  1.  OPEN    FLOW-FROM  'SURFACE' *REFLAYER
+
+*WELL 2 'Producer'                                  
+*PRODUCER 'Producer'
+*OPERATE  *MAX  *STL  1.44E-04  *CONT *REPEAT
+*OPERATE  *MIN  *BHP  70.0E+02  *CONT
+*GEOMETRY  K  0.0004  0.34  1.  0.
+*PERF  GEO  'Producer'
+    240 1 1  1.  OPEN    FLOW-TO  'SURFACE' *REFLAYER
+
+*TIME   0.003
+*TIME   0.01
+*TIME   0.05
+*TIME   0.1
+*TIME   2.5
+*TIME   5.0
+*STOP

@@ -1,0 +1,12 @@
+*FILES *FHF 'sample.fhf'
+
+*UNITS *FIELD
+*PRECISION 4
+*WELL-KEYWORDS
+
+*TABLE-FOR
+    *COLUMN-FOR *PARAMETERS 'Oil Rate SC - Quarterly'
+                *WELLS 'PROD 1' 'PROD 2' 'PROD 3'
+    *COLUMN-FOR *PARAMETERS 'Water Rate SC - Quarterly'
+                *WELLS 'INJECTOR'
+*TABLE-END

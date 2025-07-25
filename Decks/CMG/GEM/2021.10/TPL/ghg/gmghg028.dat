@@ -1,0 +1,430 @@
+**------------------------------------------------------------ -------**
+** GMGHG028.dat:    Polymer Injection in a Model with Geochemistry    **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMGHG028.DAT                           FIELD UNITS          **
+**                                                                    **
+** MODEL: CART 7x7x4 GRID                         8 COMPONENTS        **
+**        FIELD UNITS                   QUARTER 5-SPOT PATTERN        **
+**                                            ONE-INJECTOR AND        **
+**                                                ONE PRODUCER        **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Polymer injection in a moderately high viscosity oil reservoir in  **
+** a quarter of a 5-spot pattern.                                     **
+**                                                                    **
+** The oil consists of 8 components including CO2 which is soluble in **
+** the aqueous phase. The aqueous phase consists of four components   **
+** including 2 polymer components.                                    **
+**                                                                    **
+** Polymer slug and water are injected in a cyclic manner. Polymer    **
+** degradation is considered in the form of a rate reaction.          **
+**                                                                    **
+** Additionally chemical equilibrium and mineral reactions are        **
+** modelled with geochemistry input format V2.                        **
+**                                                                    **
+** Note that polymer and aqueous surfactant components are not        **
+** allowed to be part of the reactions.                               **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+***********************************************************************
+** I/O Control Section
+***********************************************************************
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'Polymer Flooding in a Model'
+*TITLE2 'With Geochemistry.'
+*INUNIT *FIELD
+
+*OUTPRN *WELL *ALL
+*OUTPRN *RES *ALL
+*OUTPRN *GRID *KRO *KRW *PRES *RFG *SG *SO *SW *VISO *VISW
+              
+*DIARY *WELL-INFO
+
+*OUTSRF *GRID *KRO *KRW *PRES *RFG *RFO *RFW *SG *SO *SW *VISO *VISW
+              *WALL *DENW *MOLALITY 'POLY-1' *MOLALITY 'POLY-2' *MOLALITY 'CO2'
+*OUTSRF *WELL *WWEL 'POLY-1' 'PROD'  *WWEL 'POLY-1' 'PINJ' *WWEL 'POLY-1' 'WINJ' 
+              *WWEL 'POLY-2' 'PROD'  *WWEL 'POLY-2' 'PINJ' *WWEL 'POLY-2' 'WINJ'
+
+*OUTSRF *SPECIAL *W 'POLY-1' 1 1 1 
+                 *W 'POLY-1' 7 7 3
+                 *W 'POLY-1' 2 2 3
+                 *W 'POLY-1' 2 1 1
+                 *VISW 1 1 1 
+                 *VISW 7 7 3 
+                 *VISW 2 2 3 
+                 *VISW 2 1 1
+
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION          0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+*******************************************************************************
+** Reservoir description
+*******************************************************************************
+*GRID *VARI 7 7 3
+*KDIR *UP
+*DI *IVAR  7*315
+*DJ *JVAR  7*315
+*DK *ALL  
+  49*50 49*30 49*20
+*DTOP  
+  49*1925
+
+*POR *CON 0.300
+
+*PERMI *KVAR 200.0   50.0  500.0
+*PERMJ *KVAR 200.0   50.0  500.0
+*PERMK *KVAR  19.2  200.0  200.0
+*PRPOR 14.7
+*CPOR 3.0E-6
+
+********************************************************************************
+** Component properties
+********************************************************************************
+*MODEL   *PR
+*NC    8    8
+*TRES       160.000
+*COMPNAME
+           'C1'           'C3'           'C6'           'C10'
+           'C15'          'C20'          'CO2'          'CO2T'
+*SG         2.6548243E-01  5.2203614E-01  6.6417775E-01  7.4136955E-01
+            7.6230751E-01  7.8620830E-01  8.1800000E-01  8.1800000E-01
+*TB        -1.6064925E+02 -4.3620636E+01  6.5995161E+01  1.6981838E+02
+            2.7281954E+02  3.4381966E+02 -1.0921000E+02 -1.0921000E+02
+*PCRIT      4.5440000E+01  4.1940000E+01  2.9730000E+01  2.0690000E+01
+            1.3610000E+01  1.1020000E+01  7.2800000E+01  7.2800000E+01
+*VCRIT      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00  9.4000000E-02  9.4000000E-02
+*TCRIT      1.9060000E+02  3.6980000E+02  5.0740000E+02  6.1770000E+02
+            7.0560000E+02  7.6670000E+02  3.0420000E+02  3.0420000E+02
+*AC         1.3000000E-02  1.5240000E-01  3.0070000E-01  4.8850000E-01
+            6.5000000E-01  8.5000000E-01  2.2500000E-01  2.2500000E-01
+*MW         1.6040000E+01  4.4100000E+01  8.6180000E+01  1.4229000E+02
+            2.0600000E+02  2.8200000E+02  4.4010000E+01  4.4010000E+01
+*HCFLAG     0              0              0              0
+            0              0              0              0
+*BIN
+            0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            0.0000000E+00
+            1.0500000E-01  1.2500000E-01  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+            1.0500000E-01  1.2500000E-01  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00  0.0000000E+00
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00  9.4000000E-02  9.4000000E-02
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            1.5332400E-02
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      3.9843180E+01  1.2676442E+02  2.5062202E+02  4.0365452E+02
+            5.6062080E+02  7.2450720E+02  7.8000000E+01  7.8000000E+01
+
+*SOLUBILITY
+*HENRY-CORR-CO2
+
+*ENTHCOEF
+           -2.8385700E+00  5.3828500E-01 -2.1140900E-04  3.3927600E-07
+           -1.1643220E-10  1.3896120E-14
+            6.8715000E-01  1.6030400E-01  1.2608400E-04  1.8143000E-07
+           -9.1891300E-11  1.3548500E-14
+            1.2991820E+01  8.9705000E-02  2.6534800E-04  5.7782000E-08
+           -4.5221100E-11  7.0259700E-15
+            0.0000000E+00  3.0429176E-03  3.9810535E-04 -5.3243759E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.2809515E-02  3.9758428E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.6277570E-02  3.9897828E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            9.6880000E-02  1.5884300E-01 -3.3712000E-05  1.4810500E-07
+           -9.6620300E-11  2.0738320E-14
+            9.6880000E-02  1.5884300E-01 -3.3712000E-05  1.4810500E-07
+           -9.6620300E-11  2.0738320E-14
+
+*DENWS 61.01
+*DENW 59.696
+*REFPW 14.7
+*CW 3.3e-6
+
+*TRACE-COMP 8
+
+*YAQU-RATE-CUTOFF
+6*100. 1.E-04 1.E-04
+
+*DER-CHEM-EQUIL *ANALYTICAL
+*DER-REACT-RATE *ANALYTICAL
+*ACTIVITY-MODEL *B-DOT
+
+*AQUEOUS-DENSITY *LINEAR
+** Use polymer option for aqueous phase viscosity
+*AQUEOUS-VISCOSITY *POLYMER
+
+*NC-AQUEOUS 9
+*COMPNAME-AQUEOUS 
+'POLY-1' 'POLY-2' 'H+' 'Ca++' 'SiO2(aq)' 'Al+++' 'OH-' 'HCO3-' 'CO3--'
+
+*COMPNAME-POLYMER
+'POLY-1' 'POLY-2'
+
+*MW-AQUEOUS
+22000. 28000.0 1.0079 40.0800 60.0843 26.9815 17.0073 61.0171 60.0092
+
+*ION-SIZE-AQUEOUS
+0. 0. 9.0 6.0 -0.5 9.0 3.5 4.5 4.5
+*CHARGE-AQUEOUS
+0  0  1 2 0 3 -1 -1 -2
+
+*NC-MINERAL 3
+*COMPNAME-MINERAL
+'CALCITE' 'KAOLINIT' 'ANORTHIT'
+*MW-MINERAL
+100.0869
+258.1616
+278.2082
+
+*MASSDENSITY-MINERAL
+2710.00
+2410.00
+2740.00
+
+
+** H2O component viscosity specification
+*AVISC-H2O 0.4
+** *BVISC-H2O - Temperature variation -  is not specified. It will be taken as zero.
+
+** Aqueous component viscosity specification
+*AVISC-AQUEOUS  40. 15. 0. 0. 0. 0. 0. 0. 0.
+*BVISC-AQUEOUS  0. 0. 0. 0. 0. 0. 0. 0. 0.
+
+** Aqueous phase viscosity mixing rule
+** Mole fraction of polymer    xlow    xhigh
+*VSMIXENDP 'POLY-1'             0       1.5e-6
+** VSMIXFUNC not specified. Program will generate the following:
+** VSMIXFUNC 'POLY-1' 0.0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0
+
+** Aqueous phase viscosity mixing rule
+** Mole fraction of polymer    xlow    xhigh
+*VSMIXENDP 'POLY-2'             0       1.5e-6
+
+** Polymer degradation reaction frequency factor
+ *POLY-DEGR-FREQFAC 'POLY-1'
+ 1.0e-06
+
+** Polymer degradation reaction activation energy
+ *POLY-DEGR-EACT 'POLY-1'
+ 1.0
+
+** Polymer degradation reaction frequency factor
+ *POLY-DEGR-FREQFAC 'POLY-2'
+ 3.0e-06
+
+** Polymer degradation reaction activation energy
+ *POLY-DEGR-EACT 'POLY-2'
+ 1.0
+
+
+*REACTION-CHEM 'H2O' = 'H+' + 'OH-'
+*LOG-CHEM-EQUIL-CONST -13.2631
+
+*REACTION-CHEM 'CO2' + 'H2O' = 'H+' + 'HCO3-'
+*LOG-CHEM-EQUIL-CONST -6.3221
+
+*REACTION-CHEM 'CO2' + 'H2O' = 2 'H+' + 'CO3--'
+*LOG-CHEM-EQUIL-CONST -16.5563
+
+*REACTION-RATE-TST  'CALCITE' + 'H+' = 'Ca++' + 'HCO3-'
+*REACTIVE-SURFACE-AREA 88.0
+*ACTIVATION-ENERGY 41870.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 1.3560
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -8.79588
+
+*REACTION-RATE-TST 'KAOLINIT' + 6 'H+' = 5 'H2O' + 2 'SiO2(aq)' + 2 'Al+++'
+*REACTIVE-SURFACE-AREA 17600.0
+*ACTIVATION-ENERGY 62760.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 5.4706
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -13.00
+
+*REACTION-RATE-TST  'ANORTHIT' + 8 'H+' = 4 'H2O' + 'Ca++' + 2 'SiO2(aq)' + 2 'Al+++'
+*REACTIVE-SURFACE-AREA 088.0
+*ACTIVATION-ENERGY 67830.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 23.0603
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -12.0
+
+
+********************************************************************************
+** Rock-fluid data
+********************************************************************************
+*ROCKFLUID
+*RPT 1
+*SWT
+**        sw       krw       krow      pcog      
+          0.2       0.0       1.0       7.0
+          0.3      0.07       0.4       4.0
+          0.4      0.15     0.169       3.0
+          0.5      0.24    0.0851       2.5
+          0.6      0.33     0.056       2.0
+          0.8      0.65     0.021       1.0
+          0.9      0.83       0.0       0.5
+          1.0       1.0       0.0       0.0
+*SLT
+**         sl       krg       krog       pcog
+          0.2      0.98        0.0       0.0
+          0.3      0.94        0.0       0.0
+          0.4      0.87     1.0E-4       0.0
+          0.5      0.72      0.001       0.0
+         0.55       0.6      0.010       0.0
+          0.6      0.41      0.021       0.0
+          0.7      0.19       0.09       0.0
+         0.75     0.125        0.2       0.0
+          0.8     0.075       0.35       0.0
+         0.88     0.025        0.7       0.0
+         0.95     0.005       0.98       0.0
+         0.98       0.0      0.997       0.0
+        0.999       0.0        1.0       0.0
+          1.0       0.0        1.0       0.0
+
+
+********************************************************************************
+** Initial Conditions
+********************************************************************************
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 2400.
+*SW   *CON     0.2
+   
+*ZGLOBALC 'C1' *CON          0.30
+*ZGLOBALC 'C3' *CON          0.06
+*ZGLOBALC 'C6' *CON          0.03
+*ZGLOBALC 'C10' *CON         0.15
+*ZGLOBALC 'C15' *CON         0.20
+*ZGLOBALC 'C20' *CON         0.21
+*ZGLOBALC 'CO2' *CON         0.04
+*ZGLOBALC 'CO2T' *CON        0.01
+
+*MOLALITY-AQUEOUS
+** 'POLY-1'  'POLY-2' 'H+'            'Ca++'          'SiO2(aq)'     'Al+++'        'OH-'         'CO3--'         'HCO3-'
+   0.        0.        1.000000D-07   9.118492D-05    2.345433D-08   2.317806D-11   5.456322D-07   2.489299D-02   1.170273D-05
+
+*VOLUMEFRACTION-MINERAL
+0.0088 0.0176 0.0088
+
+
+********************************************************************************
+** Numerical Methods Control
+********************************************************************************
+*NUMERICAL
+*DTMAX 31.
+*NORM *AQUEOUS 0.3
+*CONVERGE *MAXRES 1.E-06
+*CONV-RESONLY
+*PRECC 1.E-05
+*NCHECK-CEQ 5
+
+
+*******************************************************************************
+** Recurrent data
+*******************************************************************************
+*RUN
+*DATE 1987 1 1.
+*DTWELL 0.001
+  
+*DTMIN   1.0e-6
+*WELL  'PINJ'
+*INJECTOR 'PINJ'
+*INCOMP *AQUEOUS 0. 0. 0. 0. 0. 0. 0.  0.  9.1051e-5  1.E-06  0.  0. 0. 0. 0. 0.  0. ** 'POLY-1' and 'POLY-2' injection
+*OPERATE  *MAX  *STW  4000.0   *CONT
+*OPERATE  *MAX  *BHP  10000.0  *CONT REPEAT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'PINJ'
+**$ UBA    ff   Status  Connection  
+    1 1 3   1.0  *OPEN    *FLOW-FROM  'SURFACE'
+    1 1 2   1.0  *OPEN    *FLOW-FROM 1
+    1 1 1   1.0  *OPEN    *FLOW-FROM 2
+
+*WELL  'WINJ'
+*INJECTOR 'WINJ'
+*INCOMP *WATER
+*OPERATE  *MAX  *STW  4000 *CONT ** 5000.0   *CONT
+*OPERATE  *MAX  *BHP  10000.0  *CONT REPEAT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'WINJ'
+**$ UBA    ff   Status  Connection  
+    1 1 3   1.0  *OPEN    *FLOW-FROM  'SURFACE'
+    1 1 2   1.0  *OPEN    *FLOW-FROM 1
+    1 1 1   1.0  *OPEN    *FLOW-FROM 2
+
+
+*WELL  'PROD'
+*PRODUCER 'PROD'
+*OPERATE  *MAX  *STO  7500 *CONT 
+*OPERATE  *MIN  *BHP  500.0  *CONT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'PROD'
+**$ UBA    ff   Status  Connection  
+    7 7 3   1.0  *OPEN    *FLOW-TO  'SURFACE'
+    7 7 2   1.0  *OPEN    *FLOW-TO 1
+    7 7 1   1.0  *OPEN    *FLOW-TO 2
+
+*SHUTIN 'WINJ'
+
+*DATE 1988  1  1
+*DTWELL 0.01
+     *SHUTIN 'PINJ'
+     *OPEN  'WINJ'
+*DATE 1989  1  1
+     *OPEN 'PINJ'
+     *SHUTIN  'WINJ'
+*DATE 1990  1  1
+     *SHUTIN 'PINJ'
+     *OPEN  'WINJ'
+*DATE 1991  1  1
+     *OPEN 'PINJ'
+     *SHUTIN  'WINJ'
+*DATE 1992  1  1
+     *SHUTIN 'PINJ'
+     *OPEN  'WINJ'
+*DATE 1993  1  1
+     *OPEN 'PINJ'
+     *SHUTIN  'WINJ'
+*DATE 1994  1  1
+     *SHUTIN 'PINJ'
+     *OPEN  'WINJ'
+ *DATE 1995  1  1
+     *OPEN 'PINJ'
+     *SHUTIN  'WINJ'
+*DATE 1996   1  1
+     *SHUTIN 'PINJ'
+     *OPEN  'WINJ'
+
+*DATE 1997 1 1
+
+*STOP

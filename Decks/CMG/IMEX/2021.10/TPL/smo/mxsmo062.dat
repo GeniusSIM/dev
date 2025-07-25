@@ -1,0 +1,204 @@
+   ******************************************************************************
+   ** mxsmo062.dat:        *PHS_SEG_MODL *MODIFIED Template                    **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO062.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  1x1x3         *PHS_SEG_MODL *MODIFED Template (Gravity Draiange)         **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 1x1x3 cartesian gravity drainage model using TRANSFER 1 which allows   **
+   ** DKFRAC to be larger than DK in blocks 1,1,1 and 1,1,2 without limiting the       **
+   ** vertical capillary continious region to DK (using *PHS_SEG_MODL *MODIFED)        **
+   ** The Default behavoir is to limit DKFRAC (used in the gravity segregated model)   **  
+   ** to DK                                                                            **  
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+*TITLE1
+'1x1x3 MODIFIED'
+
+*INUNIT *FIELD
+
+wsrf well 1
+wsrf sector 1
+****************************************************************************
+**              *GRID
+****************************************************************************
+
+*GRID  *VARI 1 1 3
+*KDIR *DOWN
+DI IVAR
+3
+DJ JVAR
+3
+DK ALL
+2*10 20
+
+*DUALPOR
+*TRANSFER 1
+*SHAPE *GK
+*DIFRAC *ALL
+3*3
+*DJFRAC *ALL
+3*3
+*DKFRAC *ALL
+3*20
+*PERMI *MATRIX *ALL
+2*1          1000
+
+*PERMI *FRACTURE *ALL
+3*1000
+
+*PERMJ *MATRIX *ALL
+2*1          1000
+
+*PERMJ *FRACTURE *ALL
+3*1000
+
+*PERMK *MATRIX *ALL
+2*0.1        1000
+
+*PERMK *FRACTURE *ALL
+3*1000
+
+*POR *MATRIX *ALL
+2*0.15     0.0
+
+*POR *FRACTURE *ALL
+3*0.05
+ 
+*SECTORARRAY 'SECTOR1' *MATRIX *IJK 1:1 1:1 1:2 1
+
+*CROCKTYPE 1
+
+*CCPOR *MATRIX 3.E-06
+*CCPOR *FRACTURE 3.E-06
+*CPRPOR *MATRIX 4000
+*CPRPOR *FRACTURE 4000
+*CTYPE *MATRIX *ALL
+3*1
+
+*CTYPE *FRACTURE *ALL
+3*1
+
+****************************************************************************
+**              *MODEL
+****************************************************************************
+
+*MODEL *BLACKOIL
+
+*DENSITY *OIL 50.0
+*DENSITY *OIL 50.0
+*DENSITY *GAS 0.07
+*DENSITY *GAS 0.07
+*DENSITY *WATER 62.4
+*DENSITY *WATER 62.4
+*PVT BG 1
+  15    0.00  1.00     0.178     1.5     0.010
+5000 2000.00   1.7     0.0005343 0.5     0.011
+*PVT BG 2
+  15    0.00  1.00     0.178     1.5     0.010
+5000 2000.00   1.7     0.0005343 0.5     0.011
+*REFPW 4000
+*REFPW 4000
+*BWI 1.00
+*BWI 1.00
+*CO 1E-5
+*CO 1E-5
+*CW 3.0E-06
+*CW 3.0E-06
+*VWI 0.4
+*VWI 0.4
+*CVW 0.0
+*CVW 0.0
+*PTYPE  *MATRIX *ALL
+3*1
+*PTYPE  *FRACTURE *ALL
+3*2
+
+DRSDT 0
+
+****************************************************************************
+**              *ROCKFLUID
+****************************************************************************
+
+*ROCKFLUID
+
+*RPT 1
+*SGT
+0     0       0.8    0.0
+0.05  0       0.8   *INT
+0.80  0.50      0    50.0
+
+*SWT
+0.05 0        0.8       50 
+0.06 *INT    *INT      *INT 
+0.69 *INT    *INT      *INT 
+0.70 0.50      0       *INT
+1    1.0       0         0
+
+*RPT 2
+*SGT
+0     0    1    0
+0.01 *INT *INT *INT
+0.99 *INT *INT *INT
+1     1    0    0
+*SWT
+0     0    1    0
+0.01 *INT *INT *INT
+0.99 *INT *INT *INT
+1     1    0    0
+*RTYPE *MATRIX *ALL
+3*1
+
+*RTYPE *FRACTURE *ALL
+3*2
+*PHS_SEG_MODL *MODIFIED
+
+****************************************************************************
+**              *INITIAL
+****************************************************************************
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *MATRIX *ALL
+3*2500
+*PRES *FRACTURE *ALL
+3*2500
+
+*SW *MATRIX *CON
+0.05
+*SW *FRACTURE *CON
+0
+
+*SO *MATRIX *CON
+0.95
+*SO *FRACTURE *CON
+0
+
+*PB *MATRIX *CON 2400
+*PB *FRACTURE *CON 2400
+
+****************************************************************************
+**              *RUN
+****************************************************************************
+
+NUMERICAL 
+DTMAX 0.05
+RUN
+DATE 2000 1 1
+DATE 2000 2 1
+STOP

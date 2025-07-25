@@ -1,0 +1,192 @@
+   ******************************************************************************
+   ** mxnwp004.dat:               Pressure Build-Up Test Model                 **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXNWP004.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  40x1x1            DUAL POROSITY (*DUALPOR) FRACTURE RESERVOIR            **
+   **         SI UNIT           WELL PRESSURE BUILD-UP TEST SIMULATION                 **    
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** A radial model with larger number of grid block in  I (ring) direction  is  used **
+   ** to simulate pressure build-up test for a  fractured  gas  reservoir.  Generally, ** 
+   ** smaller time step size is used.                                                  **  
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   **************************
+   ** I/O Section          **
+   **************************
+
+    *TITLE1   'WELL TEST EXAMPLE DATA SET'
+    *TITLE2   'Gas Reservoir.  Pressure Build-up Test.'
+
+    *INUNIT  *SI
+    *OUTUNIT *SI
+
+    *WPRN *WELL *TIME
+    *WPRN *GRID 0
+    *WPRN *ITER *BRIEF
+
+    *OUTPRN *WELL *BRIEF
+    *OUTPRN *GRID *PRES
+
+    *WSRF *WELL 1
+    *WSRF *GRID 0
+
+    *OUTSRF *WELL *LAYER *ALL
+
+
+   **************************
+   ** RESERVOIR Description
+   **************************
+
+    *GRID *RADIAL 40 1 1 *RW 0.10   ** Note that the well radius must be
+                                    ** same as that defined in the
+                                    ** well data section ( after *RUN).
+
+    *DI IVAR
+       0.2   0.1   0.1   0.1   0.1   0.2   0.2   0.5   0.75
+       1     1     2     2     5     5     7.5   7.5
+      10    10    15    15    20    20    25    25
+      30    40    50    70    90
+     100   100   100   100   100   100   100   100   100   100
+
+    *DJ *CON 360
+    *DK *CON 100
+
+    *DEPTH 1 1 1 1000
+
+    *DUALPOR
+    *SHAPE *GK
+
+    *DIFRAC *CON 1
+    *DJFRAC *CON 1
+    *DKFRAC *CON 1
+
+    *POR *MATRIX   *CON 0.050
+    *POR *FRACTURE *CON 0.005   
+
+    *PRPOR *MATRIX   25000
+    *PRPOR *FRACTURE 25000
+
+    *VOLMOD *MATRIX   *IJK 1 1 1 1.50   ** Model the wellbore storage by
+    *VOLMOD *FRACTURE *IJK 1 1 1 1.50   ** block volume multipliers.
+
+    *CPOR *MATRIX    0.1E-6
+    *CPOR *FRACTURE  0.1E-6
+
+    *PERMI *MATRIX   *CON 0.00025
+    *PERMI *FRACTURE *CON 2.5
+    *PERMJ *MATRIX   *CON 0.00025
+    *PERMJ *FRACTURE *CON 2.5
+    *PERMK *MATRIX   *CON 0.00025
+    *PERMK *FRACTURE *CON 2.5
+
+
+   *****************************
+   ** Fluid properties.
+   *****************************
+    *MODEL *GASWATER
+
+    *PVTG 1
+    **   P       EG     VISG
+       11200.    112.   0.015
+       13000.    128.   0.016
+       13800.    135.   0.016
+       14700.    143.   0.017
+       15600.    152.   0.017
+       16400.    159.   0.017
+       17300.    167.   0.018
+       18100.    174.   0.018
+       19000.    182.   0.019
+       19900.    190.   0.019
+       20700.    197.   0.020
+       21600.    206.   0.020
+       22500.    214.   0.020
+       23300.    221.   0.021
+       24200.    229.   0.021
+       25100.    237.   0.022   
+
+    *DENSITY *GAS      1
+    *DENSITY *WATER 1100   
+
+    *BWI   1.0
+    *CW    0.1E-6
+    *REFPW 25000
+    *VWI   0.5
+    *CVW   0   
+
+
+   *******************************
+   ** Relative permeability data.
+   *******************************
+
+    *ROCKFLUID   
+
+    *RPT 1 
+
+    *SWT *SMOOTHEND *QUAD
+    **  SW   KRW  
+       0.1    0          
+       1      1       
+
+    *SLT *SMOOTHEND *QUAD
+    **  SL   KRG  
+       0.1    1    
+       0.3    0.7  
+       1      0       
+
+
+   *******************************
+   ** Initialize reservoir.
+   *******************************
+
+    *INITIAL
+    *USER_INPUT
+
+    *PRES *MATRIX   *CON 25000
+    *PRES *FRACTURE *CON 25000
+   
+    *SW   *MATRIX   *CON 0.1
+    *SW   *FRACTURE *CON 0.1
+
+
+   **********************************
+   ** Numerical controls.
+   **********************************
+    *NUMERICAL
+    *MAXSTEPS 9999
+    *NORM *PRESS 25
+    *DTMIN 0.00001
+
+
+   **********************************
+   ** Well data section.
+   **********************************
+    *RUN
+
+    *DATE 1992    5   31.01
+    *DTWELL  0.005
+    *DTMAX 1.00
+
+    *WELL 1 'WELL'
+    *PRODUCER 1
+    *OPERATE *STG 1000000           ** Produce at a large rate.
+    *OPERATE *MIN *BHP 100 *STOP
+    *GEOMETRY *K 0.1 0.5 1.0 0
+    *PERF *GEO 1
+      1  1  1   1.0   
+
+    *DATE 1992   6   3.00
+    *DTWELL  0.005   
+
+    *SHUTIN 1
+    *DATE 1992   8   31.01   
+    *STOP

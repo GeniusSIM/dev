@@ -1,0 +1,232 @@
+   *****************************************************************************
+   ** Template (mxgmc020.dat):  3D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC020.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         ELASTIC MODEL                                    11X11X5 CARTESIAN GRID  **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **             Using a viscoplastic model                                           **
+   **             Comparing two viscoplastic flow function models                      **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+   
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #020'
+*TITLE2
+	'3D Elasto-Viscoplastic Model - Flow Function 1'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 1 
+*OUTPRN *GRID *PRES
+*OUTPRN WELL ALL
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*OUTSRF *GRID *VERDSPLGEO *POROS *PRES *YOUNG *POISSON *VDISPL 
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH
+
+*OUTSRF *SPECIAL 6 6 1 *PRES
+*OUTSRF *SPECIAL 6 6 1 *POROS
+*OUTSRF *SPECIAL 6 6 1 *STRESEFF
+*OUTSRF *SPECIAL 6 6 1 *STRNEPL
+*OUTSRF *SPECIAL 6 6 1 *VERDSPLGEO
+
+*OUTSRF *SPECIAL 1 1 1 *PRES
+*OUTSRF *SPECIAL 1 1 1 *POROS
+*OUTSRF *SPECIAL 1 1 1 *STRESEFF
+*OUTSRF *SPECIAL 1 1 1 *STRNEPL
+*OUTSRF *SPECIAL 1 1 1 *VERDSPLGEO
+
+*OUTSRF *SPECIAL 11 1 1 *PRES
+*OUTSRF *SPECIAL 11 1 1 *POROS
+*OUTSRF *SPECIAL 11 1 1 *STRESEFF
+*OUTSRF *SPECIAL 11 1 1 *STRNEPL
+
+*OUTSRF *SPECIAL 1 11 1 *PRES
+*OUTSRF *SPECIAL 1 11 1 *POROS
+*OUTSRF *SPECIAL 1 11 1 *STRESEFF
+*OUTSRF *SPECIAL 1 11 1 *STRNEPL
+
+*OUTSRF *SPECIAL 11 11 1 *PRES
+*OUTSRF *SPECIAL 11 11 1 *POROS
+*OUTSRF *SPECIAL 11 11 1 *STRESEFF
+*OUTSRF *SPECIAL 11 11 1 *STRNEPL
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 11 11 5
+
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+
+*PERMI *CON 15000.0  
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 1.0
+
+*PRPOR 3000
+
+*CPOR  1.8570E-6
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT
+      ** p              rs      bo          eg    viso     visg
+          14.700   1.00000   1.06200   6.00000   1.04000 0.0080000
+         264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+         514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+        1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+        2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+        2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+        3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+        4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+        5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+        9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0 
+
+*TRES 150
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+*RPT 1
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    2000.7  
+     
+   *REFDEPTH   5000.
+   *REFPRES    3035.     
+   *DWOC       6500.
+   *DGOC       4000.  
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+
+*NORM      *PRESS 200
+*CONVERGE  *PRESS 1.0
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH              ** Main keyword for using geomechanics module
+
+*SOLVERG *AIMSOL
+*GEOM3D
+*NITERGEO 300         ** Max number of iterations for convergence
+*GCFACTOR 1.0         ** constraints on horizontal sides
+
+*GMCREEP 1            ** Perzyna - Drucker-Prager creep model
+*ELASTMOD 1.5e5       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.30      ** Poisson's ratio
+*FRICANGLE 15.0       ** Friction angle (degrees)
+*COHESION 14.5        ** Cohesion (PSI)
+*VISPARA  1e-4        ** FLUIDITY PARAMETER
+*VISFLOWR 1           ** FLOW FUNCTION # 1
+*VISPOWER 1.0         ** POWER LAW
+*VISSCHEME 3          ** EXPLICIT, SEMI-IMPLICIT, IMPLICIT SCHEME
+*VISTIME  0.01        ** TIME
+*VISSTEP  1e-1        ** INCREASE THE STEP LENGTH
+*VISINIT  1           ** INITIAL TIME STEP LENGTH
+
+*STRESS3D 0 0 0 0 0 0
+
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 0.05
+   
+   *WELL 1 'prod1'   **vert    1   6
+   *PRODUCER 'prod1'
+   *OPERATE *MIN *BHP 3000
+   *PERF *WI 'prod1'
+       6  6  1:5  400000.
+   
+*TIME 100
+
+   *SHUTIN 'prod1'
+
+*TIME 500
+
+*STOP

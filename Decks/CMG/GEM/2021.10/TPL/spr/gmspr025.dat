@@ -1,0 +1,175 @@
+**--------------------------------------------------------------------**
+** GMSPR025.DAT:  Single Fractured Block Model                        **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMSPR025.DAT                                               **
+**                                                                    **
+** MODEL:  CART 1x1x1 GRID      3 COMPONENTS    FRACTURED RESERVOIR   **
+**         LEAN GAS INJECTION   FIELD UNITS                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template is based on the 6th SPE problem.                     **
+** A gas injector and a producer are completed in the same block      **
+** and operate concurrently.                                          **
+**                                                                    **
+** Test Kr interpolation with pseduo-cap pressure transfer models     **
+**                                                                    **
+** Since the two relative permeability tables for interpolation are   **
+** the same the resulting  relative permeabilities would be unaltered,**
+** as such simulation result will be unaffected despite the presence  **
+** of KRINTRP and INTCOMP_VAL keywords.                               **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1    'SPE6 Single block model'
+*TITLE2    'Gas-oil gravity drainage'
+*TITLE3    'Kr Interpolation'
+*INUNIT  *FIELD
+
+*OUTPRN *GRID  *PRES *SO *SG *SW *DENO *DENG
+*OUTSRF *GRID  *PRES *SO *SG *SW
+*WRST  0
+*WSRF  *WELL 1
+*WSRF  *GRID 1
+*OUTPRN *WELL *PSPLIT
+*OUTSRF *WELL *PSPLIT
+*SUMMARY
+
+**--------------------------------------------------RESERVOIR DATA------
+*GRID               *CART     1 1 1
+*DUALPOR
+*TRANSFER           3
+*DI                 *CON      10.0
+*DJ                 *CON      10.0
+*DK                 *CON      10.0
+*DEPTH              1 1 1     0.00
+*DIFRAC             *CON      10.0
+*DJFRAC             *EQUALSI
+*DKFRAC             *EQUALSI
+*POR                *MATRIX   *CON  0.29
+*POR                *FRACTURE *CON  0.01
+*PERMI              *MATRIX   *CON  1.0
+*PERMI              *FRACTURE *CON  10000.0
+*PERMJ              *MATRIX   *CON  1.0
+*PERMJ              *FRACTURE *CON  10000.0
+*PERMK              *MATRIX   *CON  1.0
+*PERMK              *FRACTURE *CON  10000.0
+*CPOR               *MATRIX   3.5E-6
+*PRPOR              *MATRIX   4515.0
+*CPOR               *FRACTURE 3.5E-6
+*PRPOR              *FRACTURE 4515.0
+**--------------------------------------------------FLUID COMPONENT DATA
+*MODEL              *PR
+*NC                 3 3
+*COMPNAME           'LIGHT' 'INTER' 'HEAVY'
+*HCFLAG             1       1       1
+*PCRIT              41.66   25.60   12.63
+*VCRIT              0.099   0.255   1.151
+*TCRIT              152.5   322.9   634.7
+*AC                 0.008   0.193   0.9351
+*MW                 9.583   38.191  283.632
+*PVC3               1.2
+*TRES               144.
+*VISCOEFF           0.109986 0.0186912  0.0468264 -0.0423968  0.0111989
+*VISVC              0.1188   0.2040     1.15845
+*PHASEID            *CRIT
+*CW                 3.5E-6
+*REFPW              14.7
+*VISW               0.35
+**--------------------------------------------------ROCK FLUID----------
+*ROCKFLUID
+
+*RPT   1
+
+*INTCOMP *OIL 'LIGHT'
+*KRINTRP 1
+*INTCOMP_VAL 0.1
+
+*SGT
+   0.0  0.0   1.00   0.075
+    .1   .015  .70   0.085
+    .2   .050  .45   0.095
+    .3   .103  .25   0.115
+    .4   .190  .11   0.145
+    .5   .310  .028  0.255
+    .55  .420  .0    0.386
+*SWT
+    0.20  0.000  1.000   1.0
+     .25   .005   .86    0.5
+     .3    .01    .723   0.3
+     .35   .02    .6     0.15
+     .4    .03    .492    .0
+     .45   .045   .392   -.2
+     .5    .06    .304  -1.2
+     .6    .11    .154  -4.0
+     .7    .18    .042  -10.
+     .75   .23    .0    -40.
+    1.0   1.0     .0    -120.
+
+*KRINTRP 2 *COPY 1 1
+*INTCOMP_VAL 0.8
+
+*RPT   2
+*SGT
+  0.0  0.0   1.0    0.0
+  1.0  1.0   0.0    0.0
+*SWT
+  0.0  0.0   1.0    0.0
+  1.0  1.0   0.0    0.0
+
+*RTYPE  *MATRIX   *CON 1
+*RTYPE  *FRACTURE *CON 2
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+*VERTICAL   *OFF
+*PRES  *MATRIX   *CON 4515.0
+*PRES  *FRACTURE *CON 4515.0
+*SW  *MATRIX   *CON 0.2
+*SW  *FRACTURE *CON 0.0
+   **               MATRIX  is initially filled with reservoir oil
+   **               FRACTUREis initially filled with gas
+*ZGLOBALC 'INTER' FRACTURE CON     0.238417
+*ZGLOBALC 'LIGHT' FRACTURE CON     0.751668
+*ZGLOBALC 'HEAVY' MATRIX CON     0.258134
+*ZGLOBALC 'INTER' MATRIX CON     0.253543
+*ZGLOBALC 'LIGHT' MATRIX CON     0.488323
+*ZGLOBALC 'HEAVY' FRACTURE CON   0.00991504
+*SEPARATOR         15.0 60.0
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+*NORM *PRESS  100.
+*NORM *SATUR  0.10
+*NORM *GMOLAR 0.10
+**--------------------------------------------------WELL DATA-----------
+*RUN
+*DATE 1988 1 1
+     *DTMIN    0.005
+     *DTMAX    365.0
+     *DTWELL   0.10
+     *AIMSET   *FRACTURE *CON 3   ** Fracture blocks will always be implicit
+     *AIMSET   *MATRIX   *CON 1
+     *GEOMETRY *K  0.1  0.64  1.0  0.0
+     *WELL     1 'INJECTOR'
+     *WELL     2 'PRODUCER'
+     *INJECTOR 1
+               *INCOMP   *SOLVENT   75.1668375 23.8416586  0.9915039
+               *OPERATE  *MAX  *STG   10000.0
+     *PRODUCER 2
+               *OPERATE  *MIN  *BHP  4515.0
+     *PERF     *GEO  1
+               1 1 1 1.0
+     *PERF     *GEO  2
+               1 1 1 1.0
+*DATE 1988 7  1
+*DATE 1989 1  1
+*DATE 1990 1  1
+*DATE 1991 1  1
+*DATE 1992 1  1
+*DATE 1993 1  1
+*STOP

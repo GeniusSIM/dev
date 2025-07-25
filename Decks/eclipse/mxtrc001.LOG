@@ -1,0 +1,92 @@
+
+ @--WARNING  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           SPURIOUS DATA BEFORE RESULTS  KEYWORD
+ @              *************************************************************
+ @              ** mxtrc001.dat:    Tracking injection fluid by a tracer
+ @              *************************************************************
+ @              *************************************************************
+ @              **
+ @              ** FILE:                 MXTRC001.DAT
+ @              **
+ @              ** MODEL:  201x1x1 Grid
+ @              *************************************************************
+     1 READING RESULTS
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD RESULTS  MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+
+ @--WARNING  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           SPURIOUS DATA BEFORE END      KEYWORD
+ @              *************************************************************
+ @              ** I/O Control Section
+ @              *************************************************************
+ @              *TITLE1
+ @              'IMEX Tracer Template #001'
+ @              *TITLE2
+ @              'Minimal Required Data Input for Tracer'
+ @              *TITLE3
+ @           *STOP
+     2 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     3 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     4 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     5 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     6 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     7 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     8 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+     9 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+    10 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+    11 READING END
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE
+ @           THE RUNSPEC RECORD HAS BEEN READ
+
+ @--ERROR  RUN STOPPED BECAUSE NUMBER OF   ERRORS
+ @         EXCEEDS MAXIMUM PERMITTED VALUE (    10).
+ @         SEE MESSAGES KEYWORD.
+
+ Error summary
+ Comments               0
+ Warnings               2
+ Problems               0
+ Errors                12
+ Bugs                   0
+ Final cpu       0.00 elapsed       0.00
+

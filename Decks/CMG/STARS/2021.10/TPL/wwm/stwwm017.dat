@@ -1,0 +1,529 @@
+
+*****************************************************************************  
+** Template  (flu018.dat): Foam Injection in a Generic North Sea Reservoir **
+*****************************************************************************
+**************************************************************************************
+** FILE : STFLU018.DAT                                                              **
+**                                                                                  **
+** MODEL: FOAM ASSISTED WAG PROCESS IN THE NORTH SEA        20x1x20 CARTESIAN GRID  **  
+**        MULTIPLE RELATIVE PERMEABILTY CURVES FOR FOAM     SI UNITS                **
+**        TRANSMISSIBILTY BARRIER BETWEEN HIGH AND LOW PERMEABILTY LAYERS           **
+**                                                                                  **
+** USAGE: APPLICATION OF FOAM TO CORRECT EARLIER GAS BREAKTHROUGH IN WAG PROCESSES  **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**   "Simulation of WAG and Gas Injection with Potential Sweep                      **
+**    Improvement by Apllication of Foam", L.M. Surguchev et al,                    **
+**    paper presented at the Eighth European Symposium on IOR,                      **
+**    May 15-17,1995, Vienna, Austria                                               **
+**                                                                                  **
+**    2D model of generic north sea reservoir                                       **
+**    Empirical foam model for surfactant assisted water-alternating-gas            **
+**    Case sg1.dat (Foam With Permeability Barrier)                                 **
+**    Cross section 1000m * 200m * 60m                                              **
+**    This dataset can be modified to test four cases :                             **
+**     sg.dat  No transmissibilty barrier, surfactant alternate gas injection.      **
+**     sg1.dat Transmissibilty barrier,    surfactant alternate gas injection.      **
+**     wg.dat  No transmissibilty barrier, water alternate gas injection.           **
+**     wg1.dat Transmissibilty barrier,    water alternate gas injection.           **
+**                                                                                  **
+**    Foam as production well GOR control scenario can also be simulated:           **
+**    modified well cards found at end of dataset                                   **     
+**                                                                                  **
+**    This template also demonstrates the use of *LAYER-CTRL *SKIN  keyword to      **
+**    re-specify the skin factor for well completion layer(s).                      **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 17'
+*TITLE2 'Test/Illustrate Multilateral Well'
+*TITLE3 'Based on STFLU018'
+
+*OUTUNIT *SI *EXCEPT 3 3
+
+*OUTPRN *GRID *PRES *SW  *SO *SG *KRG
+              *ADSORP *KRINTER *CAPN                 **VISO
+              *MASFR *ADSPCMP   **SPECIAL ADSORPTION COMPONENT (MASS FR)
+              ** PPM RLPMCMP    **SPECIAL REL PERM COMPONENT (IN PPM)
+*OUTSRF *GRID *PRES *SW *SO *SG *KRG
+	      *ADSORP *KRINTER *CAPN  
+              *MASFR *ADSPCMP   **SPECIAL ADSORPTION COMPONENT (MASS FR)
+*OUTPRN *WELL *WELLCOMP
+*OUTSRF *WELL ** MOLE
+*OUTPRN *ITER *NEWTON           ** TSS
+*WRST 1000
+*WPRN *GRID 1000
+*WPRN *ITER 1    
+**
+**         GRID AND RESERVOIR DEFINITION
+**         ==============================
+*GRID *CART 20 1 20 **TWO DIMENSIONAL GRID
+*KDIR *DOWN
+*DEPTH *TOP 20 1 1 2500.139
+*DIP 8 0
+*DJ *CON 200
+*DI *IVAR 2 3 5 10 30 50 100 100 100 100 100 100 100 100 50 30 10 5 3 2
+*DK *KVAR 20*3
+*POR *IJK
+  1:20 1 1:10  0.25
+  1:20 1 11:20 0.20
+*PERMI *KVAR 10*2000. 10*200.
+*PERMJ *KVAR 10*2000. 10*200.
+*PERMK *KVAR 10*1000. 10*100.  **top: Kv/Kh = 0.5 ** bottom: Kv/Kh = 0.5
+
+** Transmissibilty barrier between two reservoir units:
+*TRANSK *IJK 1:20 1 11 0.01  ** 1.  
+
+*END-GRID
+
+*PRPOR 3000.   **kPa - 300 bar - reservoir pressure
+**
+*CPOR 1.2E-05 **Rock Compressibilty at 280 bars
+**                                                                                        
+
+**         FLUID DEFINITIONS
+**         =================
+*MODEL 4 4 4 2 ** TWO AQUEOUS, OIL AND GAS (CH4) COMPONENTS  ** 0 - Default values for water
+**
+*COMPNAME    'WATER'     'SURFACT'    'OIL'        'GAS'
+**           -------     --------    --------     --------
+*CMM           0.        0.23        0.072        0.016      ** MOLECULAR MASS Kg/gm MOLE
+*MOLDEN        0.        2330.       1.185E+04    7.97E+03   ** MOLAR DENSITY gmol/m3 
+*CP            0.        1.6E-05     1.25E-05     1.25E-05   ** LIQUID COMPRESSIBILITY 1/kPa 
+*TCRIT         0.         527.       486.7       -82.8       ** CRITICAL TEMPERATURE C
+*PCRIT         0.         144.       1213.8       4600.0     ** CRITICAL PRESSURE  kPa
+*AVG           0.         0.01         0.        1.737E-04
+*BVG           0.           0.         0.        7.478E-01   
+*KV1           0            0          0         .3572E+05
+*KV2           0            0          0           0
+*KV3           0         1.0E-06     1.E-06      1.947
+*KV4           0            0          0        -1.959E+02
+*KV4           0            0          0        -273.15
+**KV5          0            0          0        -273.15 **For correction replace the above line with this.
+**
+*SOLID_DEN 'SURFACT' 535.9 0 0  ** Mass density based on 2330 gmole/m3
+**
+*VISCTABLE ** values appropriate for 100 degrees C
+** TEMP(C)  WATER      SURF   OIL    GAS
+   85       0.5        0.5    1.13   0.126
+  121       0.5        0.5    1.13   0.126
+**
+**
+**         ROCK FLUID PROPERTIES
+**         =====================
+** FOAM MOBILITY REDUCTION IN RELATIVE PERMEABILITY EFFECTS WHICH ARE FLOW DEPENDENT
+** ---------------------------------------------------------------------------------
+*ROCKFLUID
+*KRTYPE *CON 1     ** Default curves which can be changed with well cards
+**
+**     
+** ======================================================================
+*RPT 1   ** Curves for foam with gas into surfactant brine (higher MRF)   
+** ======================================================================
+**
+**
+**
+** Interpolation between 2 Sets : Zero and Strong Foam Curves
+** Capillary Number Calculation is based on Aqueous surfactant IFT
+** Specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE **AQUEOUS MOLE FRAC    IFT
+                0.              50.
+                0.003           1.
+**
+** CRITICAL FOAM PARAMETERS
+**                                                     
+*FMMOB 100.                ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+**
+**
+** SET # 1 : No Foam, Corresponding to No Surfactant
+** ==================================================
+*KRINTRP 1
+*DTRAPW 1.0  ** No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+**
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+**
+** Override Critical Saturation on Table
+**SWR  0.12
+**SORW 0.30
+**SGR  0.05
+**SORG 0.03 
+*KRGCW 0.1
+**
+** SET # 2 : Foam, Corresponding to High Surfacatnt Concentration
+** ======================================================================
+**
+*KRINTRP 2 *COPY 1 1 ** Copy from first Set and then overwrite
+*DTRAPW 0.01          ** Strong Foam - Inverse Mobility Reduction Factor (MRF = 100)
+**
+** Overwrite Critical Saturation on Table
+**SWR  0.12
+**SORW 0.30
+**SGR  0.05
+**SORG 0.03
+*KRGCW 0.001   **Original Krgcw 1/100
+**                                                                          
+** ======================================================================
+*RPT 2 ** Curves for Foam with Surfactant Brine into Gas (lower MRF)    
+** ======================================================================
+**
+**
+** Capillary Number Calculation is based on aqueous surfactant IFT
+** specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE  **AQ MOLE FRAC    IFT
+              0.             50.
+              0.003          1.
+**                                                                       
+*FMMOB 10.                 ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+**
+** SET # 3 : No Foam, Corresponding to no Surfactant
+** ======================================================================
+**
+*KRINTRP 1
+*DTRAPW   1.  **No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+**
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+**
+** Override Critical Saturation on Table
+**SWR  0.12
+**SORW 0.30
+**SGR  0.05
+**SORG 0.03
+*KRGCW 0.1
+
+**
+** SET #4 : Foam, Corresponding to High Surfactant Conc.
+** =============================================================
+*KRINTRP 2 *COPY 1 1 **Copy from first Set then overwrite.
+*DTRAPW 0.1  **Strong Foam Inverse Mobilty Reduction Factor (MRF=10.)
+** Overwrite Critical Saturation on Table
+**SWR  0.12
+**SORW 0.30
+**SGR  0.05
+**SORG 0.03
+*KRGCW 0.01   **Original Krgcw 1/10
+**
+**
+** 
+** ADSORPTION DATA
+** ---------------
+*ADSCOMP 'SURFACT' WATER ** Data for revesible aqueous surfactant adsorption.
+*ADMAXT 1.088  ** gmole surf/m3 PV - 0.05 mg surf/g rock ** 54.4
+*ADSLANG *TEMP
+   85.    130E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 85
+   121.   129E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 121
+**
+
+
+
+** =========== INITIAL CONDITIONS ===================
+
+*INITIAL
+**TEMP 100     ** Initial Res Temp
+*TEMP *CON 100. 
+*VERTICAL *DEPTH_AVE  **Gravity Equilibrium calculation
+*REFPRES 30000          **kPa - 300 bar
+*REFDEPTH 2500.125
+*DWOC 2700.
+*DGOC 2400.
+*MFRAC_WAT 'WATER' *CON 1
+*MFRAC_OIL 'OIL' *CON 0.598
+*MFRAC_OIL 'GAS' *CON 0.402
+*MFRAC_GAS 'GAS' *CON 1  
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+*NUMERICAL            
+*TFORM *ZT
+*ISOTHERMAL
+*NORM
+*PRESS 400 *ZO 0.2  *ZNCG 0.2  *ZAQ 0.2
+
+
+
+** ===================== Recurrent Data ==================
+
+*RUN
+*TIME 0
+*DTWELL 1  ** 90 day WAG cycles modified by surfactant injection
+**
+*KRTYPE *CON 1         ** Second curves can be changed with well cards
+**
+*WELL 1 'WI1' *VERT 1 1
+*INJECTOR *MOBWEIGHT 'WI1'
+*INCOMP *WATER 1.0 0 0 0
+*OPERATE *STW 1205 **1500. ** 3.0 **6.0E+03
+*OPERATE *BHP 38000 **kPa - 380 bar
+** Well Geometry for the Injector
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERFV    *GEO 'WI1'
+      1:20   1.0  **100
+**
+
+*WELL 2  'GI1' 
+*INJECTOR *MOBWEIGHT 'GI1'
+*incomp *gas 0 0 0 1
+*OPERATE *STG 1005630. **1.3E+06 **2.5E+06
+*OPERATE *MAX *BHP 38000. **kPa - 380 bar
+** Well Geometry for the Injector
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF 'GI1'
+  2  1     1:20   2.3455e4  **200
+**  
+*WELL 3  'P' 
+*PRODUCER 'P'
+*OPERATE *STL 1000 **2.0 **1500. ** Sm3/d
+*OPERATE *MIN *BHP 10000. **kPa - 100 bar
+*MONITOR *GOR 1000 *STOP
+** Well Geometry for the Producer
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'P'
+ 20  1      1   200  flow-to 'SURFACE'  
+ 20  1      2   200  flow-to 1          ** 2
+ 20  1      3   200  flow-to 2          ** 3
+ 20  1      4   200  flow-to 3          ** 4
+ 20  1      5   200  flow-to 4          ** 5
+ 20  1      6   200  flow-to 5          ** 6
+ 20  1      7   200  flow-to 6          ** 7
+ 20  1      8   200  flow-to 7          ** 8
+ 20  1      9   200  flow-to 8          ** 9
+ 20  1      10   200  flow-to 9          ** 10
+ 20  1      11   200  flow-to 10          ** 11
+ 20  1      12   200  flow-to 11          ** 12
+ 20  1      13   200  flow-to 12          ** 13
+ 20  1      14   200  flow-to 13          ** 14
+ 20  1      15   200  flow-to 14          ** 15
+ 20  1      16   200  flow-to 15          ** 16
+ 20  1      17   200  flow-to 16          ** 17
+ 20  1      18   200  flow-to 17          ** 18
+ 20  1      19   200  flow-to 18          ** 19
+ 20  1      20   200  flow-to 19          ** 20
+ 19  1      4    200  flow-to 4          ** 21
+ 18  1      4   200  flow-to 21          ** 22
+ 17  1      4   200  flow-to 22          ** 23
+ 16  1      4   200  flow-to 23          ** 24
+ 15  1      4   200  flow-to 24          ** 25
+ 19  1      13   200  flow-to 13          ** 26
+ 18  1      13   200  flow-to 26          ** 27
+ 17  1      13   200  flow-to 27          ** 28
+ 16  1      13   200  flow-to 28          ** 29
+ 15  1      13   200  flow-to 29          ** 30
+
+**         
+*SHUTIN 'GI1'
+*TIME 90.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+
+*TIME 180.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*LAYER-CTRL 'WI1' *SKIN 3.0
+ 1 1 5:15
+
+*TIME 270.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 360.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 450.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 540.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 630.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 720.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 810.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 900.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 990.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1080.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 1170.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1260.
+stop 
+*DTWELL 1
+*KRTYPE *CON 2        ** Second curves which can be changed with well cards
+*SHUTIN 'GI1'
+*OPEN 'WI1'           ** Surfactant injection used to create foam effects                                                     
+**
+**WELL 1 'WI1' *VERT 1 1
+*INJECTOR *MOBWEIGHT 'WI1'
+*INCOMP *WATER 0.9997 0.0003 0 0
+*OPERATE *STW 1205 **1500. ** 3.0 **6.0E+03
+*OPERATE *BHP 38000 **kPa - 380 bar
+** Well Geometry for the Injector
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERFV    *GEO 'WI1'
+      1:20  1.0  **100
+**
+*TIME 1350.
+*DTWELL 1
+*KRTYPE *CON 1        ** Second curves which can be changed with well cards
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1440.
+*DTWELL 1
+*SHUTIN 'GI1'
+**WELL 1 'WI1' *VERT 1 1
+*INJECTOR *MOBWEIGHT 'WI1'
+INCOMP *WATER 1.0 0 0 0
+*OPERATE *STW 1205 **1500. ** 3.0 **6.0E+03
+*OPERATE *BHP 38000 **kPa - 380 bar
+*** Well Geometry for the Injector
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERFV    *GEO 'WI1'
+      1:20   1.0  **100
+**
+*TIME 1530.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1620.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 1710.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1800.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 1890.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 1980.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 2070.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 2160.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 2250.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 2340.
+*DTWELL 1
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+**
+*TIME 2430.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 2520.
+*DTWELL 1 
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 2610.
+*DTWELL 1
+*SHUTIN 'WI1'
+*OPEN 'GI1'
+*TIME 2700.
+*DTWELL 1 
+*SHUTIN 'GI1'
+*OPEN 'WI1'
+*TIME 3000

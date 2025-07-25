@@ -1,0 +1,350 @@
+** ***************************************************************************
+** Template (stgeo085.dat):  Jointed Rock in Separate Geomechanics Grid     **
+** ***************************************************************************
+**************************************************************************************
+** FILE :  STGEO052.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL              ELASTIC MODEL           FIELD UNITS             **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE GRID COUPLING BETWEEN RESERVOIR SIMULATOR AND            **
+**         GEOMECHANICS MODULE WHEN EACH USES A DISTINCT GRID TYPE.                 **
+**         SOME GEOMECHANICAL GRIDS HAVE SYMMETRICAL JOINTS                         **
+**                                                                                  **
+**         RESERVOIR:      21 x 21 x 11 CARTESIAN GRID                              **
+**         GEOMECHANICS :  10 x 20 x 11 RADIAL GRID                                 **
+**                                                                                  **
+** Based on template stgeo052.dat                                                   **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*title1 'STARS Geomechanics Template #85'
+*title2 'Verify/Illustrate *ROCKJOINT with Radial *GEOGRID'
+*title3 'Based on STGEO052'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 10
+*OUTPRN *GRID *VPOROS *SBDZ *PRES *SO *SG *SW
+
+*PRNTORIEN 2 0
+
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*WSRF *GRIDDEFORM  1              ** keyword for output grid deformation
+*WSRF *GRID 5
+OUTSRF GRID POISSON PRES SG SO STRESEFF STRESI STRESJ STRESK STRESSH SW 
+            VDISPL VPOROS YOUNG VPOROSGEO *TSUBSIDGEO BULKVOL SUBSIDGEO
+            ESTRESRAD ESTRESTAN DISPLRAD DISPLTAN  STRESRAD STRESTAN SHSTRRAD
+            YOUNGEQ POISSONEQ JYOUNGMI JYOUNGMJ JYOUNGMK TSAFACTOR SAFACTOR
+** YOUNG   : Young's modulus
+** POISSON : Poisson's ratio
+** VDISP   : Displacement vector
+
+*OUTSRF *SPECIAL *BLOCKVAR *PRES 11,11,1
+                 *BLOCKVAR *VPOROS 11,11,1
+                 *BLOCKVAR *VPOROSGEO 11,11,1
+                 *AVGVAR   *PRES
+                 *AVGVAR   *VPOROS
+                 *AVGVAR   *VPOROSGEO
+                 *BLOCKVAR *SUBSIDGEO 11,11,1
+
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+GRID CART 21  21  11  
+DI IVAR    5*0.5  5*1  6*2 5*10
+DJ JVAR    5*0.5  5*1  6*2 5*10
+DK CON 20   
+
+KDIR DOWN
+*DEPTH 1 1 1 4000
+**$
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+
+*POR  *CON 0.30
+
+*PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      1*5.0   1*100.0  1*20.0  1*20.0  1*20.0  1*100.0 1*20.0  1*20.0  3*100.0  
+*PERMJ *KVAR                
+      1*5.0   1*100.0  1*20.0  1*20.0  1*20.0  1*100.0 1*20.0  1*20.0  3*100.0  
+*PERMK *KVAR                ** that the first K layer is at bottom of the reservoir
+      1*0.05   1*1.0  1*0.2  1*0.2  1*0.2  1*1.0  1*0.2  1*0.2  3*1.0   
+**$
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*END-GRID
+ROCKTYPE 1
+*PRPOR 3000
+
+*CPOR  4.150E-5
+*ROCKCP 28.8
+*THCONR 38.4
+*THCONW 38.4
+*THCONO 38.4
+*THCONG 38.4
+*HLOSSPROP     *OVERBUR  35.0  30.0
+               *UNDERBUR 35.0  30.0
+**$ Model and number of components
+MODEL 3 3 3 1
+COMPNAME 'Water' 'Dead_Oil' 'Soln_Gas' 
+CMM
+0 400 1.65129 
+PCRIT
+0 0 667.009 
+TCRIT
+0 0 -115.554 
+KV1
+0 0 35707.6 
+KV2
+0 0 -0.000336251 
+KV3
+0 0 24.1542 
+KV4
+0 0 -1583.98 
+KV5
+0 0 -446.782 
+PRSR 14.7
+TEMR 60
+PSURF 14.7
+TSURF 60
+**$ Surface conditions
+SURFLASH W O G 
+MASSDEN
+0 53.9597 1.50259 
+CP
+0 1e-005 5e-005 
+CT1
+0 0 0 
+
+VISCTABLE
+**$  temp                               
+       41  0       10.0677       10.0677  ** Live oil visc (P=3000) = 10.0677
+       60  0           1.5           1.5  ** Live oil visc (P=3000) = 1.5
+       78  0      0.403994      0.403994  ** Live oil visc (P=3000) = 0.403994
+      123  0     0.0414307     0.0414307  ** Live oil visc (P=3000) = 0.0414307
+      168  0    0.00871568    0.00871568  ** Live oil visc (P=3000) = 0.00871568
+      213  0    0.00266042    0.00266042  ** Live oil visc (P=3000) = 0.00266042
+      258  0    0.00102035    0.00102035  ** Live oil visc (P=3000) = 0.00102035
+      303  0   0.000456704   0.000456704  ** Live oil visc (P=3000) = 0.000456704
+      348  0   0.000228534   0.000228534  ** Live oil visc (P=3000) = 0.000228534
+      393  0   0.000124418   0.000124418  ** Live oil visc (P=3000) = 0.000124418
+      438  0  7.23564e-005  7.23564e-005  ** Live oil visc (P=3000) = 7.23564e-005
+      483  0  4.43723e-005  4.43723e-005  ** Live oil visc (P=3000) = 4.43723e-005
+      528  0  2.84235e-005  2.84235e-005  ** Live oil visc (P=3000) = 2.84235e-005
+      573  0  1.88831e-005  1.88831e-005  ** Live oil visc (P=3000) = 1.88831e-005
+      618  0  1.29391e-005  1.29391e-005  ** Live oil visc (P=3000) = 1.29391e-005
+      663  0    9.105e-006    9.105e-006  ** Live oil visc (P=3000) = 9.105e-006
+      708  0  6.55664e-006  6.55664e-006  ** Live oil visc (P=3000) = 6.55664e-006
+      753  0  4.81806e-006  4.81806e-006  ** Live oil visc (P=3000) = 4.81806e-006
+
+
+
+** ================ ROCK-FLUID PROPERTIES ==============
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow        Pwc
+0.2     0.0000   0.5102      6.4
+0.25    0.0039   0.4133      5.6
+0.3     0.0156   0.3266      4.9
+0.35    0.0352   0.25        4.2
+0.40    0.0625   0.1837      3.6
+0.45    0.0977   0.1276      3.0
+0.5     0.1406   0.0816      2.5
+0.55    0.1914   0.0459      2.0
+0.6     0.25     0.0204      1.6
+0.65    0.3164   0.0051      1.2
+0.7     0.3906   0.0         0.9
+0.8     0.5625   0.0         0.4
+0.9     0.7656   0.0         0.1
+1.0000  0.7656   0.0000      0.0
+
+*SLT
+** Sl    Krg     Krog        Pgc
+0.20    0.6303   0.0000      3.2
+0.25    0.5511   0.0         2.8
+0.3     0.4772   0.0         2.5
+0.35    0.4086   0.0026      2.1
+0.4     0.3454   0.0104      1.8
+0.45    0.2874   0.0234      1.5
+0.5     0.2348   0.0416      1.3
+0.55    0.1875   0.0651      1.0
+0.6     0.1455   0.0937      0.8
+0.65    0.1089   0.1275      0.6
+0.7     0.0775   0.1666      0.5
+0.75    0.0514   0.2108      0.3
+0.8     0.0307   0.2709      0.2
+0.85    0.0153   0.3149      0.1
+0.9     0.0052   0.3748      0.0
+0.95    0.0004   0.4398      0.0
+0.97    0.0      0.4673      0.0
+1.0000  0.0      0.5102      0.0
+
+*KRWRO  0.5
+
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*vertical depth_ave
+
+INITREGION 1
+*refpres 3010
+*refdepth 4010
+*TEMP *CON 60
+*DWOC   5000
+*DGOC   3900
+**$
+**$ Property: Oil Mole Fraction(Dead_Oil)  Max: 0.350236  Min: 0.350236
+MFRAC_OIL 'Dead_Oil' CON     0.350236
+**$
+**$ Property: Oil Mole Fraction(Soln_Gas)  Max: 0.649764  Min: 0.649764
+MFRAC_OIL 'Soln_Gas' CON     0.649764
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+
+**RANGECHECK *OFF
+*NORM *PRESS   150.0        ** Normal maximum changes per time step
+**RANGECHECK *ON
+*converge *totres 1e-4
+*tform *zt
+*isothermal
+
+*itermax 100
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH                   ** geomechanics main keyword
+*GEOM3D                    ** 3D FE
+*GCOUPLING 2               ** Coupling option # 2
+**CALIB_POR                 ** Porosity calibration
+*GCFACTOR 1.0              ** Based on constrained boundaries
+*GPTOLMUL 0.1              ** Tolerance for pressure in coupling option 2
+SOLVERG AIMSOL
+
+*GEOGRID GRADIAL 10 15 11
+*GDI  *GIVAR   0.01 0.1  0.2  0.3  0.4  0.5  1  2  3  4
+*GDJ  *GCON   6.0
+*GDK  *GCON   20.0
+
+
+**GTRANSLI  55.25
+**GTRANSLJ  55.25
+
+
+*INTPOWER 2                    ** INVERSE DISTANCE POWER
+**GPOLY
+
+
+*GEODEPTH 1 1 1     4000   ** DEPTH OF FIRST GEOMECHANICAL BLOCK
+
+*GOUTSRF  GGRID POISSON PRES STRESEFF STRESI STRESJ STRESK STRESSH 
+            VDISPL YOUNG *TSUBSIDGEO BULKVOL SUBSIDGEO
+            ESTRESRAD ESTRESTAN DISPLRAD DISPLTAN  STRESRAD STRESTAN SHSTRRAD
+            YOUNGEQ POISSONEQ JYOUNGMI JYOUNGMJ JYOUNGMK TSAFACTOR SAFACTOR
+
+*ELASTMOD 5.0e4            ** Young's modulus
+*POISSRATIO .35            ** Poisson's ratio
+*COHESION 1e8              ** Cohesion : LARGE VALUE FOR ELASTIC MODEL
+
+*ROCKJOINT 1          ** Define rock joint properties # 1
+    *IKPJ  30.0       ** Dip angle in IK plane (degrees)
+    *IJPJ  90.0       ** Strike angle in IJ plane (degrees)
+    *CKNJ  8E3        ** Normal stiffness (kPa/m)   
+    *CKSJ  8E3        ** Shear stiffness (kPa/m) 
+    *CKSPACING  0.10  ** Fracture spacing (m)
+
+*ROCKJOINT 2          ** Define rock joint properties # 1
+    *IKPJ  150.0      ** Dip angle in IK plane (degrees)
+    *IJPJ  90.0       ** Strike angle in IJ plane (degrees)
+    *CKNJ  8E3        ** Normal stiffness (kPa/m)   
+    *CKSJ  8E3        ** Shear stiffness (kPa/m) 
+    *CKSPACING  0.10  ** Fracture spacing (m)
+
+*ROCKJOINT 3          ** Define rock joint properties # 2
+
+    *CKSPACING  0.0   ** Fracture spacing (m). Considered as intact rock since spacing is zero
+
+*CRAKSET 1           ** Combine joints in one crack set
+    JOINT 1          ** Rock joint # 1
+    JOINT 2          ** Rock joint # 1
+
+*CRAKSET 2           ** Combine joints in one crack set
+    JOINT 3          ** Rock joint # 3
+
+PRESCBC3D
+  *IJK  10  15  11
+     5:8   03   0.0
+  *IJK  1:10  1  1:11
+     1:2   02   0.0
+     5:6   02   0.0
+  *IJK  1:10  15  1:11
+     3:4   01   0.0
+     7:8   01   0.0
+
+*RCONBK  *ALL
+*RCONLF  *ALL
+
+*CRAKTYPE  *IJK      ** Assign crack sets on grid blocks; All blocks must be assigned.
+**   i      j     k    crack set
+    1:10  1:15   1:11     2     ** All block are intact
+    1:10  1:15   1:5      1     ** Some blocks have joints
+
+**MAGNIFYDI  1E2
+**MAGNIFYDJ  1E2
+**MAGNIFYDK  1E1
+
+*RUN
+
+
+** ===================RECURRENT DATA ================
+
+*DATE 2004 09 16
+
+   *DTWELL 0.05
+                  
+   WELL  'prod1'       **vert    21  21
+   PRODUCER 'prod1'
+   OPERATE  MAX  STO  100.  CONT REPEAT
+   OPERATE  MIN  BHP  500.  CONT REPEAT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.025  0.30   1.0  0.
+   PERF  GEO  'prod1'
+   **$ UBA       ff
+      1 1 1:11  0.2
+
+   wrst tnext
+
+time 50                     
+
+time 100

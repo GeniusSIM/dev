@@ -1,0 +1,305 @@
+
+
+
+**                       OVERVIEW
+**                       ========
+
+**  PURPOSE:  Verify and illustrate the usage of natural fracture
+**            option *DUALPOR used together with variable permeability
+**            option *EPCOMPACT.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+interrupt *stop
+
+title1 'Verification Run #61'
+title2 'Verify *DUALPOR With Compaction'
+
+inunit field except 11 1  ** ft3 instead of bbl
+
+outprn grid pres sw so sg temp
+outprn well all
+wprn grid 100
+wprn iter 100
+
+outsrf grid  pres sw so sg temp
+
+outsrf special
+  blockvar temp 1,1,1 mt
+  blockvar temp 8,8,1 mt
+  avgvar pres
+  avgvar vporos
+  blockvar pres 8,8,1 mt
+  blockvar pres 1,1,1 mt
+  blockvar pres 1,1,1 fr
+  blockvar pres 8,8,1 fr
+  blockvar vporos 8,8,1 mt
+  blockvar vporos 1,1,1 mt
+  blockvar vporos 1,1,1 fr
+  blockvar vporos 8,8,1 fr
+  blockvar fporos 8,8,1 mt
+  blockvar fporos 1,1,1 mt
+  blockvar fporos 1,1,1 fr
+  blockvar fporos 8,8,1 fr
+  blockvar permi 8,8,1 mt
+  blockvar permi 1,1,1 mt
+  blockvar permj 8,8,1 mt
+  blockvar permj 1,1,1 mt
+  blockvar permk 8,8,1 mt
+  blockvar permk 1,1,1 mt
+  blockvar permi 1,1,1 fr
+  blockvar permi 8,8,1 fr
+  blockvar permj 1,1,1 fr
+  blockvar permj 8,8,1 fr
+  blockvar permk 1,1,1 fr
+  blockvar permk 8,8,1 fr
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 8 8 1        ** 2D areal cartesian grid
+
+di con 75   
+dj con 75   
+dk con 30
+
+**  The whole reservoir is fractured in all 3 directions
+**  The element size in x and y direction is 10 ft and
+**  30 ft (block size) in z direction.
+
+dualpor  
+difrac con 10   
+djfrac equalsi   
+dkfrac con -1
+
+por matrix   con 0.19
+por fracture con 0.01      **  Fracture properties
+
+permi matrix   con 1
+permi fracture con 100     **  Fracture properties
+permj matrix   con 1
+permj fracture con 100     **  Fracture properties
+permk matrix   con 1
+permk fracture con 100     **  Fracture properties
+*end-grid
+
+** Instrinsic formation/rock properties
+cpor 3e-6
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop overbur 35 24 underbur 35 24
+
+*EPCOMPACT *CRP 1E-5 *PPLASTIC 100
+
+permuli fracture con 50
+permulj fracture con 50
+permulk fracture con 50
+
+permuli matrix con 10
+permulj matrix con 10
+permulk matrix con 10
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'  'DEAD_OIL'
+**              -----    --------
+cmm              18        200
+molden         3.55555    0.262
+cp                0       1.1e-5
+tcrit           647.4       0
+idealgas
+
+visctable
+
+**    Temp
+      40          0         14
+      50          0        5.21
+      60          0        2.45
+      70          0        1.36
+      80          0       .844
+      90          0       .57
+     100          0       .41
+     200          0       .08388
+     300          0       .06
+     400          0       .05617
+     500          0       .05532
+     600          0       .05509
+     700          0       .05502
+     800          0       .05499
+
+** Reference conditions
+prsr 14.7
+temr 120
+psurf 14.71
+tsurf 58.14
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+krtype matrix con 1
+krtype fracture con 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+pres matrix   con 1000
+pres fracture con 1000
+
+sw matrix   con 0.25   ** So by difference, since Sg = 0
+sw fracture con 0.25   ** So by difference, since Sg = 0
+
+temp matrix   con 120
+temp fracture con 120
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+sdegree gauss
+dtmax 90
+
+norm      press 250  satur  .3   temp 80  y .4   x .4
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1901 1 1.5
+
+   dtwell .17   ** 4 years of water injection
+
+   well 1 'INJTR'
+   well 2 'PRODN'
+
+   injector mobweight 'INJTR'
+   tinjw 600
+   qual .7
+   incomp water 1.0  0.0
+   operate stw 1120  
+   perf 'INJTR'
+          ** i j k  wi
+             1 1 1 754.2344 ** 4.773
+
+   producer 'PRODN'
+   operate     stl  1156
+   operate min bhp    20   stop   ** Stop run when min bhp exceeded
+   geometry k  .1 .432 1 0 ** rw cc ff ss
+   perf geo 'PRODN'
+              ** i j k
+                 8 8 1  1.0
+
+time 365
+time 730
+time 1095
+time 1460
+stop

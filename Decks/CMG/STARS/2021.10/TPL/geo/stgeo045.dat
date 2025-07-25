@@ -1,0 +1,453 @@
+
+*****************************************************************************
+** Template (stgeo045.dat):  Cold Flow with Foamy Oil and Wormhole         **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGEO045.DAT                                                             **
+**                                                                                  **
+** Cold Flow with Foamy Oil and Wormhole                                            **
+**                                                                                  **
+** Features:                                                                        **
+**    + 4m pay x 72m radial model (2D)                                              **
+**    + CH4 only in foamy kinetics                                                  **
+**    + temperature dependent rates for super-saturation and bubble decay           **
+**    +   set to follow the same trend of the inverse of vis(T)                     **
+**    + CH4 correlation changed (RPL memo)                                          **
+**    + Sgc=0.05                                                                    **
+**    + ew = 4.5                                                                    **
+**    + Sand/oil slurry viscosity follows Mooney's correlation                      **
+**    + Sand failure in fractures occurs at the 2 MPa/m condition (ARC)             **
+**    + Sand in fracture treated as a component in the oil phase                    **
+**    + Plot special histories in block (1,1,2) of fluid porosity, permeability and **
+**      SAND concentration                                                          **
+**                                                                                  **
+** Using new features of geomechanics:                                              **
+**    *PRESCBC          :  prescribed boundary conditions                           **
+**    *PLOADBC          :  Applied nodal loads.                                     **
+**     Output stresses and displacement vectors (*VDISPL).                          **
+**    *GEOSOLID         :  Geotechnical properties of initial sand.                 **
+**                                                                                  **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+RESULTS SIMULATOR STARS
+
+*interrupt stop
+
+*title1 'STARS Geomechanics Template #45'
+*title2 'Test/Illustrate *GEOSOLID:  Single-Well Cold Flow with Sand Failure'
+*title3 'Based on STGEO005'
+
+inunit SI  except 6 1         ** darcy instead of mD
+
+wprn iter 1
+outprn iter newton
+
+wprn grid time          ** write to output file every 20 steps
+
+outprn grid pres sw so sg vol solconc x vporos fporos
+            *volfr   visccmp  ** special visc component (in volfr)
+
+outprn well all
+
+outsrf well component all
+
+outsrf grid pres sw so sg viso vporos fporos permi x
+            *STRESI *STRESJ *STRESK *STRESSH *STRNEPL *VPOROS *VDISPL
+            volfr visocom
+            vol solconc
+
+outsrf special blockvar pres  1,1,1
+               blockvar pres  1,1,2
+               blockvar pres 11,1,2
+               blockvar permi  1,1,1
+               blockvar permi  1,1,2
+               blockvar permi 11,1,2
+               blockvar fporos  1,1,1
+               blockvar fporos  1,1,2
+               blockvar fporos 11,1,2
+               blockvar vol solconc  1,1,1 'SAND'
+               blockvar vol solconc  1,1,2 'SAND'
+               blockvar vol solconc 11,1,2 'SAND'
+               matbal reaction 'FREE_SAN'
+               volfrac 'PROD' 'FREE_SAN'
+
+
+
+**  ==============  GRID DEFINITION  ======================
+
+grid radial 33 1 2   rw 0.36  ** Grid dimension: 114x1x5=570 grid blocks
+**kdir down             ** vertical direction   
+
+** GRID BLOCK SIZES AND DEPTHS (M)
+di ivar  0.02 0.02 .030 .030 .040 .040 .050 .050 .060 .100 .140 .140 .240
+         0.36 0.48 0.60 0.60 0.60 0.60 0.72 0.72 1.80 2.40 3.00 4.80 6.00
+         7.20 8.40 8.40 12.0 18.0 18.0 24.0
+dj con   360
+dk con   0.6
+
+depth 1 1 1 500
+
+por con 0.30
+  mod 1:33 1 2 = 0.52
+
+permi con 1.0
+**  mod 1:33 1 2 = 1.65
+
+permj equalsi
+permk equalsi
+
+*END-GRID
+
+rocktype 1
+
+*permck 2.0
+
+*prpor 3500             ** Reference pressure (kPa)
+*cpor  6.2e-6
+
+rockcp 1.962e6          ** Rock heat capacity (J/m3-C)
+thconr 151e3            ** Thermal conductivity of rock (J/m-day-C)
+thconw 5.35e4           ** Thermal conductivity of water phase (J/m-day-C)
+thcono 1.15e4           ** Thermal conductivity of oil phase (J/m-day-C)
+thcong 14.4             ** Thermal conductivity of gas phase (J/m-day-C)
+
+hlossprop  overbur  2.64e6 151e3   underbur 2.64e6 151e3
+
+
+
+**  ==============  FLUID DEFINITIONS  ========================================================
+
+** THIS PVT REPRESENTS SAND BECOMING FREE SAND BELOW ONSET
+
+*MODEL 5 4 4 1   ** Components are water, dead oil and gas (and free_sand and solid_sand)
+                 ** Most water properties are defaulted (=0)
+                 ** Gas is methane
+
+*COMPNAME       'WATER'    'OIL'     'SOLN_GAS'   'FREE_SAN'    'SAND'
+**               -----    --------   ----------    ---------    ------
+     *CMM        0.01802    0.508     0.01603        1.150       1.150
+     *MASSDEN    0         985E-0    320.4E-0     2650.0E-0
+     *CP         0        0.82E-6     1.45E-6        1.0E-7
+     *CT1        0        6.86E-4      810E-6        205E-6
+
+     *PCRIT          0       861       4600          4600
+     *TCRIT          0       659      -82.55         -82.55
+
+     *SOLID_DEN  'SAND'   2650.0E-0   1.0E-7   205E-6
+
+
+     ** No volatile oil
+     *KV1        0           0       3.19E4         0
+    **KV3        0           0         212          0
+     *KV4        0           0        -33.1         0
+     *KV5        0           0        -27.7         0
+
+
+*VISCTABLE
+
+**      Temp
+          12     0        40000      3579.8      40000  **1.0e24
+          40     0        1250       14.0        1250   **1.0e24
+          80     0        75         0.844       75     **1.0e24
+         120     0        12.5       0.275       12.5   **1.0e24
+         160     0        5          0.130       5      **1.0e24
+         200     0        2.75       0.08388     2.75   **1.0e24
+         240     0        1.5        0.07433     1.5    **1.0e24
+         280     0        1.0        0.06478     1.0    **1.0e24
+
+  *vsmixcomp 'FREE_SAN'
+  *vsmixendp 0 0.67      ** Slurry viscosity (Mooney's correlation)
+  *vsmixfunc 0 .003448 .007658 .012913 .019658 .02863 .041151 .059846 .090778 .1518 .328415
+
+*PRSR    3500
+*TEMR  12
+*PSURF  101.3
+*TSURF 12
+
+** THE FOLLOWING LINES DESCRIBE THE REACTION KINETICS FOR SAND OIL
+
+** The following reaction describes irreversible free_sand creation:
+** stoichiometry defines free_sand as converted solid_sand
+** note this reaction uses reaction order 1.0
+** note we can specify a temperature independent rate constant (now set to 1/1000 day)
+** later this can be adjusted for temperature effects by using nonzero EACT)
+
+**               WATER     DD_OIL   SOLN_GAS   FREE_SAND    SAND
+STOREAC            0          0          0          0        1
+STOPROD            0          0          0          1        0
+RPHASE             0          0          0          3        4
+RORDER           .00        .00          0          0        1
+
+*FREQFAC 0.01
+
+EACT    0.000E+00 ** Temperature effects - FREQFAC= 1.000E-01*exp( 0.000E+00/(T* 1.987E+00))
+RENTH   0.000E+00 ** Reaction enthalpy - not used
+**MTVEL O 1.0 1.0e-2 1.0e-7
+
+
+
+**  ==============  RELATIVE PERMEABILTIES  ======================
+
+rockfluid
+
+*RPT 1 *STONE2 **Region 1
+
+*SWT
+
+**   Sw        Krw        Krow
+**  ----     -------     -------
+    0.45     0.0         0.225
+    0.50     0.00157     0.139
+    0.55     0.00697     0.075
+    0.60     0.01667     0.031
+    0.65     0.03095     0.007
+    0.70     0.05000     0.0
+
+*SLT **NOSWC   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg        Krog
+**  ----     -------     ------
+0.500000000  0.037093000  0.000000000  0.000000000
+0.525000000  0.033276000  0.000759000  0.000000000
+0.550000000  0.029655000  0.002833000  0.000000000
+0.575000000  0.026233000  0.006120000  0.000000000
+0.600000000  0.023010000  0.010572000  0.000000000
+0.625000000  0.019988000  0.016154000  0.000000000
+0.650000000  0.017168000  0.022841000  0.000000000
+0.675000000  0.014552000  0.030613000  0.000000000
+0.700000000  0.012142000  0.039454000  0.000000000
+0.725000000  0.009939000  0.049350000  0.000000000
+0.750000000  0.007946000  0.060287000  0.000000000
+0.775000000  0.000000617  0.072256000  0.000000000
+0.800000000  0.000000460  0.085245000  0.000000000
+0.825000000  0.000000325  0.099247000  0.000000000
+0.850000000  0.000000213  0.114253000  0.000000000
+0.875000000  0.000000123  0.130256000  0.000000000
+0.900000000  0.000000057  0.147249000  0.000000000
+0.925000000  0.000000015  0.165226000  0.000000000
+0.950000000  0.000000005  0.184180000  0.000000000
+0.975000000  0.000000001  0.204107000  0.000000000
+1.000000000  0.000000000  0.225000000  0.000000000
+
+*KROCW 1.0
+*KRGCW 0.84
+*SGR   0.025
+*SWR   0.20
+
+
+*RPT 2 *STONE2 **Layers 4 and 5
+
+*SWT
+**  Sw    Krw      Krow
+** ----  -----    ------
+   0.20   0.0        1.0
+   0.25   0.00035    0.797
+   0.30   0.00157    0.619
+   0.35   0.00376    0.464
+   0.40   0.00697    0.333
+   0.45   0.01127    0.225
+   0.50   0.01667    0.139
+   0.55   0.02322    0.075
+   0.60   0.03095    0.031
+   0.65   0.03986    0.007
+   0.70   0.05000    0.000
+
+*SLT **NOSWC
+**  Sl    Krg      Krog
+** ----  -----    -----
+   0.25   0.84000     0.0
+   0.30   0.73238     0.007
+   0.35   0.63158     0.024
+   0.40   0.53767     0.051
+   0.45   0.45076     0.087
+   0.50   0.37093     0.131
+   0.55   0.29830     0.184
+   0.60   0.23301     0.244
+   0.65   0.17520     0.313
+   0.70   0.12504     0.389
+   0.75   0.08275     0.472
+   0.80   0.00004860  0.563
+   0.85   0.00002295  0.662
+   0.90   0.00000637  0.767
+   0.95   0.00000     0.880
+   1.0    0.00000     1.000
+
+*SWR   0.20
+
+*KRTYPE *CON 2
+
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+initial
+
+*PRES *CON 3500
+*TEMP *CON 12
+
+*SW *CON 0.00
+*SO *CON 1.00
+
+*MFRAC_OIL 'OIL' *CON 1
+
+** 0.30 = 0.52 * (1 - conc/2650)
+*CONC_SLD 'SAND'  *CON 0.0  
+     *MOD 1:33 1 2 = 1000  ** conc = (1.0-0.30/0.52)*2650
+          
+
+
+**  ==============  NUMERICAL METHODS  ======================
+
+numerical
+
+rangecheck off
+dtmax 1.5
+tform zt
+isothermal
+norm     press   1000 **temp 30
+converge varonly   press 10 zo 0.0002 zncg 0.0002
+unrelax -1.0
+sdegree 1   
+upstream nlevel ** pivot on
+newtoncyc 10
+rangecheck on
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+*GCOUPLING 1
+*ELASTMOD 4.0E5
+*POISSRATIO .30
+*COHESION 15
+*FRICANGLE 40
+
+*GEOSOLID 'SAND'
+   *SDELASTMOD 1.0E6    ** Young's modulus
+   *SDPOISSON .20       ** Poisson's ratio
+   *SDCOHES   0.0       ** Cohesion
+   *SDFRICANG 30        ** Friction angle
+   *SDBIOTSCF  1.0      ** Biot's coefficient
+   *SDTHEXPCF   0.0     ** Linear thermal expansion coefficient
+   *SDILANG  30.0       ** Dilation angle
+   *SDSCL    2.0        ** Scaling power
+
+**FPVOLM 0.10
+*PRINTGEO 4
+*STRESS 4000 6500 0 4000
+*WRADIUS  0.36
+
+*PRESCBC                ** prescribed boundary conditions
+  **node     direction  displ
+    97       01:02      0.0
+    99       01:02      0.0
+
+    1        02         0.0
+    3        02         0.0
+
+    4        02         0.0
+    6        02         0.0
+    7        02         0.0
+    9        02         0.0
+    10       02         0.0
+    12       02         0.0
+    13       02         0.0
+    15       02         0.0
+    16       02         0.0
+    18       02         0.0
+    19       02         0.0
+    21       02         0.0
+    22       02         0.0
+    24       02         0.0
+    25       02         0.0
+    27       02         0.0
+    28       02         0.0
+    30       02         0.0
+    31       02         0.0
+    33       02         0.0
+    34       02         0.0
+    36       02         0.0
+    37       02         0.0
+    39       02         0.0
+    40       02         0.0
+    42       02         0.0
+    43       02         0.0
+    45       02         0.0
+    46       02         0.0
+    48       02         0.0
+
+    49       02         0.0
+    51       02         0.0
+    52       02         0.0
+    54       02         0.0
+    55       02         0.0
+    57       02         0.0
+    58       02         0.0
+    60       02         0.0
+    61       02         0.0
+    63       02         0.0
+    64       02         0.0
+    66       02         0.0
+    67       02         0.0
+    69       02         0.0
+    70       02         0.0
+    72       02         0.0
+    73       02         0.0
+    75       02         0.0
+    76       02         0.0
+    78       02         0.0
+    79       02         0.0
+    81       02         0.0
+    82       02         0.0
+    84       02         0.0
+    85       02         0.0
+    87       02         0.0
+    88       02         0.0
+    90       02         0.0
+    91       02         0.0
+    93       02         0.0
+    94       02         0.0
+    96       02         0.0
+
+*ploadbc            ** point loads
+   ** node    Hor. dir  Ver. dir
+    1:3      -2000.0    0.0
+
+
+
+run
+
+** ===================================RECURRENT DATA  ============
+
+Date 1991 12 01
+
+   dtwell 5.0e-6        
+
+   well 1 'PROD' vert 1 1
+   producer 'PROD'
+   operate     bhp  10000
+
+   perfv 'PROD'     **  k    wi
+                     1:2     100.
+**   shutin 'PROD'
+
+time 0.1
+time 1
+time 3
+time 5
+time 10
+time 30
+
+   wrst tnext
+
+time 50
+time 100

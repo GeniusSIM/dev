@@ -1,0 +1,30 @@
+**
+** This example illustrates the use of the *PROPERTY-FOR keyword.
+**
+
+FILE 'sttst01.sr3'
+
+** *********************************************************************
+**
+** Grid property data can be extracted for an indicated property for
+** the default time of 0.0,  for the nearest time to a specified time,
+** or for all available times in the sr3 file.
+
+*PROPERTY-FOR 'Temperature' 
+*PROPERTY-FOR 'Oil Saturation' 500
+*PROPERTY-FOR 'Water Saturation' *ALL-TIMES
+
+
+
+** *********************************************************************
+**
+** Component properties may also be extracted from the sr3 file.
+** Three notations may be used:
+
+** Notation (1)
+*PROPERTY-FOR 'Mass Den in Oil Phase(HEVY OIL)'
+** Notation (2)
+*PROPERTY-FOR 'Mass Den in Oil Phase(COMPONENT)' *COMPONENT 'HEVY OIL'
+** Notation (3)
+*PROPERTY-FOR 'Mass Den in Oil Phase$C' *COMPONENT 'HEVY OIL'
+

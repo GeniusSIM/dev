@@ -1,0 +1,90 @@
+**
+** This example illustrates the use of the *PROPERTY-FOR keyword.
+**
+
+FILE 'sttst01.sr3'
+
+** *********************************************************************
+**
+** Grid property data can be extracted for an indicated property for
+** the default time of 0.0,  for the nearest time to a specified time,
+** or for all available times in the sr3 file.
+
+*PROPERTY-FOR 'Temperature' 
+*PROPERTY-FOR 'Oil Saturation' 500
+*PROPERTY-FOR 'Water Saturation' *ALL-TIMES
+
+
+
+** *********************************************************************
+**
+** Component properties may also be extracted from the sr3 file.
+** Three notations may be used:
+
+** Notation (1)
+*PROPERTY-FOR 'Mass Den in Oil Phase(HEVY OIL)'
+** Notation (2)
+*PROPERTY-FOR 'Mass Den in Oil Phase(COMPONENT)' *COMPONENT 'HEVY OIL'
+** Notation (3)
+*PROPERTY-FOR 'Mass Den in Oil Phase$C' *COMPONENT 'HEVY OIL'
+
+
+
+** *********************************************************************
+
+** If you have a dual porosity system, use the *MATRIX or *FRACTURE keyword
+
+*PROPERTY-FOR 'Grid Paydepth' *MATRIX 10.0
+
+*PROPERTY-FOR 'Pressure' 0.0
+*PROPERTY-FOR 0.0 'Water Viscosity'
+*PROPERTY-FOR 0.0 'Mass Den in Oil Phase(HEVY OIL)'
+*PROPERTY-FOR 0.0 'Viscosity in Water Phase$C' *COMPONENT 'WATER'
+*PROPERTY-FOR 0.0 'Gas Mole Fraction(COMPONENT)' *COMPONENT 'OXYGEN'
+*PROPERTY-FOR 0.0 'Gas-Water K Value (Y/W)$C' *COMPONENT 'WATER'
+*PROPERTY-FOR 0.0 'Gas-Oil K Value (Y/X)(COMPONENT)' *COMPONENT 'LITE OIL'
+*PROPERTY-FOR *ALL-TIMES 'Grid Thickness'
+*PROPERTY-FOR *ALL-TIMES 'Mass Den in Oil Phase(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Mass Den in Water Phase(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Water Mass Density'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mole Fraction(OXYGEN)'
+*PROPERTY-FOR *ALL-TIMES 'Water-Oil Capillary Pres'
+*PROPERTY-FOR *ALL-TIMES 'Gross Block Volume'
+*PROPERTY-FOR *ALL-TIMES 'Gas-Water K Value (Y/W)(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Water Mole Fraction(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Pressure'
+*PROPERTY-FOR *ALL-TIMES 'Oil Saturation'
+*PROPERTY-FOR *ALL-TIMES 'Temperature'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Gas Phase(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Oil Phase(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mole Fraction(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Oil Mass Density'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Gas Phase(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Gas Phase(INRT GAS)'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mole Fraction(INRT GAS)'
+*PROPERTY-FOR *ALL-TIMES 'Gas Relative Perm'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Gas Phase(OXYGEN)'
+*PROPERTY-FOR *ALL-TIMES 'Gas Viscosity'
+*PROPERTY-FOR *ALL-TIMES 'Grid Bottom'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mole Fraction(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Water Saturation'
+*PROPERTY-FOR *ALL-TIMES 'Gas-Oil K Value (Y/X)(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Gas Phase(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Oil Phase(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mole Fraction(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Grid Paydepth'
+*PROPERTY-FOR *ALL-TIMES 'Solid Phase Conc(COKE)'
+*PROPERTY-FOR *ALL-TIMES 'Gas-Oil K Value (Y/X)(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Oil Mole Fraction(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Oil Relative Perm'
+*PROPERTY-FOR *ALL-TIMES 'Oil Viscosity'
+*PROPERTY-FOR *ALL-TIMES 'Viscosity in Water Phase(WATER)'
+*PROPERTY-FOR *ALL-TIMES 'Oil-Gas Capillary Pres'
+*PROPERTY-FOR *ALL-TIMES 'Oil Mole Fraction(LITE OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Mass Den in Oil Phase(HEVY OIL)'
+*PROPERTY-FOR *ALL-TIMES 'Water Viscosity'
+*PROPERTY-FOR *ALL-TIMES 'Water Relative Perm'
+*PROPERTY-FOR *ALL-TIMES 'Gas Saturation'
+*PROPERTY-FOR *ALL-TIMES 'Heat Loss to overburden'
+*PROPERTY-FOR *ALL-TIMES 'Gas Mass Density'
+*PROPERTY-FOR *ALL-TIMES 'Grid Top'

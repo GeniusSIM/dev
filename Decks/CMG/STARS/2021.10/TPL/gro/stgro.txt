@@ -1,0 +1,452 @@
+
+
+     STARS Data Files Illustrating "Grid Options"
+     --------------------------------------------
+
+stgro001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stgro002.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+stgro003.dat:
+  title1 'STARS Test Bed No. 9'
+  title2 'Variable Depth and Layer Thickness Illustration'
+
+stgro004.dat:
+  title1 'STARS Test Bed No. 22'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 with Local Grid Refinement'
+
+stgro005.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+stgro007.dat:
+  title1 'STARS Grid Option Template No. 7'
+  title2 '3x2 Patterns of 41x41x24, 235k Blocks, 1.3 Gb Allocation, 700 Mb Usage'
+  title3 'Based on STGRO014'
+
+stgro008.dat:
+  title1 'STARS Grid Option Template No. 8'
+  title2 '4x3 Patterns of 41x41x24, 467k Blocks, 2.7 Gb Allocation, 1.3 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro009.dat:
+  title1 'STARS Grid Option Template No. 9'
+  title2 'Validate Operation of MRF Larger Than 2 GB'
+  title3 'Based on STGRO007'
+
+stgro010.dat:
+  title1 'STARS Grid Option Template No. 10'
+  title2 'Restart from MRF Larger Than 2 GB'
+  title3 'Based on STGRO009'
+
+stgro011.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+stgro013.dat:
+  title1 'STARS Grid Option Template No. 13'
+  title2 '7x4 Patterns of 41x41x24, 1 Million Blocks, 6.5 Gb Allocation, 4.1 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro014.dat:
+  title1 'STARS Grid Option Template No. 14'
+  title2 'Large Grid Example:  41x41x24 grid with 40,344 blocks'
+  title3 'Based on Test Bed No. 46'
+
+stgro015.dat:
+  title1 'STARS Grid Option Template No. 15'
+  title2 '9x6 Patterns of 41x41x24, 2 Million Blocks, 16.5 Gb Allocation, 7.9 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro016.dat:
+  title1 'STARS Grid Option Template No. 16'
+  title2 '28x28 Patterns of 41x41x24 Each, 30 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro017.dat:
+  title1 'STARS Grid Option Template No. 17'
+  title2 '8-level LGR blocks with perfs and special histories'
+  title3 'Based on STTST07'
+
+stgro018.dat:
+  title1 'STARS Grid Option Template No. 18'
+  title2 'Recurrent Refinement and Derefinement'
+  title3 'Based on STTST03'
+
+stgro019.dat:
+  title1 'STARS Grid Option Template No. 19'
+  title2 'Recurrent Grid Amalgamation'
+  title3 'Based on STTST03'
+
+stgro020.dat:
+  title1 'STARS Grid Option Template No. 20'
+  title2 'Dynamic Refinement and Derefinement'
+
+stgro021.dat:
+  title1 'STARS Grid Option Template No. 21'
+  title2 'Dynamic Amalgamation and Deamalgamation'
+
+stgro022.dat:
+  title1 'STARS Grid Option Template No. 22'
+  title2 '*TRANSF for a 2D Fault Surface'
+  title3 'Based on STTST06'
+
+stgro023.dat:
+  title1 'STARS Grid Option Template No. 23'
+  title2 '5x4 Patterns of 41x41x24, 776k Blocks, 3 Gb Allocation, 2.4 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro024.dat:
+  title1 'STARS Grid Option Template No. 24'
+  title2 'Test/Illustrate *NINEPOINT with *GRID *CORNER'
+  title3 'Based on STGRO021'
+
+stgro025.dat:
+  title1 'STARS Grid Option Template No. 25'
+  title2 '*TRANSF for a 3D Fault Surface'
+  title3 'Based on STTST46'
+
+stgro026.dat:
+  title1 'STARS Grid Option Template No. 26'
+  title2 '23x23=529 Patterns of 41x41x24, 20e6 Blocks, 120 Gb Allocation, 79 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro027.dat:
+  title1 'STARS Grid Option Template No. 27'
+  title2 '507x1 Patterns of 41x41x24, 20e6 Blocks, 120 Gb Allocation, 56 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro028.dat:
+  title1 'STARS Grid Option Template No. 28'
+  title2 '*TRANSF with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro029.dat:
+  title1 'STARS Grid Option Template No. 29'
+  title2 '*TRANSF with *MINC'
+  title3 'Based on STTST29'
+
+stgro030.dat:
+  title1 'STARS Grid Option Template No. 30'
+  title2 '*TRANSF with *DUALPERM'
+  title3 'Based on STTST30'
+
+stgro031.dat:
+  title1 'STARS Grid Option Template No. 31'
+  title2 '*TRANSF for a 3D Fault Surface with *SUBDOMAIN'
+  title3 'Based on STTST31'
+
+stgro032.dat:
+  title1 'STARS Grid Option Template No. 32'
+  title2 '250x1 Patterns of 41x41x24, 10 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro033.dat:
+  title1 'STARS Grid Option Template No. 33'
+  title2 '13x10=130 Patterns of 41x41x24, 5 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro034.dat:
+  title1 'STARS Grid Option Template No. 34'
+  title2 'Test/Illustrate Heatloss Boundary Searching, Without LGR'
+  title3 'Based on STTST07'
+
+stgro037.dat:
+  title1 'STARS Grid Option Template No. 37'
+  title2 'Test/Illustrate Corner-Point Grid Without Discretized Wellbore'
+  title3 'Base Case for STGRO036'
+
+stgro038.dat:
+  title1 'STARS Grid Option Template No. 38'
+  title2 'Test/Illustrate Shale Properties - Base Case'
+  title3 'Base Case for STGRO039'
+
+stgro039.dat:
+  title1 'STARS Grid Option Template No. 39'
+  title2 'Test/Illustrate Shale Properties'
+  title3 'Base Case for STGRO039'
+
+stgro040.dat:
+  title1 'STARS Grid Option Template No. 40'
+  title2 'Test/Illustrate *DYNAGRID with Recurrent New Wells and Perforations'
+
+stgro041.dat:
+  title1 'STARS Grid Option Template No. 41'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro042.dat:
+  title1 'STARS Grid Option Template No. 42'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *MINC'
+  title3 'Based on STTST29'
+
+stgro043.dat:
+  title1 'STARS Grid Option Template No. 43'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *SUBDOMAIN'
+  title3 'Based on STTST31'
+
+stgro044.dat:
+  title1 'STARS Grid Option Template No. 44'
+  title2 'Test/Illustrate *TRANSMF with *MINC'
+  title3 'Based on STTST29'
+
+stgro045.dat:
+  title1 'STARS Grid Option Template No. 45'
+  title2 'Test/Illustrate *DUALPOR with Multi-Level *REFINE'
+  title3 'Based on STTST28'
+
+stgro046.dat:
+  title1 'STARS Grid Option Template No. 46'
+  title2 'Test/Illustrate *DUALPOR with *REFINE and *PARASOL'
+
+stgro048.dat:
+  title1 'STARS Grid Option Template No. 48'
+  title2 'Test/Illustrate Static Followed by Dynamic Gridding'
+  title3 'Based on STGRO040'
+
+stgro049.dat:
+  title1 'STARS Grid Option Template No. 49'
+  title2 'Test/Illustrate Heatloss Boundary Searching, With LGR'
+  title3 'Based on STGRO034'
+
+stgro050.dat:
+  title1 'STARS Grid Option Template No. 50'
+  title2 'Test/Illustrate *SHAPE *PI2 with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro051.dat:
+  title1 'STARS Grid Option Template No. 51'
+  title2 'Test/Illustrate Partial Inheritance for *FRFRAC and *FORMINFRAC'
+  title3 'Based on STGRO045'
+
+stgro052.dat:
+  title1 'STARS Grid Option Template No. 52'
+  title2 '*NINEPOINT *IJ with Diagonal 25x13 Grid for 1/8 9-Spot Pattern'
+  title3 'Based on STTST07'
+
+stgro053.dat:
+  title1 'STARS Grid Option Template No. 53'
+  title2 '*NINEPOINT *IJ with Parallel 18x18 Grid for 1/8 9-Spot Pattern'
+  title3 'Based on STGRO052'
+
+stgro054.dat:
+  title1 'STARS Grid Option Template No. 54'
+  title2 '*UPWIND *IJ with Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO052'
+
+stgro055.dat:
+  title1 'STARS Grid Option Template No. 55'
+  title2 '*UPWIND *IJ with Parallel 18x18 1/8 9-Spot Pattern'
+  title3 'Based on STGRO053'
+
+stgro056.dat:
+  title1 'STARS Grid Option Template No. 56'
+  title2 '*UPWIND *IJ with *DYNAGRID in Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO054'
+
+stgro057.dat:
+  title1 'STARS Grid Option Template No. 57'
+  title2 '*UPWIND *3D with Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO054'
+
+stgro058.dat:
+  title1 'STARS Grid Option Template No. 58'
+  title2 '*UPWIND *3D with Parallel 18x18 1/8 9-Spot Pattern'
+  title3 'Based on STGRO055'
+
+stgro059.dat:
+  title1 'STARS Grid Option Template No. 59'
+  title2 '*UPWIND *3D with *DYNAGRID in Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO057'
+
+stgro060.dat:
+  title1 'STARS Grid Option Template No. 60'
+  title2 'Test/Illustrate *UPWIND *IK with *GRID *CORNER'
+  title3 'Based on STGRO024'
+
+stgro061.dat:
+  title1 'STARS Grid Option Template No. 61'
+  title2 'Verify/Illustrate *IRCONNECT - Radial Grid'
+  title3 'Based on STTST06'
+
+stgro062.dat:
+  title1 'STARS Grid Option Template No. 62'
+  title2 'Verify/Illustrate *IRCONNECT - Cartesian/Hybrid Grid'
+  title3 'Based on STTST34'
+
+stgro063.dat:
+  title1 'STARS Grid Option Template No. 63'
+  title2 'Verify/Illustrate *NODES for Node-Based Corner-Point Data'
+  title3 'Based on STTST14'
+
+stgro064.dat:
+  title1 'STARS Grid Option Template No. 64'
+  title2 'Verify/Illustrate *NODEX/Y/Z for Node-Based Corner-Point Data'
+  title3 'Based on STGRO063'
+
+stgro065.dat:
+  title1 'STARS Grid Option Template No. 65'
+  title2 'Verify/Illustrate *TRANSMULT *ACCUMULATE'
+  title3 'Based on STGEO030'
+
+stgro066.dat:
+  title1 'STARS Grid Option Template No. 66'
+  title2 'Verify/Illustrate *BLOCKS *RG for Node-Based LGR'
+  title3 'Based on STGRO063'
+
+stgro067.dat:
+  title1 'STARS Grid Option Template No. 67'
+  title2 '*DYNAGRID with Recurrent *PERMx Changes'
+  title3 'Based on VERIFY65'
+
+stgro068.dat:
+  title1 'STARS Grid Option Template No. 68'
+  title2 '*DYNAGRID with Recurrent *TRANSx Changes'
+  title3 'Based on VERIFY65'
+
+stgro069.dat:
+  title1 'STARS Grid Option Template No. 69'
+  title2 'Verify/Illustrate *BLOCKGROUP and *REFINE *INNERWIDTH'
+  title3 'Based on STGRO017'
+
+stgro070.dat:
+  title1 'STARS Grid Option Template No. 70'
+  title2 'Verify/Illustrate *BLOCKGROUP with *BG Inside of *MOD'
+  title3 'Based on STGRO069'
+
+stgro071.dat:
+  title1 'STARS Grid Option Template No. 71'
+  title2 'Verify/Illustrate *PLNRFRAC_TEMPLATE and *PLNRFRAC'
+  title3 'Based on STTST16'
+
+stgro072.dat:
+  title1 'STARS Grid Option Template No. 72'
+  title2 'Verify/Illustrate *ROCK_IN_FRAC, *SAT_ADJUST and Tuning Outputs'
+  title3 'Based on STFRR001/STTST28'
+
+stgro073.dat:
+  title1 'STARS Grid Option Template No. 73'
+  title2 'Illustrate Non-DynaGrid Refinement/Derefinement in Recurrent Data'
+  title3 'Based on STGRO018'
+
+stgro074.dat:
+  title1 'STARS Grid Option Template No. 74'
+  title2 'Verify/Illustrate *TRANS_MULT_REGION and *INTER_REGION_TM'
+  title3 'Based on VERIFY62'
+
+stgro075.dat:
+  title1 'STARS Grid Option Template No. 75'
+  title2 'Illustrate/Verify *PORVOL with *VAMOD Volume Fractions'
+  title3 'Based on STTST07'
+
+stgro076.dat:
+  title1 'STARS Grid Option Template No. 76'
+  title2 'Illustrate/Verify *PORVOL with *VOLMOD and *NETPAY'
+  title3 'Based on STTST16'
+
+stgro077.dat:
+  title1 'STARS Grid Option Template No. 77'
+  title2 'Illustrate/Verify *TRANVI, *TRANVJ and *TRANVK'
+  title3 'Based on STGRO076'
+
+stgro078.dat:
+  title1 'STARS Grid Option Template No. 78'
+  title2 'Verify/Illustrate *PVCUTFR with *DUALPERM'
+  title3 'Based on STTST30'
+
+stgro079.dat:
+  title1 'STARS Grid Option Template No. 79'
+  title2 'Verify/Illustrate *AREALPINCH-TOL & *DISTORTED-BLOCK *PINCH-ALL'
+  title3 'Based on STGRO020'
+
+stgro080.dat:
+  title1 'STARS Grid Option Template No. 80'
+  title2 'Test/Illustrate *SHAPE *K-AV2 with *DUALPERM'
+  title3 'Based on STSMO020'
+
+stgro081.dat:
+  title1 'STARS Grid Option Template No. 81'
+  title2 'Test/Illustrate *SHAPE *KX with *DUALPERM'
+  title3 'Based on STSMO020'
+
+stgro082.dat:
+  title1 'STARS Grid Option Template No. 82'
+  title2 '*TRANSF with *PTHRESH-FAULT *PLASTIC'
+  title3 'Based on STGRO030'
+
+stgro083.dat:
+  TITLE1 'STARS Grid Option Template No. 83'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLXB-TYPE *FLUX'
+
+stgro084.dat:
+  TITLE1 'STARS Grid Option Template No. 84'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro083.flxb)'
+
+stgro085.dat:
+  TITLE1 'STARS Grid Option Template No. 85'
+  ITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLXB-TYPE *PRESSURE'
+
+stgro086.dat:
+  TITLE1 'STARS Grid Option Template No. 86'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro085.flxb)'
+
+stgro087.dat:
+  TITLE1 'STARS Grid Option Template No. 87'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLUX_ISECTOR'
+
+stgro088.dat:
+  TITLE1 'STARS Grid Option Template No. 88'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro087.flxb)'
+
+stgro089.dat:
+  TITLE1 'STARS Grid Option Template No. 89'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN) with *DUALPOR'
+
+stgro090.dat:
+  TITLE1 'STARS Grid Option Template No. 90'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN)'
+  TITLE3 'Corner Point, Single Porosity'
+
+stgro091.dat:
+  TITLE1 'STARS Grid Option Template No. 91'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN) with *LAYERXYZ'
+
+stgro092.dat:
+  TITLE1 'STARS Grid Option Template No. 92'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN)'
+  TITLE3 'DFN Between Disconnected Regions'
+
+stgro093.dat:
+  TITLE1 'STARS Grid Option Template No. 93'
+  TITLE2 'Test/Illustrate *SIGMAMF and *KAVMF with *DUALPERM'
+
+stgro094.dat:
+  TITLE1 'STARS Grid Option Template No. 94'
+  TITLE2 'Test/Illustrate *TRANSD with *DUALPERM'
+  TITLE3 'Based on STGRO080'
+
+stgro095.dat:
+  title1 'STARS Grid Option Template No. 95'
+  title2 'Hydraulic Fracture in LGR Blocks'
+  title3 'Based on STGRO063'
+
+stgro096.dat:
+  title1 'STARS Grid Option Template No. 96'
+  title2 '*DUALPOR with *PVCUTRG-FR'
+  title3 'Based on STGRO028'
+
+

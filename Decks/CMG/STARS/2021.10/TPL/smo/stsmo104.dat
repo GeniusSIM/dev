@@ -1,0 +1,273 @@
+
+
+**************************************************************************************
+**                                                                                  **
+**  This template demonstrates the application of following *TUNING_TOOLS options:  **
+**                                                                                  **
+**  *AR_MM: Add artificial resistance between matrix-matrix connections for         **
+**  improved numerical performance when throughput is high and potential            **
+**  difference is small.                                                            **
+**                                                                                  **
+**  *DT_ADJUST: The number of iterations for the previous timestep will affect the  **
+**  the current timestep size.                                                      **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Simulator Options No. 104'
+*TITLE2 'Verify/Illustrate *AR_MM and *DT_ADJUST'
+
+*inunit *SI   *except 6 1    ** darcy instead of md
+*outunit *SI  *except 6 1    ** darcy instead of md
+
+*wrst *time            
+*wprn *grid 9000
+*wprn *iter 1           
+
+*outprn *well *none
+*outprn *iter *unconv
+
+wsrf sector time
+wsrf grid time
+
+
+** ======================= GRID AND RESERVOIR DEFINITION =================
+
+*grid *cart 50 1 50 
+*kdir *down
+
+*di *con 0.11 
+*dj *con 5
+*dk *con 0.11 
+
+*por *con 0.33
+*permi *con 4.0
+*permj *equalsi
+*permk *con 3.0
+
+*end-grid
+
+*prpor 100.0
+*cpor  2.6e-6            
+*ctpor 1.0e-4
+
+*rockcp 2.35e6 
+*thconr 2.10e5          
+*thconw 5.35e4         
+*thcono 1.15e4         
+*thcong 1.40e2       
+
+
+**================= FLUID DEFINITIONS =============================
+
+*model  3 3 3 1 
+
+*compname   'Water'	'Bitumen'	'Solvent'
+**-------------------------------------------------------------------------------------
+*cmm	       0	0.655		0.086	   
+*pcrit         0      1142.0		3282.9
+*tcrit         0      624.65		234.5
+
+*molden        0     1.5404e+3		7.6093e+3   
+*cp            0     5.5e-7		5.5e-7   
+*ct1           0     5.4e-4		2.6E-03	
+
+CPG1		0 	0 	  	-4.413
+CPG2		0 	0 	  	0.582
+CPG3		0 	0 		-3.119e-4
+CPG4		0 	0 	 	6.494e-8
+HVR		0	0	   	4143	
+
+kv1 		0	0		1.0062e+6
+kv4		0	0		-2697.55
+kv5		0	0		-224.37
+
+*visctable 
+
+**Temp	Water	Bitumen			
+**-----------------------------
+9	0	3.197035E+06	3.2564E-00
+20	0	4.910268E+05	3.8064E-00
+40	0	3.128929E+04	1.8564E-00
+60	0	3.838612E+03	1.5204E-00
+80	0	7.700504E+02	1.2648E-00
+100	0	2.245418E+02	1.0661E-00
+120	0	8.730179E+01	0.9087E-00
+140	0	4.244334E+01	0.7821E-00
+160	0	2.458304E+01	0.6789E-00
+180	0	1.634821E+01	0.5737E-00
+200	0	1.213272E+01	0.4955E-00
+220	0	9.828505E+00	0.4629E-00
+240	0	9.828505E+00	0.4629E-00
+
+** Reference and surface conditions
+*prsr 101.325 
+*temr 20.0   
+*psurf 101.325 
+*tsurf 22.0
+*surflash *kvalue
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*rpt 1
+
+*swt  ** Oil-Water System, water-oil relative permeability table
+1.5000E-01	0.0000E+00	8.0000E-01
+1.7586E-01	1.3991E-03	7.4056E-01
+2.0172E-01	4.8718E-03	6.8362E-01
+2.2759E-01	1.0108E-02	6.2915E-01
+2.5345E-01	1.6965E-02	5.7714E-01
+2.7931E-01	2.5350E-02	5.2757E-01
+3.0517E-01	3.5197E-02	4.8041E-01
+3.3103E-01	4.6453E-02	4.3566E-01
+3.5690E-01	5.9074E-02	3.9328E-01
+3.8276E-01	7.3025E-02	3.5325E-01
+4.0862E-01	8.8274E-02	3.1555E-01
+4.3448E-01	1.0480E-01	2.8017E-01
+4.6034E-01	1.2256E-01	2.4706E-01
+4.8621E-01	1.4156E-01	2.1621E-01
+5.1207E-01	1.6176E-01	1.8759E-01
+5.3793E-01	1.8315E-01	1.6117E-01
+5.6379E-01	2.0571E-01	1.3693E-01
+5.8966E-01	2.2943E-01	1.1482E-01
+6.1552E-01	2.5429E-01	9.4815E-02
+6.4138E-01	2.8028E-01	7.6880E-02
+6.6724E-01	3.0739E-01	6.0974E-02
+6.9310E-01	3.3561E-01	4.7056E-02
+7.1897E-01	3.6492E-01	3.5078E-02
+7.4483E-01	3.9532E-01	2.4989E-02
+7.7069E-01	4.2679E-01	1.6732E-02
+7.9655E-01	4.5933E-01	1.0241E-02
+8.2241E-01	4.9293E-01	5.4385E-03
+8.4828E-01	5.2758E-01	2.2288E-03
+8.7414E-01	5.6327E-01	4.8508E-04
+9.0000E-01	6.0000E-01	0.0000E+00
+
+*slt  ** Gas-Liquid System, liquid-gas relative permeability table
+2.3000E-01	5.0000E-01	0.0000E+00	9.0000E-01
+2.5310E-01	4.0507E-01	4.8508E-04	8.8535E-01
+2.7621E-01	3.2566E-01	2.2288E-03	8.7449E-01
+2.9931E-01	2.5967E-01	5.4385E-03	8.6471E-01
+3.2241E-01	2.0522E-01	1.0241E-02	8.5558E-01
+3.4552E-01	1.6064E-01	1.6732E-02	8.4690E-01
+3.6862E-01	1.2444E-01	2.4989E-02	8.3856E-01
+3.9172E-01	9.5306E-02	3.5078E-02	8.3050E-01
+4.1483E-01	7.2094E-02	4.7056E-02	8.2267E-01
+4.3793E-01	5.3797E-02	6.0974E-02	8.1503E-01
+4.6103E-01	3.9546E-02	7.6880E-02	8.0755E-01
+4.8414E-01	2.8590E-02	9.4815E-02	8.0023E-01
+5.0724E-01	2.0290E-02	1.1482E-01	7.9304E-01
+5.3034E-01	1.4103E-02	1.3693E-01	7.8596E-01
+5.5345E-01	9.5748E-03	1.6117E-01	7.7900E-01
+5.7655E-01	6.3292E-03	1.8759E-01	7.7213E-01
+5.9966E-01	4.0573E-03	2.1621E-01	7.6535E-01
+6.2276E-01	2.5100E-03	2.4706E-01	7.5866E-01
+6.4586E-01	1.4891E-03	2.8017E-01	7.5205E-01
+6.6897E-01	8.4059E-04	3.1555E-01	7.4551E-01
+6.9207E-01	4.4672E-04	3.5325E-01	7.3904E-01
+7.1517E-01	2.2035E-04	3.9328E-01	7.3263E-01
+7.3828E-01	9.8894E-05	4.3566E-01	7.2629E-01
+7.6138E-01	3.9218E-05	4.8041E-01	7.2000E-01
+7.8448E-01	1.3134E-05	5.2757E-01	7.1376E-01
+8.0759E-01	3.4430E-06	5.7714E-01	7.0758E-01
+8.3069E-01	6.1279E-07	6.2915E-01	7.0145E-01
+8.5379E-01	5.3797E-08	6.8362E-01	6.9536E-01
+8.7690E-01	8.4059E-10	7.4056E-01	6.8932E-01
+9.0000E-01	0.0000E+00	8.0000E-01	6.8332E-01
+
+
+** ====================== INTIAL CONDITIONS ==========================
+
+*initial
+
+*pres *con 2000.0
+
+*sw *con 0.15
+*so *con 0.85
+*sg *con 0.00
+
+*temp *con 9.0
+
+*mfrac_oil 'Bitumen' *con 1.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical
+
+*NORTH 300      
+*ITERMAX 300                                  
+*PRECC 1.0E-6   
+
+*CONVERGE VARONLY 
+
+*AIM THRESH 0.35
+*AIM STAB
+
+*TUNING_TOOLS
+*AR_MM  DELTP_G 0.2 DELTP_O 0.2  *I_AR 0.9  *J_AR 0.7  *K_AR 0.9
+*DT_ADJUST ON  
+
+**  ==============  RECURRENT DATA  ======================
+
+*run
+*date 2016 01 01
+*dtwell 1.0e-3
+
+*well 1 'Injector'      
+*well 2 'Producer'     
+
+*injector *mobweight 1
+*incomp *water 1. 0. 0. 
+*tinjw 235.0
+*qual 1.0
+*operate *bhp 2300.0
+*operate *max *stw 5.0  	        
+*perf *wi 'Injector'   **   i   j   k
+1   1  41  500.
+
+
+*producer 2
+*operate *bhp 1900.0
+**operate *steam 2.0
+*perf *wi 'Producer'   **   i   j   k
+1   1  50  500.     
+
+*uhtr   *ijk  1:1 1 41:50  2.873556e6
+*tmpset *ijk  1:1 1 41:50  230.0
+
+*shutin 1
+
+*time 0.1
+*time 0.2
+*time 0.3
+*time 0.4
+*time 0.5
+*time 1.0
+*time 2.0
+
+*time 5.0
+*dtwell 0.01
+
+*injector *mobweight 1
+*incomp *water-oil 0.9 0. 0.1 
+*tinjw 235.0
+*qual 1.0
+*operate *bhp 2300.0
+*operate *max *stf 1.
+
+*time 10.0
+*time 15.0
+
+stop
+
+*time 20.0
+*time 25.0
+stop

@@ -1,0 +1,191 @@
+********************************************************************************
+** mxsgw015: iSegWells : 4-Lateral Producer without FCDs - base case for      **
+**                       comparisons.  Uses reporting layer lumps             ** 
+********************************************************************************
+**                                                                            **
+** FILE:   MXSGW015.DAT                                                       **
+**                                                                            **
+** MODEL:  15X15X15 CARTESIAN GRID - 4-LATERAL PRODUCER WITHOUT FCDS          **
+**                                                                            **
+********************************************************************************
+**                                                                            **
+** This is a 15x15x15 cartesian grid production problem. The single           **
+** producer runs on an STO rate constraint. Reporting layer lumps are         **
+** used to obtain local rate information.  No flow control devices restrict   **
+** the flow from the horizontal laterals into the vertical wellbore branch;   **
+** this data set serves as a basis for comparison with runs which use FCDs.   **
+**                                                                            **
+** Provenance: smart6_01_NOFCD.dat                                            **
+**                                                                            **
+********************************************************************************
+
+RESULTS SIMULATOR IMEX
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'iSegWell'
+*TITLE2
+'Multilateral without control devices'
+*TITLE3
+'Base Case for FCD comparisons'
+
+*INUNIT *FIELD              
+*WPRN   *WELL 1
+*OUTPRN WELL ALL
+*WPRN   *GRID 0
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*OUTPRN *TABLES *NONE
+WPRN ITER MATRIX
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   1
+*OUTSRF *GRID *SO *SW  *SG  *PRES *BPP FLUX
+
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 15  15  15                                  
+*KDIR *DOWN       
+**          1    2     3   4    5   6-10  11  12   13   14   15            
+*DI *IVAR 10000 5000 2500 1200 900 5*900 900 1200 2500 5000 10000              
+*DJ *JVAR 10000 5000 2500 1200 900 5*900 900 1200 2500 5000 10000             
+**          1   2    3    4     5    6    7    8    9    10   11    12   13   14   15 
+*DK *KVAR 50.0 20.0 50.0 100.0 50.0 20.0 50.0 100.0 50.0 20.0 50.0 100.0 50.0 20.0 50.0
+
+*DTOP   225*8940           
+*POR    *KVAR 3*0.15 0.15 
+              3*0.15 0.15 
+              3*0.15 0.15 
+              3*0.15 
+
+*CPOR   1.0E-6              
+*PRPOR  6000.0               
+*PERMI  *KVAR    4*200 4*1000 4*100 3*500                                            
+*PERMJ  *EQUALSI            
+*PERMK  *CON 10.0
+        
+*MODEL *BLACKOIL            
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*TRES 100
+*PVT  *ZG
+** p       rs     bo      zg    viso     visg
+  14.7       0 1.0000   .9999   1.20    .0125
+   400     165 1.0120   .8369   1.17    .0130
+   800     335 1.0255   .8370   1.14    .0135
+  1200     500 1.0380   .8341   1.11    .0140
+  1600     665 1.0510   .8341   1.08    .0145
+  2000     828 1.0630   .8370   1.06    .0150
+  2400     985 1.0750   .8341   1.03    .0155
+  2800    1130 1.0870   .8341   1.00    .0160
+  3200    1270 1.0985   .8398    .98    .0165
+  3600    1390 1.1100   .8398    .95    .0170
+  6000    2110 1.1790   .8398    .77    .0200
+
+*DENSITY *OIL    44.986
+*GRAVITY *GAS     0.92
+*DENSITY *WATER  63.021
+*CO    1.0E-6
+*BWI   1.0034
+*CW    1.0E-6
+*REFPW 3600
+*VWI   0.96
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1
+*SWT                          
+** sw   krw     krow
+0.150   0.00    1.00 
+0.200   *int    *INT
+0.250   *int    *INT
+0.300   *int    *INT
+0.350   *int    *INT
+0.400   *int    *INT
+0.500   *int    *INT
+0.600   *int    *INT
+0.650   *int    *INT
+0.700   *int    *INT
+0.750   *int    *INT
+0.800   1.00    0.00 
+
+*SLT                        
+** sl   krg    krog
+0.200   0.3   0.00
+0.250   *INT    *INT
+0.300   *INT    *INT
+0.400   *INT    *INT
+0.500   *INT    *INT
+0.600   *INT    *INT
+0.650   *INT    *INT
+0.700   *INT    *INT
+0.750   *INT    *INT
+0.800   *INT    *INT
+0.850   *INT    *INT
+0.900   *INT    *INT
+0.950   *INT    *INT
+1.0      0.00   1.00 
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *DEPTH_AVE    
+*PB *CON    5000.0          
+*REFDEPTH   9000.0           
+*REFPRES    5000.0           
+*DGOC       5000.0          
+*DWOC       10000.0          
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX    30.0
+*WATER_FIX 2
+*NORTH 80
+*ITERMAX 80
+*SDEGREE 2
+*AIM OFF
+*NORM *PBUB 1000
+
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2011 01 01
+*DTWELL 1.00
+*AIMSET CON 1
+
+*WELL 1 'Multi-lat'
+*PRODUCER  'Multi-lat'
+*PWELLBORE ISEGWELL
+*OPERATE *MAX  *STO  2000
+*OPERATE *MIN  *BHP  1000.0
+
+*HEADITER    '*' ITERATIVE
+*BHPHEADINIT '*' COMBINED
+
+
+*TIME    1
+*TIME    3
+*TIME   10
+*TIME   30
+*TIME  100
+*TIME  300
+*TIME  500
+*TIME 1000
+*TIME 1500
+*TIME 2000
+*TIME 2500
+*TIME 3000
+*TIME 3650
+

@@ -1,0 +1,391 @@
+**--------------------------------------------------------------------**
+** GMGHG010.DAT:  CO2 Sequestration - Numerical Derivatives of Rx'ns  **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMGHG010.DAT                                                **
+**                                                                    **
+** MODEL: CART 50x1x10 GRID             CO2 INJECTION INTO AN         **
+**        2 COMPONENTS                  AQUIFER WITH GEOCHEMISTRY     **
+**        WATER-GAS MODEL                                             **
+**        FIELD UNITS                                                 **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set is constructed to model gas sequestration   **
+** into an  aquifer. Field units are used. Chemical equilibrium       **
+** constants are independent of temperature. Trace gas is used. CO2   **
+** inventory information is output to the print file.                 **
+** Numerical derivatives of the reaction terms are used.              **
+** GHG009.DAT and GHG010.DAT form a pair comparing analytical and     **
+** numerical derivatives of the reaction terms.                       **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'CO2 injection into aquifer'
+*TITLE2 'Numerical Derivatives of Rxns'
+*TITLE3 ' '
+*INUNIT *FIELD
+*RESULTFILE *SR2
+*WRST  0
+*WPRN *WELL  *TIME
+*WPRN *GRID  *TIME
+*WPRN *ITER  *BRIEF
+
+*OUTPRN *GRID *IMPL *Z 'CO2' *W 'CO2' *SG
+              *MOLALITY 'CO2' *MOLALITY 'H+' *MOLALITY 'Ca++'
+              *MOLALITY 'SiO2(aq)' *MOLALITY 'Al+++' *MOLALITY 'OH-'
+              *MOLALITY 'CO3--' *MOLALITY 'HCO3-' *MINERAL 'CALCITE'
+              *MINERAL 'KAOLINIT' *MINERAL 'ANORTHIT'
+
+*OUTPRN *RES *ALL
+*WSRF *WELL  1
+*WSRF *GRID  *TIME
+
+
+*OUTSRF *GRID *SW *SG *PRES *DENW *DENG *DPORMNR
+              *Z 'CO2' *W 'CO2'
+              *MOLALITY 'CO2' *MOLALITY 'H+' *MOLALITY 'Ca++'
+              *MOLALITY 'SiO2(aq)' *MOLALITY 'Al+++' *MOLALITY 'OH-'
+              *MOLALITY 'CO3--' *MOLALITY 'HCO3-' *MINERAL 'CALCITE'
+              *MINERAL 'KAOLINIT' *MINERAL 'ANORTHIT'
+
+*OUTSRF *RES *ALL
+*DIARY *CHANGES
+*INVENTORY-CO2
+**-------------------------------------RESERVOIR & GRID DATA------------
+*GRID *CART 50 1 10
+*KDIR *DOWN
+*DI *IVAR 50*32.8084
+*DJ *CON 32.8084
+*DK *CON 16.4042
+*DEPTH *TOP 1 1 1 3937.0
+*POR *CON 0.18
+*PERMI *CON 100.0
+*PERMJ *CON 100.0
+*PERMK *CON 100.0
+*CPOR 4.0E-06
+**-------------------------------------FLUID PROPERTY DATA--------------
+*MODEL   *PR
+*NC    2  2
+*TRES         122.00
+*PVC3  1.2000000E+00
+*COMPNAME
+'CO2     ' 'C1      '
+*SG        8.1800000E-01  3.0000000E-01
+*TB       -1.0925700E+02 -2.5870000E+02
+*PCRIT     7.2800000E+01  4.5400000E+01
+*VCRIT     9.4000000E-02  9.9000000E-02
+*TCRIT     3.0420000E+02  1.9060000E+02
+*AC        2.2500000E-01  8.0000000E-03
+*MW        4.4010000E+01  1.6043000E+01
+*HCFLAG    0  0
+*BIN
+     1.0300000E-01
+*VSHIFT
+     0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC     1.0000000E+00
+*VISVC
+     9.4000000E-02  9.9000000E-02
+*VISCOEFF
+     1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02  9.3324000E-03
+*OMEGA
+     4.5723553E-01  4.5723553E-01
+*OMEGB
+     7.7796074E-02  7.7796074E-02
+*PCHOR
+     7.8000000E+01  7.7000000E+01
+*HENRYC
+     9.232443E+03  0.0
+*REFPH
+     2.755717E+02  0.0
+*VINFINITY
+     3.5650849E-02  0.0
+*YAQU-RATE-CUTOFF
+1.0E-04 100.0
+
+*DER-CHEM-EQUIL *NUMERICAL **ANALYTICAL
+*DER-REACT-RATE *NUMERICAL **ANALYTICAL
+*ACTIVITY-MODEL *B-DOT
+*AQUEOUS-DENSITY *ROWE-CHOU
+*AQUEOUS-VISCOSITY *KESTIN
+
+*NC-AQUEOUS 7
+*COMPNAME-AQUEOUS
+'H+' 'Ca++' 'SiO2(aq)' 'Al+++' 'OH-' 'HCO3-' 'CO3--'
+*MW-AQUEOUS
+1.0079
+40.0800
+60.0843
+26.9815
+17.0073
+61.0171
+60.0092
+
+*ION-SIZE-AQUEOUS
+9.0 6.0 -0.5 9.0 3.5 4.5 4.5
+*CHARGE-AQUEOUS
+1 2 0 3 -1 -1 -2
+
+*NC-MINERAL 3
+*COMPNAME-MINERAL
+'CALCITE' 'KAOLINIT' 'ANORTHIT'
+*MW-MINERAL
+100.0869
+258.1616
+278.2082
+
+*MASSDENSITY-MINERAL
+2710.00
+2410.00
+2740.00
+
+*REACTION-CHEM 'H2O' = 'H+' + 'OH-'
+*LOG-CHEM-EQUIL-CONST -13.2631
+
+*REACTION-CHEM 'CO2' + 'H2O' = 'H+' + 'HCO3-'
+*LOG-CHEM-EQUIL-CONST -6.3221
+
+*REACTION-CHEM 'CO2' + 'H2O' = 2 'H+' + 'CO3--'
+*LOG-CHEM-EQUIL-CONST -16.5563
+
+*REACTION-RATE-TST  'CALCITE' + 'H+' = 'Ca++' + 'HCO3-'
+*REACTIVE-SURFACE-AREA 88.0
+*ACTIVATION-ENERGY 41870.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 1.3560
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -8.79588
+
+*REACTION-RATE-TST  'KAOLINIT' + 6 'H+' = 5 'H2O' + 2 'SiO2(aq)' + 2 'Al+++'
+*REACTIVE-SURFACE-AREA 17600.0
+*ACTIVATION-ENERGY 62760.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 5.4706
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -13.00
+
+*REACTION-RATE-TST 
+'ANORTHIT' + 8 'H+'= 4 'H2O' + 'Ca++' + 2 'SiO2(aq)' + 2 'Al+++'
+*REACTIVE-SURFACE-AREA 088.0
+*ACTIVATION-ENERGY 67830.0
+*REF-TEMP-RATE-CONST 25.0
+*LOG-CHEM-EQUIL-CONST 23.0603
+*TST-PARAM1 1.0
+*TST-PARAM2 1.0
+*LOG-TST-RATE-CONSTANT -12.0
+
+*PHASEID *CRIT
+*SOLUBILITY
+*CW  3.0E-06
+*REFPW 1900.0
+*OGW_FLASH *NO_H2OVAP
+**COMPONENT 2 IS A TRACE COMPONENT
+*TRACE-COMP 2
+
+*DERIVATIVEMETHOD *NUMERALL
+
+**-------------------------------------ROCK FLUID DATA------------------
+*ROCKFLUID
+*RPT
+*SGT
+ 0.0006000       0.0   1.00000       0.0
+ 0.0500000       0.0 0.8800000       0.0
+ 0.0889000 0.0010000 0.7023000       0.0
+ 0.1778000 0.0100000 0.4705000       0.0
+ 0.2667000 0.0300000 0.2963000 0.0010000
+ 0.3556000 0.0500000 0.1715000 0.0100000
+ 0.4444000 0.1000000 0.0878000 0.0300000
+ 0.5333000 0.2000000 0.0370000 0.8000000
+ 0.6222000 0.3500000 0.0110000 3.0000000
+ 0.6500000 0.3900000       0.0   4.00000
+ 0.7111000 0.5600000       0.0   8.00000
+ 0.8000000   1.00000       0.0  30.00000
+*SWT
+ 0.2000000       0.0   1.00000  45.00000
+ 0.2899000 0.0022000 0.6769000  19.03000
+ 0.3778000 0.0180000 0.4153000  10.07000
+ 0.4667000 0.0607000 0.2178000   4.90000
+ 0.5556000 0.1438000 0.0835000   1.80000
+ 0.6444000 0.2809000 0.0123000 0.5000000
+ 0.7000000 0.4089000       0.0 0.0500000
+ 0.7333000 0.4855000       0.0 0.0100000
+ 0.8222000 0.7709000       0.0       0.0
+ 0.9111000   1.00000       0.0       0.0
+   1.00000   1.00000       0.0       0.0
+**-------------------------------------INITIAL RESERVOIR CONDITION------
+*INITIAL
+*SEPARATOR  14.7  60.0
+*VERTICAL   *DEPTH_AVE *WATER_GAS
+*REFPRES  1711.4
+*REFDEPTH 3937.0
+*DWGC     3773.0
+*ZGAS 0.001 0.999
+*SWOC 0.995
+
+*MOLALITY-AQUEOUS
+**'H+' 'Ca++' 'SiO2(aq)' 'Al+++' 'OH-' 'CO3--' 'HCO3-'
+   1.000000D-07   9.118492D-05
+   2.345433D-08   2.317806D-11   5.456322D-07   2.489299D-02   1.170273D-05
+
+*VOLUMEFRACTION-MINERAL
+0.0088 0.0176 0.0088
+
+**-------------------------------------NUMERICAL METHOD-----------------
+*NUMERICAL
+*NORM *PRESS 145.04
+*NORM *SATUR  0.05
+*NORM *GMOLAR 0.05
+*MAXCHANGE *SATUR 0.5
+*MAXCHANGE *GMOLAR 0.5
+*CONVERGE *PRESS 1.E-05
+*CONVERGE *HC    1.E-05
+*CONVERGE *WATER 1.E-05
+*CONVERGE *MAXRES 1.E-04
+*NORTH 80
+*ITERMAX 200
+*PRECC 1.E-08
+*DTMIN 1.E-06
+*DTMAX 182.5
+**-------------------------------------WELL DATA------------------------
+** ONE INJECTOR
+** INJECTOR : CONSTANT SURFACE VOLUME INJECTION (CO2)
+*RUN
+*DATE 2000 01 01
+*DTWELL 0.01
+*WELL  1 'INJ-1'
+*INJECTOR 'INJ-1'
+*INCOMP SOLVENT  1.0 0.0
+*OPERATE MAX STG  759265.3345 CONT
+*OPERATE MAX BHP  3.553425E+03 CONT
+*GEOMETRY K 0.328 0.35000 1.0000 0.000
+*PERF GEO   'INJ-1'
+	 1  1  5 1.000
+*TIME 365
+*TIME  730
+*SHUTIN 'INJ-1'
+*TIME  1095
+*TIME  1460
+*TIME  1825
+*TIME  2190
+*TIME  2555
+*TIME  2920
+*TIME  3285
+*TIME  3650
+*TIME  4015
+*TIME  4380
+*TIME  4745
+*TIME  5110
+*TIME  5475
+*TIME  5840
+*TIME  6205
+*TIME  6570
+*TIME  6935
+*TIME  7300
+*TIME  7665
+*TIME  8030
+*TIME  8395
+*TIME  8760
+*TIME  9125
+*TIME  9490
+*TIME  9855
+*TIME  10220
+*TIME  10585
+*TIME  10950
+*TIME  11315
+*TIME  11680
+*TIME  12045
+*TIME  12410
+*TIME  12775
+*TIME  13140
+*TIME  13505
+*TIME  13870
+*TIME  14235
+*TIME  14600
+*TIME  14965
+*TIME  15330
+*TIME  15695
+*TIME  16060
+*TIME  16425
+*TIME  16790
+*TIME  17155
+*TIME  17520
+*TIME  17885
+*TIME  18250
+*TIME  18615
+*TIME  18980
+*TIME  19345
+*TIME  19710
+*TIME  20075
+*TIME  20440
+*TIME  20805
+*TIME  21170
+*TIME  21535
+*TIME  21900
+*TIME  22265
+*TIME  22630
+*TIME  22995
+*TIME  23360
+*TIME  23725
+*TIME  24090
+*TIME  24455
+*TIME  24820
+*TIME  25185
+*TIME  25550
+*TIME  25915
+*TIME  26280
+*TIME  26645
+*TIME  27010
+*TIME  27375
+*TIME  27740
+*TIME  28105
+*TIME  28470
+*TIME  28835
+*TIME  29200
+*TIME  29565
+*TIME  29930
+*TIME  30295
+*TIME  30660
+*TIME  31025
+*TIME  31390
+*TIME  31755
+*TIME  32120
+*TIME  32485
+*TIME  32850
+*TIME  33215
+*TIME  33580
+*TIME  33945
+*TIME  34310
+*TIME  34675
+*TIME  35040
+*TIME  35405
+*TIME  35770
+*TIME  36135
+*TIME 36525
+*TIME   38351.25
+*TIME   40177.5
+*TIME   42003.75
+*TIME   43830
+*TIME   45656.25
+*TIME   47482.5
+*TIME   49308.75
+*TIME   51135
+*TIME   52961.25
+*TIME   54787.5
+*TIME   56613.75
+*TIME   58440
+*TIME   60266.25
+*TIME   62092.5
+*TIME   63918.75
+*TIME   65745
+*TIME   67571.25
+*TIME   69397.5
+*TIME   71223.75
+*TIME   73050
+*STOP

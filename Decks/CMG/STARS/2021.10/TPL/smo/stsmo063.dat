@@ -1,0 +1,258 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    Test and illustrate the three-point rock-fluid end-point scaling option.
+
+**    1) Three-point scaling is applied to Krw via *3PTSCAL_KRW.
+
+**    2) Three-point scaling is applied to Krow via *3PTSCAL_KROW.
+
+**    3) Four-point scaling is applied to Pcow via *3PTSCAL_PCOW.
+
+**    4) Two-point scaling is applied to all other curves via keywords.
+
+**    5) All-curve keyword *3PTSCALING is applied at beginning and then over-ridden.
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  =======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 63'
+*title2 'Verify/Illustrate *3PTSCALING, *3PTSCAL_x'
+*title2 'Three-Point Rock-Fluid End-Point Scaling'
+
+
+*inunit  si except 2 0   ** deg K instead of deg C
+            except 3 2   ** Atm instead of kPa
+*outunit si except 2 0   ** deg K instead of deg C
+            except 3 2   ** Atm instead of kPa
+
+OUTSRF GRID KRO KRW PRES SG SO SW 
+OUTPRN WELL LAYPWF
+OUTPRN WELL LAYPHASE
+*wrst 100
+*wprn *grid 250
+*wprn *iter 250
+
+**outsrf well all
+**outsrf grid sw pres
+wsrf grid 1
+OUTSRF SPECIAL BLOCKVAR SW 1,1,1 
+               BLOCKVAR SW 1,1,3 
+               BLOCKVAR KRW 1,1,1 
+               BLOCKVAR KRW 1,1,3 
+               BLOCKVAR RPNW 1,1,1 
+               BLOCKVAR RPNW 1,1,3 
+               BLOCKVAR SW 1,1,2 
+               BLOCKVAR KRW 1,1,2 
+               BLOCKVAR RPNW 1,1,2 
+               BLOCKVAR PCOW 1,1,1 
+               BLOCKVAR PCOW 1,1,2
+               BLOCKVAR PCOW 1,1,3 
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+GRID VARI 60 1 3
+KDIR UP
+
+DI IVAR 60*10
+DJ JVAR 30
+DK ALL 180*25
+
+DTOP 60*0
+
+POR CON 0.193
+
+PERMI KVAR 872 500 250
+PERMJ CON  872
+PERMK CON  872
+
+*end-grid
+
+ROCKTYPE 1
+
+*cpor 0.0 
+*rockcp 2.347e6
+
+*thconr 1.496e5
+*thconw 1.496e5
+*thcono 1.496e5
+*thcong 1.496e5
+
+*hlossprop overbur  2.347e6 1.496e5
+           underbur 2.347e6 1.496e5
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm              0.01802   0.1423    ** Values for C10 used
+*pcrit             0         20.8     ** for the oil component
+*tcrit           647.35     617.6
+*molden          55486.2    5621.9
+*cp              4.5e-5     7.3e-5    ** 1/atm (water from default formula)
+*ct1            -1.9095e-3  7.2e-4
+*ct2             7.296e-6     0
+*avg           2.722e-16      0
+*bvg             1.075        0
+
+*cpg1              0          0
+*cpl1              0        1047
+*hvapr             0        5580
+
+*visctable
+**      Temp
+       273.0      1.0       2.5
+       573.0      1.0       2.5
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+RPT 1 WATWET
+**  Water-oil relative permeabilities
+**   Sw         Krw        Krow      Pcow
+**  -----      ------     ------    ------
+SWT
+**$        Sw       krw      krow      Pcow
+       0.1000     0.000     0.950      1.5
+       0.1200     0.000     0.859      1.4
+       0.1565     0.002     0.731     1.22
+       0.1848     0.004     0.616      1.1
+       0.2130     0.007     0.514     0.98
+       0.2413     0.011     0.424     0.86
+       0.2695     0.016     0.345     0.74
+       0.2977     0.022     0.277     0.62
+       0.3260     0.029     0.218     0.52
+       0.3542     0.038     0.168     0.45
+       0.3825     0.047     0.127      0.4
+       0.4107     0.057     0.093     0.35
+       0.4390     0.069     0.065      0.3
+       0.4672     0.081     0.044     0.25
+       0.4955     0.095     0.028      0.2
+       0.5237     0.110     0.016     0.17
+       0.5520     0.125     0.008     0.13
+       0.5802     0.142     0.004    0.094
+       0.6085     0.160     0.001    0.059
+         0.64     0.180     0.000    0.034
+       0.6650     0.200     0.000    0.034
+**  Liquid-gas relative permeabilities
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+SLT
+**$        Sl       krg      krog      Pcog
+        0.200      0.17       0.0      0.69
+        0.395     0.112    0.0294    0.5218
+        0.433    0.1022    0.0461     0.489
+        0.515    0.0855    0.0883    0.4183
+        0.569    0.0761    0.1172    0.3717
+        0.614    0.0654    0.1433    0.3329
+        0.663      0.05    0.1764    0.2907
+        0.719    0.0372     0.217    0.2424
+        0.750    0.0285    0.2255    0.2156
+        0.805    0.0195    0.2919    0.1682
+        0.850    0.0121    0.3373    0.1294
+        0.899    0.0026    0.5169    0.0871
+          1.0       0.0      0.95       0.0
+
+*bswcrit con 0.2
+*bswcon con 0.15
+*bsoirw con 0.3
+*bsorw con 0.4 
+
+** Scaling method for end-points of rock-fluid curves
+*3PTSCALING   *OFF  ** All curves use two-point (the default)
+*3PTSCAL_KRW  *ON   ** Krw curve uses three-point
+*3PTSCAL_KROW *ON   ** Krow curve uses three-point
+*3PTSCAL_PCOW *ON   ** Pcow curve uses four-point
+*3PTSCAL_KROG *OFF  ** Krog curve uses two-point (the default)
+*3PTSCAL_KRG  *OFF  ** Krg curve uses two-point (the default)
+*3PTSCAL_PCOG *OFF  ** Pcog curve uses two-point (the default)
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+PRES CON 100
+
+SW CON 0.1
+SO CON 0.9
+
+TEMP CON 350
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical
+
+*dtmax  150.
+
+*norm     press 5.00 satur 0.4   temp 30  y 0.4   x 0.4
+
+
+
+*run
+
+**  ==============  RECURRENT DATA  ======================
+
+time 0
+
+   dtwell 1e-4
+
+   ** Injection specification
+   WELL  'INJECTOR'
+   injector mobweight 'INJECTOR'
+   tinjw 350. 
+   incomp water 1.0  0.0
+   operate     stw 200.      ** Water injection rate
+   operate max bhp 2000.
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.05  0.307  1.  0.
+   PERF  GEO  'INJECTOR'
+   **$ UBA   ff  Status  Connection  
+      1 1 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+      1 1 2  1.  OPEN    FLOW-FROM  1
+      1 1 3  1.  OPEN    FLOW-FROM  2
+
+   ** Production specification
+   WELL  'PRODUCER'
+   producer 'PRODUCER'
+   operate     stl 200.
+   operate min bhp 100.
+             **  rw  geofrac   wfrac skin
+   GEOMETRY  K  0.05  0.307  1.  0.
+   PERF  GEO  'PRODUCER'
+   **$ UBA    ff  Status  Connection  
+      60 1 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+      60 1 2  1.  OPEN    FLOW-TO  1
+      60 1 3  1.  OPEN    FLOW-TO  2
+
+time 200
+time 400
+time 600
+time 800 
+time 1000
+** time 1200  stop
+time 4000
+
+   shutin 'PRODUCER' 
+
+time 4300

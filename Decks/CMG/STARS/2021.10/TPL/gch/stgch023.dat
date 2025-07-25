@@ -1,0 +1,351 @@
+
+
+
+
+**                      OVERVIEW
+**                      ========
+
+
+**    Test and illustrate geochemistry of 'Sylvite' dissolution with enthalpy of reaction effect
+**    Core length is 60 cm with 4.88 x 4.88 cm cross sectional area.
+**    80 x 1 x 1 cartesian grid
+
+**    Hydrogen mole concentration is represented by STARS water component. 
+
+**    Hydrogen is set as component to identify its presence but mole concentration           
+**    is set to zero.                                        
+
+**    Geochem outputs are in mol/l (water) for water species and in                
+**    mol/l and eq/l (pore volume) for solid and sorbed species, respectively.                  
+
+**    Water chemistry with NaCl/KCl flood dissolution of 'Sylvite' with                                     
+**    transition state theory (*TST).                  
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Geochem Model Template #23'
+*TITLE2 'Water Chemistry with Exothermic Dissolution and *TST'
+*TITLE3 'KCl/NaCl Flood in Core'
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     ** WATER VISC AND ADSORPTION
+               *MASFR    *VISO *KRW *KRO
+*OUTSRF *GRID  *SW  *SO  *W   *X *Y *Z *SG *PRES    *PERMI  *PERMK                               
+               *VISW	*VISO *KRW *KRO
+               *VPOROS *FPOROS
+*OUTSRF *GRID *ALL
+
+** GEOCHEM OUTPUTS
+*OUTSRF *GRID  *AQ-SP *SRB-SP *SLD-SP *PHAQ *LSATIND
+	       
+*OUTPRN *WELL  *ALL
+*OUTPRN *ITER *NEWTON **UNCONV
+*OUTPRN *ITER-GCH *NONE
+ 
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 80 1 1  ** One-dimensional grid
+
+*DI *CON .00762
+*DJ *CON .0488
+*DK *CON .0488
+
+*POR *CON 0.20	** POROSITY
+
+
+*PERMI *CON 500  ** 500 milli-darcies
+*PERMJ *EQUALSI  ** EQUAL TO I DIRECTION VALUE
+*PERMK *CON 50
+
+*END-GRID
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+** Model and number of components
+MODEL 8 7 7 6
+COMPNAME 'WATER' 'H' 'Na' 'K' 'Cl' 'Anion' 'OIL' 'Sylvite*' 
+**            
+CMM
+0.01802 0.001 0.0229898 0.0390983 0.035453 0.035453 0.1 0.0745513 
+PCRIT
+0 0 0 0 0 0 0
+TCRIT
+0.00 0.00 0.00 0.00 0.00 0 0
+** Geochem inputs
+
+** Geo-element flags
+
+** Input total number of elements, aqueous species, solid elements, solid species, sorbed species
+** note - there are 3 elements that make up the solid species
+GEOCHEM 5 6 2 1 0
+** flag stars components that will participate in geochem reactions
+** water participates by default so flag to zero (follow order of COMPNAME)
+COMP-GEO 0 1 1 1 1 1 0 1 
+
+** Aqueous species inputs
+***************************
+** identify aqueous species by name
+CMPNAME-AQ
+ 'H+' 'Na+' 'K+' 'Cl-' 'H2O' 'OH-'
+** identify aqueous species charge numbers (follow order of COMPNAME-AQ)
+CHARGE-AQ
+ 1 1 1 -1 0 -1
+
+** construct the element abundance matrix, a matrix of columns
+** equal to the number of total species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+** 		'H+' 'Na+' 'K+' 'Cl-' 'H2O' 'OH-'
+** H 		1 0 0 0 2 1
+** Na		0 1 0 0 0 0
+** K		0 0 1 0 0 0
+** Cl		0 0 0 1 0 0
+** Anion	0 0 0 0 0 0
+
+AMAT_AQ
+1 0 0 0 2 1
+0 1 0 0 0 0
+0 0 1 0 0 0
+0 0 0 1 0 0
+0 0 0 0 0 0
+
+** Build the aqueous stoichiometry matrix, consisting of columns equal to 
+** the number of aqueous fluids and rows equal to the number of reactions
+** Each equation is followed with the associated reaction constant
+** In this example there are 6 aqueous species (independents and dependents) and
+** 1 reaction (equivalent to the number of dependent species)
+** total number of equations is number of total species  minus number of independent species
+** NOTE, H2O is not flagged when used in reactions because its concentration is adsorbed
+**       into the equilibrium constant
+**REACTION NO.   3: H2O = (H+) + (OH-) 
+STOICH_AQ
+** 'H+' 'Na+' 'K+' 'Cl-' 'H2O' 'OH-'
+    -1   0     0    0    0     -1
+LG-KEQ -14.0d0
+**DELH-KEQ -32755.1
+
+
+** Solid species inputs
+***************************
+** identify solid species by name
+CMPNAM-SLD 'Sylvite'
+** construct the solid element abundance matrix, a matrix of columns
+** equal to the number of total solid species and rows equal to the number of elements
+** matrix coeffecients represent the number of elements in each species
+
+AMAT_SLD
+0 
+0 
+1
+1
+0
+
+** Add stoichiometry input for solids
+** NOTE stoich coefficient input per line is only over the independent species
+** and keyword input must be in the same order as the order of input solid species names
+** Each equation is followed with the associated reaction constant
+
+** Equation 1: Sylvite(KCl) = (Cl-) + (K+) 
+*STOICH_SLD 		 0 0 1 1 0
+
+LG-KSP 0.957 
+DELH-KSP 52825
+SLD_KIN TST		** Use transitional state theory for solid
+LOG-TST-RATE-CONSTANT 6.0	** Log TST rate constant (mol/m2*day)
+REACTIVE-SURFACE-AREA 1.0	** Mineral surface area m2/m3
+MIN-REACT-SURFACE-AREA 0.1	** Minimum surface area m2/m3
+SUPER-SATURATION-INDEX 1.2 	** supersaturation is enforced to delay precipitation
+ACTIVATION-ENERGY 52200 	** Activation Energy (J/mol) of solid reaction
+RENTH_GCH 17220 	** 17.22 kJ/mol reaction enthalpy (exothermic)
+TST-DAMP 100		** Moderate dampening of reaction rate (Default = 1000)
+
+** Location of hydrogen element
+** Must identify location of hydrogen in the *CMPNAME-AQ species list
+****************
+*HYDROGEN 1
+
+PRSR 101.
+TEMR 40
+PSURF 101.1
+TSURF 15
+SOLID_DEN 'Sylvite*' 1987 0 0 
+MASSDEN
+0 0 0 0 0 0 924 
+CP
+0 0 0 0 0 0 1E-5 
+CT1
+0 0 0 0 0 0 0 
+AVISC
+0 0 0 0 0 0 3.2 
+BVISC
+0 0 0 0 0 0 0
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+**  Begin rel-perm input data
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW 
+**  ----      -------    -------
+0.37			0			0.95
+0.4			0.011785714		0.743725507
+0.425		0.021607143		0.592347414
+0.45		0.031428571		0.459290062
+0.475		0.04125			0.34421076
+0.5			0.051071429		0.246728533
+0.525		0.060892857		0.166413244
+0.55		0.070714286		0.10276903
+0.575		0.080535714		0.055207056
+0.6			0.090357143		0.022995215
+0.625		0.100178571		0.005145323
+0.65		0.11			0
+
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.37      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   0.95 
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES *CON 101.1 **set const pressure of 101.1 kPa    
+*SW   *CON  0.65    
+*SO *CON 0.35
+*TEMP *CON 17 ** convert to lab units and lab value
+
+** Reservoir initializes with:
+** KCl precipitate = 0.1007 mol/L pore volume
+
+*CONC_SLD 'Sylvite*' *CON 15007.0 ** STARS SI units are in mol/m3
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*ITERMAX 100 
+*DTMAX .005 ** smaller time steps required for significant ion exchange from precipitate     
+*TFORM *ZT
+**ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *ZAQ .2  
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*TIME 0
+
+   *DTWELL 0.0025 
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   **OPERATE *BHP 101.3
+ ** GEOMETRY *J .11 .3687 1 0  ** rw,cc,ff,ss
+ *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+  *PERF *TUBE-END 'PRODN'   **  i j k
+                    80 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT CHEMICAL FLOOD
+
+**COMPNAME    'WATER' 'H' 'Na'    'K' 'Cl'   'Anion' 'OIL' 'Sylvite' 
+INCOMP  WATER  0.836  0.0 6.11e-2  2.086e-2  8.1975e-2  0.0 0.0
+TINJW  100.0
+   
+   *OPERATE *STW 1.45e-4 **.00512 ft3/day as in example 12
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   
+*TIME .125
+
+   
+*TIME .1875 
+
+*TIME .25
+
+    
+*TIME .3125
+
+   
+*TIME .375
+*TIME .4375
+*TIME .5
+*TIME .5625
+*TIME .625
+*TIME .6875
+*TIME .75
+*TIME .8125
+*TIME .875
+*TIME .9375
+
+   *WRST *TNEXT
+
+*TIME 1    ** 1 DAY
+*TIME 1.5
+*TIME 2
+*TIME 3
+*TIME 4

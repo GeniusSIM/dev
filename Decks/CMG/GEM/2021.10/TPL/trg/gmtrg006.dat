@@ -1,0 +1,558 @@
+**--------------------------------------------------------------------**
+** GMTRG006.DAT:  Nested Triggers - Reperf based on layer water cut   **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMTRG006.DAT                                               **
+**                                                                    **
+** MODEL:  10x1x15       USE OF LAYER BASED TRIGGERS                  **
+**         FIELD UNITS   STONE'S FIRST MODEL FOR Kro                  **
+**         *KDIR *DOWN                                                **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This case illustrates the use of nested triggers as a way of       ** 
+** shutting in well perforations for a producer progressively as      **
+** water saturation increases in the reservoir. Water saturation      **
+** changes are driven by an injection well completed downdip. This    **
+** dataset is a revised version of GMWWM033.DAT                       **
+**                                                                    **
+** The trigger conditions are based on layer wcut. This case is       **
+** designed with the knowledge that the well will be watered out      **
+** starting from the deepest layer, #14 to the shallowest layer, #2.  **
+**                                                                    **
+** Note that all triggers are assigned the same name 'TRIG-1' in this **
+** case since once a trigger condition is satisfied that trigger does **
+** not need to be preserved and can be redefined. Redefinition of a   **
+** trigger results in less storage requirements for GEM as compared   **
+** to creating a new trigger.                                         **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES
+*TITLE1
+'Trigger based on layer water cut - nested triggers'
+*TITLE2
+'Vertical Cross-Section'
+*TITLE3
+'CMG 2005.'
+
+*INUNIT    *FIELD
+
+*WPRN      *WELL 1
+*WPRN      *GRID *TIME
+*OUTSRF  *GRID *SW 
+*OUTPRN    *GRID *IMPL *SO *SG *SW *PRES
+*OUTPRN    *WELL *ALL
+**OUTPRN *RES *ALL
+**OUTPRN *WELL *PSPLIT
+**OUTSRF *WELL *PSPLIT
+
+*WSRF      *GRID 5
+*WSRF      *WELL 1
+
+*WRST 0
+
+**--------------------------------------------------------------------**
+** Reservoir description Section                                      **
+**--------------------------------------------------------------------**
+
+*GRID *CART    10    1   15   ** This is an x-z cross sectional problem
+
+*KDIR *DOWN
+
+*DI *CON  200.0
+
+*DJ *CON 2500.0
+
+*DK *KVAR                       ** Block z dimensions vary with layer
+  20.0  15.0  26.0  15.0  16.0  14.0  2*8.0
+  18.0  12.0  19.0  18.0  20.0  50.0  100.0
+
+*DEPTH *TOP 1    1   1  9000.   ** Depth to top center of first
+                                ** block in shallowest layer
+
+*DIP -5.7 0.0  ** Introduce 5.7 degree dip as depth to centre of top
+               ** of first block is 9000.0 feet.
+
+*POR  *KVAR                     ** Porosities vary with layer
+  0.087  0.097  0.111  0.16  0.13
+  2*0.17 0.08   0.14   0.13  0.12
+  0.105  0.12   0.116  0.157
+
+*PRPOR 3600.0                   ** Rock compressibility and
+*CPOR  4.0E-6                   ** reference pressure
+
+** Each of the I, J, and K permeabilities are constant within each layer
+** of the reservoir but vary from layer to layer. Hence the use of *KVAR
+** to input them layer by layer. Note that the first K layer is at
+** the  top of the reservoir.
+
+*PERMI *KVAR
+   35.0   47.5  148.0  202.0   90.0
+  418.5  775.0   60.0  682.0  472.0
+  125.0  300.0  137.5  191.0  350.0
+
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.10
+
+** Insert transmissibility barriers between layers 5 and 6 and 10 and 11
+
+**TRANSK *IJK
+**  1:10 1:1 1:15  1.0
+**  1:10 1:1  5:5  0.0
+**  1:10 1:1 10:10 0.0
+
+*SECTOR 'Region 1' 1:10 1:1  1:5  ** Shallowest non-communicating region
+*SECTOR 'Region 2' 1:10 1:1  6:10 ** Middle region
+*SECTOR 'Region 3' 1:10 1:1 11:15 ** Deepest region
+
+**--------------------------------------------------------------------**
+** Component Properties Section                                       **
+**--------------------------------------------------------------------**
+
+*MODEL *PR
+
+*NC 6 6
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69       18.       17.
+*VCRIT 0.099800  0.200500  0.369800  0.629700       0.7       0.8
+*TCRIT    190.6     369.8     507.4     617.7      720.     850.
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*BIN         0.
+           2*0.
+           3*0.
+           0.10     0.008      2*0.
+           0.10     0.008      3*0.
+*TRES 222.
+
+*DENW 63.02
+*CW      3.0E-06
+*REFPW   14.7
+*VISW    0.96
+
+**--------------------------------------------------------------------**
+** Rock-fluid Property Section                                        **
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*RPT
+
+  *KROIL *STONE1  ** Use Stone's 1st Model to compute oil relative
+                  ** permeability when three phases are present.
+
+*SWT              ** Water-oil relative permeability table.
+**   sw    krw    krow    pcow
+   0.22    0.0    1.0     7.0
+   0.30    0.07   0.4     4.0
+   0.40    0.15   0.125   3.0
+   0.50    0.24   0.0649  2.5
+   0.60    0.33   0.0048  2.0
+   0.80    0.65   0.0     1.0
+   0.90    0.83   0.0     0.5
+   1.00    1.0    0.0     0.0
+
+*SLT              ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog
+   0.22    1.0     0.0      3.9
+   0.30    0.8125  0.0      3.5
+   0.40    0.5     0.0      3.0
+   0.50    0.42    0.0      2.5
+   0.60    0.34    0.0      2.0
+   0.70    0.24    0.02     1.5
+   0.80    0.1     0.1      1.0
+   0.90    0.022   0.33     0.5
+   0.96    0.0     0.6      0.2
+   1.0     0.0     1.0      0.0
+
+**--------------------------------------------------------------------**
+** Initial Conditions Section                                         **
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+*REFPRES  3600.0                ** Set reference pressure
+*REFDEPTH 9070.0                ** at the reference depth.
+*DWOC     9370.0                ** Set water-oil contact
+*DGOC     9070.0                ** Set gas-oil contact
+
+** Initial oil composition :
+*ZOIL 0.50   0.07    0.03     0.20    0.15     0.05
+
+** Initial gas composition :
+*ZGAS 0.9304 0.04638 0.006924 0.01473 0.001512 0.0000314
+
+**--------------------------------------------------------------------**
+** Numerical Control Section                                          **
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+
+*NORM *GMOLAR 0.02  ** Crossflow may induce rapid composition changes.
+                    ** Setting *NORM keeps timesteps from exceeding
+                    ** convergence limits
+*NORM *SATUR  0.05
+
+**--------------------------------------------------------------------**
+** Well Data Section                                                  **
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE 1994 01 01
+
+*DTMAX    120.
+*DTWELL   0.1  **0.5
+
+*WELL 1 'Producer 1' *VERT  5 1
+*WELL 2 'Injector 1' *VERT 10 1
+
+*PRODUCER 1 
+
+** Primary operating constraint is oil rate
+*OPERATE *MAX *STO 1000.00
+
+** Secondary operating constraint is bottomhole pressure.
+*OPERATE *MIN *BHP 1000.00 *CONT
+
+*INJECTOR 2
+*INCOMP *WATER
+
+** Primary operating constraint is water rate
+*OPERATE *MAX *WATER 20000.00
+
+
+**             rad      geofac   wfrac  skin
+*GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+*PERF *GEO 1
+** kf      ff
+ 5 1   2    1.000
+ 5 1   3    1.000
+ 5 1   4    1.000
+ 5 1   5    1.000
+ 5 1   6    1.000
+ 5 1   7    1.000
+ 5 1   8    1.000
+ 5 1   9    1.000
+ 5 1  10    1.000
+ 5 1  11    1.000
+ 5 1  12    1.000
+ 5 1  13    1.000
+ 5 1  14    1.000 
+
+*PERF *GEO 2
+** kf      ff
+ 10 1  13    1.000
+ 10 1  14    1.000
+ 10 1  15    1.000 *REFLAYER   ** Water injector in region 3.
+
+    *TRIGGER 'trig2' *ON_SECTOR 'FIELD' TEMPMIN > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+    *TRGVAR 'trv4' *ON_SECTOR 'FIELD' TEMPMIN
+
+    *TRIGGER 'trig3' *ON_SECTOR 'FIELD' TEMPMAX > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+    *TRGVAR 'trv5' *ON_SECTOR 'FIELD' TEMPMAX
+
+    *TRIGGER 'trig4' *ON_SECTOR 'FIELD' TEMPAVE > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+    *TRGVAR 'trv6' *ON_SECTOR 'FIELD' TEMPAVE
+
+    *TRIGGER 'trig5' 'trv4' > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+
+    *TRIGGER 'trig6' 'trv5' > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+
+    *TRIGGER 'trig7' 'trv6' > 50.0 *APPLY_TIMES 1
+    *END_TRIGGER
+
+
+
+trigger 'trig1' on_layer  'Producer 1' 5 1 14 wcut > 0.9 apply_times 1 
+    **             rad      geofac   wfrac  skin
+    *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+    *PERF *GEO 1
+    ** kf      ff
+    5 1   2    1.000
+    5 1   3    1.000
+    5 1   4    1.000
+    5 1   5    1.000
+    5 1   6    1.000
+    5 1   7    1.000
+    5 1   8    1.000
+    5 1   9    1.000
+    5 1  10    1.000
+    5 1  11    1.000
+    5 1  12    1.000
+    5 1  13    1.000
+    5 1  14    1.000 *closed
+
+    trigger 'trig1' on_layer 'Producer 1' 5 1 13 wcut > 0.9 apply_times 1 
+       **             rad      geofac   wfrac  skin
+       *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+       *PERF *GEO 1
+       ** kf      ff
+       5 1   2    1.000
+       5 1   3    1.000
+       5 1   4    1.000
+       5 1   5    1.000
+       5 1   6    1.000
+       5 1   7    1.000
+       5 1   8    1.000
+       5 1   9    1.000
+       5 1  10    1.000
+       5 1  11    1.000
+       5 1  12    1.000
+       5 1  13    1.000 *closed
+       5 1  14    1.000 *closed
+
+       trigger 'trig1' on_layer 'Producer 1' 5 1 12 wcut > 0.9 apply_times 1 
+          **             rad      geofac   wfrac  skin
+          *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+          *PERF *GEO 1
+          ** kf      ff
+          5 1   2    1.000
+          5 1   3    1.000
+          5 1   4    1.000
+          5 1   5    1.000
+          5 1   6    1.000
+          5 1   7    1.000
+          5 1   8    1.000
+          5 1   9    1.000
+          5 1  10    1.000
+          5 1  11    1.000
+          5 1  12    1.000 *closed
+          5 1  13    1.000 *closed
+          5 1  14    1.000 *closed
+
+          trigger 'trig1' on_layer 'Producer 1' 5 1 11 wcut > 0.9 apply_times 1 
+             **             rad      geofac   wfrac  skin
+             *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+             *PERF *GEO 1
+             ** kf      ff
+             5 1   2    1.000
+             5 1   3    1.000
+             5 1   4    1.000
+             5 1   5    1.000
+             5 1   6    1.000
+             5 1   7    1.000
+             5 1   8    1.000
+             5 1   9    1.000
+             5 1  10    1.000
+             5 1  11    1.000 *closed
+             5 1  12    1.000 *closed
+             5 1  13    1.000 *closed
+             5 1  14    1.000 *closed
+
+             trigger 'trig1' on_layer 'Producer 1' 5 1 10 wcut > 0.9 apply_times 1 
+               **             rad      geofac   wfrac  skin
+               *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+               *PERF *GEO 1
+               ** kf      ff
+               5 1   2    1.000
+               5 1   3    1.000
+               5 1   4    1.000
+               5 1   5    1.000
+               5 1   6    1.000
+               5 1   7    1.000
+               5 1   8    1.000
+               5 1   9    1.000
+               5 1  10    1.000 *closed
+               5 1  11    1.000 *closed
+               5 1  12    1.000 *closed
+               5 1  13    1.000 *closed
+               5 1  14    1.000 *closed
+
+               trigger 'trig1' on_layer 'Producer 1' 5 1 9 wcut > 0.9 apply_times 1 
+                 **             rad      geofac   wfrac  skin
+                 *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                 *PERF *GEO 1
+                 ** kf      ff
+                 5 1   2    1.000
+                 5 1   3    1.000
+                 5 1   4    1.000
+                 5 1   5    1.000
+                 5 1   6    1.000
+                 5 1   7    1.000
+                 5 1   8    1.000
+                 5 1   9    1.000 *closed
+                 5 1  10    1.000 *closed
+                 5 1  11    1.000 *closed
+                 5 1  12    1.000 *closed
+                 5 1  13    1.000 *closed
+                 5 1  14    1.000 *closed
+
+                 trigger 'trig1' on_layer 'Producer 1' 5 1 8 wcut > 0.9 apply_times 1 
+                   **             rad      geofac   wfrac  skin
+                   *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                   *PERF *GEO 1
+                   ** kf      ff
+                   5 1   2    1.000
+                   5 1   3    1.000
+                   5 1   4    1.000
+                   5 1   5    1.000
+                   5 1   6    1.000
+                   5 1   7    1.000
+                   5 1   8    1.000 *closed
+                   5 1   9    1.000 *closed
+                   5 1  10    1.000 *closed
+                   5 1  11    1.000 *closed
+                   5 1  12    1.000 *closed
+                   5 1  13    1.000 *closed
+                   5 1  14    1.000 *closed
+
+                   trigger 'trig1' on_layer 'Producer 1' 5 1 7 wcut > 0.9 apply_times 1 
+                     **             rad      geofac   wfrac  skin
+                     *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                     *PERF *GEO 1
+                     ** kf      ff
+                     5 1   2    1.000
+                     5 1   3    1.000
+                     5 1   4    1.000
+                     5 1   5    1.000
+                     5 1   6    1.000
+                     5 1   7    1.000 *closed
+                     5 1   8    1.000 *closed
+                     5 1   9    1.000 *closed
+                     5 1  10    1.000 *closed
+                     5 1  11    1.000 *closed
+                     5 1  12    1.000 *closed
+                     5 1  13    1.000 *closed
+                     5 1  14    1.000 *closed
+
+                     trigger 'trig1' on_layer 'Producer 1' 5 1 6 wcut > 0.9 apply_times 1 
+                       **             rad      geofac   wfrac  skin
+                       *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                       *PERF *GEO 1
+                       ** kf      ff
+                       5 1   2    1.000
+                       5 1   3    1.000
+                       5 1   4    1.000
+                       5 1   5    1.000
+                       5 1   6    1.000 *closed
+                       5 1   7    1.000 *closed
+                       5 1   8    1.000 *closed
+                       5 1   9    1.000 *closed
+                       5 1  10    1.000 *closed
+                       5 1  11    1.000 *closed
+                       5 1  12    1.000 *closed
+                       5 1  13    1.000 *closed
+                       5 1  14    1.000 *closed
+
+                       trigger 'trig1' on_layer 'Producer 1' 5 1 5 wcut > 0.9 apply_times 1 
+                         **             rad      geofac   wfrac  skin
+                         *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                         *PERF *GEO 1
+                         ** kf      ff
+                         5 1   2    1.000
+                         5 1   3    1.000
+                         5 1   4    1.000
+                         5 1   5    1.000 *closed
+                         5 1   6    1.000 *closed
+                         5 1   7    1.000 *closed
+                         5 1   8    1.000 *closed
+                         5 1   9    1.000 *closed
+                         5 1  10    1.000 *closed
+                         5 1  11    1.000 *closed
+                         5 1  12    1.000 *closed
+                         5 1  13    1.000 *closed
+                         5 1  14    1.000 *closed
+
+                           trigger 'trig1' on_layer 'Producer 1' 5 1 4 wcut > 0.9 apply_times 1 
+                           **             rad      geofac   wfrac  skin
+                           *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                           *PERF *GEO 1
+                           ** kf      ff
+                           5 1   2    1.000
+                           5 1   3    1.000
+                           5 1   4    1.000 *closed
+                           5 1   5    1.000 *closed
+                           5 1   6    1.000 *closed
+                           5 1   7    1.000 *closed
+                           5 1   8    1.000 *closed
+                           5 1   9    1.000 *closed
+                           5 1  10    1.000 *closed
+                           5 1  11    1.000 *closed
+                           5 1  12    1.000 *closed
+                           5 1  13    1.000 *closed
+                           5 1  14    1.000 *closed
+
+                             trigger 'trig1' on_layer 'Producer 1' 5 1 3 wcut > 0.9 apply_times 1 
+                             **             rad      geofac   wfrac  skin
+                             *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                             *PERF *GEO 1
+                             ** kf      ff
+                             5 1   2    1.000
+                             5 1   3    1.000 *closed
+                             5 1   4    1.000 *closed
+                             5 1   5    1.000 *closed
+                             5 1   6    1.000 *closed
+                             5 1   7    1.000 *closed
+                             5 1   8    1.000 *closed
+                             5 1   9    1.000 *closed
+                             5 1  10    1.000 *closed
+                             5 1  11    1.000 *closed
+                             5 1  12    1.000 *closed
+                             5 1  13    1.000 *closed
+                             5 1  14    1.000 *closed
+
+                               trigger 'trig1' on_layer 'Producer 1' 5 1 2 wcut > 0.9 apply_times 1 
+                               **             rad      geofac   wfrac  skin
+                               *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+                               *PERF *GEO 1
+                               ** kf      ff
+                               5 1   2    1.000 *closed
+                               5 1   3    1.000 *closed
+                               5 1   4    1.000 *closed
+                               5 1   5    1.000 *closed
+                               5 1   6    1.000 *closed
+                               5 1   7    1.000 *closed
+                               5 1   8    1.000 *closed
+                               5 1   9    1.000 *closed
+                               5 1  10    1.000 *closed
+                               5 1  11    1.000 *closed
+                               5 1  12    1.000 *closed
+                               5 1  13    1.000 *closed
+                               5 1  14    1.000 *closed
+                               *shutin 'Producer 1'
+
+                               end_trigger
+                             end_trigger
+                           end_trigger
+                        end_trigger
+                     end_trigger
+                   end_trigger
+                 end_trigger
+               end_trigger
+             end_trigger
+          end_trigger  
+       end_trigger
+    end_trigger
+end_trigger
+
+*AIMWELL *WELLN
+
+*DATE 2003 01 01
+                   ** Normal termination should occur at
+                   ** this time (seven years)
+*STOP

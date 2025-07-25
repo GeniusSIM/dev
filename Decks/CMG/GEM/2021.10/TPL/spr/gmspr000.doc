@@ -1,0 +1,48 @@
+          SPECIAL PROCESSES
+          -----------------
+
+
+
+Templates in the Special Processes (SPR) directory:
+
+GMSPR001.DAT --  Slim Tube Simulation
+GMSPR002.DAT --  WAG Process Model -- 5th SPE Problem
+GMSPR003.DAT --  CO2 Pattern Flood
+GMSPR004.DAT --  WAG Process Model -- 5th SPE Problem (modified)
+GMSPR005.DAT --  Slim Tube Simulation With Dispersion
+GMSPR006.DAT --  Radial Model With Asphaltene
+GMSPR007.DAT --  NonDarcy Flow Model
+GMSPR008.DAT --  3rd SPE Problem With Gas Phase Adsorption
+GMSPR009.DAT --  Core Displacement Model With Asphaltene
+GMSPR010.DAT --  3rd SPE Problem and Molecular Diffusion
+GMSPR011.DAT --  Radial Model With Asphaltene (uses field units)
+GMSPR012.DAT --  3rd SPE Problem with no dispersion
+GMSPR013.DAT --  3rd SPE Problem with isotropic dispersion
+GMSPR014.DAT --  3rd SPE Problem with longitudinal dispersion
+GMSPR015.DAT --  3rd SPE Problem with transverse dispersion
+GMSPR016.DAT --  3rd SPE Problem with Solubility
+GMSPR017.DAT --  Radial Model With Irreversible Asphaltene Deposition
+GMSPR018.DAT --  Temperature-Dependent Asphaltene Precipitation
+GMSPR019.DAT --  Single phase identification PHASEID TCMIX
+GMSPR020.DAT --  Non-Darcy Correction Factor Test Model
+GMSPR021.DAT --  Non Darcy Explicit Fracture Model
+GMSPR022.DAT --  Hydraulic Fracturing Model
+GMSPR023.DAT --  Hydraulic Fracturing Model - Recurrent LGR
+GMSPR024.DAT --  Hydraulic Fracturing Model
+GMSPR025.DAT --  Demonstrate usage of relative permeability interpolation keywords
+GMSPR026.DAT --  Asphaltene modelling with solid deposition dependent rock-fluid data
+GMSPR027.DAT --  Thermal + deposition + Rel Perm Interpolation
+GMSPR028.DAT --  Multi-EOS asphaltene model. Demonstrate default inheritance of
+                 solid-model from the first EOS set.
+GMSPR029.DAT --  Multi-EOS asphaltene model. Use of keyword *INHERIT-SOLID-OFF
+                 to disallow inheritance of solid model from first EOS set to
+                 subsequent EOS sets.
+GMSPR030.DAT --  Multi-EOS asphaltene model. Asphaltene model with two different
+                 solid-model parameters in two EOS sets and no solid-model in
+                 the third EOS set.
+GMSPR031.DAT --  Multi-EOS asphaltene model. Default inheritance (from first EOS set)
+                 and partial modification of solid-model parameters in second and 
+                 subsequent EOS sets.
+GMSPR032.DAT --  Use of keywords *BLOCKGROUP and *BG in a hydro-fractured shale reservoir
+
+GMSPR033.DAT --  TVD in multi-component aqueous phase.

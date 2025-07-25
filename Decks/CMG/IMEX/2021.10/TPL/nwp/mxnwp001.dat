@@ -1,0 +1,205 @@
+   *************************************************************************************
+   ** mxnwp001.dat:              Oil Well Water Coning                                **
+   *************************************************************************************
+   *************************************************************************************************     
+   **                                                                                             **
+   ** FILE:              MXNWP001.DAT                                                             **      
+   **                                                                                             **
+   ** MODEL:  RAD 10x1x10     1 OIL WELL SPACING     OIL WITH BOTTOM AQUIFER     FIELD UNITS      **
+   **                                                                                             **
+   ** USAGE:  OPTIMUM  OIL  RATE  VS  WATER  CONING                                               **         
+   **                                                                                             **
+   *************************************************************************************************
+   **                                                                                             **
+   ** THIS TEMPLATE ILLUSTRATES THE USE OF A CONING MODEL (RADIAL GRID)  TO  EVALUATE  OIL  WELL  ** 
+   ** PRODUCTION  PERFORMANCE  UNDER  THE  INFLUENCE OF AN ACTIVE  BOTTOM AQUIFER.   IT  MAY  BE  **
+   ** MODIFIED TO HAVE DIFFERENT RESERVOIR  PROPERTIES  AND  SIZE  TO  EVALUATE THE OPTIMUM RATE  ** 
+   ** (CRITICAL PRODUCTION RATE) WITH VARIOUS COMPLETION AND PERFORATION SCHEMES.                 **
+   **                                                                                             **
+   *************************************************************************************************
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+        *FILENAMES *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+   
+   ** I/O CONTROL SECTION----------------------------------------------------------------
+ 
+        *TITLE1  'OIL WELL WATER CONING, MXNWP001'
+        *TITLE2  'OIL WELL WATER CONING'
+        *TITLE3  'CRITICAL OIL RATE STUDY'
+        *CASEID  'MXNWP001'
+
+        *INUNIT  *FIELD
+
+           *WRST          *TIME                                          
+           *WPRN    *WELL *TIME                      
+           *WPRN    *GRID *TIME                                         
+           *OUTPRN  *WELL *LAYER                        
+           *OUTPRN  *GRID *SG *SO *SW     *PRES    
+           *WSRF    *WELL *TIME                       
+           *WSRF    *GRID *TIME                        
+           *OUTSRF  *GRID *SG *SO *SW     *PRES  
+           *OUTDIARY      *BRIEF  *PRESAQ *HEADER  20                            
+
+
+   **---GRID DESCRIPTION SECTION--------------------------------------------------------
+
+           *GRID    *RADIAL 9 1 12  
+           *KDIR    *DOWN
+        *DEPTH    1 1 1  9050.0   
+
+        *DI      *IVAR               
+                2.0   4.0   7.0  12.0  25.0  55.0 110.0 230.0 300.0
+
+          *DJ      *CON  360.0
+
+        *DK      *KVAR                       
+                     5.0   2.0   4.0   7.0   3.0   8.0   5.0   7.0   5.0   7.0   4.0  50.0
+
+        *POR     *KVAR
+                    0.10  0.05  0.12  0.15  0.10  0.08  0.16  0.22  0.12  0.14  0.17  0.15    
+   
+        *PRPOR   3600.0   
+        *CPOR    4.0E-6  
+   
+        *PERMI   *KVAR   
+                     15.0  3.0  10.0  20.0  27.0   8.0  18.0  92.0  10.0  13.0  20.0  15.0
+
+        *PERMJ   *EQUALSI
+
+        *PERMK   *EQUALSI * 0.33
+                               
+        *AQUIFER *BOTTOM    
+        **        THICK  PORO  PERM  RADIUS  ANGLE  **SET PROPERTY TO MODEL AN
+        *AQPROP   500.0  0.18  80.0  35000     1    **ACTIVE AQUIFER       
+
+
+   **---PVT DESCRIPTION SECTION--------------------------------------------------------
+
+        *MODEL  *BLACKOIL     
+
+        *PVT 
+               ** P      RS      BO       EG     VISO   VISG
+          1200.0   100.0  1.0380   510.20  1.110  0.0140
+          1600.0   145.0  1.0510   680.27  1.080  0.0145
+          2000.0   182.0  1.0630   847.46  1.060  0.0150
+          2400.0   218.0  1.0750  1020.40  1.030  0.0155
+          2800.0   245.0  1.0870  1190.50  1.000  0.0160
+          3200.0   283.0  1.0985  1351.40  0.980  0.0165
+          3600.0   310.0  1.1100  1538.50  0.950  0.0170
+          4000.0   333.0  1.1200  1694.90  0.940  0.0175
+          4500.0   355.0  1.1300  1851.90  0.920  0.0180
+
+        *DENSITY *OIL     45.0
+        *DENSITY *GAS     0.070
+        *DENSITY *WATER   62.14
+        *CO              1.0E-5        
+        *CVO              0.0           
+        *BWI              1.014      
+        *CW              3.0E-6       
+        *REFPW            14.7          
+        *VWI              0.95         
+        *CVW              0.0          
+
+
+   **---ROCK-FLUID PROPERTY SECTION-------------------------------------------
+
+        *ROCKFLUID
+
+        *RPT
+        *SWT              
+        **  SW   KRW    KROW    
+          0.25  0.000  1.000    
+          0.40  0.190  0.520  
+           0.50  0.352  0.300 
+           0.60  0.551  0.108 
+           0.70  0.795  0.000 
+            0.80  0.960  0.000  
+          1.00  1.000  0.000  
+
+        *SLT     
+        **  SL   KRG    KROG
+          0.27  1.000  0.000    
+          0.30  0.881  0.000   
+          0.40  0.601  0.000     
+           0.50  0.420  0.000      
+           0.60  0.288  0.000      
+           0.70  0.193  0.020     
+          0.80  0.100  0.100    
+          0.90  0.030  0.330    
+          0.96  0.000  0.600      
+           1.00  0.000  1.000      
+
+
+   **---INITIALIZATION SECTION-------------------------------------------------------
+
+        *INITIAL
+        *VERTICAL *BLOCK_CENTER  *WATER_OIL_GAS
+        *PB *CON  2000.0
+        *REFPRES  3600.0                
+        *REFDEPTH 9000.0                
+        *DGOC     9049.0
+        *DWOC      9105.0 
+
+
+   **---NUMERICAL CONTROL SECTION----------------------------------------------------
+
+        *NUMERICAL
+        *DTMAX      61.0
+        *NCUTS      10
+
+
+   **---RECURRENT (WELL AND PRODUCTION/INJECTION DATA) SECTION-------------------------
+
+        *RUN
+        *DATE 1995 01 01
+        *DTWELL   0.5 
+
+        *WELL 1  'PRODUCER'  *VERT 1 1
+
+        *PRODUCER 1
+        *OPERATE *MAX  *STL     1000.0          
+        *OPERATE *MIN  *BHP     1500.0  *STOP  
+        *MONITOR *MIN  *STO       50.0  *STOP
+        *MONITOR *WCUT             0.9  *STOP
+
+        **             RAD  GEOFAC  WFRAC  SKIN
+        *GEOMETRY *K  0.25   0.500   1.00   0.0
+
+        *PERFV    *GEO 1
+         **       kf  ff                         
+               1:5  1.0
+
+        *AIMWELL *WELLN
+
+        ***********PRODUCTION RATE
+
+        *ALTER    1                                
+                   500.0  
+
+        **DATE 1995 01 31
+        **STOP
+
+        *OUTPRN *WELL *LAYER                        
+        *OUTPRN *GRID *SO *SW *PRES    
+
+        *DATE 1995 12 31
+        **DATE 1996 12 31
+        *DATE 1997 12 31
+        **DATE 1998 12 31
+        *DATE 1999 12 31  
+        **DATE 2000 12 31  
+        *DATE 2001 12 31
+        **DATE 2002 12 31
+        *DATE 2003 12 31
+        **DATE 2004 12 31
+        *DATE 2005 12 31
+        *DATE 2006 12 31
+
+   *******************************************************************
+   **MET CUTOFF WATERCUT CONSTRAINT. RUN AT 600 STL/D FOR COMPARISON.
+   *******************************************************************
+        *STOP

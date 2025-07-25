@@ -1,0 +1,457 @@
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate the counter-current rock-fluid option.
+
+**  1)  Use keyword *KRTYPE_CTRWAT to model counter-current flow for the
+**      water phase.
+
+**  2)  Use keyword *KRTYPE_CTROIL to model counter-current flow for the
+**      oil phase.
+
+**  3)  Use keyword *KRTYPE_CTRGAS to model counter-current flow for the
+**      gas phase.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*title1 'STARS Simulator Options No. 37'
+*title2 'Test/Illustrate Counter-Current Rock-Fluid Data with 2-D SAGD'
+
+*inunit *SI   *except 6 1    ** darcy instead of md
+*outunit *SI  *except 6 1    ** darcy instead of md
+
+
+*outprn *grid *pres *sw *so *sg *temp *x *y *obhloss *viso *masdeno *masdenw
+*outprn *well *wellcomp
+*outprn *iter *newton         ** Summary of Each Newton Iteration
+
+*outsrf *grid *pres *sw *so *sg *temp *x *y *velocrc
+               eninplrat enconvrat encondrat enreacrat
+*outsrf *well *downhole  *layer *all
+**outsrf *special *blkvar *pres 0 1      ** pressure history at (1,1,1)
+**                 *blkvar *pres 0 26     ** pressure history at (26,1,1)
+**                 *blkvar *pres 0 51     ** pressure history at (51,1,1)
+**                 *blkvar *pres 0 1301   ** pressure history at (26,1,26)
+**                 *delp 1 2              ** P(injector 1) - P(producer 2)
+**                 *osr 2 1 cum           ** cumulative osr from SAGD prod/inj
+**                 *osr 2 1 inst          ** instantaneous osr from SAGD prod/inj
+**                 *osr 4 3 cum           ** cumulative osr from HP prod/inj
+**                 *osr 4 3 inst          ** instantaneous osr from HP prod/inj
+**                 *matbal current energy ** amount energy currently in place
+**                 *matbal well energy    ** net cumulative amount inj/prod
+**                 *obhloss               ** net cumulative energy loss or gain by conduction
+**                 *cchloss               ** net cumulative energy loss or gain by convection
+
+*wprn *grid time
+*wprn *iter 1             
+*prntorien 2 0         ** I rows, K columns, J plane
+
+
+
+** ======================= GRID AND RESERVOIR DEFINITION =================
+
+** Smallest Element of Symmetry = 80 m x 900 m
+** Reservoir Thickness = 38 m
+
+*grid *cart 51 1 38    ** Total gridblock number = 1020
+*kdir *down            ** K = 1 at top of reservoir
+
+*di *ivar 51*1.6  ** Gridblock size = 1.4 m x 1 m
+*dj *jvar 900.0
+*dk *kvar 38*1.0
+
+** Half well along axis of symmetry (Gridblock size = 0.8 m x 0.5 m)
+*vamod 2 0.5 1.0 0.5 0.5 1.0 0.5 0.5 *9p 1.0 1.0
+*vatype *con             1
+        *mod  1 1 1:38 = 2
+             51 1 1:38 = 2
+
+*depth 1 1 1 402.0
+
+*por *con 0.345
+*permi *con 1 **2.46
+*permj *equalsi
+*permk *equalsi **con 0.40
+
+*end-grid
+
+** Use STARS default values for sandstone thermal properties
+*prpor 3100.0
+*cpor 9.6e-6             ** formation compressibility = 9.6e-6/kPa
+*rockcp 2.35e6           ** volumetric heat capacity of formation = 2.35e6 J/m3-C
+
+*thconr 6.6000e5    ** thermal conductivity of matrix (J/m-days-C)
+*thconw 5.3496e4    ** thermal conductivity of water (J/m-days-C)
+*thcono 1.1500e4    ** thermal conductivity of oil (J/m-days-C)
+*thcong 1.3997e2    ** thermal conductivity of gas (J/m-days-C)
+
+*hlossprop *overbur  2.35e6 1.469e5
+*hlossprop *underbur 2.35e6 1.469e5
+
+
+ 
+**================= FLUID DEFINITIONS =============================
+
+*model 3 3 3       ** Components are water, oil and dissolved gas
+                   ** Standard water properties
+                   
+*compname       'WATER'         'OIL'           'METHANE'     
+**          ----------------------------------------------
+*cmm               0             0.5            0.01604  
+*pcrit             0             1360.0         4600.00  
+*tcrit             0             624.65          -82.55 
+
+*molden            0             1950.0         62500.0   ** Live oil = 
+*cp                0             5.50e-7        5.50e-7
+*ct1               0             8.00e-4        8.00e-4
+*ct2               0             0              0
+
+*kv1               0             0              31914.0
+*kv2               0             0              0
+*kv3               0             0              0
+*kv4               0             0              -33.067
+*kv5               0             0              -27.71
+
+*cpl1              0             1060           67.2      ** J/gmol-C
+*cpg1              0             841            35.2
+*hvapr             0             1346           1770
+
+*visctable
+
+** Temp(C)      Water        Oil        CH4       ** Live oil
+** -------------------------------------------
+     12.0         0       60590       450         ** 
+     20.0         0       21540       211.3       **
+     30.0         0        7000        46.08      **  
+     40.0         0        2261        30.00      ** 
+     50.0         0        1153        13.76      ** 
+     60.0         0         558         8.16      ** 
+     70.0         0         296.4       4.80      **  
+     80.0         0         170.3       4.00      **  
+    100.0         0          68.14      3.40      **  
+    120.0         0          33.25      2.90      **   
+    140.0         0          18.83      2.50      **  
+    160.0         0          11.94      2.15      **
+    180.0         0           8.256     1.85      **
+    200.0         0           6.106     1.45      **
+    220.0         0           4.761     1.16      **
+    240.0         0           3.815     0.95      **
+    260.0         0           3.257     0.79      **
+    280.0         0           2.815     0.68      **
+    300.0         0           2.488     0.548     **
+   2000.0         0           2.488     0.548     **
+        
+** Reference and surface conditions
+*prsr 101.325
+*temr 15.0
+*psurf 101.325
+*tsurf 15.0
+*surflash w o g
+
+
+       
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*rpt 1  stone2 ** Configuration p (all co-current).
+*swt   **  B-type co-current water-oil relative permeabilities
+**    Sw    Krw   Krow
+      0.300 0.000 1.000
+      0.323 0.0001 0.903
+      0.345 0.0005 0.810
+      0.368 0.001 0.723
+      0.390 0.002 0.640 
+      0.413 0.003 0.563 
+      0.435 0.005 0.490
+      0.458 0.009 0.423
+      0.480 0.013 0.360
+      0.503 0.018 0.303
+      0.525 0.025 0.250
+      0.548 0.033 0.203
+      0.570 0.043 0.160
+      0.593 0.055 0.123
+      0.615 0.069 0.090
+      0.638 0.084 0.063
+      0.660 0.102 0.040
+      0.683 0.123 0.023
+      0.705 0.146 0.010
+      0.728 0.171 0.003
+      0.750 0.200 0.000
+
+*slt  *noswc  **  B-type co-current liquid-gas relative permeabilities
+**    Sl      Krg     Krog
+      0.2   1        0
+      0.225 0.857375 0.0025 
+      0.25  0.729    0.0100   
+      0.275 0.614125 0.0225 
+      0.3   0.512    0.0400   
+      0.325 0.421875 0.0625 
+      0.35  0.343    0.0900   
+      0.375 0.274625 0.1225 
+      0.4   0.216    0.1600   
+      0.425 0.166375 0.2025 
+      0.45  0.125    0.2500  
+      0.475 0.091125 0.3025 
+      0.5   0.064    0.3600   
+      0.525 0.042875 0.4225 
+      0.55  0.027    0.4900   
+      0.575 0.015625 0.5625 
+      0.6   0.008    0.6400  
+      0.625 0.003375 0.7225 
+      0.65  0.001    0.8100   
+      0.675 0.000125 0.9025 
+      0.7   0.0      1.0     
+
+*sgr 0.025
+*sorg 0.3  ** Prevent Soc < Swc
+
+*rpt 2  stone2 ** Configuration q1 (water counter-current).
+*swt   **  B-type counter-current water-oil relative permeabilities
+**    Sw     Krw      Krow
+      0.300  0.0      1.0
+      0.323  0.000003 0.90235
+      0.345  0.000005 0.80880
+      0.368  0.00001  0.71847
+      0.390  0.00002  0.63054
+      0.413  0.00010  0.54435
+      0.435  0.00033  0.45961
+      0.458  0.00093  0.37664
+      0.480  0.00225  0.29670
+      0.503  0.00484  0.22218
+      0.525  0.00938  0.15625
+      0.548  0.01652  0.10197
+      0.570  0.02671  0.06107
+      0.593  0.04004  0.03320
+      0.615  0.05629  0.01615
+      0.638  0.07510  0.00687
+      0.660  0.09614  0.00244
+      0.683  0.11919  0.00067
+      0.705  0.14415  0.00011
+      0.728  0.17106  0.00001
+      0.750  0.20000  0.00000
+
+*slt  *noswc  **  B-type co-current liquid-gas relative permeabilities
+**    Sl      Krg     Krog
+      0.2   1        0
+      0.225 0.857375 0.0025 
+      0.25  0.729    0.0100   
+      0.275 0.614125 0.0225 
+      0.3   0.512    0.0400   
+      0.325 0.421875 0.0625 
+      0.35  0.343    0.0900   
+      0.375 0.274625 0.1225 
+      0.4   0.216    0.1600   
+      0.425 0.166375 0.2025 
+      0.45  0.125    0.2500  
+      0.475 0.091125 0.3025 
+      0.5   0.064    0.3600   
+      0.525 0.042875 0.4225 
+      0.55  0.027    0.4900   
+      0.575 0.015625 0.5625 
+      0.6   0.008    0.6400  
+      0.625 0.003375 0.7225 
+      0.65  0.001    0.8100   
+      0.675 0.000125 0.9025 
+      0.7   0.0      1.0
+
+*sgr 0.025
+*sorg 0.3  ** Prevent Soc < Swc
+
+*rpt 3  stone2 ** Configuration q2 (oil counter-current).
+*swt   **  B-type counter-current water-oil relative permeabilities
+**    Sw     Krw      Krow
+      0.300  0.0      1.0
+      0.323  0.000003 0.90235
+      0.345  0.000005 0.80880
+      0.368  0.00001  0.71847
+      0.390  0.00002  0.63054
+      0.413  0.00010  0.54435
+      0.435  0.00033  0.45961
+      0.458  0.00093  0.37664
+      0.480  0.00225  0.29670
+      0.503  0.00484  0.22218
+      0.525  0.00938  0.15625
+      0.548  0.01652  0.10197
+      0.570  0.02671  0.06107
+      0.593  0.04004  0.03320
+      0.615  0.05629  0.01615
+      0.638  0.07510  0.00687
+      0.660  0.09614  0.00244
+      0.683  0.11919  0.00067
+      0.705  0.14415  0.00011
+      0.728  0.17106  0.00001
+      0.750  0.20000  0.00000
+
+*slt  *noswc  **  B-type counter-current liquid-gas relative permeabilities
+**    Sl    Krg      Krog
+      0.2   1        0
+      0.225 0.85737  0.00000
+      0.25  0.72899  0.00000  
+      0.275 0.61410  0.00000
+      0.3   0.51196  0.00000  
+      0.325 0.42181  0.00001
+      0.35  0.34291  0.00002  
+      0.375 0.27450  0.00005
+      0.4   0.21584  0.00012  
+      0.425 0.16617  0.00025 
+      0.45  0.12475  0.00050 
+      0.475 0.09082  0.00100
+      0.5   0.06364  0.00201
+      0.525 0.04246  0.00412
+      0.55  0.02652  0.00873  
+      0.575 0.01508  0.01955
+      0.6   0.00741  0.04741 
+      0.625 0.00278  0.12740
+      0.65  0.00055  0.36249  
+      0.675 0.00002  0.79271 
+      0.7   0.0      1.0      
+
+*sgr 0.025
+
+*rpt 4  stone2 ** Configuration q3 (gas counter-current).
+*swt   **  B-type co-current water-oil relative permeabilities
+**    Sw    Krw   Krow
+      0.300 0.000 1.000
+      0.323 0.0001 0.903
+      0.345 0.0005 0.810
+      0.368 0.001 0.723
+      0.390 0.002 0.640 
+      0.413 0.003 0.563 
+      0.435 0.005 0.490
+      0.458 0.009 0.423
+      0.480 0.013 0.360
+      0.503 0.018 0.303
+      0.525 0.025 0.250
+      0.548 0.033 0.203
+      0.570 0.043 0.160
+      0.593 0.055 0.123
+      0.615 0.069 0.090
+      0.638 0.084 0.063
+      0.660 0.102 0.040
+      0.683 0.123 0.023
+      0.705 0.146 0.010
+      0.728 0.171 0.003
+      0.750 0.200 0.000
+
+*slt  *noswc  **  B-type counter-current liquid-gas relative permeabilities
+**    Sl    Krg      Krog
+      0.2   1        0
+      0.225 0.85737  0.00000
+      0.25  0.72899  0.00000  
+      0.275 0.61410  0.00000
+      0.3   0.51196  0.00000  
+      0.325 0.42181  0.00001
+      0.35  0.34291  0.00002  
+      0.375 0.27450  0.00005
+      0.4   0.21584  0.00012  
+      0.425 0.16617  0.00025 
+      0.45  0.12475  0.00050 
+      0.475 0.09082  0.00100
+      0.5   0.06364  0.00201  
+      0.525 0.04246  0.00412
+      0.55  0.02652  0.00873  
+      0.575 0.01508  0.01955
+      0.6   0.00741  0.04741 
+      0.625 0.00278  0.12740
+      0.65  0.00055  0.36249  
+      0.675 0.00002  0.79271 
+      0.7   0.0      1.0    
+
+*sgr 0.025       
+
+*krtype *con 1
+*krtype_ctrwat *con 2
+*krtype_ctroil *con 3
+*krtype_ctrgas *con 4
+
+
+
+** ====================== INTIAL CONDITIONS ==========================
+
+*initial
+
+*pres *con 3100.0
+
+*sw *con 0.38
+*so *con 0.62
+*sg *con 0.0
+
+*temp *con 18.0
+
+*mfrac_oil 'OIL'      *con 0.89      ** Oil in Live Oil
+*mfrac_oil 'METHANE'  *con 0.11      ** Methane in Live Oil
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical
+
+*itermax 100
+
+
+
+*run
+
+**  ==============  RECURRENT DATA  ======================
+
+*time 0.0
+
+   *dtwell 1.0e-4
+
+   *well 1 'Injector'    *frac 0.5      ** 900 m standard SAGD wells
+   *well 2 'Producer'    *frac 0.5      ** 900 m standard SAGD wells
+
+   *injector *mobweight 1
+   *tinjw 240.9 *qual 0.98
+   *incomp *water 1 0 0
+   *operate *bhp 3400.0
+   *operate *max *water 500.0          ** max. steam injection rate = 500 m3/d CWE (full well)
+   *geometry *j 0.11 0.249 1.0 0.0     ** well diameter = 8.7"
+   *perf *geo 1   **   i   j   k  ff
+                       1   1  21  1.     ** injector 21.5 m from bottom of reservoir
+
+   *uhtr   *ijk  1:1 1:1 21  1.95e9
+   *tmpset *ijk  1:1 1:1 21  240.9
+
+   *producer 2
+   *operate *bhp 3000.0
+   *operate *steamtrap 2.0
+   *geometry *j 0.11 0.249 1.0 0.0   ** well diameter = 8.7"
+   *perf *geo 2   **   i   j   k   ff
+                       1   1  26   1.    ** producer 26.5 from bottom of reservoir
+
+   *uhtr   *ijk  1:1 1:1 26  1.95e9
+   *tmpset *ijk  1:1 1:1 26  240.9
+
+   *shutin 1                          ** producer 2 kept open for release of fluid while heating the SAGD pair
+
+*time 52.0
+
+   *dtwell 1.0e-3              ** Standard SAGD Started
+
+   *open 1
+   *uhtr *con 0.0                       ** turn heater off after startup period of 52 days
+
+*time 365                     ** after 1 year
+*time 730                     ** after 2 years
+*time 1095                    ** after 3 years
+*time 1460                    ** after 4 years
+*time 1825                    ** after 5 years
+*time 2190                    ** after 6 years
+*time 2555                    ** after 7 years
+*time 2920                    ** after 8 years
+*time 3285                    ** after 9 years
+*time 3650                    ** after 10 years
+
+*stop

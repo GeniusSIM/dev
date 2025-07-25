@@ -1,0 +1,231 @@
+   ******************************************************************************
+   ** mxspr015.dat:        *PVTSEAWAT Option for No-salt Injection             **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSPR015.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  7x7x3         FRESH WATER INJECTION     AQUIFER SALT                     **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This test dataset demonstrates the PVT behavior of aqueous phase as a function   **
+   ** of salt concentration during fresh water injection using the following keywords: **
+   **       *SALTCONC, *AQSALT, *PVTSEAWAT, *DENSEAWAT                                 **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section
+   ********************************************************************************
+
+   *TITLE1   '*PVTSEAWAT Test Problem, mxspr015.dat'
+   *TITLE2   '3d Salt modelling in a 7x7x3 grid configuration.'
+
+   *INUNIT *FIELD
+   *WPRN   *WELL 1
+   *WPRN   *GRID 1
+   *WPRN   *ITER *NONE
+
+   *OUTPRN *WELL    *ALL
+   *OUTPRN *TABLES  *NONE
+   *OUTPRN *RES     *ALL
+   *OUTPRN *GRID    *EXCEPT  *OILPOT  *DATUMPRES
+
+   *WSRF   *GRID    1
+   *OUTSRF *GRID    *SO *SG *PRES *SW *WINFLUX *SALTCONC *VISW *MASDENW
+   *WSRF   *WELL    1
+   *OUTSRF *WELL  *LAYER  *ALL
+
+   *WRST 50
+
+   *OUTSRF *SPECIAL 1 1 1 *PRES
+   *OUTSRF *SPECIAL 1 1 1 *MASDENW
+   *OUTSRF *SPECIAL 1 1 1 *VISW
+   *OUTSRF *SPECIAL 1 1 1 *SALTCONC
+   *OUTSRF *SPECIAL 3 3 2 *PRES
+   *OUTSRF *SPECIAL 3 3 2 *MASDENW
+   *OUTSRF *SPECIAL 3 3 2 *VISW
+   *OUTSRF *SPECIAL 3 3 2 *SALTCONC
+   *OUTSRF *SPECIAL 7 7 3 *PRES
+   *OUTSRF *SPECIAL 7 7 3 *MASDENW
+   *OUTSRF *SPECIAL 7 7 3 *VISW
+   *OUTSRF *SPECIAL 7 7 3 *SALTCONC
+
+   ********************************************************************************
+   ** Reservoir Description Section
+   ********************************************************************************
+   *GRID *CART 7 7 3               ** A regular cartesian grid is used.
+                                   ** There are 7 grid blocks in the I (x)
+                                   ** direction, 7 in the J (y) direction,
+                                   ** and 3 in the K (z) direction.
+   *DI *CON                        ** I and J direction dimensions are constant
+   315.0                           ** and the same, while the K direction
+   *DJ *CON                        ** dimensions vary from layer to layer.
+   315.0                           ** Notice that the first number is the
+   *DK *KVAR                       ** thickness of the lowest layer.
+     50.0  30.0  20.0
+
+   *DEPTH 1 1 1 2000.              ** Reference depth measured from bottommost
+                                   ** block on lefthand side
+   *POR *CON
+    0.300
+
+   *PRPOR    14.7
+   *CPOR     3.0E-6
+
+   *PERMI *KVAR
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       19.2  200.0  200.0
+
+   *AQUIFER  *REGION 1:7 7:7 1:1  *KDIR
+      *AQPROP 5.0   0.17   500.0   8000.0   0.5
+      *AQCOMP 3.0e-5
+      *AQSALT 15.0   ** lbm/ft3   aquifer salt concentration
+
+   ********************************************************************************
+   ** Component Property Section
+   ********************************************************************************
+   *MODEL *BLACKOIL_SEAWATER
+   *PVT
+   **  p        rs      bo       eg     viso     visg
+       14.7     1.0   1.062     6.0     1.04     0.0080
+      264.7    90.5   1.15     82.692   0.975    0.0096
+      514.7   180.0   1.207   159.388   0.91     0.0112
+     1014.7   371.0   1.295   312.793   0.83     0.0140
+     2014.7   636.0   1.435   619.579   0.69     0.0189
+     2514.7   775.0   1.5     772.798   0.64     0.0208
+     3014.7   930.0   1.565   925.926   0.594    0.0228
+     4014.7  1270.0   1.695  1233.046   0.51     0.0268
+     5014.7  1600.0   1.827  1540.832   0.449    0.0309
+     9014.7  2984.0   2.36   2590.674   0.203    0.0470
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+
+   *CO     1.3687E-5
+   *CVO    4.6E-5
+   *REFPW  14.7
+
+
+*PVTSEAWAT
+** C_s      BWI_s(prefw,C_s)     CW_s(C_s)    VWI_s(prefw,C_s)   CVW_s(prefw,C_s)  ** All at REFPW.
+   0.0      1.04                 3.04e-6      0.31               0.0
+   2.0      1.00                 3.06e-6      0.41               1.01e-6
+  10.0      0.98                 3.08e-6      0.51               1.02e-6
+  20.0      0.95                 3.10e-6      1.10               1.03e-6
+
+*DENSEAWAT
+** C_s                     DENSITY_s(C_s)   ** At stock tank condition.
+   0.0                     62.238
+   3.0                     65.0
+   8.0                     67.0
+  20.0                     69.0
+
+
+   ********************************************************************************
+   ** Rock-fluid Property component
+   ********************************************************************************
+   *ROCKFLUID
+   *RPT
+   *SWT
+   **  sw       krw    krow    pcog
+      0.2       0.0    1.0      7.0
+      0.3       0.07   0.4      4.0
+      0.4       0.15   0.125    3.0
+      0.5       0.24   0.0649   2.5
+      0.6       0.33   0.0048   2.0
+      0.8       0.65   0.0      1.0
+      0.9       0.83   0.0      0.5
+      1.0       1.0    0.0      0.0
+
+   *SLT
+   **   sl     krg     krog       pcog
+        0.2    0.98    0.0         0.0
+        0.3    0.94    0.0         0.0
+        0.4    0.87    1.0000E-4   0.0
+        0.5    0.72    0.001       0.0
+        0.55   0.6     0.010       0.0
+        0.6    0.41    0.021       0.0
+        0.7    0.19    0.09        0.0
+        0.75   0.125   0.2         0.0
+        0.8    0.075   0.35        0.0
+        0.88   0.025   0.7         0.0
+        0.95   0.005   0.98        0.0
+        0.98   0.0     0.997       0.0
+        0.999  0.0     1.0         0.0
+        1.0    0.0     1.0         0.0
+
+   ********************************************************************************
+   ** Initial Conditions Section
+   ********************************************************************************
+   *INITIAL
+   *USER_INPUT
+
+   *PRES *CON 3000.0
+   *PB   *CON 2500.0
+
+   *SO   *CON     0.8
+   *SW   *CON     0.2
+
+   *SALTCONC *KVAR 15.0 13.0 11.0   ** layered initial salt distribution
+
+   ********************************************************************************
+   ** Numerical Methods Control Section
+   ********************************************************************************
+   *NUMERICAL
+   *DTMAX  62.
+
+
+   ********************************************************************************
+   ** Well Data Section
+   ********************************************************************************
+   *RUN
+
+   *DATE  1987  11  02
+   *AIMSET   *CON  1
+   *DTWELL      1.0
+
+   *WELL 1    'SEAWATER INJECTOR'
+   *WELL 2    'PRODUCER'
+
+*INJECTOR  1
+   *INCOMP    *WATER   ** fresh water injection
+   *OPERATE   *MAX       *STW    5000.0
+   *OPERATE   *MAX       *BHP   15000.0 *CONT *REPEAT
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY  *K  0.25   0.34    1.0     0.0
+   *PERF *GEO 1
+   ** if      jf     kf     ff
+       1      1      1     1.0
+
+
+*PRODUCER  2
+   *OPERATE   *MAX       *STO    2500
+   *OPERATE   *MIN       *BHP    1500.0
+   *PERF *GEO  2
+   ** if      jf     kf     ff
+       7      7      3      1.0
+
+   *DATE 1988 01 01
+   *DATE 1989 01 01
+   *DATE 1990 01 01
+   *DATE 1991 01 01
+
+   *DATE 1992 01 01
+   *DATE 1993 01 01
+   *DATE 1994 01 01
+   *DATE 1995 01 01
+
+   *DATE 1996 01 01
+   *DATE 1997 01 01
+   *DATE 1998 01 01
+
+   *STOP

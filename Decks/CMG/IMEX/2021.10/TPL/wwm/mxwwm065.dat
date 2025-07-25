@@ -1,0 +1,230 @@
+   ******************************************************************************
+   ** mxwwm065.dat:                Polymer Injection Model                     **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM065 - PARENT MXSPR005.DAT                                           **
+   **                                                                                  **
+   ** MODEL:  7x7x3                  POLYMER INJECTION                                 **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** It demonstrates a three dimensional 7x7x3  polymer  injection  run.  Polymer  is **
+   ** injected with the water for 2.5 years, then inject only water for 7.5 years.     **
+   ** Polymer injection concentration is changed once, after 250000 lbm of polymer is  **
+   ** injected from 0.7 lbm/bbl of water to 0.5lbm/bbl of water using a trigger        **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section
+   ********************************************************************************
+
+   *TITLE1
+   'Polymer Test Problem'
+   *TITLE2
+   '3d Polymer Test Case in a 7x7x3 grid configuration.'
+
+   *INUNIT *FIELD
+   *WPRN   *WELL 10
+   *WPRN   *GRID 10
+   *WPRN   *ITER    *ALL
+
+   *OUTPRN *WELL    *ALL
+   *OUTPRN *TABLES  *NONE
+   *OUTPRN *RES     *NONE
+   *OUTPRN *GRID    *EXCEPT  *OILPOT  *DATUMPRES
+
+   *WSRF   *GRID    *TIME
+   *OUTSRF *GRID    *EXCEPT  *OILPOT  *DATUMPRES
+   *OUTSRF *WELL *ALL
+
+   ********************************************************************************
+   ** Reservoir Description Section
+   ********************************************************************************
+   *GRID *CART 7 7 3               ** A regular cartesian grid is used.
+                                    ** There are 7 grid blocks in the I (x)
+                                    ** direction, 7 in the J (y) direction,
+                                    ** and 3 in the K (z) direction.
+   *DI *CON                        ** I and J direction dimensions are constant
+   315.0                           ** and the same, while the K direction
+   *DJ *CON                        ** dimensions vary from layer to layer.
+   315.0                           ** Notice that the first number is the
+   *DK *KVAR                       ** thickness of the lowest layer.
+     50.0  30.0  20.0
+
+   *DEPTH 1 1 1 2000.              ** Reference depth measured from bottommost
+                                    ** block on lefthand side
+   *POR *CON
+    0.300
+
+   *PRPOR    14.7
+   *CPOR     3.0E-6
+
+   *PERMI *KVAR
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       19.2  200.0  200.0
+
+
+   ********************************************************************************
+   ** Component Property Section
+   ********************************************************************************
+   *MODEL *POLY                    ** Models flow of polymer, oil, water and gas.
+   *PVT
+   **  p        rs      bo       eg     viso     visg
+       14.7     1.0   1.062     6.0     1.04     0.0080
+      264.7    90.5   1.15     82.692   0.975    0.0096
+      514.7   180.0   1.207   159.388   0.91     0.0112
+     1014.7   371.0   1.295   312.793   0.83     0.0140
+     2014.7   636.0   1.435   619.579   0.69     0.0189
+     2514.7   775.0   1.5     772.798   0.64     0.0208
+     3014.7   930.0   1.565   925.926   0.594    0.0228
+     4014.7  1270.0   1.695  1233.046   0.51     0.0268
+     5014.7  1600.0   1.827  1540.832   0.449    0.0309
+     9014.7  2984.0   2.36   2590.674   0.203    0.0470
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+
+   *CO     1.3687E-5
+   *CVO    4.6E-5
+   *BWI    1.04
+   *CW     3.04E-6
+   *REFPW  14.7
+   *VWI    0.31
+   *CVW    0.0
+
+   *PADPOR_REF 0.3                 ** Reference porosity for the following
+                                   ** adsorption rock-to-pore volume conversion
+
+   *PADSORP                        ** Enter polymer adsorption table.
+   **  p_con       adsop_level     ** values should appear in increasing
+        0.0        0.0             ** order, top to bottom.
+       87.5        0.15
+      175.0        0.24
+      262.5        0.28
+      350.0        0.30
+
+   *PMIX *LINEAR                   ** Enter linear viscosity mixing model for
+   *PVISC     2.44                 ** Reference polymer solution viscosity.
+   *PREFCONC  0.7                  ** Reference polymer concentration
+   *PPERM                          ** Table of absolute permeability dependent
+                                   ** polymer properties.
+   **  perm   max_ad   res_ad    p_pore   rrf
+       10.0    0.3      0.15     0.95     1.2
+     1000.0    0.2      0.10     1.0      1.2
+
+
+   ********************************************************************************
+   ** Rock-fluid Property component
+   ********************************************************************************
+   *ROCKFLUID
+   *RPT
+   *SWT  
+   **  sw       krw    krow    pcog      
+      0.2       0.0    1.0      7.0
+      0.3       0.07   0.4      4.0
+      0.4       0.15   0.125    3.0
+      0.5       0.24   0.0649   2.5
+      0.6       0.33   0.0048   2.0
+      0.8       0.65   0.0      1.0
+      0.9       0.83   0.0      0.5
+      1.0       1.0    0.0      0.0
+
+   *SLT
+   **   sl     krg     krog       pcog
+        0.2    0.98    0.0         0.0
+        0.3    0.94    0.0         0.0
+        0.4    0.87    1.0000E-4   0.0
+        0.5    0.72    0.001       0.0
+        0.55   0.6     0.010       0.0
+        0.6    0.41    0.021       0.0
+        0.7    0.19    0.09        0.0
+        0.75   0.125   0.2         0.0
+        0.8    0.075   0.35        0.0
+        0.88   0.025   0.7         0.0
+        0.95   0.005   0.98        0.0
+        0.98   0.0     0.997       0.0
+        0.999  0.0     1.0         0.0
+        1.0    0.0     1.0         0.0
+
+   ** Dispersion coefficients for the polymer model are by default 0.0
+   ** in all directions.
+
+
+   ********************************************************************************
+   ** Initial Conditions Section
+   ********************************************************************************
+   *INITIAL
+   *USER_INPUT
+
+   *PRES *CON 3000.0
+   *PB   *CON 2500.0
+   *SO   *CON     0.8
+   *SW   *CON     0.2   
+
+
+   ********************************************************************************
+   ** Numerical Methods Control Section
+   ********************************************************************************
+   *NUMERICAL
+   *DTMAX  62.
+
+   ********************************************************************************
+   ** Well Data Section
+   ********************************************************************************
+   *RUN
+
+   *DATE  1987  11  02  
+   *AIMSET   *CON  1
+   *DTWELL      1.0
+   
+   *WELL 1    'WATER INJECTOR' 
+   *WELL 2    'PRODUCER' 
+
+   *INJECTOR  *UNWEIGHT  1
+
+   *INCOMP    *WATER    0.70        ** Include the concentration of polymer
+                                   ** to be injected in the water phase.
+   *OPERATE   *MAX       *STW    5000.0
+   *OPERATE   *MAX       *BHP    9000.0 *CONT *REPEAT 
+
+   *PERF 1
+   ** if      jf     kf     wi
+       1      1      1     150.0
+
+   *PRODUCER  2            
+   *OPERATE   *MAX       *STO    2500
+   *OPERATE   *MIN       *BHP    1500.0
+
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY  *K  0.25   0.34    1.0     0.0
+   *PERF *GEO  2
+   ** if      jf     kf     ff
+       7      7      3      1.0
+
+   *TRIGGER 'trig4' *ON_WELL 1 *PLY-CI > 250000  
+       ** Change polymer injection concentration after
+       ** 250,000 lbm of polymer injected
+               
+       *INCOMPWL 1
+        0.5                                        
+
+   *END_TRIGGER
+
+   *TIME      1095.
+   *DTWELL    5.0
+   *INCOMPWL 1
+     0.0
+
+
+   *TIME 3650.000
+   *STOP

@@ -1,0 +1,362 @@
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate geochemistry of CO2 in gas and various
+**    aqueous species.
+
+**    Template uses stflu018 grid.
+
+**    Template has a single gas injection cycle but is designed for
+**    modification to a WAG injection process
+
+**    Note - the STARS component is CO2 but associated geo-element is CO3
+
+**    Additional *MATBALTOL options are used to improve the run. The effect
+**    can be seen by comparing the results with and without the options.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Geochem Model Template #9'
+*TITLE3 'Verify/Illustrate Liquid-Gas Geochem with CO2 K-value'
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Y *Z *SG *PRES    *PERMI  *PERMK                               
+               *VISW *VISO *KRW *KRO *WATMOB *OILMOB
+               *VPOROS *FPOROS KVALYW
+
+** GEOCHEM OUTPUTS
+*OUTSRF *GRID  *AQ-SP *PHAQ
+	       
+*OUTPRN *WELL  *ALL
+*OUTPRN *ITER *NEWTON **UNCONV
+ 
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+
+
+
+**  ========== GRID AND RESERVOIR DEFINITION =============
+
+*GRID *CART 20 1 20 **TWO DIMENSIONAL GRID
+
+*KDIR *DOWN
+*DEPTH *TOP 20 1 1 2500.139
+*DIP 8 0
+*DJ *CON 200
+*DI *IVAR 2 3 5 10 30 50 100 100 100 100 100 100 100 100 50 30 10 5 3 2
+*DK *KVAR 20*3
+*POR *IJK
+  1:20 1 1:10  0.25
+  1:20 1 11:20 0.20
+*PERMI *KVAR 10*2000. 10*200.
+*PERMJ *KVAR 10*2000. 10*200.
+*PERMK *KVAR 10*1000. 10*100.  **top: Kv/Kh = 0.5 ** bottom: Kv/Kh = 0.5
+
+** Transmissibilty barrier between two reservoir units:
+*TRANSK *IJK 1:20 1 11 0.01  ** 1.  
+
+*END-GRID
+
+*PRPOR 3000.   **kPa
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+*MODEL 8 8 8 7   ** All components except oil are aqueous based
+ 
+*COMPNAME    'WATER'  	'CALCIUM'	'H'        'Na'	 'CO2'   	'Mg'	'CHLORIDE'	'OIL'
+**           -------	----------	--------  -----	  ----	  	----   ----------      ----- 
+*CMM          .018   	.04		.001      0.023  0.048    	0.0243	  .0355		0.072  	**Molecular weight IN SI UNITS
+*MASSDEN      1000    	1000            1000      1000   127.52  	1000      1000        	853.2   **Density 
+*CP           0.            0.          0.	   0.    1.25e-5   	0.	    0.	       	1.25e-5 **Compressibility (units 1/kPa)   
+**CT1          0e-6      0e-6	        0e-6       0e-6  0e-6      	0e-6     0e-6       	0e-6	**Thermal expansion
+*PCRIT        0.            0	         0         0      7376	   	0        0          	1213.8  **Critical pressure in kPa
+*TCRIT        0.            0	         0         0      31.05    	0        0          	486.7   **Critical temperature in deg C
+*AVG           0.           0.           0.        0.    1.737E-04 	0.       0.           	0.    
+*BVG           0.           0.           0.        0.    7.478E-01 	0.       0.           	0.         
+*KV1           0            0            0         0     8.6212e8  	0        0            	0       
+*KV2           0            0            0         0     0         	0        0            	0 
+*KV3           0            0	         0         0     0         	0        0            	0 
+*KV4           0            0            0         0     -3103.39  	0        0            	0 
+*KV5           0            0            0         0     -272.99   	0        0            	0 
+*VISCTABLE ** values appropriate for 100 degrees C
+** TEMP(C)  WATER      SURF   OIL    GAS
+   85          0.5          0.5          0.5       0.5     1.13    0.5     0.5          0.126
+  121          0.5          0.5          0.5       0.5     1.13    0.5     0.5          0.126
+
+**
+** Geochem inputs
+** Input total number of aqueous species
+** Total number of elements (also the number of independent species)
+*GEOCHEM 6 9 0 0 0
+** flag stars components that will participate in geochem reactions
+** water participates by default so flag to zero (follow order of COMPNAME)
+**	'WATER'  	'CALCIUM'	'H'	'Na'	'CO2'   'Mg'	'CHLORIDE'	'OIL'
+*COMP-GEO 0 		1 		1 	1 	1 	1 	1 		0 
+** Total number of elements (also the number of independent species)
+
+** Aqueous species inputs
+***************************
+** identify aqueous species by name
+*CMPNAME-AQ 'Ca++' 'H+' 'Na+' 'CO3--' 'Mg++'  'H2O'  'OH-' 'HCO3-' 'H2CO3' 
+** identify aqueous species charge numbers (follow order of COMPNAME-AQ)
+*CHARGE-AQ 2 1 1 -2 2 0 -1 -1 0
+
+** construct the element abundance matrix, a matrix of columns
+** equal to the number of total species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	 'Ca++' 'H+' 'Na+' 'CO3--' 'Mg++'  'H2O'  'OH-' 'HCO3-'   'H2CO3' 
+** Ca	   1    0   0     0    0      0    0      0        0
+** H       0    1   0     0    0      2    1      1        2
+** Na      0    0   1     0    0      0    0      0        0
+** CO3     0    0   0     1    0      0    0      1        1
+** Mg      0    0   0     0    1      0    0      0        0
+** Cl	   0    0   0     0    0      0    0      0        0
+
+*AMAT_AQ
+	1    0   0     0    0      0    0      0        0
+	0    1   0     0    0      2    1      1        2
+	0    0   1     0    0      0    0      0        0
+	0    0   0     1    0      0    0      1        1
+	0    0   0     0    1      0    0      0        0
+	0    0   0     0    0      0    0      0        0
+
+** Build the aqueous stoichiometry matrix, consisting of columns equal to 
+** the number of aqueous fluids and rows equal to the number of reactions
+** Each equation is followed with the associated reaction constant
+** In this example there are 5 aqueous species (independents and dependents) and
+** 1 reactions (equivalent to the number of dependent species)
+** total number of equations is number of total species  minus number of independent species
+
+** Using Equil Const that are set for T = 25 C and used in stgch002 template
+** NOTE that CO2 is the element as this is the form in the gas phase. Oxygen is
+** ignored and should not be a problem if working in mole fractions as conversion
+** to geochem mol/L is one to one.
+
+**	 'Ca++' 'H+' 'Na+' 'CO3--' 'Mg++'  'H2O'  'OH-' 'HCO3-'   'H2CO3' 
+** Equation 1: OH reaction
+** H20 -> H+ + OH-
+*STOICH_AQ  0   -1   0     0     0     0     -1     0         0
+*LG-KEQ -12.0d0 ** at T = 25
+** Equation 2: HCO3 reaction
+** H+ + CO3-- -> HCO3-
+*STOICH_AQ  0    1    0     1    0      0     0     -1        0
+*LG-KEQ 10.33d0
+** Equation 3: H2CO3 reaction
+** 2H+ + CO3-- -> H2CO3
+*STOICH_AQ  0    2    0    1     0      0     0      0        -1
+*LG-KEQ 16.6d0
+
+** Ionic species
+** Must identify location of hydrogen in the *CMPNAME-AQ species list
+****************
+*HYDROGEN 2
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+** FOAM MOBILITY REDUCTION IN RELATIVE PERMEABILITY EFFECTS WHICH ARE FLOW DEPENDENT
+** ---------------------------------------------------------------------------------
+
+*ROCKFLUID
+
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+**
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+**
+
+
+
+** =========== INITIAL CONDITIONS ===================
+
+*INITIAL
+
+**TEMP 100     ** Initial Res Temp
+*TEMP *CON 100. 
+*VERTICAL *DEPTH_AVE  **Gravity Equilibrium calculation
+*REFPRES 30000          **kPa - 300 bar
+*REFDEPTH 2500.125
+*MFRAC_WAT 'WATER' *CON 0.881752
+*MFRAC_WAT 'Na' *CON 4.14E-2 **Maintain charge balance
+*MFRAC_WAT 'Mg' *CON 3.5694E-4 **Maintain charge balance
+*MFRAC_WAT 'CHLORIDE' *CON 6.5e-2 **6.44724E-2
+*MFRAC_WAT 'CALCIUM' *CON 1.1196E-2
+*MFRAC_WAT 'CO2' *CON 8.22728e-4
+*MFRAC_OIL 'OIL' *CON 1
+*MFRAC_GAS 'CO2' *CON 1  
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+*NUMERICAL            
+
+*TFORM *ZT
+*ISOTHERMAL
+*NORM
+*PRESS 400 *ZO 0.2  *ZNCG 0.2  *ZAQ 0.2
+
+*MATBALTOL 1.0e-4
+   'CO2' 1.0e-3
+
+
+
+*RUN
+
+** ===================== Recurrent Data ==================
+
+*TIME 0
+
+   *DTWELL 1
+
+   *WELL 1 'WI1' *VERT 1 1
+   *INJECTOR *MOBWEIGHT 'WI1'
+**COMPNAME    		'WATER'  	'CALCIUM'	'H'         'Na'    	'CO2'    'Mg'    'CHLORIDE'	   'OIL'
+**           		-------		----------	-----  	    -----   	-----    ----      -------         -----
+   *INCOMP WATER        .949884          7.7652e-4	0.0         6.2298e-3   1.8289e-4  3.375e-5  7.72255e-3        0.0
+   *OPERATE *STW 1205 **1500. ** 3.0 **6.0E+03
+   *OPERATE *BHP 38000 **kPa - 380 bar
+   ** Well Geometry for the Injector
+   **              RADIUS    GEOFAC   WFRAC   SKIN
+   *GEOMETRY *K     0.108    0.249    1.0     2.0
+   *PERFV *GEO 'WI1'
+      1:20   1.0  **100
+
+   *WELL 2  'GI1' *VERT 2   1
+   *INJECTOR *MOBWEIGHT 'GI1'
+   *incomp *gas 0 0 0 0 1 0 0 0
+   *OPERATE *STG 1005630. **1.3E+06 **2.5E+06
+   *OPERATE *MAX *BHP 38000. **kPa - 380 bar
+   ** Well Geometry for the Injector
+   **              RADIUS    GEOFAC   WFRAC   SKIN
+   *GEOMETRY *K     0.108    0.249    1.0     2.0
+   *PERFV 'GI1'
+      1:20   2.3455e4  **200
+
+   *WELL 3  'P' *VERT 20   1
+   *PRODUCER 'P'
+   *OPERATE *STL 1000 **2.0 **1500. ** Sm3/d
+   *OPERATE *MIN *BHP 10000. **kPa - 100 bar
+   **MONITOR *GOR 1000 *STOP
+   ** Well Geometry for the Producer
+   **              RADIUS    GEOFAC   WFRAC   SKIN
+   *GEOMETRY *K     0.108    0.249    1.0     2.0
+   *PERFV    *GEO 'P'
+      1:20   200
+
+   *SHUTIN 'WI1'
+
+*TIME 90.
+
+
+*TIME 180.
+
+
+*TIME 270.
+
+
+*TIME 360.
+
+
+*TIME 450.
+
+
+*TIME 540.
+
+
+*TIME 630.
+
+*TIME 720.
+
+
+*TIME 810.
+
+
+*TIME 900.
+
+*TIME 990.
+
+ 
+*TIME 1080.
+
+ 
+*TIME 1170.
+
+ 
+*TIME 1260.
+
+
+*TIME 1350.
+
+*TIME 1440.
+
+*TIME 1530.
+
+*TIME 1620.
+
+*TIME 1710.
+
+   *WRST *TNEXT
+
+*TIME 1800.
+
+
+*TIME 1890.
+
+ 
+*TIME 1980.
+
+*TIME 2070.
+
+
+*TIME 2160.
+
+
+*TIME 2250.
+
+
+*TIME 2340.
+
+*TIME 2430.
+
+*TIME 2520.
+
+*TIME 2610.
+
+*TIME 2700.
+
+*TIME 3000

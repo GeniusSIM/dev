@@ -1,0 +1,240 @@
+   *****************************************************************************
+   ** Template (mxgmc073.dat):  3D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC073.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         ELASTIC MODEL                                    10X20X9  RADIAL GRID    **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **         Illustrates the grid coupling between reservoir simulator and            **
+   **         geomechanics module when each uses a distinct grid type.                 **
+   **                                                                                  **
+   **         RESERVOIR:      10 x 20 x  9 RADIAL GRID                                 **
+   **         GEOMECHANICS :  21 x 21 x 11 CARTESIAN GRID                              **
+   **                                                                                  **
+   **         Amagamating and extending grids are used                                 **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+TITLE1
+   'IMEX Geomechanics Template #073'
+TITLE2
+   'Verify/Illustrate *GEOGRID *CART with *GAMALI/J/K'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 10
+*OUTPRN *GRID *SBDZ *PRES *SG *SW
+
+*WSRF *GRIDDEFORM  1
+*WSRF *GRID 1
+OUTSRF GRID POISSON PRES SG STRESEFF STRESI STRESJ STRESK STRESSH SW 
+            VDISPL YOUNG VPOROSGEO *TSUBSIDGEO BULKVOL SUBSIDGEO
+            ESTRESRAD ESTRESTAN DISPLRAD DISPLTAN  STRESRAD STRESTAN
+
+*OUTSRF *SPECIAL 2 1 1 *PRES
+*OUTSRF *SPECIAL 2 1 1 *VERDSPLGEO
+*OUTSRF *SPECIAL 2 1 1 *STRESEFF
+*OUTSRF *SPECIAL 2 1 1 *STRNEPL
+*OUTSRF *SPECIAL 2 1 1 *STRAINVOL
+*OUTSRF *SPECIAL 2 1 1 *SUBSIDGEO
+*OUTSRF *SPECIAL 2 1 1 *STRESRAD
+*OUTSRF *SPECIAL 2 1 1 *STRESTAN
+*OUTSRF *SPECIAL 2 1 1 *ESTRESRAD
+*OUTSRF *SPECIAL 2 1 1 *ESTRESTAN
+*OUTSRF *SPECIAL 2 1 1 *DISPLTAN
+*OUTSRF *SPECIAL 2 1 1 *DISPLRAD
+*OUTSRF *SPECIAL 2 1 1 *VPOROSGEO
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+GRID RADIAL 10  20  9  RW 0.01
+DI IVAR  0.5  2  3  4  5  6  7  8  9  10
+DJ CON 18
+DK CON 20   
+
+KDIR DOWN
+*DEPTH 1 1 1 4000
+
+NULL CON            1
+
+*POR  *CON 0.30
+
+*PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      1*5.0   1*100.0  1*20.0  1*20.0  1*20.0  1*100.0 1*20.0  1*20.0  1*100.0  
+*PERMJ *KVAR                
+      1*5.0   1*100.0  1*20.0  1*20.0  1*20.0  1*100.0 1*20.0  1*20.0  1*100.0  
+*PERMK *KVAR                ** that the first K layer is at bottom of the reservoir
+      1*0.05   1*1.0  1*0.2  1*0.2  1*0.2  1*1.0  1*0.2  1*0.2  1*1.0   
+
+PINCHOUTARRAY CON            1
+
+*PRPOR 3000
+*CPOR  4.150E-5
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+     5000.000   335.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER   63.02
+   *CO               1.0E-5        ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0           ** Water formation volume factor
+   *CW               0.0           ** Water compressibility
+   *REFPW            14.7          ** Reference pressure
+   *VWI              0.5366        ** Water viscosity at reference pressure
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 60
+
+** ================ ROCK-FLUID PROPERTIES ==============
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow   
+0.2     0.0000   0.5102 
+0.25    0.0039   0.4133 
+0.3     0.0156   0.3266 
+0.35    0.0352   0.25   
+0.40    0.0625   0.1837 
+0.45    0.0977   0.1276 
+0.5     0.1406   0.0816 
+0.55    0.1914   0.0459 
+0.6     0.25     0.0204 
+0.65    0.3164   0.0051 
+0.7     0.3906   0.0    
+0.8     0.5625   0.0    
+0.9     0.7656   0.0    
+1.0000  0.7656   0.0000 
+
+*SLT
+** Sl    Krg     Krog   
+0.20    0.6303   0.0000 
+0.25    0.5511   0.0    
+0.3     0.4772   0.0    
+0.35    0.4086   0.0026 
+0.4     0.3454   0.0104 
+0.45    0.2874   0.0234 
+0.5     0.2348   0.0416 
+0.55    0.1875   0.0651 
+0.6     0.1455   0.0937 
+0.65    0.1089   0.1275 
+0.7     0.0775   0.1666 
+0.75    0.0514   0.2108 
+0.8     0.0307   0.2709 
+0.85    0.0153   0.3149 
+0.9     0.0052   0.3748 
+0.95    0.0004   0.4398 
+0.97    0.0      0.4673 
+1.0000  0.0      0.5102 
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*VERTICAL DEPTH_AVE
+
+*REFPRES 3010
+*REFDEPTH 4010
+*DWOC   3600
+*DGOC   3500
+*PB *CON 0.0
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+*DTMIN 1.E-8
+
+*NORM *PRESS     150.0
+*NORM *SATUR     0.10
+*CONVERGE *PRESS 1.0
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH                   ** geomechanics main keyword
+*GEOM3D                    ** 3D FE
+*GCOUPLING 2               ** Coupling option # 2
+*GCFACTOR 1.0              ** Based on constrained boundaries
+*GPTOLMUL 0.1              ** Tolerance for pressure in coupling option 2
+*SOLVERG *AIMSOL
+
+*GEOGRID *GCART 22 22 11
+*GDI  *GCON   10
+*GDJ  *GCON   10
+*GDK  *GCON   20.0
+
+*GTRANSLI  -110.0
+*GTRANSLJ  -110.0
+
+** Amalgamate the separate geomechanical grid
+*GAMALI  16   GVAR  2:1 2:1 2:1 10:10  2:1  2:1  2:1
+*GAMALJ  16   GVAR  2:1 2:1 2:1 10:10  2:1  2:1  2:1
+*GAMALK  11   GCON  1:1 
+
+**  Extended grid
+*GEOEXTD  2:2   2:2   2:2  ** 2 more grids on left and 2 more grid on right etc.
+*GEXDI  GCON 100           ** grid size along I
+*GEXDJ  GCON 100           ** grid size along J
+*GEXDK  GCON 100           ** grid size along K
+
+*INTPOWER 2                ** INVERSE DISTANCE POWER
+
+*GEODEPTH 1 1 1     4000   ** DEPTH OF FIRST GEOMECHANICAL BLOCK
+
+*GOUTSRF *GGRID *ALL       ** OUTPUT VARIABLES ON GEOMECHANICS GRIDS
+
+*ELASTMOD 5.0e4            ** Young's modulus
+*POISSRATIO .35            ** Poisson's ratio
+*COHESION 1e8              ** Cohesion : LARGE VALUE FOR ELASTIC MODEL
+
+*PRINTGEO 13
+
+
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE 2004 09 16
+
+   *DTWELL 0.000001
+                  
+   WELL  'prod1'       **vert    21  21
+   PRODUCER 'prod1'
+   OPERATE  MAX  STW  100.  CONT REPEAT
+   OPERATE  MIN  BHP  500.  CONT REPEAT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.2  0.30   1.0  0.
+   PERF  GEO  'prod1'
+   **$ UBA         ff
+      1  1  1:9    1.3379
+                     
+TIME 100
+
+STOP

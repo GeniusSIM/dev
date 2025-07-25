@@ -1,0 +1,700 @@
+  *******************************************************************************
+  ** mxsmo046.dat:              Oil wet Depth Average Initialization           **
+  *******************************************************************************
+  **************************************************************************************
+  ** FILE:   MXSMO046.DAT                                                             **
+  ** MODEL:  24x25x15               Black Oil                                         **
+  **************************************************************************************
+  **                                                                                  **
+  ** Oil wet option using depth_ave initialization.  More realistic initialization    **
+  **                                                                                  **
+  **************************************************************************************
+  ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+  **************************************************************************************
+
+RESULTS SIMULATOR IMEX 2008
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'Oil Wet/Depth Average Initialization'
+*TITLE2
+'Homogeneous Reservoir Model based loosely on SPE 9'
+
+*NOLIST
+*INUNIT *FIELD     
+*WPRN   *WELL 0
+*WPRN   *GRID 0
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*OUTPRN *TABLES *NONE
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   *TIME
+*OUTSRF *GRID   *ALL
+
+*OUTDIARY  *WELLSTATUS
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 24 25  15                                   
+*KDIR *DOWN                 
+*DI *CON 300.0             
+*DJ *CON 300.0              
+*DK KVAR 10*20 30 40 60 80 100                 
+*DEPTH 1 1 1 9010.          
+*DIP -10.0 0.0              
+*NULL CON   1                    
+*POR CON 0.15                                            
+*CPOR   1.0E-6             
+*PRPOR 3600.0              
+*PERMI *CON 100                
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.01
+*PINCHOUTARRAY *CON  1
+
+*MODEL *BLACKOIL           
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*TRES 100
+*PVT  *ZG
+** p       rs     bo      zg    viso     visg
+  14.7       0 1.0000   .9999   1.20    .0125
+   400     165 1.0120   .8369   1.17    .0130
+   800     335 1.0255   .8370   1.14    .0135
+  1200     500 1.0380   .8341   1.11    .0140
+  1600     665 1.0510   .8341   1.08    .0145
+  2000     828 1.0630   .8370   1.06    .0150
+  2400     985 1.0750   .8341   1.03    .0155
+  2800    1130 1.0870   .8341   1.00    .0160
+  3200    1270 1.0985   .8398    .98    .0165
+  3600    1390 1.1100   .8299    .95    .0170
+  4000    1500 1.1200   .8300    .94    .0175
+  9000    1510 1.1210   .8301    .93    .0176
+*DENSITY *OIL    40
+*GRAVITY *GAS     0.92
+*DENSITY *WATER  63.021
+*CO    1.0E-6
+*BWI   1.0034
+*CW    1.0E-6
+*REFPW 3600
+*VWI   0.96
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1 *OILWET
+
+** oil-water relative permeability table (oil wetting phase)
+*SWT **(SOT)
+**$        So       kro      krwo      Pcwo
+     0.118510  0.000000       1.0   57.9598
+     0.287200  0.001590  0.318650   40.4971
+     0.398940  0.016190  0.210380   32.0983
+     0.482750  0.051130  0.143030   26.7946
+     0.538610  0.094980  0.104910   21.7023
+     0.600000  0.171430  0.069530   14.8018
+     0.620000  0.434980  0.035890   12.5566
+     0.630000  0.568020  0.022190   11.2261
+     0.640000  0.700470  0.010340   10.5486
+     0.650000  0.830230  0.000280   9.64611
+     0.800000  0.978830  0.000010   3.74203
+      0.82165  0.991590       0.0   2.32837
+      0.84891       1.0       0.0         0
+
+** Liquid-gas relative permeability table
+*SGT
+**$        Sg       krg      krog      Pcog
+     0.000000    0.0000      1.00       0.0
+     0.040000    0.0000      0.60       0.2
+     0.100000    0.0220      0.33       0.5
+     0.200000    0.1000      0.10       1.0
+     0.300000    0.2400      0.02       1.5
+     0.400000    0.3400      0.00       2.0
+     0.500000    0.4200      0.00       2.5
+     0.600000    0.5000      0.00       3.0
+     0.700000    0.8125      0.00       3.5
+     0.848910    1.0000      0.00       3.9
+
+*RTYPE *CON 1
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *DEPTH_AVE     
+*PB *CON    3600.0          
+*REFDEPTH   9035.           
+*REFPRES    3600.           
+*DWOC       10300            
+*DGOC       9200.            
+*DATUMDEPTH 9035. 
+
+** Due to OILWET option, if woc_pc was entered as 0.00 (as would be expected for a water wet reservoir),
+** DWOC would be free water contact (or depth where mobile water is first encountered)
+** Please read the OILWET tutorial in the IMEX manual for a complete explanation.
+
+*WOC_PC 57.9598
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX       60.
+*MAXSTEPS    300
+*NORM *PRESS 500.
+*ITERMAX 80
+*NORTH 80
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 1980 01 01
+*DTWELL 1.00
+GROUP 'ALL-WELLS' ATTACHTO 'FIELD'
+** *WELL 1   'Injector'   *VERT 24 25  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Injector' ATTACHTO 'ALL-WELLS'
+INJECTOR MOBWEIGHT 'Injector'
+INCOMP  WATER
+OPERATE  MAX  STW  5000.  CONT
+OPERATE  MAX  BHP  4543.39  CONT
+** *WELL 2   'Producer1'  *VERT 5 1    *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer1' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer1'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1064.77  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer1'
+**$ UBA    ff  Status  Connection  
+    5 1 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    5 1 3  1.  OPEN    FLOW-TO  1
+    5 1 4  1.  OPEN    FLOW-TO  2
+** *WELL 3   'Producer2'  *VERT 8 2    *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer2' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer2'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1125.76  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer2'
+**$ UBA    ff  Status  Connection  
+    8 2 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 2 3  1.  OPEN    FLOW-TO  1
+    8 2 4  1.  OPEN    FLOW-TO  2
+** *WELL 4   'Producer3'  *VERT 11 3   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer3' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer3'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1186.75  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer3'
+**$ UBA     ff  Status  Connection  
+    11 3 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 3 3  1.  OPEN    FLOW-TO  1
+    11 3 4  1.  OPEN    FLOW-TO  2
+** *WELL 5   'Producer4'  *VERT 10 4   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer4' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer4'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1166.42  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer4'
+**$ UBA     ff  Status  Connection  
+    10 4 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    10 4 3  1.  OPEN    FLOW-TO  1
+    10 4 4  1.  OPEN    FLOW-TO  2
+** *WELL 6   'Producer5'  *VERT 12 5   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer5' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer5'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1207.08  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer5'
+**$ UBA     ff  Status  Connection  
+    12 5 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    12 5 3  1.  OPEN    FLOW-TO  1
+    12 5 4  1.  OPEN    FLOW-TO  2
+** *WELL 7   'Producer6'  *VERT 4 6    *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer6' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer6'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1044.44  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer6'
+**$ UBA    ff  Status  Connection  
+    4 6 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    4 6 3  1.  OPEN    FLOW-TO  1
+    4 6 4  1.  OPEN    FLOW-TO  2
+** *WELL 8   'Producer7'  *VERT 8 7    *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer7' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer7'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1125.76  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer7'
+**$ UBA    ff  Status  Connection  
+    8 7 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 7 3  1.  OPEN    FLOW-TO  1
+    8 7 4  1.  OPEN    FLOW-TO  2
+** *WELL 9   'Producer8'  *VERT 14 8   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer8' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer8'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1247.7  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer8'
+**$ UBA     ff  Status  Connection  
+    14 8 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    14 8 3  1.  OPEN    FLOW-TO  1
+    14 8 4  1.  OPEN    FLOW-TO  2
+** *WELL 10  'Producer9'  *VERT 11 9   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer9' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer9'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1186.75  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer9'
+**$ UBA     ff  Status  Connection  
+    11 9 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 9 3  1.  OPEN    FLOW-TO  1
+    11 9 4  1.  OPEN    FLOW-TO  2
+** *WELL 11  'Producer10' *VERT 12 10  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer10' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer10'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1207.08  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer10'
+**$ UBA      ff  Status  Connection  
+    12 10 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    12 10 3  1.  OPEN    FLOW-TO  1
+    12 10 4  1.  OPEN    FLOW-TO  2
+** *WELL 12  'Producer11' *VERT 10 11  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer11' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer11'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1166.42  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer11'
+**$ UBA      ff  Status  Connection  
+    10 11 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    10 11 3  1.  OPEN    FLOW-TO  1
+    10 11 4  1.  OPEN    FLOW-TO  2
+** *WELL 13  'Producer12' *VERT 5 12   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer12' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer12'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1064.77  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer12'
+**$ UBA     ff  Status  Connection  
+    5 12 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    5 12 3  1.  OPEN    FLOW-TO  1
+    5 12 4  1.  OPEN    FLOW-TO  2
+** *WELL 14  'Producer13' *VERT 8 13   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer13' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer13'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1125.76  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer13'
+**$ UBA     ff  Status  Connection  
+    8 13 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 13 3  1.  OPEN    FLOW-TO  1
+    8 13 4  1.  OPEN    FLOW-TO  2
+** *WELL 15  'Producer14' *VERT 11 14  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer14' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer14'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1186.75  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer14'
+**$ UBA      ff  Status  Connection  
+    11 14 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 14 3  1.  OPEN    FLOW-TO  1
+    11 14 4  1.  OPEN    FLOW-TO  2
+** *WELL 16  'Producer15' *VERT 13 15  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer15' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer15'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1227.37  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer15'
+**$ UBA      ff  Status  Connection  
+    13 15 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    13 15 3  1.  OPEN    FLOW-TO  1
+    13 15 4  1.  OPEN    FLOW-TO  2
+** *WELL 17  'Producer16' *VERT 15 16  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer16' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer16'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1268.03  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer16'
+**$ UBA      ff  Status  Connection  
+    15 16 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    15 16 3  1.  OPEN    FLOW-TO  1
+    15 16 4  1.  OPEN    FLOW-TO  2
+** *WELL 18  'Producer17' *VERT 11 17  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer17' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer17'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1166.42  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer17'
+**$ UBA      ff  Status  Connection  
+    11 17 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 17 3  1.  OPEN    FLOW-TO  1
+    11 17 4  1.  OPEN    FLOW-TO  2
+** *WELL 19  'Producer18' *VERT 12 18  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer18' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer18'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1207.08  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer18'
+**$ UBA      ff  Status  Connection  
+    12 18 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    12 18 3  1.  OPEN    FLOW-TO  1
+    12 18 4  1.  OPEN    FLOW-TO  2
+** *WELL 20  'Producer19' *VERT 5 19   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer19' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer19'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1064.77  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer19'
+**$ UBA     ff  Status  Connection  
+    5 19 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    5 19 3  1.  OPEN    FLOW-TO  1
+    5 19 4  1.  OPEN    FLOW-TO  2
+** *WELL 21  'Producer20' *VERT 8 20   *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer20' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer20'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1125.76  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer20'
+**$ UBA     ff  Status  Connection  
+    8 20 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 20 3  1.  OPEN    FLOW-TO  1
+    8 20 4  1.  OPEN    FLOW-TO  2
+** *WELL 22  'Producer21' *VERT 11 21  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer21' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer21'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1186.75  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer21'
+**$ UBA      ff  Status  Connection  
+    11 21 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 21 3  1.  OPEN    FLOW-TO  1
+    11 21 4  1.  OPEN    FLOW-TO  2
+** *WELL 23  'Producer22' *VERT 15 22  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer22' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer22'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1268.03  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer22'
+**$ UBA      ff  Status  Connection  
+    15 22 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    15 22 3  1.  OPEN    FLOW-TO  1
+    15 22 4  1.  OPEN    FLOW-TO  2
+** *WELL 24  'Producer23' *VERT 12 23  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer23' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer23'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1207.08  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer23'
+**$ UBA      ff  Status  Connection  
+    12 23 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    12 23 3  1.  OPEN    FLOW-TO  1
+    12 23 4  1.  OPEN    FLOW-TO  2
+** *WELL 25  'Producer24' *VERT 10 24  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer24' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer24'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1166.42  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer24'
+**$ UBA      ff  Status  Connection  
+    10 24 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    10 24 3  1.  OPEN    FLOW-TO  1
+    10 24 4  1.  OPEN    FLOW-TO  2
+** *WELL 26  'Producer25' *VERT 17 25  *ATTACHTO 'ALL-WELLS'
+**$
+WELL  'Producer25' ATTACHTO 'ALL-WELLS'
+PRODUCER 'Producer25'
+OPERATE  MAX  STO  1500.  CONT
+OPERATE  MIN  BHP  1308.69  CONT
+** Well geometry for the producers.
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Producer25'
+**$ UBA      ff  Status  Connection  
+    17 25 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    17 25 3  1.  OPEN    FLOW-TO  1
+    17 25 4  1.  OPEN    FLOW-TO  2
+** Well geometry for the water injector.
+**            rad    geofac  wfrac   skin
+**  kf      ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.355  1.  0.
+PERF  GEO  'Injector'
+**$ UBA       ff  Status  Connection  
+    24 25 11  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    24 25 12  1.  OPEN    FLOW-FROM  1
+    24 25 13  1.  OPEN    FLOW-FROM  2
+    24 25 14  1.  OPEN    FLOW-FROM  3
+    24 25 15  1.  OPEN    FLOW-FROM  4
+*AIMWELL *WELLNN
+
+*TIME   1
+*DTWELL 1.0
+*TIME  50
+*TIME 100
+*TIME 200
+
+*TIME 300
+ALTER 'Producer1'
+    100.
+ALTER 'Producer10'
+    100.
+ALTER 'Producer11'
+    100.
+ALTER 'Producer12'
+    100.
+ALTER 'Producer13'
+    100.
+ALTER 'Producer14'
+    100.
+ALTER 'Producer15'
+    100.
+ALTER 'Producer16'
+    100.
+ALTER 'Producer17'
+    100.
+ALTER 'Producer18'
+    100.
+ALTER 'Producer19'
+    100.
+ALTER 'Producer2'
+    100.
+ALTER 'Producer20'
+    100.
+ALTER 'Producer21'
+    100.
+ALTER 'Producer22'
+    100.
+ALTER 'Producer23'
+    100.
+ALTER 'Producer24'
+    100.
+ALTER 'Producer25'
+    100.
+ALTER 'Producer3'
+    100.
+ALTER 'Producer4'
+    100.
+ALTER 'Producer5'
+    100.
+ALTER 'Producer6'
+    100.
+ALTER 'Producer7'
+    100.
+ALTER 'Producer8'
+    100.
+ALTER 'Producer9'
+    100.
+
+*TIME 360
+ALTER 'Producer1'
+    1500.
+ALTER 'Producer10'
+    1500.
+ALTER 'Producer11'
+    1500.
+ALTER 'Producer12'
+    1500.
+ALTER 'Producer13'
+    1500.
+ALTER 'Producer14'
+    1500.
+ALTER 'Producer15'
+    1500.
+ALTER 'Producer16'
+    1500.
+ALTER 'Producer17'
+    1500.
+ALTER 'Producer18'
+    1500.
+ALTER 'Producer19'
+    1500.
+ALTER 'Producer2'
+    1500.
+ALTER 'Producer20'
+    1500.
+ALTER 'Producer21'
+    1500.
+ALTER 'Producer22'
+    1500.
+ALTER 'Producer23'
+    1500.
+ALTER 'Producer24'
+    1500.
+ALTER 'Producer25'
+    1500.
+ALTER 'Producer3'
+    1500.
+ALTER 'Producer4'
+    1500.
+ALTER 'Producer5'
+    1500.
+ALTER 'Producer6'
+    1500.
+ALTER 'Producer7'
+    1500.
+ALTER 'Producer8'
+    1500.
+ALTER 'Producer9'
+    1500.
+
+*TIME 420
+*TIME 480
+*TIME 540
+*TIME 600
+*TIME 660
+*TIME 720
+*WPRN *WELL *TIME
+*WSRF *GRID *TIME
+*TIME 900
+*STOP
+

@@ -1,0 +1,33 @@
+
+
+     STARS Data Files Illustrating "Fractured Reservoirs"
+     ----------------------------------------------------
+
+stfrr001.dat:
+  title1 'STARS Test Bed No. 28'
+  title2 "Modification of Kazimi's Dual Porosity Problem"
+  title3 'Three Cases Give Same Initial In-Place'
+
+stfrr002.dat:
+  title1 'STARS Test Bed No. 29'
+  title2 'Pruess Geothermal Problem (1/8 of a Five-Spot, One Component)'
+  title3 'Natural Fractures Modelled with the MINC Option'
+
+stfrr003.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+stfrr004.dat:
+  title1 'STARS Test Bed No. 31'
+  title2 'Natural Fractures Modelled with the VR Option'
+
+stfrr005.dat:
+  title1 'STARS Test Bed No. 43'
+  title2 'Chen Data with VR Option'
+  title3 'Smaller Version of Test Bed No. 31'
+
+stfrr006.dat:
+  title1 'STARS Fractured Reservoirs No. 6'
+  title2 'Illustrate/Verify SUBDOMAIN-DK Option: *TRANSD, *SD_REINF, *SD_HCMULT'
+  title3 'Based on STFRR004'

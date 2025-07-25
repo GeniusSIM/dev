@@ -1,0 +1,167 @@
+   ******************************************************************************
+   ** mxsmo065.dat:            AQUIFER RESBND Test Model 2                     **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO065.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  36x1x9   PRIMARY PRODUCTION IN A RESERVOIR WITH RESBND AQUIFER           **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This example illustrates the use of *AQUIFER *RESBND TO MAKE AQUFER CONNECTIONS  **
+   ** and produce identical results to an appropriate AQUIFER BOUNDARY aquifer         **
+   ** (35x35x9 model using AQUIFER BOUNDARY)                                           **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+*TITLE1
+'AQUIFER RESBND Model 2'
+
+*INUNIT   *SI  
+
+*OUTUNIT  *SI  
+
+**CHECKONLY 
+*MAXERROR  10
+
+*WPRN    *WELL     1
+*WPRN    *GRID     1
+*WPRN    *SECTOR   1
+
+*OUTPRN  *WELL     *ALL  
+*OUTPRN  *GRID     *ALL  
+
+*WSRF    *WELL     1
+*WSRF    *GRID     1
+*WSRF    *SECTOR   1
+
+*OUTSRF  *GRID     ALL   
+*OUTSRF  *RES      ALL
+
+*GRID  *VARI  36  35  9
+*KDIR  *DOWN 
+*NOLIST     
+
+*DI    *CON   200
+*DJ    *CON   200
+*DK    *CON   10
+
+
+*DTOP
+1260*1500.0
+
+** Make all boundary blocks null to test resbnd option
+*NULL  *CON 1
+       mod 36  1:35  1:9 = 0
+
+*POR   *CON 0.2
+
+
+*CPOR   5E-7    
+*PRPOR  15610   
+
+*PERMI *CON     1550.
+*PERMJ *EQUALSI   
+*PERMK *EQUALSI
+
+
+*AQUIFER  *RESBND
+         
+*AQPROP
+10.0   0.17   500.0   8000.0   0.5
+*AQLEAK  *ON
+
+*MODEL  *BLACKOIL
+    *PVT  *BG  1
+        689.000     1.23   1.0831  0.1859  2.07  0.0131  1.36E-6 
+        3447.00     8.33   1.1020  0.0357  1.66  0.0135  1.36E-6 
+        6895.00     18.96  1.1305  0.0170  1.31  0.0143  1.36E-6 
+        10342.0     30.67  1.1619  0.0109  1.09  0.0155  1.36E-6 
+        13789.0     43.16  1.1953  0.0080  0.93  0.0169  1.36E-6 
+        15609.0     50.00  1.2136  0.0070  0.86  0.0179  1.36E-6 
+        15858.0     *INT   *INT    *INT    *INT  *INT    1.36E-6 
+        17237.0     *INT   *INT    *INT    *INT  *INT    1.36E-6 
+        19305.0     64.44  1.2522  0.0057  0.80  0.0197  1.36E-6 
+        
+                                                   
+        *DENSITY   *OIL     829.0     
+        *DENSITY   *WATER  1020.0
+        *GRAVITY   *GAS     0.703
+     
+*CVO  1.3528E-5
+
+*BWI    1.0255
+*CW     5.0E-7
+*REFPW  15610
+
+*VWI    0.32
+*CVW    0.0
+
+*ROCKFLUID
+
+*RPT  1  
+
+*SWT  
+
+   0.3000 0.0000 0.8000   20.39      
+   0.3100 0.0000 0.7545   18.97     
+   0.4000 0.0000 0.5726   13.30     
+   0.5000 0.0007 0.3469   8.770     
+   0.6000 0.0117 0.0652   5.650     
+   0.7000 0.2000 0.0000   3.680     
+   0.8000 0.5333 0.0000   2.400     
+   0.9000 0.7667 0.0000   1.560     
+   1.0000 1.0000 0.0000   0.000     
+
+*SGT  
+
+    0.0000 0.0000 0.8000  0.0000
+    0.1000 0.0053 0.3191  0.0000
+    0.2000 0.0420 0.1778  0.0000
+    0.3000 0.1450 0.0652  0.0000
+    0.4000 0.4800 0.0000  0.0000 
+    0.5500 0.6000 0.0000  0.0000
+    0.7000 0.6500 0.0000  0.0000
+
+*RTYPE   *CON   1
+
+*INITIAL
+   *VERTICAL  *DEPTH_AVE  *WATER_OIL_GAS  
+   *PB *CON 15609  
+
+   *REFDEPTH    1594.0   
+   *REFPRES     15609.0  
+
+   *DWOC         1600.0  
+   *DGOC         1400.0  
+                 
+*DATUMDEPTH  1575.0   *INITIAL
+*GASZONE     *NOOIL
+
+*NUMERICAL
+   *DTMAX   62.
+   *MAXSTEPS  1000
+   *AIM *OFF
+
+*RUN
+    *DATE 1994  01  01
+    *DTWELL  1.0
+    *AIMSET  *CON   1
+
+*WELL   1   'w301'   *VERT   18   18   
+*PRODUCER   1
+
+*OPERATE   *MAX   *STO   500.00   
+*OPERATE   *MIN   *BHP   2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  1
+   5:5     1.10
+   
+*DATE   1996   06   30  
+
+*STOP

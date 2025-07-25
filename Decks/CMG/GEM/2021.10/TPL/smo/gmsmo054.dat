@@ -1,0 +1,291 @@
+**--------------------------------------------------------------------**
+** GMSMO054.DAT: CBM Modeling with simplifiled rel-perm input         **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO054.DAT                                                **
+**                                                                    **
+** MODEL: CART 11x11x1 GRID             PRIMARY PRODUCTION            **
+**         3 COMPONENTS                 PALMER AND MANSOORI           **
+**                                      LGR                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Coal Bed Methane problem.                                          **
+** Palmer and Mansoori coal mechanics.                                **
+** Locally Refined Grid                                               **
+**                                                                    **
+** Use of simplified relative permeability tables ( no oil re perm    **
+** columns are required to be input with KRCBM keyword )              **
+**                                                                    **
+** Based on gmsmo041.                                                 **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*DIARY *CHANGES-UNCONV
+*TITLE1 'Coalbed Methane Modeling'
+*TITLE2 'Palmer and Mansoori coal mechanics.'
+*TITLE3 'Simplified rel-perm input'
+
+INUNIT SI
+WSRF WELL 1
+WSRF GRID TIME
+OUTSRF GRID SO SG SW PRES POROS PERM ADS 'CH4'
+WPRN GRID 0
+OUTPRN GRID NONE
+OUTPRN RES ALL 
+
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 11 11 1
+KDIR DOWN
+DI IVAR 
+ 11*181.81
+DJ JVAR 
+ 11*181.81
+DK ALL
+ 121*4.43
+DTOP
+ 121*325
+DUALPOR 
+SHAPE GK
+
+REFINE 7,7,1 INTO 3 3 3
+REFINE 6,7,1 INTO 3 3 3
+REFINE 5,7,1 INTO 3 3 3
+REFINE 7,6,1 INTO 3 3 3
+REFINE 6,6,1 INTO 3 3 3
+REFINE 5,6,1 INTO 3 3 3
+REFINE 7,5,1 INTO 3 3 3
+REFINE 6,5,1 INTO 3 3 3
+REFINE 5,5,1 INTO 3 3 3
+
+
+NULL FRACTURE CON          1
+NULL MATRIX CON            1
+
+POR MATRIX CON       0.0015
+POR FRACTURE CON     0.0015
+
+PERMI MATRIX CON       0.0001
+PERMI FRACTURE CON     80
+
+PERMJ FRACTURE CON     80
+PERMJ MATRIX EQUALSI
+
+PERMK FRACTURE CON    25
+PERMK MATRIX EQUALSI
+
+DIFRAC CON    0.15
+DJFRAC CON    0.15
+DKFRAC CON    0.15
+
+PINCHOUTARRAY CON  1
+
+PRPOR FRACTURE 3067
+PRPOR MATRIX 3067
+CPOR FRACTURE 0.00003
+CPOR MATRIX 0.00003
+
+CROCKTYPE 1
+  CPRPOR FRACTURE 4067.0 
+  CCPOR  FRACTURE 0.0005 
+  POISSR 0.35
+  YOUNGM 2750000
+  STRINF 0.01986 0.00518 0.000185
+  PRESLN 3125.0 4230.0 3810.0
+  EXPPM 3
+
+CROCKTYPE 2
+  CCPOR  MATRIX 0.00003
+  CPRPOR MATRIX 3067
+
+CTYPE FRACTURE CON 1 
+CTYPE MATRIX CON   2 
+
+** ------------------  Fluid Model and number of components ------------------
+MODEL PR
+NC 3 3
+COMPNAME 'CO2'    'N2'    'CH4' 
+HCFLAG    0        0       1 
+MW     44.01       28.013  16.043 
+AC     0.225       0.04    0.008 
+PCRIT  72.8        33.5    45.4 
+VCRIT  0.094       0.0895  0.099 
+TCRIT  304.2       126.2   190.6 
+PCHOR  78          41      77 
+SG     0.818       0.809   0.3 
+TB    -78.45      -195.75 -161.45 
+HEATING_VALUES 0  0  212.758 
+BIN
+-0.02 
+0.103 0.031 
+
+TRES 34.86 
+DENW 1000.8
+REFPW 101.325
+
+** ---------------------- Rock Fluid Data ----------------------------------------
+ROCKFLUID
+
+RPT
+
+KRCBM                ** Keyword to allow entry of rel perm tables without 
+                     ** oil phase relative permeability columns.           
+ 
+SWT
+**$        Sw       krw     Pcow
+     0.000000  0.000000  0.000000
+     0.050000  0.000600  0.000000
+     0.100000  0.001300  0.000000
+     0.150000  0.002000  0.000000
+     0.200000  0.007000  0.000000
+     0.250000  0.015000  0.000000
+     0.300000  0.024000  0.000000
+     0.350000  0.035000  0.000000
+     0.400000  0.049000  0.000000
+     0.450000  0.067000  0.000000
+     0.500000  0.088000  0.000000
+     0.550000  0.116000  0.000000
+     0.600000  0.154000  0.000000
+     0.650000  0.200000  0.000000
+     0.700000  0.251000  0.000000
+     0.750000  0.312000  0.000000
+     0.800000  0.392000  0.000000
+     0.850000  0.490000  0.000000
+     0.900000  0.601000  0.000000
+     0.950000  0.731000  0.000000
+     0.975000  0.814000  0.000000
+     1.000000  1.000000  0.000000
+SLT
+**$        Sl       krg     Pcog
+     0.000000  1.000000  0.000000
+     0.050000  0.835000  0.000000
+     0.100000  0.720000  0.000000
+     0.150000  0.627000  0.000000
+     0.200000  0.537000  0.000000
+     0.250000  0.466000  0.000000
+     0.300000  0.401000  0.000000
+     0.350000  0.342000  0.000000
+     0.400000  0.295000  0.000000
+     0.450000  0.253000  0.000000
+     0.500000  0.216000  0.000000
+     0.550000  0.180000  0.000000
+     0.600000  0.147000  0.000000
+     0.650000  0.118000  0.000000
+     0.700000  0.090000  0.000000
+     0.750000  0.070000  0.000000
+     0.800000  0.051000  0.000000
+     0.850000  0.033000  0.000000
+     0.900000  0.018000  0.000000
+     0.950000  0.007000  0.000000
+     0.975000  0.003500  0.000000
+     1.000000  0.000000  0.000000
+
+**$ Property: Maximal Adsorbed  (gmole/kg)   
+ADGMAXC 'CO2' MATRIX   CON   0.814
+ADGMAXC 'CO2' FRACTURE CON   0
+
+ADGMAXC 'N2'  MATRIX   CON   0.101
+ADGMAXC 'N2'  FRACTURE CON   0
+
+ADGMAXC 'CH4' MATRIX   CON   0.404
+ADGMAXC 'CH4' FRACTURE CON   0
+
+**$ Property: Rock Density (kg/m3)   
+ROCKDEN MATRIX   CON      1650.0
+ROCKDEN FRACTURE CON      1650.0
+
+**$ Property: Coal Desorption Time (day)  
+COAL-DIF-TIME 'CO2' CON           30
+COAL-DIF-TIME 'N2'  CON           30
+COAL-DIF-TIME 'CH4' CON           30
+
+**$ Property: Langmuir Adsorption Constant (1/kPa)   
+ADGCSTC 'CO2' MATRIX   CON   0.000310
+ADGCSTC 'CO2' FRACTURE CON   0
+ADGCSTC 'N2'  MATRIX   CON   0.000265
+ADGCSTC 'N2'  FRACTURE CON   0
+ADGCSTC 'CH4' MATRIX   CON   0.000289
+ADGCSTC 'CH4' FRACTURE CON   0
+
+** ---------------- Initilaization -----------------------------------------
+INITIAL
+USER_INPUT
+
+SEPARATOR
+**$  Stage Pres.  Stage Temp.
+         101.325      15.5556
+
+SW MATRIX   CON     0.0001
+SW FRACTURE CON     0.999995 
+
+PRES MATRIX CON       3067
+PRES FRACTURE CON     3067
+
+**$ Property: Global Composition
+ZGLOBALC 'CO2' MATRIX   CON    0
+ZGLOBALC 'CO2' FRACTURE CON    0
+ZGLOBALC 'N2'  MATRIX   CON    0
+ZGLOBALC 'N2'  FRACTURE CON    0
+ZGLOBALC 'CH4' MATRIX   CON    1
+ZGLOBALC 'CH4' FRACTURE CON    1
+
+** ---------------------- Numerical Conrols ------------------------------------
+NUMERICAL
+NCHECK-CEQ 3
+
+** ---------------------- Recurrent data ---------------------------------------- 
+RUN
+DATE 2010 1 1
+WELL  'well1'
+PRODUCER 'well1'
+OPERATE  MAX  STW  5000.  CONT REPEAT
+OPERATE  MIN  BHP  250.  CONT REPEAT
+** UBA              ff  Status  Connection  
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.10795  0.37  1.  10.
+PERF  GEO  'well1'
+**$ UBA            ff   Status  Connection  
+    6 6 1 / 2 2 1  1.0  OPEN    FLOW-TO  'SURFACE'
+    6 6 1 / 2 2 2  1.0  OPEN    FLOW-TO  1
+    6 6 1 / 2 2 3  1.0  OPEN    FLOW-TO  2
+
+AIMSET FRACTURE CON          3
+AIMSET MATRIX CON            3
+
+DATE 2010 2 1
+DATE 2010 3 1
+DATE 2010 4 1
+DATE 2010 5 1
+DATE 2010 6 1
+DATE 2010 7 1
+DATE 2010 8 1
+WRST TNEXT
+DATE 2010 9 1
+DATE 2010 10 1
+DATE 2010 11 1
+DATE 2010 12 1
+DATE 2011 1 1
+DATE 2011 2 1
+DATE 2011 3 1
+DATE 2011 4 1
+DATE 2011 5 1
+DATE 2011 6 1
+DATE 2011 7 1
+DATE 2011 8 1
+DATE 2011 9 1
+DATE 2011 10 1
+DATE 2011 11 1
+DATE 2011 12 1
+DATE 2012 1 1
+
+STOP

@@ -1,0 +1,228 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Verify and illustrate the usage of the *NETGROSS with normal
+**            compressibility options along with *PERMSCALE and *BLOCKAGE.
+
+**  USAGE:    This is the run with *NETGROSS data, and its results are to be
+**            compared to those of "sttst11".  The only differences between the
+**            output files are input block sizes, gross volumes and titles.
+
+**  ORIGIN:   Same data as "sttst11.dat", except that (1) the K direction block
+**            size is doubled, and (2) net-to-gross of 50% is entered.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #48'
+*title2 'Verify *NETGROSS with Elastic Compressibility'
+*title3 'and *PERMSCALE/*BLOCKAGE:  Net-to-Gross = 50%'
+
+inunit lab except  2 0  ** deg K instead of deg C
+
+outunit lab except  2 0  ** deg K instead of deg C
+
+outprn grid pres sw so w rfw
+            volfr  visccmp   ** special viscosity component (in volfr)
+            vol    solconc   ** entrapped component (in vol)
+**            num    solconc   ** entrapped component (in num)
+
+wrst 100
+wprn grid 100
+wprn iter 1
+
+*outprn *well wellcomp
+*outprn *iter newton
+
+outsrf well  component all
+
+*outsrf *grid pres sw so sg temp rfw permi permj permk
+            volfr  viswcom   ** special viscosity component (in volfr)
+            vol    solconc   ** entrapped component (in vol)
+**            num    solconc   ** entrapped component (in num)
+
+*outsrf *special delpblk 1,1,1 20,1,1
+                 delpblk 1,2,1 20,2,1
+                 blockvar permi 1,2,1
+                 blockvar permj 1,2,1
+                 blockvar permk 1,2,1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 20 2 1  ** Two parallel 20-block cores
+
+** Two cores in parallel, each 50 cm x 5 cm**2 sandpacks
+di con .25   
+dj con 2.216   
+dk con 4.432 **2.216
+por con .34  
+
+permi jvar 1150 570
+permj equalsi   
+permk equalsi
+
+netgross con 0.5
+
+*end-grid
+prpor 101.1
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 4 3 3 2   ** Two aqueous and two oleic components
+
+compname   'WATER'   'ENTR OIL'   'FREE OIL'   'TRAP OIL'
+**         -------    --------     --------     --------
+cmm          .018       .18          .18          0.18
+molden      .05550     .00555        .00555                ** oil = 1/10 water for easier mol -> vol
+solid_den 'TRAP OIL' 9.99e-4 0 0                           ** Trapped density matches fluid
+pcrit       22120       1824         1824
+tcrit       647.4      658.3        658.3
+
+avisc         1         150          150                 ** High oil viscosity (150 cp)
+bvisc       1.116      1.102        1.102
+*vsmixcomp 'ENTR OIL'
+
+kv1           0          0          1.33e6
+kv4           0          0           -3775
+kv5           0          0           91.31
+** No equilibrium mass transfer between liquid phases
+** (mass transfer is non-equilibrium via reactions)
+
+
+**  Chemical reactions describe non-equilibrium mass transfer
+**  (capture) of flowing emulsion droplets by the porous media
+
+   **  Linear capture (rate constant is filtration coefficient)
+   storeac    0          1            0             0
+   stoprod    0          0            0             1
+   freqfac .4
+   permscale  **  eff. perm     scale factor
+                     300           10     ** Filtration coefficient as
+                     600            3     ** function of permeability.
+                    1200            1     ** 'freqfac' is filtration
+                    2400           0.3    ** coefficient at unit scale factor.
+
+   **  Modification at high capture levels
+   **  (rate constant(2)/rate constant(1) is Radke's flow diversion)
+   storeac    0          1            0             1
+   stoprod    0          2            0             0
+   freqfac 5600
+   permscale  **  eff. perm     scale factor
+                     300           2.5    ** Flow diversion depends on permeability.
+                     600           1.5    ** 'freqfac' is flow diversion at unit scale factor.
+                    1200            1     ** Nonmonotonic behaviour is a result
+                    2400           .75    ** of interception dominating straining
+                                          ** capture as permeability increases.
+
+   ** Flow restriction parameter as function of permeability
+   blockage w 'TRAP OIL'  ** eff. perm   flow restr factor
+                              300            300
+                              600            600
+                             1200            900
+                             2400           1200
+
+** Reference conditions
+prsr 101.1
+temr 298.14
+psurf 101.1
+tsurf 298.14
+
+*rockfluid
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+swt
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.234     0.          1.
+    0.25      0.00025     0.729
+    0.3       0.002       0.512
+    0.35      0.00675     0.343
+    0.4       0.016       0.216
+    0.45      0.03125     0.125
+    0.5       0.054       0.064
+    0.55      0.08575     0.027
+    0.6       0.128       0.008
+    0.65      0.18225     0.001
+    0.7       0.21        0.
+    1.        1.          0.
+
+slt
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29        0.7        0.
+    1.          0.         1.
+
+*initial
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+pres con 101.3
+sw con .234001      ** So by difference
+temp con 296.9
+mfrac_wat 'WATER' con 1
+
+*numerical
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+dtmax 35
+tform zt
+isothermal
+
+norm      press 100  zaq .4    zo .4    zncg .4
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+
+time 0
+
+   dtwell 35.0
+
+   well 1 'INJTR'
+   injector mobweight 'INJTR'
+   incomp water .9985 .0015 0       ** Inject oil-in-water emulsion
+   operate stw .12
+   perf 'INJTR'
+          **  i   j   k   wi
+              1   1   1  22392.83 ** 13.26  ** Inject into top core
+              1   2   1  45190.96 ** 26.76  ** Inject into bottom core
+
+
+   well 2 'PRODN'
+   producer 'PRODN'
+   operate bhp 101.3
+   perf 'PRODN'
+          **  i   j   k   wi
+             20   1   1  22392.83 ** 13.26  ** Produce from top core
+             20   2   1  45190.96 ** 26.76  ** Produce from bottom core
+
+
+time  980
+time 1960
+stop

@@ -1,0 +1,298 @@
+**************************************************************************************
+**                                                                                  **
+** FILE :  stgeo100.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELLS                                     SI UNITS                **
+**         Elastoplastic model                             11X20X5 RADIAL GRID      **
+**                                                                                  **
+** USAGE: Effective stress-dependent geomechanical properties                       **
+**                                                                                  **
+**                                                                                  **
+** Purposes:                                                                        **
+**        Illustrate how the properties in geomechanics module change with          **
+**        water saturation.                                                         **
+**                                                                                  **
+**        In RESULTS, the corresponding properties to the output keywords are:      **
+**        COHESION: Cohesion                                                        **
+**                                                                                  **                                               
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #100'
+*title2 'Saturation-Dependent Geomechanical Properties with *GRWATAB'
+*title3 'Water Weakening'
+
+*INUNIT  *field
+*OUTUNIT *field
+
+*WSRF *GRID TIME
+**wsrf *griddeform 1
+*WPRN *GRID 1 
+*OUTPRN *GRID *VPOROS *VERDSPLPOR *PRES *SO *SG *SW 
+*PRNTORIEN 2 0
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*OUTSRF *GRID *VERDSPLPOR *VERDSPLGEO *VPOROS *PRES *YOUNG *POISSON *VDISPL 
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL ESTRESRAD ESTRESTAN
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *VPOROSTGEO *PRMXDIR *PRMNDIR
+              *YLDSTATE *GCOHESION *FRICANGLE SO  SW  SG  SAFACTOR TSAFACTOR
+*OUTSRF *SPECIAL 
+                 *AVGVAR *PRES
+                 *AVGVAR *vporos
+                 *AVGVAR *streseff
+                 *BLOCKVAR *PRES     6,6,1
+                 *BLOCKVAR *VPOROS   6,6,1
+                 *BLOCKVAR *STRESEFF 6,6,1
+                 *BLOCKVAR *STRNEPL  6,6,1
+                 *BLOCKVAR *VERDSPLGEO 6,6,1
+                 *BLOCKVAR *VERDSPLPOR 6,6,1
+                 *BLOCKVAR *VPOROSGEO 6,6,1
+                 *BLOCKVAR *VPOROSTGEO 6,6,1
+
+
+                 *BLOCKVAR *PRES     11,1,1
+                 *BLOCKVAR *VPOROS   11,1,1
+                 *BLOCKVAR *STRESEFF 11,1,1
+                 *BLOCKVAR *STRNEPL  11,1,1
+
+
+                 *BLOCKVAR *PRES     11,11,1
+                 *BLOCKVAR *VPOROS   11,11,1
+                 *BLOCKVAR *STRESEFF 11,11,1
+                 *BLOCKVAR *STRNEPL  11,11,1
+
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *RADIAL 11 20 5  RW 0.1
+*KDIR DOWN
+*DI *IVAR 0.1 0.2 0.5 1.0 2.0  5. 20.0  30.0  40 50.0 100
+*DJ *CON 18
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+
+*PERMI *CON 15000.0  
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 1.0
+
+*END-GRID
+
+*PRPOR 3000
+
+*ROCKTYPE   1
+
+*CPOR  1.8570E-6
+*ROCKCP 28.8
+*THCONR 38.4
+*THCONW 38.4
+*THCONO 38.4
+*THCONG 38.4
+*HLOSSPROP     *OVERBUR  35.0  30.0
+               *UNDERBUR 35.0  30.0
+
+*THTYPE CON 1 
+
+
+
+**============= FLUID DEFINITIONS =============
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'    'OIL'
+**               -----    -------
+     *CMM        18.02      600
+     *PCRIT      3206.2      0        ** These four properties
+     *TCRIT      705.4       0        ** are for the gas phase.
+     *AVG        1.13e-5     0        ** The dead oil component does
+     *BVG        1.075       0        ** not appear in the gas phase.
+
+     *MOLDEN     0        0.10113
+     *CP         0        5.e-6
+     *CT1        0        3.8e-4
+
+     *CPL1       0        300
+
+*VISCTABLE
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         800     0           2.5
+
+*PRSR 14.7
+*TEMR 60
+*PSURF 14.7
+*TSURF 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*vertical depth_ave
+*refpres 3035
+*refdepth 5000
+*TEMP *CON 150
+
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+
+*UNRELAX -1
+
+*RANGECHECK *OFF
+*NORM      *PRESS 500  ***TEMP 50  *SATUR .2  *Y .2  *X .2
+*CONVERGE  *PRESS 100  ***TEMP 10  *SATUR .1  *Y .1  *X .1
+*RANGECHECK *ON
+
+tform zt
+*isothermal
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+
+*GEOMECH              ** Main keyword for using geomechanics module              
+*GEOM3D               ** Using 3D finite elements
+*SOLVERG *AIMSOL
+*GCOUPLING 2
+
+*NITERGEO 300         ** Max number of iterations for convergence
+
+*ELASTMOD 3.2e6       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.35      ** Poisson's ratio
+*FRICANGLE 25.0       ** Friction angle (degrees)
+*COHESION 150        ** Cohesion (PSI)
+*DRUCKER
+
+ *GRWATAB   *COHESION 
+ 	0	250	
+ 	0.1	220	
+ 	0.2	200	
+ 	0.3	170	
+ 	0.4	160	
+ 	0.5	140	
+	0.6	120	
+ 	0.7	100	
+ 	0.8	90	
+ 	0.9	80	
+ 	1	70
+
+*STRESS3D  2000  2000  2000 0  0  0
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 1E-5
+   
+   *WELL 1 'prod1'   **vert    6   6
+   *producer 'prod1'
+   *operate *max *STO 100
+   *operate *min *bhp 100
+   *geometry *k  0.365 0.249 1.0 0.0
+   *perf *geo 'prod1'
+       1  1  1:5  1.0
+   
+   *WELL 2 'inj1'    **vert    6  6
+   *injector 'inj1'
+   *incomp water  1.0 0.0
+   *operate *max *STW 800
+   *operate *bhp 10000
+   *geometry *k  0.365 0.249 1.0 0.0
+   *perf *geo 'inj1'
+       1  1  1:5  1.0
+   *shutin 1
+
+*TIME 1
+*TIME 2
+*TIME 3
+*TIME 4
+*TIME 5
+*TIME 6
+*TIME 7
+*TIME 8
+*TIME 9
+*TIME 10
+*TIME 11
+*TIME 12
+*TIME 13
+*TIME 14
+*TIME 15
+*TIME 16
+STOP

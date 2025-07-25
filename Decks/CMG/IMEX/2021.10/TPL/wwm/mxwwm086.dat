@@ -1,0 +1,237 @@
+********************************************************************************
+** mxwwm086.dat:               Minimum Wellbore Pressure                      **
+********************************************************************************
+********************************************************************************
+**                                                                            **
+** FILE:   MXWWM086.DAT                                                       **
+**                                                                            **
+** MODEL:  21x21x43     OIL-WATER     *PWELMIN                                **
+**                                                                            **
+********************************************************************************
+**                                                                            **
+** This example illustrates the use of keyword *PWELMIN to regulate the       **
+** wellbore pressure so that it will not drop below the given threshold       **
+** pressure.                                                                  **
+**                                                                            **
+********************************************************************************
+** CONTACT:  CMG, (403)531-1300;  282-6495 (fax); support@cmgl.ca (Internet)  **
+********************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+*TITLE1   'Minimum Wellbore Pressure'
+*TITLE2   '*PWELMIN'
+
+*INUNIT  *FIELD
+
+*WPRN   *WELL   1
+*OUTPRN *WELL   *ALL
+*OUTPRN *GRID *NONE
+*OUTPRN *RES *NONE
+
+*WSRF *WELL 1
+*OUTSRF *WELL *LAYER *ALL *DOWNHOLE
+*WSRF *GRID 1
+
+*WRST 1
+
+*GRID    *CART       21     21     43
+
+*KDIR    *DOWN
+*DTOP 441*8000.
+
+*DI *CON 100.0
+*DJ *CON 100.0
+*DK *KVAR 11*20. 5*20. 11*20. 5*20. 11*20.
+
+*POR *CON  0.25
+
+*PERMI   *CON 200
+*PERMJ   *EQUALSI
+*PERMK   *CON 100
+*PRPOR  268.2
+*CPOR  0.000054
+
+*NULL *KVAR 11*1 5*0 11*1 5*0 11*1
+
+*MODEL *OILWATER
+
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.
+   *CW    0.
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+*ROCKFLUID
+*RPT    1  *DRAINAGE
+*SWT
+**           SW       KRW          KROW
+**         -----   --------     ---------
+           0.300   0.00000000   0.68130000
+           0.310   0.00000000   0.65730351
+           0.320   0.00000096   0.63312531
+           0.330   0.00000466   0.60885411
+           0.340   0.00001430   0.58455361
+           0.360   0.00006943   0.53607742
+           0.400   0.00050838   0.44088837
+           0.420   0.00103468   0.39481073
+           0.440   0.00188683   0.35012292
+           0.490   0.00620365   0.24613910
+           0.510   0.00916340   0.20824669
+           0.540   0.01541994   0.15603837
+           0.580   0.02811971   0.09610829
+           0.600   0.03679543   0.07072682
+           0.620   0.04731916   0.04866692
+           0.670   0.08332668   0.00968119
+           0.690   0.10230414   0.00167514
+           0.700   0.11291411   0.00000000
+           0.740   0.16371108   0.00000000
+           0.780   0.22980565   0.00000000
+           0.840   0.36368884   0.00000000
+           0.880   0.48049326   0.00000000
+           0.910   0.58485838   0.00000000
+           0.990   0.94546278   0.00000000
+           1.000   1.00000000   0.00000000
+
+*INITIAL
+  *VERTICAL *DEPTH_AVE *WATER_OIL
+  *PB   *CON   15.
+  *DATUMDEPTH  8860.0
+  *REFDEPTH    8860.0
+  *REFPRES     1000.0
+  *DWOC        8860.0
+
+
+*NUMERICAL
+  *DTMAX  5.0
+
+
+*RUN
+  *DATE 1995 12 31
+
+** ====================================================
+*WELL    1     'PROD1'
+   *PRODUCER      1
+   *OPERATE  *MIN  *BHP  50
+   GEOMETRY  K  0.25  0.37  1.0  0.0
+
+   PERF      GEOA  'PROD1'
+   11 11 2          1.0  OPEN    FLOW-TO  'SURFACE'
+   11 11 3          1.0  OPEN    FLOW-TO  1
+   11 11 4          1.0  OPEN    FLOW-TO  2
+   11 11 5          1.0  OPEN    FLOW-TO  3
+   11 11 6          1.0  OPEN    FLOW-TO  4
+   11 11 7          1.0  OPEN    FLOW-TO  5
+   11 11 8          1.0  OPEN    FLOW-TO  6
+   11 11 9          1.0  OPEN    FLOW-TO  7
+   11 11 10         1.0  OPEN    FLOW-TO  8
+   11 11 18         1.0  CLOSED  FLOW-TO  9
+   11 11 19         1.0  CLOSED  FLOW-TO  10
+   11 11 20         1.0  CLOSED  FLOW-TO  11
+   11 11 21         1.0  CLOSED  FLOW-TO  12
+   11 11 22         1.0  CLOSED  FLOW-TO  13
+   11 11 23         1.0  CLOSED  FLOW-TO  14
+   11 11 24         1.0  CLOSED  FLOW-TO  15
+   11 11 25         1.0  CLOSED  FLOW-TO  16
+   11 11 26         1.0  CLOSED  FLOW-TO  17
+   11 11 34         1.0  CLOSED  FLOW-TO  18
+   11 11 35         1.0  CLOSED  FLOW-TO  19
+   11 11 36         1.0  CLOSED  FLOW-TO  20
+   11 11 37         1.0  CLOSED  FLOW-TO  21
+   11 11 38         1.0  CLOSED  FLOW-TO  22
+   11 11 39         1.0  CLOSED  FLOW-TO  23
+   11 11 40         1.0  CLOSED  FLOW-TO  24
+   11 11 41         1.0  CLOSED  FLOW-TO  25
+   11 11 42         1.0  CLOSED  FLOW-TO  26
+
+*TIME 90.
+
+   PERF      GEOA  'PROD1'
+   11 11 2          1.0  OPEN    FLOW-TO  'SURFACE'
+   11 11 3          1.0  OPEN    FLOW-TO  1
+   11 11 4          1.0  OPEN    FLOW-TO  2
+   11 11 5          1.0  OPEN    FLOW-TO  3
+   11 11 6          1.0  OPEN    FLOW-TO  4
+   11 11 7          1.0  OPEN    FLOW-TO  5
+   11 11 8          1.0  OPEN    FLOW-TO  6
+   11 11 9          1.0  OPEN    FLOW-TO  7
+   11 11 10         1.0  OPEN    FLOW-TO  8
+   11 11 18         1.0  OPEN    FLOW-TO  9  *REFLAYER
+   11 11 19         1.0  OPEN    FLOW-TO  10
+   11 11 20         1.0  OPEN    FLOW-TO  11
+   11 11 21         1.0  OPEN    FLOW-TO  12
+   11 11 22         1.0  OPEN    FLOW-TO  13
+   11 11 23         1.0  OPEN    FLOW-TO  14
+   11 11 24         1.0  OPEN    FLOW-TO  15
+   11 11 25         1.0  OPEN    FLOW-TO  16
+   11 11 26         1.0  OPEN    FLOW-TO  17
+   11 11 34         1.0  CLOSED  FLOW-TO  18
+   11 11 35         1.0  CLOSED  FLOW-TO  19
+   11 11 36         1.0  CLOSED  FLOW-TO  20
+   11 11 37         1.0  CLOSED  FLOW-TO  21
+   11 11 38         1.0  CLOSED  FLOW-TO  22
+   11 11 39         1.0  CLOSED  FLOW-TO  23
+   11 11 40         1.0  CLOSED  FLOW-TO  24
+   11 11 41         1.0  CLOSED  FLOW-TO  25
+   11 11 42         1.0  CLOSED  FLOW-TO  26
+
+*PWELMIN 'PROD1' 15.0
+
+*TIME 180.
+
+   PERF      GEOA  'PROD1'
+   11 11 2          1.0  OPEN    FLOW-TO  'SURFACE'
+   11 11 3          1.0  OPEN    FLOW-TO  1
+   11 11 4          1.0  OPEN    FLOW-TO  2
+   11 11 5          1.0  OPEN    FLOW-TO  3
+   11 11 6          1.0  OPEN    FLOW-TO  4
+   11 11 7          1.0  OPEN    FLOW-TO  5
+   11 11 8          1.0  OPEN    FLOW-TO  6
+   11 11 9          1.0  OPEN    FLOW-TO  7
+   11 11 10         1.0  OPEN    FLOW-TO  8
+   11 11 18         1.0  OPEN    FLOW-TO  9
+   11 11 19         1.0  OPEN    FLOW-TO  10
+   11 11 20         1.0  OPEN    FLOW-TO  11
+   11 11 21         1.0  OPEN    FLOW-TO  12
+   11 11 22         1.0  OPEN    FLOW-TO  13
+   11 11 23         1.0  OPEN    FLOW-TO  14
+   11 11 24         1.0  OPEN    FLOW-TO  15
+   11 11 25         1.0  OPEN    FLOW-TO  16
+   11 11 26         1.0  OPEN    FLOW-TO  17
+   11 11 34         1.0  OPEN    FLOW-TO  18  *REFLAYER
+   11 11 35         1.0  OPEN    FLOW-TO  19
+   11 11 36         1.0  OPEN    FLOW-TO  20
+   11 11 37         1.0  OPEN    FLOW-TO  21
+   11 11 38         1.0  OPEN    FLOW-TO  22
+   11 11 39         1.0  OPEN    FLOW-TO  23
+   11 11 40         1.0  OPEN    FLOW-TO  24
+   11 11 41         1.0  OPEN    FLOW-TO  25
+   11 11 42         1.0  OPEN    FLOW-TO  26
+
+*BHPDEPTH 'PROD1' 7000.0
+
+*TIME 270.
+
+   *PWELMIN 'PROD1' *DEFAULT
+
+*TIME 300.
+
+*STOP

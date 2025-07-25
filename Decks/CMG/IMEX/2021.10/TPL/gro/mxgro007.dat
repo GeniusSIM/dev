@@ -1,0 +1,220 @@
+   ** PAR008.INC (8 MB) will suffice.
+   ******************************************************************************
+   ** mxgro007.dat:        900 grids model                                     **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:                 MXGRO007.DAT                                               **
+   **                                                                                  **
+   ** MODEL:  12x15x5                  66 WELLS                        FIELD UNIT      **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** A cartesian  12x15x5  grids  model  with  66  wells. It is designed for testing  **
+   ** 8 MB common blocks model only.                                                    **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Test for 8 Mb. Common'
+   *TITLE3
+   'Blocks = 900, Active = 600, Wells = 66, Layers = 330.'
+
+
+   *INUNIT *FIELD              
+   *RANGECHECK *OFF
+
+   *WPRN   *WELL   *TIME 
+   *WPRN   *GRID   *TIME
+   *WPRN   *ITER   *MATRIX
+   *OUTPRN *WELL   *all
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL    1
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 12  15  5 
+                 
+   *DI *CON 1000.0  
+   *DJ *CON 1000.0  
+   *DK *con 30      
+                 
+   *DEPTH 1 1 1 8400.0   
+
+   *null *ijk 
+     1:12  1:15  5:5  0
+     1:12  1:10  4:4  0
+   *POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.
+
+   *PERMI *con 100
+   *PERMJ *con 100
+   *PERMK *con 10
+
+
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                            
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *ON               ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       9500.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact   
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        90.         ** Maximum time step size
+   *MAXSTEPS      1
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.20
+   *AIM  *off
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *aimset con 1
+                  
+*WELL 1  'pro1 '  *vert  2  3
+*WELL 2  'pro2 '  *vert  2  4
+*WELL 3  'pro3 '  *vert  2  5
+*WELL 4  'pro4 '  *vert  2  6
+*WELL 5  'pro5 '  *vert  2  7
+*WELL 6  'pro6 '  *vert  2  8
+*WELL 7  'pro7 '  *vert  2  9
+*WELL 8  'pro8 '  *vert  2  10
+*WELL 9  'pro9 '  *vert  2  11
+*WELL 10 'pro10'  *vert  2  12
+*WELL 11 'pro11'  *vert  6  3 
+*WELL 12 'pro12'  *vert  6  4 
+*WELL 13 'pro13'  *vert  6  5 
+*WELL 14 'pro14'  *vert  6  6 
+*WELL 15 'pro15'  *vert  6  7 
+*WELL 16 'pro16'  *vert  6  8 
+*WELL 17 'pro17'  *vert  6  9 
+
+*WELL 18 'inj1 '  *vert  4  3 
+*WELL 19 'inj2 '  *vert  4  4 
+*WELL 20 'inj3 '  *vert  4  5 
+*WELL 21 'inj4 '  *vert  4  6 
+*WELL 22 'inj5 '  *vert  4  7 
+*WELL 23 'inj6 '  *vert  4  8 
+*WELL 24 'inj7 '  *vert  4  9 
+*WELL 25 'inj8 '  *vert  4  10
+*WELL 26 'inj9 '  *vert  4  11
+*WELL 27 'inj10'  *vert  4  12
+*WELL 28 'inj11'  *vert  8  3 
+*WELL 29 'inj12'  *vert  8  4 
+*WELL 30 'inj13'  *vert  8  5 
+*WELL 31 'inj14'  *vert  8  6 
+*WELL 32 'inj15'  *vert  8  7 
+*WELL 33 'inj16'  *vert  8  8 
+
+   *PRODUCER  1:17
+   *OPERATE *MAX  *STO  20.0             
+   *OPERATE *MIN  *BHP  1000.0          
+                                       
+   *MONITOR *GOR       20000.0  *STOP  ** Stop if the GOR exceeds 20000.
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.37    1.0    0.0 
+   *PERFV *GEO 1:17
+   ** kf     ff                         
+      1:3   1.0
+
+   *INJECTOR  18:33
+   *INCOMP  *WATER
+   *OPERATE *MAX  *STW 20.0           
+   *OPERATE *MAX  *BHP 10000.0
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERFV *GEO 18:33
+   ** kf     ff                         
+      3   1.0   
+
+   *TIME 3650.0                        
+   *STOP                               

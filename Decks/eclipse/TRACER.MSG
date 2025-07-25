@@ -1,0 +1,96 @@
+<eclipse>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 11796
+</message>
+<message source="eclrun" date="" time="0">
+Simulation has finished.
+</message>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 11796
+</message>
+<message source="eclrun" date="" time="0">
+Simulation has finished.
+</message>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 11796
+</message>
+<message date="1/1/1983" time="0.00000000000000">
+ CHECKING FOR LICENSES                                                   
+</message>
+<message date="1/1/1983" time="0.00000000000000">
+ THE MEMORY REQUIRED TO PROCESS THE GRID SECTION IS                      
+      60872 BYTES                                                        
+</message>
+<warning date="1/1/1983" time="0.00000000000000">
+          120 VALUES NOT DEFINED IN BOX (  1- 15,  1-  1,  1-  9)        
+ OF KEYWORD TOPS                                                         
+</warning>
+<message date="1/1/1983" time="0.00000000000000">
+ UNSPECIFIED TOPS VALUES OBTAINED BY ADDING DZ                           
+ TO TOPS VALUE FOR LAYER ABOVE                                           
+</message>
+<message date="1/1/1983" time="0.00000000000000">
+ NEITHER OLDTRAN,OLDTRANR NOR NEWTRAN SPECIFIED                          
+ BLOCK CENTRE TRANSMISSIBILITIES TO BE CALCULATED                        
+ USING  OLDTRAN                                                          
+</message>
+<comment date="1/1/1983" time="0.00000000000000">
+ NO NON-NEIGHBOUR CONNECTIONS FOUND                                      
+</comment>
+<message date="1/1/1983" time="0.00000000000000">
+ NUMBER OF ACTIVE CELLS IS 135                                           
+</message>
+<message date="1/1/1983" time="0.00000000000000">
+ THE MEMORY REQUIRED TO PROCESS THE SOLUTION SECTION IS                  
+     676660 BYTES                                                        
+</message>
+<message date="1/1/1983" time="0.00000000000000">
+    58698 CHARACTER VARIABLES USED                                       
+</message>
+<comment date="1/1/1983" time="0.00000000000000">
+ THE MINIMUM VALUE FOR NCAMAX IN THE AQUDIMS KEYWORD                     
+ IN RUNSPEC IS         1                                                 
+</comment>
+<warning date="1/1/1983" time="0.00000000000000">
+ THE BOTTOM HOLE PRESSURE LIMIT FOR WELL P                               
+ HAS BEEN DEFAULTED.  THE DEFAULT VALUE IS                               
+     14.7   PSIA                                                         
+</warning>
+<warning date="1/1/1983" time="0.00000000000000">
+ THE BOTTOM HOLE PRESSURE LIMIT FOR WELL I1                              
+ HAS BEEN DEFAULTED. THE DEFAULT VALUE IS  100000.   PSIA                
+</warning>
+<warning date="1/1/1983" time="0.00000000000000">
+ THE BOTTOM HOLE PRESSURE LIMIT FOR WELL I2                              
+ HAS BEEN DEFAULTED. THE DEFAULT VALUE IS  100000.   PSIA                
+</warning>
+<message date="27/9/1985" time="1000.00000000000000">
+ RESTART FILE WRITTEN   REPORT     1                                     
+ RESTART INCLUDES FLUIDS IN PLACE                                        
+</message>
+<message date="23/6/1988" time="2000.00000000000000">
+ RESTART FILE WRITTEN   REPORT     2                                     
+ RESTART INCLUDES FLUIDS IN PLACE                                        
+</message>
+<message date="20/3/1991" time="3000.00000000000000">
+ RESTART FILE WRITTEN   REPORT     3                                     
+ RESTART INCLUDES FLUIDS IN PLACE                                        
+</message>
+<message date="14/12/1993" time="4000.00000000000000">
+ RESTART FILE WRITTEN   REPORT     4                                     
+ RESTART INCLUDES FLUIDS IN PLACE                                        
+</message>
+<message date="9/9/1996" time="5000.00000000000000">
+ RESTART FILE WRITTEN   REPORT     5                                     
+ RESTART INCLUDES FLUIDS IN PLACE                                        
+</message>
+</eclipse>

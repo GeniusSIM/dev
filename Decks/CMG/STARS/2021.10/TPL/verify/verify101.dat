@@ -1,0 +1,322 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    Verify and illustrate J Function option (*JFUNC) and associated keywords,
+**    such as J Function endpoint inputs:
+
+**       1) Water phase (*JFUNC *WATER),
+**       2) *PCWEND for rock-fluid set,
+**       3) *PCWEND in *KRTEMTAB list for temperature dependency,
+**       4) *BPCWMAX for per-block overrides.
+
+**    If J Function is implemented correctly, a direct conversion from all capillary
+**    inputs to J-Function inputs should produce very closed results. In Rock-Fluid
+**    section, the original capillary values are kept as the commented-out.
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*title1 'Verification Run #101'
+*title2 'Test/Illustrate *JFUNC *WATER, *JF_PCLIMIT, *SRFTNW'
+*title3 'Based on STSMO082'
+
+*INUNIT *FIELD   ** output same as input
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y krw kro krg pcow pcog
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+outprn iter newton
+
+*WSRF *GRID *TIME
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *KRW *KRO *KRG *PCOW *PCOG
+
+OUTSRF SPECIAL BLOCKVAR SW 8,1,2 
+               BLOCKVAR SW 3,1,4 
+               BLOCKVAR SW 3,1,8 
+               BLOCKVAR SW 3,1,15 
+               BLOCKVAR SW 3,1,20 
+               BLOCKVAR SW 3,1,26 
+               BLOCKVAR PCOW 8,1,2 
+               BLOCKVAR PCOW 3,1,4 
+               BLOCKVAR PCOW 3,1,8 
+               BLOCKVAR PCOW 3,1,15 
+               BLOCKVAR PCOW 3,1,20 
+               BLOCKVAR PCOW 3,1,26 
+               BLOCKVAR SO 8,1,2 
+               BLOCKVAR SO 3,1,4 
+               BLOCKVAR SO 3,1,8 
+               BLOCKVAR SO 3,1,15 
+               BLOCKVAR SO 3,1,20 
+               BLOCKVAR SO 3,1,26 
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *cart 13 1 26    ** Zero inner radius matches previous treatment
+
+*kdir down
+
+**  Radial blocks:  small near well;  outer block is large
+*DI *con  10
+*DJ *con  10 
+*DK *con  8
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+
+*POR *CON 0.3
+*PERMI *KVAR 26*2000
+PERMJ EQUALSI
+PERMK EQUALSI / 2
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*END-GRID
+ROCKTYPE 1
+
+*CPOR 5e-4
+*PRPOR 75
+*ROCKCP 35
+*THCONR 24
+*THCONW 24
+*THCONO 24
+*THCONG 24
+*HLOSSPROP  *OVERBUR 35 24  *UNDERBUR 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*COMPNAME       'Water'    'OIL'
+**               -----    -------
+     *CMM        18.02      600
+     *PCRIT      3206.2      0        ** These four properties
+     *TCRIT      705.4       0        ** are for the gas phase.
+     *AVG        1.13e-5     0        ** The dead oil component does
+     *BVG        1.075       0        ** not appear in the gas phase.
+
+     *MOLDEN     0        0.10113
+     *CP         0        5.e-6
+     *CT1        0        3.8e-4
+
+     *CPL1       0        300
+
+*VISCTABLE
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         700     0           2.5
+
+*PRSR 14.7
+*TEMR 60
+*PSURF 14.7
+*TSURF 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+RPT 1 OILWET
+
+SWT
+**$        Sw        krwo      kro     Pcow           Pcow
+          0.2        0.0       0.9    -2.00434        **-2.72
+         0.25        0.009     0.742  -2.05592        **-2.79
+          0.3        0.025     0.625  -2.17383        **-2.95
+          0.4        0.1       0.4    -2.88124        **-3.91
+          0.5        0.225     0.225  -4.42871        **-6.01
+          0.6        0.4       0.1    -7.98052        **-10.83
+          0.7        0.625     0.025  -13.0872        ** -17.76
+          0.8        0.9       0.0    -24.3173        ** -33.0
+
+**  Liquid-gas relative permeabilities
+SLT
+**$        Sl       krg      krog   JFgo
+         0.21     0.784       0.0   24.0
+         0.32     0.448      0.01   13.0
+          0.4     0.288     0.024   7.98
+        0.472     0.184     0.052   4.42
+         0.58     0.086     0.152   2.88
+         0.68     0.024     0.272   2.17
+        0.832     0.006     0.448   2.05
+        0.872       0.0       0.9   2.00
+
+** Per rock-type J Function endpoint
+*PCWEND -2.43174     ** -3.3
+
+** Temperature dependence of o-w J Function endpoint
+*KRTEMTAB *PCWEND
+  125  -2.43174      ** -3.3
+  130  -1.47378      ** -2.0
+  135  -0.73689      ** -1.0
+
+
+** Per-block o-w J Function endpoints
+**BPCWMAX *KVAR 7*-1.0   7*-1.5   7*-2.0  5*-2.5
+
+*BPCWMAX *KVAR 7*-0.73689   7*-1.105335   7*-1.47378  5*-1.84222
+
+
+*JFUNC *WATER                 ** Activate J Function
+*SRFTNW con 24.0             ** o-w interfacial tension array
+
+*JF_PCLIMIT                  ** capillary pressure limit for J Function option  
+PCOW_LIMIT 2500              ** in PSI
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+** Automatic static vertical equilibrium
+*VERTICAL *DEPTH_AVE
+*REFPRES 75
+*REFBLOCK 1 1 1
+dwoc 20
+*TEMP *CON 127
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*SDEGREE GAUSS
+*DTMAX 90
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+**    The injection and production phases of the single cycling well
+**  will be treated as two distinct wells which are in the same
+**  location but are never active at the same time.  In the well data
+**  below, both wells are defined immediately, but the producer is
+**  shut in, to be activated for the drawdown.
+
+
+*DATE 1973 9 25.5
+
+   *DTWELL .02
+** 
+**    ** INJECTOR:  Constant pressure steam injection type
+** 
+**    *WELL 1 'Injector 1' *VERT 1 1
+**$
+WELL  'Injector 1'
+   *INJECTOR *MOBWEIGHT 'Injector 1'
+   *INCOMP WATER  1.0  0.0
+   *TINJW 250
+   *QUAL 0.7
+   *OPERATE      *BHP   600     ** Starting BHP is 1000 psi
+   *OPERATE *MAX *STW   1000     ** Maximum water rate is 1000 BPD
+**   *PERFV 'Injector 1'  **  k   wi   wi = 0.007082 *k * h / ln(0.5 * re / rw)
+**                13:26   78075.37 
+   *GEOMETRY K  .3 .5 1 0
+                        ** k
+PERF  WI  'Injector 1'
+**$ UBA     wi      Status  Connection  
+    1 1 1   10000.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    1 1 2   10000.  OPEN    FLOW-FROM  1
+    1 1 3   10000.  OPEN    FLOW-FROM  2
+    1 1 4   10000.  OPEN    FLOW-FROM  3
+    1 1 5   10000.  OPEN    FLOW-FROM  4
+    1 1 6   10000.  OPEN    FLOW-FROM  5
+    1 1 7   10000.  OPEN    FLOW-FROM  6
+    1 1 8   10000.  OPEN    FLOW-FROM  7
+    1 1 9   10000.  OPEN    FLOW-FROM  8
+    1 1 10  10000.  OPEN    FLOW-FROM  9
+    1 1 11  10000.  OPEN    FLOW-FROM  10
+    1 1 12  10000.  OPEN    FLOW-FROM  11
+    1 1 13  10000.  OPEN    FLOW-FROM  12
+    1 1 14  10000.  OPEN    FLOW-FROM  13
+    1 1 15  10000.  OPEN    FLOW-FROM  14
+    1 1 16  10000.  OPEN    FLOW-FROM  15
+** 
+**    ** PRODUCER:  Constant liquid rate type
+** 
+**    *WELL 2 'Producer 1' *VERT 1 1
+**$
+WELL  'Producer 1'
+   *PRODUCER 'Producer 1'
+   *OPERATE      *STL    500    ** Starting liquid rate is 1000 BPD
+   *OPERATE *MIN *BHP    30      ** Minumum BHP of 1 atm
+                             ** k
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.3  0.5  1.  0.
+PERF  GEO  'Producer 1'
+**$ UBA     ff  Status  Connection  
+    1 1 1   1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    1 1 2   1.  OPEN    FLOW-TO  1
+    1 1 3   1.  OPEN    FLOW-TO  2
+    1 1 4   1.  OPEN    FLOW-TO  3
+    1 1 5   1.  OPEN    FLOW-TO  4
+    1 1 6   1.  OPEN    FLOW-TO  5
+    1 1 7   1.  OPEN    FLOW-TO  6
+    1 1 8   1.  OPEN    FLOW-TO  7
+    1 1 9   1.  OPEN    FLOW-TO  8
+    1 1 10  1.  OPEN    FLOW-TO  9
+    1 1 11  1.  OPEN    FLOW-TO  10
+    1 1 12  1.  OPEN    FLOW-TO  11
+    1 1 13  1.  OPEN    FLOW-TO  12
+    1 1 14  1.  OPEN    FLOW-TO  13
+    1 1 15  1.  OPEN    FLOW-TO  14
+    1 1 16  1.  OPEN    FLOW-TO  15
+
+
+   ** Cycle No. 1  -  Injection
+
+   *SHUTIN 'Producer 1'   ** Shut in producer
+
+
+
+*TIME 2
+stop
+
+   *DTWELL 0.1
+
+   ** Cycle No. 1  -  Soak
+
+   *SHUTIN 'Injector 1'   ** Shut in injector
+
+
+
+*TIME 3
+
+   *DTWELL 0.01
+
+   ** Cycle No. 1  -  Production
+
+   *OPEN 'Producer 1'   ** Turn on producer
+
+time 4
+stop
+

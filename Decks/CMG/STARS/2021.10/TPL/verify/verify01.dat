@@ -1,0 +1,268 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Show that the aquifer model in heatloss-only mode
+**            gets the same result as the overburden heatloss model.
+
+**  USAGE:    Run this data as is for the OB heatloss result.  Uncomment
+**            the *AQUIFER line of data and rerun to get the aquifer
+**            results.
+
+**  RESULTS:  At Sept 1994 the results were as follows.  The differences
+**            are well within those expected due to the implementation
+**            differences.
+**                                         OB        AQ
+**                                       -------   -------
+**                  Timestep #1:
+**                     T change           37.84     37.81
+**                  Timestep #2:
+**                     T change           -3.37     -3.34
+**                     Heat lost          76253     76332
+
+**  CONTEXT:  With the installation of the well-to-surface option,
+**            the heat loss from the wellbore must be done with the
+**            aquifer model in heatloss-only mode (aquifer permeability
+**            and porosity are zero) since the OB heatloss model
+**            does not support the radial geometry.  However, the
+**            aquifer in heatloss-only mode can be compared to the
+**            OB heatloss model with a problem that the OB heatloss
+**            model can handle, i.e., linear geometry.
+
+**  ORIGIN:   This run is based on TB #6, cut down to one column of blocks.
+
+**  DESCR:    The run is two timesteps:  the first to raise the temperature
+**            by heating for a very short time (0.001 day);  and the second
+**            long timestep (10 days) to measure heat loss.  The two
+**            timesteps are necessary because the OB heatloss model uses
+**            N-level temperatures for control whereas the AQ model is
+**            fully implicit.  Also, initial temperature cannot be
+**            non-uniform since the aquifer model assumes that aquifer
+**            temperature is the same as the adjacent block (it should
+**            be different here).
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #1'
+*title2 'OB Heatloss versus AQ Heatloss'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y obhloss cchloss
+*outprn *well *all
+*wrst 200
+*wprn *grid 200
+*wprn *iter 1
+outprn iter newton
+
+*aqstat on
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 1 1 4
+
+*di *con 5.3  ** square block with area 28.3 to match previous grid
+
+*dj *con 5.3
+
+*dk *kvar 25 25 20 10
+
+*por *con 0.3
+*permi *kvar 2000 1000 500 2000
+*permj *equalsi
+*permk *equalsi  / 2
+
+**aquifer bottom
+**AQMETHOD semi-analytical
+**aqgeom rectang infinite
+**AQPROP  0.0  1e-6  1e-6  0.0 0.0 0.0
+**aqcomp 5.0E-04
+**hfprop 35.0 24.0 
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+*hlosst 125
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'Water'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 75
+*refblock 1 1 4
+
+*temp *con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*sdegree gauss
+*dtmax 90
+
+*norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+**    The injection and production phases of the single cycling well
+**  will be treated as two distinct wells which are in the same
+**  location but are never active at the same time.  In the well data
+**  below, both wells are defined immediately, but the producer is
+**  shut in, to be activated for the drawdown.
+
+
+time 0
+
+   dtwell .001
+
+   ** INJECTOR:  Constant pressure steam injection type
+
+   well 1 'Injector 1' vert 1 1
+   injector mobweight 'Injector 1'
+   incomp  water  1.0  0.0
+   tinjw 450
+   qual .7
+   operate     bhp   1000     ** Starting BHP is 1000 psi
+   operate max stw   1000     ** Maximum water rate is 1000 BPD
+   perfv 'Injector 1'
+            **  k   wi   WI = 0.007082 *k * h / ln(0.5 * re / rw)
+                4   78075.37 ** 88
+                3   39037.68 ** 44
+                2   97594.21 **110
+                1  195188.43 **220
+
+   ** Cycle No. 1  -  Injection
+
+   shutin 'Injector 1'
+
+   heatr ijk 1 1 1 1e9
+
+time 0.001
+
+   dtwell 10
+
+   heatr con 0
+
+time 10

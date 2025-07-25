@@ -1,0 +1,430 @@
+   ******************************************************************************
+   ** mxsmo031.dat:              Dilation Test Case                            **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO31.DAT                                                              **
+   **                                                                                  **
+   ** MODEL:  10x10x3  DILATION TEST CASE                              WATER INJECTION **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 10x10x3 cartesian grid dilation test case water injection problem.     **
+   ** The water injector is located in block (1,1,3), and the producer in block        **
+   ** (10,10,1).  There is a large permeability contrast in the vertical direction.    **
+   ** This is a two phase OIL-WATER problem.                                           **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Dilation Test Case'
+   
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   10
+   *WPRN   *GRID   *TIME 
+   *WPRN   *ITER   *BRIEF
+
+   *OUTPRN *WELL   *BRIEF
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP *POROS *SW *FLUX
+   *OUTSRF *SPECIAL 10  10 3  *PRES
+   *OUTSRF *SPECIAL 10  10 3  *POROS
+   *OUTSRF *SPECIAL 1  1  1  *PRES
+   *OUTSRF *SPECIAL 1  1  1  *POROS
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                               ** 3 layers in the K (z) direction.
+   *DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+   *DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+   *DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+    50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                               ** middle and uppermost layers, respectively.   
+
+   *DEPTH 1 1 1 1000.0         ** Depth to center of first block, in bottom layer.
+
+   *POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.   
+
+   *CROCKTYPE 1
+
+**CROCKTABE : a table of porosity multiplier and permeability multipliers or 
+**            transmissibility multipliers versus pressures is given
+**            for the primary elastic path 
+
+   *CROCKTABE
+   14.7  1            1   1
+   100   1.00856648   1   1
+   150   1.01362194   1   1
+   200   1.01870275   1   1
+   250   1.02380901   1   1
+   300   1.02894088   1   1
+   350   1.03409847   1   1
+   400   1.03928191   1   1
+
+**CROCKTABD : for primary dilation path. 
+
+   *CROCKTABD
+   400    1.03928191   1   1
+   500    1.11463835   1   1
+   600    1.19545875   1   1
+   800    1.37510487   1   1
+   1000   1.58174711   1   1
+   1200   1.81944225   1   1
+   1400   2.09285675   1   1
+   1600   2.40735829   1   1
+   2000   3.18524752   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 500   -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 412 psi. 
+
+   *CROCKTABU
+   500.00  1.11463835   1   1
+   450.00  1.10907907   1   1
+   400.00  1.10354751   1   1
+   350.00  1.09804354   1   1
+   300.00  1.09256703   1   1
+   250.00  1.08711783   1   1
+   200.00  1.08169581   1   1
+
+   *CROCKTABC
+   200.00  1.08169581   1   1
+   150.00  1.06227156   1   1
+   100.00  1.04319613   1   1
+    50.00  1.02446323   1   1
+     0.001 1.00606672   1   1
+
+   *CROCKTABR
+     0.001 1.00606672   1   1
+    82.00  1.01435039   1   1
+   165.00  1.02280453   1   1
+   247.00  1.03122601   1   1
+   330.00  1.03982081   1   1
+   412.00  1.04838239   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 600   -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 425 psi. 
+
+   *CROCKTABU
+   600   1.19545875   1   1
+   550   1.18949637   1   1
+   500   1.18356373   1   1
+   450   1.17766068   1   1
+   400   1.17178708   1   1
+   300   1.1601276    1   1
+   250   1.15434144   1   1
+   200   1.14858414   1   1
+
+   *CROCKTABC
+   200   1.14858414   1   1
+   150   1.11339054   1   1
+   100   1.07927531   1   1
+   50    1.04620539   1   1
+   0.001 1.01414876   1   1
+
+   *CROCKTABR
+   0.001 1.01414876  1   1
+    85    1.02280577 1   1
+   170   1.03153667  1   1
+   255   1.0403421   1   1
+   340   1.0492227   1   1
+   425   1.0581791   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 800   -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 455 psi. 
+
+   *CROCKTABU
+   800   1.37510487   1   1
+   700   1.36142235   1   1
+   600   1.34787597   1   1
+   500   1.33446438   1   1
+   400   1.32118624   1   1
+   300   1.30804022   1   1
+   250   1.30151634   1   1
+   200   1.295025     1   1
+
+   *CROCKTABC
+   200   1.295025     1   1
+   150   1.22360281   1   1
+   100   1.15611964   1   1
+   50    1.09235825   1   1
+   0.001 1.03211338   1   1
+
+   *CROCKTABR
+   0.001 1.03211338   1   1
+   91    1.04154847   1   1
+   182   1.05106982   1   1
+   273   1.06067821   1   1
+   364   1.07037443   1   1
+   455   1.08015929   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 1000  -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 488 psi. 
+
+   *CROCKTABU
+   1000   1.58174711   1   1
+    800   1.55042642   1   1
+    700   1.53499942   1   1
+    600   1.51972592   1   1
+    500   1.50460439   1   1
+    400   1.48963333   1   1
+    300   1.47481123   1   1
+    200   1.46013661   1   1
+
+   *CROCKTABC
+   200   1.46013661   1   1
+   150   1.34548629   1   1
+   100   1.23983834   1   1
+    50   1.1424859    1   1
+   0.001 1.0527776    1   1
+
+   *CROCKTABR
+   0.001 1.0527776    1   1
+    97   1.06303923   1   1
+   195   1.07350823   1   1
+   292   1.08397193   1   1
+   390   1.09464707   1   1
+   488   1.10542735   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 1200  -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 525 psi. 
+
+   *CROCKTABU
+   1200.00  1.81944225   1   1
+   1000.00  1.78341488   1   1
+   800.00   1.74810090   1   1
+   600.00   1.71348619   1   1
+   500.00   1.69643671   1   1
+   400.00   1.67955689   1   1
+   300.00   1.66284502   1   1
+   200.00   1.64629943   1   1
+
+   *CROCKTABC
+   200.00  1.64629943   1   1
+   150.00  1.48043683   1   1
+   100.00  1.33128468   1   1
+   50.00   1.19715942   1   1
+   0.001   1.07654711   1   1
+
+   *CROCKTABR
+   0.001   1.07654711   1   1
+   105.00  1.08791041   1   1
+   210.00  1.09939365   1   1
+   315.00  1.11099810   1   1
+   420.00  1.12272504   1   1
+   525.00  1.13457576   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 1400  -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 567 psi. 
+
+   *CROCKTABU
+   1400   2.09285675   1   1
+   1200   2.05141541   1   1
+   1000   2.01079467   1   1
+    800   1.97097826   1   1
+    600   1.93195028   1   1
+    400   1.8936951    1   1
+    300   1.87485252   1   1
+    200   1.85619743   1   1
+
+   *CROCKTABC
+   200     1.85619743   1   1
+   150     1.6300444    1   1
+   100     1.43144511   1   1
+    50     1.25704252   1   1
+    0.001  1.10388856   1   1
+
+   *CROCKTABR
+   0.001 1.10388856   1   1
+   113   1.11643325   1   1
+   226   1.12912049   1   1
+   340   1.14206612   1   1
+   453   1.15504465   1   1
+   567   1.1682875    1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 1600  -> 200 psi 
+**CROCKTABC : for dilation "C"ompaction path starting at 200   -> 0.001 psi.
+**CROCKTABR : for dilation "R"eloading path  starting at 0.001 -> 614 psi. 
+
+   *CROCKTABU
+   1600   2.40735829   1   1
+   1400   2.3596894    1   1
+   1200   2.31296442   1   1
+   1000   2.26716465   1   1
+    800   2.22227179   1   1
+    600   2.17826786   1   1
+    300   2.11389031   1   1
+    200   2.09285675   1   1
+
+   *CROCKTABC
+   200   2.09285675   1   1
+   150   1.79612265   1   1
+   100   1.54146077   1   1
+    50   1.32290593   1   1
+   0.001 1.13533872   1   1
+
+   *CROCKTABR
+   0.001 1.13533872   1   1
+   122   1.14927469   1   1
+   245   1.16349806   1   1
+   368   1.17789746   1   1
+   491   1.19247507   1   1
+   614   1.20723309   1   1
+
+   *PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0      ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                ** that the first K layer is at bottom of the
+       20.0   40.0   60.0      ** reservoir.
+
+        
+   *MODEL *OILWATER            ** Solve three equations.
+   *****************************************************************************
+   ** Component Property Section                                              **
+   *****************************************************************************
+
+   *PVT
+   ** p         rs      bo          eg      viso          visg
+     14.7000   0.0     1.000000   6.00000   1.04000  0.00800
+     4800.0    1.0e-2  1.024     10.00000   1.04000 0.00810
+
+   ** Note : The above PVT data violates the total hydrocarbon compressibility
+   ** check. To correct, you could either change rs value at p=5014.7 from 1618
+   ** to 1600 or to change the last bo entry from 2.357 to 2.352.  Other
+   ** possibilities could be equally appllied. The above corrections were
+   ** tested and they have insignificant effects. 
+
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.419
+   *CO    5.0e-6
+   *CVO   0.000E-5
+   *BWI   1.0
+   *CW    3.15E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT *SMOOTHEND *OFF
+   ** SW    Krw     Krow
+   0.2030  0.0000  0.8000
+   0.2316  0.0001  0.5852
+   0.3801  0.0008  0.4040
+   0.4687  0.0062  0.2562
+   0.5572  0.0260  0.1419
+   0.6458  0.0793  0.0612
+   0.7343  0.1973  0.0139
+   0.7970  0.4000  0.0000
+   0.8229  0.4265  0.0000
+   0.9114  0.8314  0.0000
+   1.0000  1.0000  0.0000
+
+      
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL ** Use vertical equilibrium calculation.
+   *REFDEPTH   1000.           ** Give a reference depth  and
+   *REFPRES    100.            ** associated pressure.
+   *DWOC       2000.           ** Depth to water-oil contact
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        100.         ** Maximum time step size
+   *MAXSTEPS      1000        ** Maximum number of time steps
+   *NORM *PRESS  250.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.20
+   *AIM  *STAB *AND_THRESH    ** Use stab and thresh hold switching criteria   
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+                     
+   *WELL 1  'Injector'   
+
+   *INJECTOR  *UNWEIGHT  1              ** Define the type of well 1.
+   *INCOMP    *WATER                    ** Injecting gas.
+   *OPERATE   *MAX  *STW  1.0e3         ** Operating on a rate specification.       
+   *OPERATE   *MAX  *BHP  20000.0       
+
+   *PERF 1 
+   ** if     jf     kf     wi 
+      1      1      3      1.0E+5
+
+   *WELL 2   'Producer' *VERT  10 10
+
+   *PRODUCER 2
+   *OPERATE *MAX *STO 2000.
+   *OPERATE *MIN *BHP  100.
+
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+   *PERFV *GEO 2
+   1  1.0
+   *SHUTIN 2
+   *TIME 1000.0       
+   *ALTER
+    1        2
+   10000.0  10000.0
+   *TIME 1200.0
+   *SHUTIN 1       
+   *TIME 2000.0
+   *ALTER 
+    2  
+   20000.0   
+   *TIME 8000.0                        ** TIME of next well change.
+   *SHUTIN 2
+   *ALTER
+    1
+   5000.0
+   *TIME 9000.0
+   *SHUTIN 1
+   *ALTER
+    2
+   25000.0
+   *TIME 17000.0
+   *SHUTIN 2
+   *ALTER
+    1
+   5000.0
+   *TIME 20000.0
+   *STOP                   

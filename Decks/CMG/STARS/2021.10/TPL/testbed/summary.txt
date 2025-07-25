@@ -1,0 +1,268 @@
+
+
+     STARS template data sets in the "testbed" directory
+     ---------------------------------------------------
+
+sttst01.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+sttst02.dat:
+  title1 'STARS Test Bed No. 2'
+  title2 'Wet Combustion Tube Experiment'
+  title3 'of Smith and Perkins'
+
+sttst03.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+sttst04.dat:
+  title1 'STARS Test Bed No. 4'
+  title2 'Conventional Cartisian Grid as Corner Point (*COORD & *ZCORN)'
+
+sttst05.dat:
+  title1 'STARS Test Bed No. 5'
+  title2 'Vapex with 2D Corner-Point Grid (*DI, *DJ & *ZCORN)'
+
+sttst06.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+sttst07.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+sttst08.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'
+
+sttst09.dat:
+  title1 'STARS Test Bed No. 9'
+  title2 'Variable Depth and Layer Thickness Illustration'
+
+sttst10.dat:
+  title1 'STARS Test Bed No. 10'
+  title2 'Dry Combustion Tube Experiment'
+  title3 'Test Bed No.1 with Original and Combustion Water Separate'
+
+sttst11.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+sttst12.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+sttst13.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+sttst14.dat:
+  title1 'STARS Test Bed No. 14'
+  title2 'Dead Oil Steam Flood with Corner-Point grid (*COORD & *ZCORN)'
+
+sttst15.dat:
+  title1 'STARS Test Bed No. 15'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 run with ZH formulation'
+
+sttst16.dat:
+  title1 'STARS Test Bed No. 16'
+  title2 'Cartesian Grid as *XCORN, *YCORN and *ZCORN'
+  title3 'Also with *VOLMOD and *NETPAY'
+
+sttst17.dat:
+  title1 'STARS Test Bed No. 17'
+  title2 'Steam with Two Additives, Lab Run from Alberta Research Council'
+
+sttst18.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+sttst19.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+sttst20.dat:
+  title1 'STARS Test Bed No. 20'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'and Nine-Point Option on Cylindrical Grid'
+
+sttst21.dat:
+  title1 'STARS Test Bed No. 21'
+  title2 'Cartesian Grid as *DI, *DJ and *ZCORN'
+
+sttst22.dat:
+  title1 'STARS Test Bed No. 22'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 with Local Grid Refinement'
+
+sttst23.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+sttst24.dat:
+  title1 'STARS Test Bed No. 24'
+  title2 'Fourth SPE Comparative Solution Project, Problem 1A'
+  title3 'Test Bed No. 6 with Outer Radial Blocks as Aquifer Model'
+
+sttst25.dat:
+  title1 'STARS Test Bed No. 25'
+  title2 'Verify/Illustrate *BOTTOM Aquifer Model for Radial Grid'
+  title3 'Based on Test Bed No. 17'
+
+sttst26.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+sttst27.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+sttst28.dat:
+  title1 'STARS Test Bed No. 28'
+  title2 "Modification of Kazimi's Dual Porosity Problem"
+  title3 'Three Cases Give Same Initial In-Place'
+
+sttst29.dat:
+  title1 'STARS Test Bed No. 29'
+  title2 'Pruess Geothermal Problem (1/8 of a Five-Spot, One Component)'
+  title3 'Natural Fractures Modelled with the MINC Option'
+
+sttst30.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+sttst31.dat:
+  title1 'STARS Test Bed No. 31'
+  title2 'Natural Fractures Modelled with the VR Option'
+
+sttst32.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A'"
+
+sttst34.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+sttst43.dat:
+  title1 'STARS Test Bed No. 43'
+  title2 'Chen Data with VR Option'
+  title3 'Smaller Version of Test Bed No. 31'
+
+sttst46.dat:
+  title1 'STARS Test Bed No. 46'
+  title2 'Large Grid Example:  31x31x10 grid with 9,610 blocks'
+  title3 'Same problem as Test Bed No. 7'
+
+sttst47.dat:
+  title1 'STARS Test Bed No. 47'
+  title2 'Test Bed No. 9, with Zero-Porosity Blocks and Full Printout'
+
+sttst48.dat:
+  title1 'STARS Test Bed No. 48'
+  title2 'Test Dilation-Recompaction Option'
+  title3 'Based on STTST06'
+
+sttst49.dat:
+  title1 'STARS Test Bed No. 49'
+  title2 'Test Intermediate-Wet Rel Perm Option *INTMED1'
+
+sttst50.dat:
+  title1 'STARS Test Bed No. 50'
+  title2 'Test Oil-Wet Rel Perm Option *OILWET'
+
+sttst54.dat:
+  title1 'STARS Test Bed No. 54'
+  title2 'Model Metal Tube Wall with Zero Porosity and Radial Grid'
+  title3 'Based on STTST01'
+
+sttst55.dat:
+  title1 'STARS Test Bed No. 55'
+  title2 'Dilation and Thermal Conductivity Nine-Point Options'
+  title3 'Based on Test Bed No. 48'
+
+sttst56.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+sttst57.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+sttst58.dat:
+  title1 'STARS Test Bed No. 58'
+  title2 'Switch Between Mixed Surface/Downhole Constraints'
+  title3 'Based on STTST07'
+
+sttst59.dat:
+  title1 'STARS Test Bed No. 59'
+  title2 'Test upper and lower face transmissibility multipliers for Cartesian'
+  title3 'Grid with local refinement. Multipliers redefined in the fly.'
+
+sttst61.dat:
+  title1 'STARS Test Bed No. 61'
+  title2 'Water/Oil Vertical Equilibrium Illustration'
+  title3 'Based on Test Bed #9'
+
+sttst62.dat:
+  title1 'STARS Test Bed No. 62'
+  title2 'Water/Oil/Gas Ver. Eq. with Two Transition Zones'
+  title3 'Based on Test Bed #20'
+
+sttst65.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+sttst66.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'
+
+sttst68.dat:
+  title1 'STARS Test Bed No. 68'
+  title2 'Semi-Analytical Wellbore Heatloss with S/S Wells'
+  title3 'Based on STTST08.'
+
+sttst70.dat:
+  title1 'STARS Test Bed No. 70'
+  title2 'FlexWell with *SAMODEL Heatloss, *OPERATE *WHP, *MONITOR *WHYSTAB'
+  title3 'Based on STWWM092'
+
+sttst71.dat:
+  title1 'STARS Test Bed No. 71'
+  title2 'Dead Oil Steam Flood with *FAULT'
+
+sttst72.dat:
+  title1 'STARS Test Bed No. 72'
+  title2 'Vapex 2D Corner Point Grid'
+
+sttst73.dat:
+  title1 'STARS Test Bed No. 73'
+  title2 'Thermal Conductivity Options, Slaved Heater and'
+  title3 'Variable-Permeability Options.  Based on STTST01'
+
+sttst74.dat:
+  title1 'STARS Test Bed No. 74'
+  title2 'Test/Illustrate Elastic-Plastic Compaction-Rebound'
+
+sttst75.dat:
+  title1 'STARS Test Bed No. 75'
+  title2 'Relative permeability Hysteresis for Non-wetting Oil,'
+  title3 'Wetting Water and Gas phases Using BBM Method'
+
+sttst76.dat:
+  title1 'STARS Test Bed No. 76'
+  title2 'Hysteresis Effects of Kro, Krg and Pcog Using Carlson Method'
+  title3 'Based on STTST03'

@@ -1,0 +1,124 @@
+** This table is set up to duplicate the standard STARS well production summary
+** Test of several things:
+**     WELL    origin - production values
+**     GROUP   origin - injection values
+**     SPECIAL origin - average pressure
+**     LAYER   origin - well status
+**
+** stt01d.rwd
+**
+
+FILE 'sttst01.sr3'  
+
+PRECISION 4
+WIDTH     12
+
+TIME ON  
+TABLE-FOR WELL 'PRODUCER'   
+   column-for parameter 'Gas Rate SC'         GROUP  'Default-Field-INJ'
+   column-for parameter 'Water Rate SC'       GROUP  'Default-Field-INJ'
+   column-for parameter 'Oil Rate SC'
+   column-for parameter 'Water Rate SC' 
+   column-for parameter 'Gas Rate SC'
+   column-for parameter 'Gas Oil Ratio SC'
+   column-for parameter 'Water Oil Ratio SC'
+   column-for parameter 'Water Cut SC'
+   column-for parameter 'Liquid Rate SC'
+   column-for parameter 'Status (0=open, 1=closed, 2=auto, 3=plugged)'	LAYER	'PRODUCER{1,1,1}'
+TABLE-END   
+
+** ............................ Description ...................................
+** 
+** LEGEND: 
+**	[]	anything in square brackets means --> optional
+**	int	integer number greater than 0
+**	str	string, usually represents a name or a type
+**	*	used before every keyword (not using * before each keyword will
+**		not affect how the command file works)
+**      ~	can specify multiple selections
+**	( | )	one or the other choice in the bracket is appropriate(not both)
+**	'name'	string = str
+**	name	value = integer = int 
+**
+** ............................................................................
+**
+** PRECISION
+** -----------
+** Action	specifies the number of significant figures to be printed
+**
+** Syntax	*PRECISION precision
+**			    
+** Notes	PRECISION 4
+**	  	.means that the number of signinficant figures in every column
+**		will be 4
+**
+** WIDTH
+** ------
+** Action	specifies the width in characters for a given column.
+**
+** Syntax	*WIDTH width
+**			    
+** Notes	WIDTH 12     
+**		.declared outside of TABLE-FOR/END; therefore the width of
+**		12 characters applies to every column of the table(s)
+**
+** TIME
+** -----
+** Action	controls the printing of a column containing the times
+**
+** Syntax	*TIME ( *ON | *OFF )
+**			    
+** Notes	TIME ON
+**		.the column containing times will be printed in the table
+**
+** TABLE-FOR
+** TABLE-END
+** ----------
+** Action	used to specify the information for a table or group of tables
+**
+** Syntax	*TABLE-FOR [(*WELLS str~ | *PARAMETERS str~)]
+**		*TABLE-END
+**
+** Notes	TABLE-FOR WELL 'PRODUCER'
+**		.all the parameters defined within TABLE-FOR/END will be for
+**		the well 'PRODUCER' (one can understand this as having the 
+**		table generated specifically FOR the well 'PRODUCER')
+**
+** COLUMN-FOR
+** -----------
+** Action	used to specify the information for a column or a group of 
+**		columns
+**
+** Syntax	*COLUMN-FOR [*PARAMETERS str~]
+**			    [[*WELLS or *GROUPS or *SECTORS or *SPECIALS] str~]
+**			    [*PRECISION int][*WIDTH int][*MULTIPLY mult-factor]
+**			    [*UNITS str]
+** GROUPS
+** -------
+** Action	used to specify the group-names for which information will be
+**		printed in tables and columns
+**
+** Syntax	*GROUPS ( 'group-name'~ | *ALL)
+**			    
+** Notes	COLUMN-FOR PARAMETER 'Oil Rate SC'
+**		.tells the Report Writer to create a column for the PARAMETER
+**		'Oil Rate SC' for the well 'PRODUCER' (as defined in TABLE-FOR)
+**
+**		COLUMN-FOR PARAMETER 'Water Rate SC'       GROUP  'TOT-INJ'
+**		.tells the Report Writer to create a column for the PARAMETER
+**		'Water Rate SC' for the GROUP 'TOT-INJ' and not for the well
+**		'PRODUCER'; GROUP when placed after COLUMN-FOR.. overwrites
+**		temporarily the initial setup that appears in TABLE-FOR
+**
+**
+** LAYERS
+** -------
+** Action	used to specify the layer-names for which information will be
+**		printed in tables and columns
+**
+** Syntax	*LAYERS ( 'layer-name'~ | *ALL)
+**			    
+** Notes	similar to GROUP - for more explonation see under GROUPS
+**
+**
+** ............................................................................

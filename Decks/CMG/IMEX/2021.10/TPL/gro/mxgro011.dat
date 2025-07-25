@@ -1,0 +1,198 @@
+   ******************************************************************************
+   ** mxgro011.dat:              5,000 Grids Model                             **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXGRO011.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  25x25x8                    MODIFIED SPE 1                    5,000 GRIDS **
+   **                                                                                  **       
+   **************************************************************************************
+   **                                                                                  **
+   ** Based on the 1st SPE Comparative Solution Project, a gas  injection  model  with ** 
+   ** the number of grid extended to 5,000 grids.                                      **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+                                                  
+RESULTS SIMULATOR IMEX
+
+   **************************************************************************
+   ** I/O Control Section
+   **************************************************************************
+   *TITLE1
+   '5000 Block Test Problem'
+   *TITLE2
+   'Based on First SPE Comparative Solution Project'
+   *TITLE3
+   'GAS INJECTOR LOCATED IN BLOCK (1,1,8); PRODUCER IN BLOCK (25,25,1).'
+
+   *INUNIT  *FIELD
+
+   *WPRN    *WELL 20
+   *WPRN    *GRID *TIME
+   *WPRN    *ITER *BRIEF
+
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *RES    *NONE
+   *OUTPRN *GRID *SO *SG *SW *PRES *OILPOT *BPP
+
+   *WSRF    *GRID 0
+   *WSRF    *WELL 1             
+
+
+   **************************************************************************
+   ** Reservoir Description Section
+   **************************************************************************
+   *GRID *CART   25   25    8
+   *DI  *CON                       ** I direction dimensions constant
+        400.0
+   *DJ  *CON                       ** J direction dimensions constant
+        400.0
+   *DK  *KVAR                      ** K direction dimensions are constant
+        2*20.0 6*10.0              ** within a layer but vary between layers.      
+
+   *DEPTH 1 1 1 2000.0             ** Depth to center of first block, in bottom layer.
+
+   *POR *CON                       ** Porosity is constant throughout.
+    0.30
+
+   *PRPOR  14.7
+   *CPOR    3.0E-6
+                                         
+   ** Each of the I and J permeabilities are constant within each layer
+   ** of the reservoir but vary from layer to layer. Hence the use of *KVAR
+   ** to input them layer by layer. Note that the first K layer is at
+   ** the  bottom of the reservoir.
+   ** K permeabilities are constant through each layer.                                   
+
+   *PERMI *KVAR                    
+     3*200.0    3*50.0    2*500.0
+   *PERMJ *KVAR
+     3*200.0    3*50.0    2*500.0
+   *PERMK *KVAR
+     3*20.0     3*40.0     2*60.0   
+
+
+   **************************************************************************
+   ** Component Properties Section
+   **************************************************************************
+   *MODEL *BLACKOIL                ** Three phase (3 equations solved)
+
+   *PVT
+   **   p       rs     bo       eg    viso       visg
+       14.7     1.0   1.06     6.0    1.04      0.0080
+      265.0    90.5   1.15    82.7    0.975     0.0096
+      515.0   180.0   1.21   159.0    0.91      0.0112
+     1015.0   371.0   1.3    313.0    0.83      0.0140
+     2015.0   636.0   1.43   620.0    0.6950002 0.0189
+     2515.0   775.0   1.5    773.0    0.641     0.0208
+     3015.0   930.0   1.57   926.0    0.594     0.0228
+     4015.0  1270.0   1.69  1233.0    0.51      0.0268
+     5015.0  1600.0   1.83  1541.0    0.449     0.0309
+     9015.0  2984.0   2.36  2591.0    0.203     0.0470   
+
+   *DENSITY *OIL     46.2
+   *DENSITY *GAS      0.0647
+   *DENSITY *WATER   62.2
+
+   *CO      1.3687E-5
+   *CVO     4.60E-5
+   *BWI     1.04
+   *CW      3.04E-6
+   *REFPW  14.7
+   *VWI     0.31
+   *CVW     0.0                                            
+
+
+   **************************************************************************
+   ** Rock-fluid Property Section
+   **************************************************************************
+   *ROCKFLUID
+   
+   *RPT
+   *SWT
+   **   sw       krw         krog  
+      0.12       0.0         1.0
+      0.82       0.0         0.0       
+
+   *SLT
+   **  sl      krg        krog    
+     0.12     0.984       0.0
+     0.15     0.98        0.0
+     0.30     0.9400002   0.0
+     0.40     0.87        1.0E-4
+     0.50     0.72        0.001
+     0.55     0.60        0.01
+     0.60     0.41        0.021
+     0.70     0.19        0.09
+     0.75     0.125       0.2
+     0.80     0.075       0.35
+     0.88     0.025       0.7
+     0.95     0.005       0.98
+     0.98     0.0         0.997
+     0.999    0.0         1.0
+     1.0      0.0         1.0
+
+
+   **************************************************************************
+   ** Initial Condition Section
+   **************************************************************************
+   *INITIAL
+   *USER_INPUT    
+
+   ** All initial values for reservoir pressure, bubble point pressure,
+   ** oil saturation and water saturation are constant.
+   *PRES *CON  4800.0
+   *PB *CON    4015.0
+   *SO *CON       0.88
+   *SW *CON       0.12   
+
+
+   **************************************************************************
+   ** Numerical Control Section
+   **************************************************************************
+   *NUMERICAL
+   *MAXSTEPS 10          ** Limited to ten timesteps, to limit CPU usage.
+   *DTMAX       1000.0
+   *NORM *PRESS 1000.0
+   *NORM *SATUR    0.2
+        
+   
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   
+   *RUN
+   *DATE  1986   4   22
+   *DTWELL 1.000
+
+   *WELL 1 'Injector' *VERT  1   1
+   *WELL 2 'Producer' *VERT 25  25   
+
+   *INJECTOR   *UNWEIGHT 1         ** Well 1 is defined as an injector
+   *INCOMP     *GAS                ** It is injecting gas.
+   *OPERATE *MAX  *STG  1.0E+8   
+   *OPERATE *MAX *BHP 147000.0
+   *MONITOR *BACKFLOW   *STOP   
+
+   *PERFV 1 
+   **  kf     wi   
+      7:8     1.00E+5
+   *GEOMETRY *K  0.25   0.34    1.0     0.0  
+             
+   *PRODUCER 2                     ** Well 2 is defined as a producer
+   *OPERATE *MAX *STO 20000.0
+   *OPERATE *MIN *BHP  1000.0
+   *MONITOR *MIN *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW  *STOP
+   *MONITOR      *GOR 20000.0  *STOP   
+
+   *PERFV *GEO  2 
+   **  kf     ff
+      1:3     1 
+     
+   *TIME 18.838
+   *TIME 3650.0
+   *STOP

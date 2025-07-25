@@ -1,0 +1,179 @@
+   ******************************************************************************
+   ** mxwwm078.dat:         Outboard Update with Well Controls                 **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM078.DAT                                                             **
+   **                                                                                  **
+   ** MODEL: Gas Water Model,  15 x 15 x 4 Grid, Horizontal Well, Ramped Production    **
+   **                                                                                  **
+   **************************************************************************************
+   **  This data uses *OUTBOARD in replay mode, where the response from the Outboard   **
+   **  software (in this case "RESOLVE") is read / replayed from a recorded file.      **
+   **  This data does not required live linkage to the Outboard software.              **
+   **                                                                                  **
+   **  The response file is called "stwwm078.obrec" and was created based on the well  **
+   **  actions in mxwwm029.dat (with identical results):                               **
+   **  1) Outboard software obtains complete control of wells via *WCURRCN.            **
+   **  2) Outboard software determines the next update by inserting a *TIME card.      **
+   **  3) Command-line argument "-obup_debug" generates a complete copy of all IMEX-   **
+   **     Outboard communication, including *WELLS output and *WELL-IPR table.         **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+TITLE1 'IMEX Well Management Template #078'
+TITLE2 'Outboard Update with Well Controls'
+
+INUNIT FIELD
+WRST   FREQ 0
+WPRN   ITER  BRIEF
+WPRN WELL 1
+WSRF WELL 1
+OUTPRN WELL ALL
+OUTPRN GRID *PRES SG SW SO
+OUTSRF WELL LAYER ALL
+WRST 70
+
+GRID  CART  15  15  4
+DI  ivar  10000 13*293.3 10000
+DJ  jvar  10000 13*293.3 10000
+DK  KVAR  50.  50.  30.  30.
+
+DTOP  225*7425.00
+POR  CON  0.13
+PERMI CON 10000.
+PERMJ EQUALSI
+PERMK EQUALSI  *  0.10
+CPOR  4.0E-06
+PRPOR  3550.0
+
+MODEL GASWATER
+
+TRES 200
+** pressure,      gas       gas
+**   psia         FVF(3)    vis,cp
+** -----------------------------------
+PVTG ZG 
+    250.00      0.980     0.0121
+    500.00      0.963     0.0122
+    750.00      0.949     0.0125
+   1000.00      0.938     0.0128
+   1250.00      0.930     0.0131
+   1500.00      0.925     0.0135
+   1750.00      0.923     0.0140
+   2000.00      0.925     0.0145
+   2250.00      0.929     0.0150
+   2500.00      0.935     0.0156
+   2750.00      0.944     0.0162
+   3000.00      0.955     0.0168
+   3250.00      0.967     0.0174
+   3500.00      0.981     0.0180
+   4500.00      0.989     0.0190
+
+DENSITY GAS        0.04449
+DENSITY WATER      62.95
+BWI   1.000
+CW    0.3539E-05
+VWI   0.3049
+CVW   0.0000E+00
+REFPW 3550.0
+
+ROCKFLUID
+RPT
+SGT
+      0.005     0.0              
+      0.040     0.005        
+      0.080     0.013              
+      0.120     0.026               
+      0.160     0.040    
+      0.200     0.058   
+      0.240     0.078   
+      0.280     0.100   
+      0.320     0.126    
+      0.360     0.156    
+      0.400     0.187    
+      0.440     0.222    
+      0.480     0.260     
+      0.520     0.300     
+      0.560     0.348     
+      0.600     0.400     
+      0.640     0.450    
+      0.680     0.505    
+      0.720     0.562    
+      0.760     0.620    
+      0.800     0.680     
+      0.840     0.740    
+SWT
+      0.160     0.0         50.00000
+      0.200     0.002       32.00000
+      0.240     0.010       21.00000
+      0.280     0.020       15.50000
+      0.320     0.033       12.00000
+      0.360     0.049        9.20000
+      0.400     0.066        7.00000
+      0.440     0.090        5.30000
+      0.480     0.119        4.20000
+      0.520     0.150        3.40000
+      0.560     0.186        2.70000
+      0.600     0.227        2.10000
+      0.640     0.277        1.70000
+      0.680     0.330        1.30000
+      0.720     0.390        1.00000
+      0.760     0.462        0.70000
+      0.800     0.540        0.50000
+      0.840     0.620        0.40000
+      0.880     0.710        0.30000
+      0.920     0.800        0.20000
+      0.960     0.900        0.10000
+      1.000     1.0          0.0
+
+INITIAL
+VERTICAL DEPTH_AVE WATER_GAS TRANZONE
+REFPRES  3500.0
+REFDEPTH 7475.0
+DWGC     6500.0
+
+NUMERICAL
+NORM PRESS  500.00
+NORM SATUR  0.15
+SDEGREE 2
+
+RUN
+DATE 1986 1 1
+DTMIN    0.00010
+DTMAX   0.02
+DTWELL   0.01
+AIMWELL  *WELLNN
+WELL 1 'PROD'
+PRODUCER 1
+OPERATE  *MAX  *STW    100
+OPERATE  *MIN  *BHP    500.000
+
+GEOMETRY  *J  0.25  0.34  1.0  0.0
+PERF *GEO 1           
+ 8 10  3  1.0
+ 8  9  3  1.0
+ 8  8  3  1.0
+ 8  7  3  1.0
+ 8  6  3  1.0
+
+HEAD-METHOD 'PROD' GRAV-FRIC HEADRROUGH 0.0001
+XFLOW-MODEL 1 FULLY-MIXED
+HEADITER '*' ITERATIVE
+BHPHEADINIT '*' COMBINED
+
+
+**Run Outboard Update Software
+ *OUTBOARD   'RESOLVE'
+   *OUTLIST  *VERSION *UNIT-TABLE *GROUPS *WELLS *SECTORS *DTIMEPREV *WELL-IPR *DATECURR
+
+   *OBVER 3
+   *REPLAY   'mxwwm078.obrec'
+
+TIME 350.0
+STOP
+

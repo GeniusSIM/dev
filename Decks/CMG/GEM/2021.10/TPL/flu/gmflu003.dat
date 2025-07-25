@@ -1,0 +1,177 @@
+**--------------------------------------------------------------------**
+** GMFLU003.DAT: Use of H2 and HE properties from GEM's Component     **
+**               Library                                              **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMFLU003.DAT                                               **
+**                                                                    **
+** MODEL:  7x7x3 CARTESIAN GRID     CO2,H2,HE          11 COMPONENTS  **
+**         FIELD UNITS              INJECTION                         **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template models a CO2 flood for a reservoir that consists of  **
+** reservoir fluid containing Hydrogen and Helium in presence of      **
+** other components. The EOS data uses component property from GEM's  **
+** internal component library, for all the components including H2    **
+** and HE.                                                            **
+**                                                                    **
+** The volume shift is calculated using Jhaveri and Youngren          **
+** correlation via keyword *LIB-SHIF *JYCORR                          **
+** Note: Keyword *LIB-SHIF *JYCORR | *ZRACORR applies to internal     **
+** library components only.                                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+**--------------------------------------------------------------------**
+** I/O CONTROL DATA
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'Use of H2 and HE properties'
+*TITLE2 "from GEM's Component Library"
+*INUNIT  *FIELD
+
+*OUTPRN *RES *ALL
+*OUTPRN *GRID *IMPL *PRES *SO *SG *SW *DENO *DENG *SIG *Z 'CO2'
+
+*WSRF *WELL 1
+*OUTSRF *WELL *PAVG
+*OUTSRF *GRID *PRES *SO *SW *SG
+*WRST 0
+
+
+**--------------------------------------------------------------------**
+** RESERVOIR DATA
+**--------------------------------------------------------------------**
+
+*GRID *CART 7 7 3
+*DEPTH *TOP 1 1 1 975.0
+
+*DI *CON 500.0
+*DJ *CON 500.0
+*DK *KVAR 50.0 30.0 20.0
+
+*POR *CON 0.30
+*PERMI *KVAR 200.0 50.0 500.0
+*PERMJ *EQUALSI
+*PERMK *KVAR  25.0 50.0  50.0
+
+*CPOR  5.0E-06
+*PRPOR  1000.00
+
+**--------------------------------------------------------------------**
+** FLUID COMPONENT DATA
+**--------------------------------------------------------------------**
+
+*MODEL  *PR
+*NC     10   0
+*TRES   100.
+*COMPNAME
+           'CO2'    'CH4'     'C2H6'    'C3H8'    'NC4'
+           'NC5'    'H2'      'HE'      'FC10'    'FC20'
+ 
+*PVC3 1.20
+
+*LIB-SHIF *JYCORR ** | *ZRACORR
+
+*AQUEOUS-DENSITY  *LINEAR
+
+
+**--------------------------------------------------------------------**
+** ROCK FLUID
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*SIGMA      0.1   1.0   0.00001
+
+*SGT
+       0.0       0.0   1.00000       0.0
+ 0.0500000       0.0 0.8800000       0.0
+ 0.0889000 0.0010000 0.7023000       0.0
+ 0.1778000 0.0100000 0.4705000       0.0
+ 0.2667000 0.0300000 0.2963000 0.0010000
+ 0.3556000 0.0500000 0.1715000 0.0100000
+ 0.4444000 0.1000000 0.0878000 0.0300000
+ 0.5333000 0.2000000 0.0370000 0.8000000
+ 0.6222000 0.3500000 0.0110000 3.0000000
+ 0.6500000 0.3900000       0.0   4.00000
+ 0.7111000 0.5600000       0.0   8.00000
+ 0.8000000   1.00000       0.0  30.00000
+*SWT
+ 0.2000000       0.0   1.00000  45.00000
+ 0.2899000 0.0022000 0.6769000  19.03000
+ 0.3778000 0.0180000 0.4153000  10.07000
+ 0.4667000 0.0607000 0.2178000   4.90000
+ 0.5556000 0.1438000 0.0835000   1.80000
+ 0.6444000 0.2809000 0.0123000 0.5000000
+ 0.7000000 0.4089000       0.0 0.0500000
+ 0.7333000 0.4855000       0.0 0.0100000
+ 0.8222000 0.7709000       0.0       0.0
+ 0.9111000   1.00000       0.0       0.0
+   1.00000   1.00000       0.0       0.0
+
+**--------------------------------------------------------------------**
+** INITIAL CONDITIONS
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *ON
+*REFPRES  1100.0
+*REFDEPTH  935.0
+*DWOC     1500.0     ** Depth of water/oil contact
+
+*ZGLOBALC 'CO2'  *CON     1.8
+*ZGLOBALC 'CH4'  *CON    31.5
+*ZGLOBALC 'C2H6' *CON     9.9
+*ZGLOBALC 'C3H8' *CON     6.75
+*ZGLOBALC 'NC4'  *CON     5.4
+*ZGLOBALC 'NC5'  *CON     4.5
+*ZGLOBALC 'H2'   *CON    10.0
+*ZGLOBALC 'HE'   *CON    16.2
+*ZGLOBALC 'FC10' *CON    10.8
+*ZGLOBALC 'FC20' *CON     3.15
+
+**--------------------------------------------------------------------**
+** NUMERICAL METHODS CONTROL
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+*NORM  *PRESS  145.0
+*NORM  *SATUR  0.10
+*NORM  *GMOLAR 0.05
+*AIM   *STAB 1
+**--------------------------------------------------------------------**
+** WELL DATA
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE  2021 1 1
+   *DTMAX  61.0
+   *DTMIN    0.1
+   *DTWELL   1.0
+   *AIMWELL *WELLN
+
+   *WELL 1 'PROD'     ** Produce from the bottom layer
+   *PRODUCER 1
+      *OPERATE *MIN *BHP   1000.0
+
+   *WELL 2 'INJ-CO2'   ** Inject CO2, H2, and HE into the top layer
+   *INJECTOR 2
+      *INCOMP *SOLVENT  0.9 0.0 0.0 0.0 0.0 0.0 0.05 0.05 0.0 0.0
+      *OPERATE *MAX *STG 1.20E+7
+
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+      *PERF *GEO 1
+      7 7 1  1.0
+      *PERF *GEO 2
+      1 1 3 1.0
+*DATE 2022 1 1
+*DATE 2023 1 1
+*DATE 2024 1 1
+*DATE 2025 1 1
+*DATE 2026 1 1
+*STOP

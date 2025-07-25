@@ -1,0 +1,217 @@
+   ******************************************************************************
+   ** mxhrw003.dat:               Horizontal Well With Hybrid                  **                 
+   **                             Grid Refinement Wellbore                     **  
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:                 MXHRW003.DAT                                               **
+   **                                                                                  **
+   ** MODEL:  8x3x11           HORIZONTAL WELL            HYBRID REFINED GRID WELLBORE **
+   **         SI UNIT                                                                  **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a cartesian grid 8x3x11 model with the bottom layer an aquifer  and  the **
+   ** 10th layer a transition zone.  A radial (hybrid) grid refinement is used to more **
+   ** accurately model the horizontal well.
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1
+     'TEMPLATE FOR HORIZONTAL WELL MODELLING'
+   *TITLE2
+     'SINGLE HORIZONTAL WELL OF OIL OVER WATER'
+   *TITLE3
+     'HEAVY OIL POOL'
+
+
+   ** INPUT/OUTPUT CONTROL SECTION
+   *INUNIT  *SI
+
+   *WPRN *WELL *TIME
+
+   *OUTPRN *GRID *SO *SG *SW *PRES
+   *WSRF *WELL 1
+   *WSRF *GRID *TIME
+
+   *OUTSRF *GRID *SO *SG *SW *PRES
+
+
+   ** GRID DESCRIPTION SECTION
+   *GRID  *CART   8   3  11
+   *KDIR  *DOWN
+   *DI *CON  41.7  ** Horizontal well length = 250 m
+   *DJ *JVAR  37.5  5.0  37.5  ** Horizontal well spacing = 80 m
+   *DK *KVAR   1.64  2.45  4*1.64  4*2.45  18.0  ** Net pay = 18m
+   *DEPTH 1 1 1  916.0
+
+   ** Grid refinement for horizontal well
+   **REFINE  1  3  1
+   *REFINE  *HYBRID  3  1  1  *IDIR
+   *RW  .111
+   *RANGE  1:8  2  2
+
+   *POR *KVAR  .203 .194 .232 .245 .225 .254 .267 4*.259
+   *PRPOR 10300.0    ** Reference pressure for rock compressibility
+   *CPOR  4.5E-7     ** Rock compressibility
+
+   *PERMI *KVAR 658 608 393 381 554 708 642 777 364 2*143
+   *PERMJ *EQUALSI * 1.00
+   *PERMK *EQUALSI * 0.35
+
+
+   ** PVT DESCRIPTION SECTION
+   *MODEL  *BLACKOIL
+   *PVT  *BG
+   **  PRST   $   RST    $   BOT    $    BG    $  VISOT   $  VISGT   $
+          101.3       0.00  1.0124000   1.06      570.8      1.050E-02
+          790.9       3.03  1.0191000   0.121     420.4      1.080E-02
+         2169.9       7.30  1.0263000   0.0484    291.0      1.100E-02
+         3548.9       11.4  1.0333000   0.0289    215.9      1.130E-02
+         4927.9       15.0  1.0397000   0.0206    172.1      1.170E-02
+         6306.8       17.0  1.0447000   0.0160    144.7      1.260E-02
+         7410.1       20.5  1.0505000   0.0131    126.9      1.350E-02
+         8598.1       22.8  1.0581000   0.0115     97.4      1.430E-02
+        10443.9       26.4  1.0700000   0.0096     82.8      1.550E-02
+        20786.4       46.1  1.1200000   0.0050     47.7      1.750E-02
+
+   *DENSITY  *OIL    955.0
+   *DENSITY  *WATER  1064.0
+   *DENSITY  *GAS    0.592
+
+   *CO  6.57E-7   ** oil compressibility
+   *CVO .0116     ** Pressure dependence of viscosity above the bubble point
+   *BWI  1.00     ** water formation volume factor
+   *CW   4.35E-7  ** water compressibility
+   *REFPW  9800.0 ** reference pressure for water compressibility
+   *VWI   0.80    ** water viscosity
+   *CVW   0.00
+
+   ** RELATIVE PERMEABILITY CURVES SECTION
+   *ROCKFLUID
+   *RPT 1  
+   ** Water-oil relative permeability curves from laboratory data
+   *SWT
+   ** Sw        Krw         Kro         Pc
+    0.35300    0.000000    0.800000    0.000000
+    0.36784    0.000109    0.758100    0.000000
+    0.38269    0.000432    0.716300    0.000000
+    0.39852    0.001040    0.674600    0.000000
+    0.41336    0.001981    0.633000    0.000000
+    0.42820    0.003292    0.591500    0.000000
+    0.44305    0.005010    0.550200    0.000000
+    0.45888    0.009000    0.509000    0.000000
+    0.47372    0.013000    0.468000    0.000000
+    0.48856    0.026000    0.427200    0.000000
+    0.50341    0.038000    0.386500    0.000000
+    0.53408    0.075000    0.305800    0.000000
+    0.54892    0.093000    0.265800    0.000000
+    0.56377    0.108000    0.226100    0.000000
+    0.57861    0.129000    0.186700    0.000000
+    0.59444    0.160000    0.147800    0.000000
+    0.60928    0.200000    0.109200    0.000000
+    0.62413    0.264000    0.071390    0.000000
+    0.63897    0.338000    0.034490    0.000000
+    0.65480    0.420000    0.000000    0.000000   
+
+   ** Gas-oil relative permeability curves from laboratory data
+   *SGT
+   ** Sg        Krg         Kro         Pc
+    0.00000    0.000000    0.800000    0.000000
+    0.00900    0.000032    0.756200    0.000000
+    0.01700    0.000064    0.712500    0.000000
+    0.02500    0.000101    0.669200    0.000000
+    0.03400    0.000150    0.626100    0.000000
+    0.04200    0.000227    0.583100    0.000000
+    0.05100    0.000359    0.540700    0.000000
+    0.05900    0.000583    0.498300    0.000000
+    0.08400    0.002406    0.373500    0.000000
+    0.10900    0.008009    0.252400    0.000000
+    0.13500    0.021610    0.136400    0.000000
+    0.16000    0.049760    0.029700    0.000000
+    0.16800    0.063900    0.000000    0.000000   
+
+   *BSORW  *CON  .25
+   *KROIL *STONE2 *SWSG
+   **
+
+
+   ** INITIALIZATION SECTION
+   *INITIAL
+   *VERTICAL  *OFF
+   *PRES  *CON   9900.0
+   *PB    *CON   8067.0
+   *DATUMDEPTH    941.0
+   *SW    *KVAR  9*0.353  0.90  1.0
+   *SO    *KVAR  9*0.647  0.10  0.0
+   **
+
+
+   ** NUMERICAL CONTROL SECTION
+   *NUMERICAL
+   *NCUTS  10
+   *DTMIN  0.00001
+
+
+   ** RECURRENT DATA SECTION (PRODUCTION/INJECTION INFORMATION)
+   *RUN
+   *DATE   1995   1   1
+   *DTWELL  0.1
+
+   *WELL 1 'HORIZ'
+   *PRODUCER  1
+   *OPERATE  *MAX  *STL      80.00
+   *OPERATE  *MIN  *BHP    1000.00
+   *MONITOR        *WCUT     0.95  *STOP
+
+   *GEOMETRY  *I  .111  .39  1.0  0.0
+   *PERF  *GEO  1  ** Use these perforation values for hybrid refined grids.
+   **If Jf Kf   Ir Jr Kr    ff
+      2  2  2 / 1  1  1   1.0
+      3  2  2 / 1  1  1   1.0 
+      4  2  2 / 1  1  1   1.0
+      5  2  2 / 1  1  1   1.0
+      6  2  2 / 1  1  1   1.0
+      7  2  2 / 1  1  1   1.0   
+
+   ** Define an injection well located in the bottom outer ring which
+   ** will simulate an infinite acting aquifer.
+
+   *WELL 2  'AQUIFER'  *VERT  8  1
+   *INJECTOR  2
+   *INCOMP  *WATER
+   *OPERATE  *MAX  *BHP   10000.0
+   *OPERATE  *MAX  *STW     100.0
+
+   *PERFV  2
+   ** K    WI
+     11  10000.
+
+   *DATE   1995   2   1
+   *DATE   1995   3   1
+   *DATE   1995   4   1
+   *DATE   1995   7   1
+   *DATE   1996   1   1
+   *DATE   1996   7   1
+   *DATE   1997   1   1
+   *DATE   1997   7   1
+   *DATE   1998   1   1
+   *DATE   1998   7   1
+   *DATE   1999   1   1
+   *DATE   1999   7   1
+   *DATE   2000   1   1
+   *DATE   2000   7   1
+   *DATE   2001   1   1
+   *DATE   2001   7   1
+   *DATE   2002   1   1
+   *DATE   2002   7   1
+   *DATE   2003   1   1
+   *DATE   2003   7   1
+   *DATE   2004   1   1
+   *DATE   2004   7   1
+   *DATE   2005   1   1
+   *STOP

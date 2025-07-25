@@ -1,0 +1,341 @@
+   *****************************************************************************
+   ** Template (mxgmc086.dat):  3D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC086.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         3 VERTICAL FRACTURES IN 2D                                               **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **     In this test problem, hydraulic fracturing model is applied to a dual        **
+   **     perm model. Fractures will initiate and propagate in a 2D plane.             **
+   **     Fracture permeability is computed based on the fracture width which          **
+   **     is calculated from the split nodes between elements.                         **
+   **     This example also shows how to use the amalgamation option for               **
+   **     generating geogrids based on the info of reservoir grids.                    **
+   **                                                                                  **
+   **     Reservoir grids: 49 1 100   - Cartesian grid                                 **
+   **     Geogrids       : 52 1 100   - Cartesian grid                                 **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #086'
+*TITLE2
+   'HYDRAULIC FRACTURING IN 2D PLANE STRAIN'
+
+*INUNIT *FIELD
+
+*WPRN *GRID TIME
+*OUTPRN *GRID *PRES 
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 2
+*WSRF *GRIDDEFORM 2
+*OUTSRF *GRID *PRES PERM POROS
+   VDISPL STRESEFF YIELD STRESSM VPOROSGEO VERDSPLGEO
+   STRAINI STRAINJ STRAINK STRESI STRESJ STRESK WCRACK SCRACK
+
+*OUTSRF *SPECIAL 1 1 1 *MT *STRESMNP
+*OUTSRF *SPECIAL 1 1 1 *MT *STRESNORM
+               
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 45 1 100        ** 2D areal cartesian grid
+
+*DI *IVAR 7*12.86 1*5. 14*12.86  1*5.  14*12.86 1*5.  7*12.86
+*DJ *JVAR 20.
+*DK *KVAR  50*2.  50*5. 
+
+*DEPTH 1 1 1 349.0
+
+*DUALPERM
+
+*DIFRAC *CON -1
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   CON 0.19
+*POR FRACTURE CON 0.01        **  Fracture properties
+
+*PERMI *MATRIX   *CON 0.01
+*PERMI *FRACTURE *CON 1e-5    **  Fracture properties
+  MOD   8  1  1   =  0.1
+       23  1  1   =  0.1
+       38  1  1   =  0.1
+
+*PERMJ *MATRIX   *CON 0.01
+*PERMJ *FRACTURE *CON 1e-5     **  Fracture properties
+  MOD   8  1  1   =  0.1
+       23  1  1   =  0.1
+       38  1  1   =   0.1
+
+*PERMK *MATRIX   *CON 0.01
+*PERMK *FRACTURE *CON 1e-5     **  Fracture properties
+  MOD   8  1  1   =  0.1
+       23  1  1   =  0.1
+       38  1  1   =  0.1
+
+
+CPOR  3E-6
+PRPOR 14.7
+
+*CROCKTYPE 1
+   *CCPOR  *MATRIX 3E-6
+   *CPRPOR *MATRIX 14.7
+   *CCPOR  *FRACTURE 3E-6
+   *CPRPOR *FRACTURE 14.7
+
+*CROCKTYPE 2
+   *CCPOR  *MATRIX 3E-6
+   *CPRPOR *MATRIX 14.7
+   *CCPOR  *FRACTURE 3E-6
+   *CPRPOR *FRACTURE 14.7
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT
+      ** p              rs      bo          eg    viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+    55000.000   335.000   1.02550   338.980   1.14000 0.0135000
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0 
+
+*TRES 120
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *MATRIX   *CON 200
+*PRES *FRACTURE *CON 200
+
+*SW *MATRIX   *CON 0.25
+*SW *FRACTURE *CON 0.05
+
+*SO *MATRIX   *CON 0.75
+*SO *FRACTURE *CON 0.95
+
+*PB *MATRIX   *CON 0.0
+*PB *FRACTURE *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMAX 0.1
+*DTMIN  1E-10
+
+*NORM     *PRESS 250.0
+*NORM     *SATUR 0.3
+
+**  ============== GEOMECHANICS SECTION =====================
+ 
+ *GEOMECH          ** Main keyword for geomechanic option
+ 
+ *GCOUPLING 0      ** Coupling Type 2 (default)
+ *PLSTRAINY
+ 
+ *GAMALI  48  *GVAR 7:7  1:2   14:14  1:2  14:14  1:2  7:7
+
+*DISPLACTOL 5E-3
+*FORCETOL 1E0
+ 
+ *NITERGEO 200
+ 
+ *GEOROCK 1           ** rock type # 1 - matrix
+    *ELASTMOD 3.95E6  ** Young's modulus
+    *POISSRATIO 0.3   ** Poisson' ratio
+    *COHESION 1E6     ** Cohesion
+    *GPERMRES 50      ** Residual fracture permeability
+    *GPERMAX  1E6     ** Maximum fracture permeability
+    
+ *GEOROCK 2           ** rock type # 2 - fracture
+    *ELASTMOD 3.95E6
+    *POISSRATIO 0.3
+    *COHESION 1E6
+    *GPERMRES 50      ** Residual fracture permeability
+    *GPERMAX  1E6     ** Maximum fracture permeability
+
+ 
+ *STRESS          ** Initial effective stress
+  *IJK  1:48   1  1:100
+    2000    3000  0  2000     
+  *IJK   24:25  1:1  1:100
+    500   3000  0  2000
+  *IJK   8:9  1:1  1:100
+    500   3000  0  2000
+  *IJK   40:41  1:1  1:100
+    500   3000  0  2000
+ 
+ *GEOTYPE   *MATRIX *IJK 1:48  1  1:100   1
+ *GEOTYPE   *FRACTURE *IJK
+              1:48  1:1  1:100   2       ** All blocks
+
+
+*HYDROFRAC  *IJK           ** Keyword for hydraulic fracture
+   ** Location   Perpendicular
+      24  1   1:100      01       ** Fracture occurs at I = 26 and propagates perpendicular to I axis
+      8   1   1:100      01       ** Fracture occurs at I = 10           ""
+      40  1   1:100      01       ** Fracture occurs at I = 42           ""
+*MAGNIFYDI  5E2            ** Magnify the deformation in the I direction
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1901 1 1.5
+
+   *DTWELL 1e-6   
+
+*WELL 1 'INJTR1'
+*WELL 2 'INJTR2'
+*WELL 3 'INJTR3'
+
+*INJECTOR *MOBWEIGHT 'INJTR1'
+   *INCOMP  *WATER
+   *OPERATE  MAX  STW  170.  
+   **OPERATE  MAX  BHP  10000.  
+   *GEOMETRY K .025 .432 1 0
+   *PERF 'INJTR1'  ** i j k  wi
+              8 1 1:1  1E6 ** 4.773
+
+*INJECTOR *MOBWEIGHT 'INJTR2'
+   *INCOMP  *WATER
+   *OPERATE  MAX  STW  170.  
+   **OPERATE  MAX  BHP  10000.  
+   *GEOMETRY K .025 .432 1 0
+   *PERF 'INJTR2'  ** i j k  wi
+              23 1 1:1  1E6 ** 4.773
+
+*INJECTOR *MOBWEIGHT 'INJTR3'
+   *INCOMP  *WATER
+   *OPERATE  MAX  STW  170.  
+   **OPERATE  MAX  BHP  10000.  
+   *GEOMETRY K .025 .432 1 0
+   *PERF 'INJTR3'  ** i j k  wi
+              38 1 1:1  1E6 ** 4.773
+
+*TIME 5.0E-4
+*STOP
+*TIME 1.0E-3
+*TIME 1.5E-3
+
+*STOP

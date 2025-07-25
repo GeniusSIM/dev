@@ -1,0 +1,382 @@
+   ******************************************************************************
+   ** mxsmo068.dat: DUAL PERM GASWATER MODEL TO TEST BLOCKGROUPS               **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:                 mxsmo068.dat                                               **
+   **                                                                                  **
+   ** MODEL:  LS-LR-DK MODEL Converted to Blockgroups                                  ** 
+   **                                                                                  ** 
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **   A block group called 'SHALE' and a block group called 'CONDUIT' is used to     **
+   **   simplify input                                                                 **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+RESULTS SIMULATOR IMEX 200600
+
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'4.0 md-ft fractured shale LGR model'
+*TITLE2
+'Fracture width = 2 ft, nonDarcy Flow'
+
+** assume fracture thickness = 0.001 ft (pseudoized to 10 ft)
+
+** assume stimulated   facture length = 200 ft 1/2 length = 100 ft
+** assume unstimulated facture length = 200.0 ft 1/2 length = 100.0 ft
+
+** assume 4.0 mD-ft stimulated fracture and 0.0010 md-ft unstimulated fracture conductivity
+** assume matrix reservoir perm = 0.0001 md
+
+** stimulated   fracture perm  = 4.0 md-ft / 0.001 ft = 4000 md
+** unstimulated fracture perm  = 0.001 md-ft / 0.001 ft =  1 md
+
+
+*INUNIT *FIELD             
+*WPRN   *WELL TIME
+*WPRN   *GRID 0
+*WSRF   *SECTOR 1
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*OUTPRN *TABLES NONE
+*WSRF   *GRID   TNEXT
+OUTSRF RES ALL
+*WSRF   *WELL   1
+outsrf well downhole
+*OUTSRF *GRID pres sw sg  rfg 
+wprn iter matrix
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 101 101 1
+KDIR DOWN
+
+DUALPERM
+
+** stimulated region defined in a 9x9 region centered on 51,51,1
+refine 47:55 47:55 1 into 9 9 1
+
+** outside of the stimulated region fracture spacing is 200 ft
+** inside  of the stimulated region fracture spacing is 200 ft
+** all fracures are vertical
+DIFRAC CON 200
+DJFRAC CON 200   
+DKFRAC CON 0  
+
+null con 0
+mod 6:96 6:96 1 = 1
+
+**grdbug
+DI IVAR
+101*200.0e0
+
+DI RG 47:55 47:55 1 IVAR    68.38e0 21.62e0 6.84e0 2.16e0  2.0e0 2.16e0 6.84e0 21.62e0 68.38e0
+
+DJ JVAR 
+101*200.0e0
+
+DJ RG 47:55 47:55 1 JVAR    68.38e0 21.62e0 6.84e0 2.16e0  2.0e0 2.16e0 6.84e0 21.62e0 68.38e0
+
+DK KVAR
+ 300
+DTOP
+ 10201*950
+
+*CPOR  MATRIX  1.0E-6            
+*PRPOR MATRIX 3600.0              
+*CPOR  FRACTURE  1.0E-6            
+*PRPOR FRACTURE 3600.0              
+
+** inside  SRV actual frac perm is pseudoized to so k x 2.0ft = 4000 x 0.001 ft = 2.00 (asigned to Dual Perm matrix)
+** outside SRV actual frac perm is pseudoized to so k x 200.0ft = 1 x 0.001 ft = 0.000005 (normal Dual Perm assumption)
+
+BLOCKGROUP 'SHALE' RG 47:55 47:55 1 ALL           4*1 0 4*1
+                                                  4*1 0 4*1
+                                                  4*1 0 4*1
+                                                  4*1 0 4*1
+                                                    9*0
+                                                  4*1 0 4*1
+                                                  4*1 0 4*1
+                                                  4*1 0 4*1
+                                                  4*1 0 4*1
+
+BLOCKGROUP 'CONDUIT' RG 47:55 47:55 1 ALL         4*0 1 4*0
+                                                  4*0 1 4*0
+                                                  4*0 1 4*0
+                                                  4*0 1 4*0
+                                                    9*1
+                                                  4*0 1 4*0
+                                                  4*0 1 4*0
+                                                  4*0 1 4*0
+                                                  4*0 1 4*0
+
+**assign DK matrix blocks permeability everywhere 
+**(will be overwriten in the matrix blocks in the SRV which represents the fracture)
+
+PERMI MATRIX CON    1e-4
+PERMJ MATRIX CON    1e-4
+PERMK MATRIX CON    1e-4
+
+** assign DK fracture blocks permeability everywhere 
+** (will be overwriten in the Dual Permeability fracture blocks within the SRV which have smaller fracture spacing)
+
+PERMI FRACTURE CON  0.000005
+PERMJ FRACTURE CON  0.000005
+PERMK FRACTURE CON  0.000005
+
+** perm in outer dk region = 0.001 md-ft /200 ft = 0.000005 md (as before)
+** use 0.0 as fracture perm in the explicitly modelled fracture
+**whole stimulated region
+                                                    
+PERMI  FRACTURE BG  'CONDUIT'   CON 0.0 
+PERMI  MATRIX   BG  'CONDUIT'   CON 2.0 
+
+PERMI  FRACTURE BG  'SHALE'     CON 0.000005 
+PERMI  MATRIX   BG  'SHALE'     CON 1e-4 
+
+PERMJ  FRACTURE BG  'CONDUIT'   CON 0.0 
+PERMJ  MATRIX   BG  'CONDUIT'   CON 2.0 
+
+PERMJ  FRACTURE BG  'SHALE'     CON 0.000005 
+PERMJ  MATRIX   BG  'SHALE'     CON 1e-4 
+
+PERMK  FRACTURE BG  'CONDUIT'   CON 0.0 
+PERMK  MATRIX   BG  'CONDUIT'   CON 2.0 
+
+PERMK  FRACTURE BG  'SHALE'     CON 0.000005                              
+PERMK  MATRIX   BG  'SHALE'     CON 1e-4
+                                     
+** Matrix perm in the "explicit fracture" will be used to represent the discretized fracture
+** all other matrix blocks represent the matrix
+
+
+** Porosity in the Dual Perm fracture outside the SRV is based on 200 ft fracture spacing in 200 x 200 x 300 ft blocks
+** We have:
+** 2 crossed fractures x 200 ft x 0.001 ft x 300 ft fracture volume in a 300 ftx 200 ft x 200 ft block
+** or 120 ft3 in a 12.0e6 block so porosity = 120/12e6 = 0.00001
+
+
+POR FRACTURE CON    0.00001 
+POR MATRIX   CON    0.03 
+
+POR  FRACTURE BG 'CONDUIT' CON 0  
+POR  MATRIX   BG 'CONDUIT' CON 0.03 
+
+POR  FRACTURE BG 'SHALE'   CON 0.00001
+POR  MATRIX   BG 'SHALE'   CON 0.03 
+
+** matrix por in matrix is kept to 0.03 even in block with discretized fracture as fracture width is only 0.001 ft thick
+
+          
+*MODEL *GASWATER            
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*TRES 100
+*PVTG  *ZG
+** p     zg       visg
+  14.7   1.0      .02
+   400   1.0      .02
+   800   1.0      .02
+  1200   1.0      .02
+  1600   1.0      .02
+  2000   1.0      .02
+  2400   1.0      .02
+  2800   1.0      .02
+  3200   1.0      .02
+  3600   1.0      .02
+  4000   1.0      .02
+  9000   1.0      .02
+*GRAVITY *GAS     0.818
+*DENSITY *WATER  63.021
+*BWI   1.0034
+*CW    3.0E-6
+*REFPW 3600
+*VWI   0.96
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+RPT 1
+** sw          krw     krow       
+SWT
+**$        Sw         krw      
+          0.2           0     
+      0.24375  0.00149536   
+       0.2875  0.00598145   
+      0.33125   0.0134583  
+        0.375   0.0239258  
+      0.41875    0.037384   
+       0.4625    0.053833   
+      0.50625   0.0732727   
+         0.55   0.0957031   
+      0.59375    0.121124  
+       0.6375    0.149536 
+      0.68125    0.180939  
+        0.725    0.215332   
+      0.76875    0.252716   
+       0.8125    0.293091   
+      0.85625    0.336456 
+          0.9    0.382812         
+         0.95    0.439453          
+            1         0.5           
+** sl        krg    krog   
+SGT
+**$        Sg         krg     
+            0           0   
+      0.04375  0.00299072    
+      0.13125   0.0269165  
+        0.175   0.0478516      
+      0.21875   0.0747681   
+       0.2625    0.107666   
+      0.30625    0.146545    
+         0.35    0.191406      
+      0.39375    0.242249   
+       0.4375    0.299072    
+      0.48125    0.361877   
+        0.525    0.430664     
+      0.56875    0.505432  
+       0.6125    0.586182    
+      0.65625    0.672913  
+          0.7    0.765625           
+         0.75    0.878906           
+          0.8           1           
+
+RTYPE CON      1
+
+NONDARCY GENERAL 0.5
+1.485e9     1.021 0  
+1.485e9     1.021 0  
+
+**ND correction
+**   1704.9 = (4000/2)**(2-1.021)
+**  154777  = (1/0.000005)**(2-1.021)
+
+NDARCYCOR FRACTURE CON      0
+NDARCYCOR MATRIX   CON      0
+NDARCYCOR MATRIX BG 'CONDUIT' CON 1704.9     
+
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *BLOCK_CENTER     
+**$ Property: Bubble Point Pressure (psi)   Max: 400  Min: 400
+PB CON          0
+*REFDEPTH   1050.          
+*REFPRES    3000.          
+*DWGC       1300.          
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+AIM *OFF
+*DTMAX       30.
+*DTMIN       0.000000001
+*NORTH       40
+*ITERMAX     80
+converge maxres 0.20
+*NORM *PRESS 100.0
+*NCUTS 12
+*SDEGREE 1
+*MAXSTEPS 60
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2000 01 01
+*DTWELL 0.0000001
+**$
+WELL  'Producer1'
+PRODUCER 'Producer1'
+OPERATE  MAX  STG  3e6  CONT repeat
+OPERATE  MIN  BHP  1000.  CONT repeat
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K 0.125  0.37  1.  0.
+PERF   'Producer1'
+**$ UBA                                              wi  Status  Connection  
+    51 51 1 / 5 5 1 100000  OPEN    FLOW-TO  'SURFACE'
+
+**$ Property: Implicit flag  Max: 1  Min: 1
+AIMSET CON            1
+*DATE 2000 02 01
+*DATE 2000 03 01
+*DATE 2000 04 01
+*DATE 2000 05 01
+*DATE 2000 06 01
+*DATE 2000 07 01
+*DATE 2000 08 01
+*DATE 2000 09 01
+*DATE 2000 10 01
+*DATE 2000 11 01
+*DATE 2000 12 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2001 01 01
+*DATE 2001 02 01
+*DATE 2001 03 01
+*DATE 2001 04 01
+*DATE 2001 05 01
+*DATE 2001 06 01
+*DATE 2001 07 01
+*DATE 2001 08 01
+*DATE 2001 09 01
+*DATE 2001 10 01
+*DATE 2001 11 01
+*DATE 2001 12 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2002 01 01
+*DATE 2002 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2003 01 01
+*DATE 2003 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2004 01 01
+*DATE 2004 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2005 01 01
+*DATE 2005 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2006 01 01
+*DATE 2006 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2007 01 01
+*DATE 2007 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2008 01 01
+*DATE 2008 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2009 01 01
+*DATE 2009 07 01
+*WSRF   *GRID   TNEXT
+
+*DATE 2010 01 01
+*STOP
+
+
+

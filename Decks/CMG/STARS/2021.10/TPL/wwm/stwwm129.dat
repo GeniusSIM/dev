@@ -1,0 +1,330 @@
+
+
+**
+**                        OVERVIEW
+**                        ========
+
+**    This test problem uses the individual layer control actions
+**    (OPEN, CLOSE, WIMULT, WIMULTO) through keyword *LAYER-CTRL
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Well Management Template No. 129'
+*title2 'Verify/Illustrate *LAYER-CTRL'
+*title3 'Based on STWWM016'
+
+*inunit *field   ** output same as input
+
+*outprn *grid *pres *sw *so *sg *temp *y *x *w *solconc
+              *obhloss *viso
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well  component all  layer all  mass
+outsrf grid  pres so sg temp
+*OUTSRF *SPECIAL *MATBAL *WELL 'LITE OIL'
+                 *MATBAL *WELL 'MEDM OIL'
+                 *MATBAL *WELL 'HEVY OIL'
+                 *OBHLOSS
+                 *BLOCKVAR *SG 5,4,1
+                 *BLOCKVAR *TEMP 5,4,1
+                 *BLOCKVAR *SO 5,4,1
+                 *BLOCKVAR *PRES 5,4,1
+
+wprn sector 1
+wsrf sector 1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 9 5 4 
+*kdir *down
+*ninepoint *ij
+
+**  The triangular area of 1/8 of nine-spot pattern is covered with a
+**  9x5 grid with grid lines diagonal to the line linking the injector
+**  with the nearest producer.  These blocks are trimmed using block
+**  modifiers.
+**  In addition, a point-distributed grid is required in order to put
+**  grid nodes on the injector-producer line.  To do this, an oversized
+**  grid is specified, and then trimmed back using block modifiers.
+
+**  The interwell distance is divided into 8 equal segments, requiring
+**  ni = 9.  The third corner is a 1/4 block, and is located at j = 5.
+
+**  The nine-spot pattern is 2.5 acres in area, or 330 ft square.  The
+**  distance between injector and far producer is (330/2)*1.414 =
+**  233.3 ft, giving a block size of 233.3/8 = 29.17 ft.
+
+*di *con 29.17
+*dj *con 29.17
+*dk *kvar 10 20 25 25
+
+*depth *top 1 1 1 1000
+
+**  Trim grid to 1/8 of an inverted 9-spot pattern
+
+*vamod  2  0.5    0.5  1.0  0.5
+*vamod  3  0.5    1.0  1.0  0.5     *9p  0.5  1.0
+*vamod  4  0.5    1.0  1.0  0.5     *9p  1.0  0.5
+*vamod  5  0.125  0.5  1.0  0.125   *9p  0.5  1.0
+*vamod  6  0.25   1.0  1.0  0.25    *9p  1.0  0.5
+
+*vatype *all   5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+*por *con 0.3
+*permi *kvar 2000 500 1000 2000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*sectorarray 'Layer 1' ijk 1:9 1:5 1  1
+*sectorarray 'Layer 2' ijk 1:9 1:5 2  1
+*sectorarray 'Layer 3' ijk 1:9 1:5 3  1
+*sectorarray 'Layer 4' ijk 1:9 1:5 4  1
+
+*end-grid
+
+*cpor 5e-4  
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 4 4 4   ** Components are water, dead oil and two volatile
+               ** oils.  Most water properties are defaulted (=0).
+
+*compname       'WATER'  'LITE OIL' 'MEDM OIL' 'HEVY OIL'
+**               -----    --------   --------   --------
+     *cmm        18.02      250        450        600
+     *pcrit      3206.2     225        140         0
+     *tcrit      705.4      800        950         0
+     *avg        1.13e-5   5.e-5      1.e-4        0
+     *bvg        1.075      0.9        0.9         0
+
+     *molden     0        0.2092      0.1281     0.102
+     *cp         0        3*5.e-6
+     *ct1        0        3*3.8e-4
+
+     *cpl1       0         132.5      247.5      360
+     **                     0.53       0.55      0.60  Btu/lb-F
+
+     ** Two volatile oils and one dead oil
+     *kv1        0        8.334e8    1.554e5       0
+     *kv3        0        1.23e6       212         0
+     *kv4        0        -16000      -4000        0
+     *kv5        0         -460         20         0
+
+
+*visctable
+
+**      Temp
+          75     0        2.328      10.583       5780
+         100     0        1.9935      9.061       1380
+         150     0        1.4905      6.775        187
+         200     0        1.1403      5.183         47
+         250     0        0.8896      4.0434        17.4
+         300     0        0.7058      3.2082         8.5
+         350     0        0.5683      2.5833         5.2
+         500     0        0.319       1.4498         2.5
+         800     0        0.319       1.4498         2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 75
+*refblock 1 1 1
+
+*temp *con 125
+
+*mfrac_oil 'LITE OIL' *con 0.503
+*mfrac_oil 'MEDM OIL' *con 0.1614
+*mfrac_oil 'HEVY OIL' *con 0.3356
+
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+
+*norm     press 200 satur 0.2  temp 50
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on August 13, 1987
+date 1987 8 13.5
+
+   dtwell .1
+
+                                               **           3
+   well 1 'INJECTOR'    vert 1 1  frac .125    **         o o o
+   well 2 'CRNR PRDCR'  vert 9 1  frac .125    **       o o o o o
+   well 3 'EDGE PRDCR'            frac .25     **     o o o o o o o
+                                               **   1 o o o o o o o 2
+
+   injector mobweight 'INJECTOR'
+   incomp water  1.0  0.0  0.0  0.0
+   tinjw 450
+   qual .7
+   operate     bhp 1000
+   operate max stw 300
+   monitor backflow autolayer 10
+   perfv 'INJECTOR'   **  k  wi       ** Inject only in the bottom layer
+                4  106466.42 ** .007082*k*h / ln(cc*sqrt((dx**2+dy**2)/pi)/rw)
+                            ** k = 2000 md, h = 25 ft, dx = dy = 29.17 ft,
+                            ** cc = 0.249, rw = 0.3 ft
+
+   producer 'CRNR PRDCR'              ** Both producers have these attributes
+   operate     bhp    17
+   operate max stl    1000
+   operate max steam  10    ** Steam CWE in bbl/day
+   perfv 'CRNR PRDCR'    **  k   wi
+                   1   42586.566
+                   2   21293.283
+                   3   53233.208
+                   4  106466.42
+
+
+   producer 'EDGE PRDCR'              ** Both producers have these attributes
+   operate     bhp    17
+   operate max stl    1000
+   operate max steam  10    ** Steam CWE in bbl/day
+   perf  geo 'EDGE PRDCR'    **  k   wi
+             5  5      1   1.0
+             5  5      2   1.0
+             5  4      3   1.0
+             5  5      4   1.0
+
+   LAYERXYZ  'EDGE PRDCR'
+      **$ perf geometric data: block entry(x,y,z) block exit(x,y,z), length
+      5,5,1  131.265  131.265  1000.01  131.265  131.265  1009.99  10
+      5,5,2  131.265  131.252  1010.02  131.265  118.314  1029.98  23.8344
+      5,4,3  131.265  116.68   1031.27  131.265  116.68   1054.98  23.75
+      5,5,4  131.265  116.709  1055.03  131.265  145.821  1079.97  38.4173
+
+time 365
+
+   *LAYER-CTRL 'CRNR PRDCR' *CLOSE        ** Well 2 is to be shut-in due to no open layers
+   9 1 1:4
+
+   *LAYER-CTRL 'EDGE PRDCR' *WIMULT 2.0   ** Layer PI multiplier of Well 3
+   5 5 2
+
+time 730
+
+   *LAYER-CTRL 'CRNR PRDCR' *OPEN         ** Open Well #2 due to opening of 2 layers
+   9 1 3:4
+
+time 1095
+
+   *LAYER-CTRL 'EDGE PRDCR' *WIMULT 1.5   ** Layer PI multiplier of Well 3
+   5 5 2
+
+time 3650
+stop

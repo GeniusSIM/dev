@@ -1,0 +1,334 @@
+   ******************************************************************************
+   ** mxwwm034.dat:  Well before type, inactive layer status, and WLISTSHUT    **
+   ******************************************************************************
+   ***********************************************************************************
+   **                                                                               **
+   ** FILE:   mxwwm034.dat                                                          **
+   **                                                                               **
+   ** MODEL:  9x5x3 GRID.                                    WLISTSHUT-WLISTOPEN    **
+   **         WELLS NAMED, PERF'D, TYPED AT DIFFERENT TIMES                         **
+   **         STATUS OF INACTIVE LAYERS DISPLAYED IN RESULTS                        **
+   **                                                                               **    
+   **                                                                               **
+   ***********************************************************************************
+   **                                                                               **
+   **  This template illustrates three features :                                   **
+   **  (1) Wells may be named at one time, have perforations defined later,         **
+   **      and still later have type and constraints defined and begin operation.   **
+   **  (2) The WLISTSHUT and WLISTOPEN keywords which allow a list of wells to be   **
+   **      shut and later reopened without disturbing the initial pattern of shut   **
+   **      and AUTODRILL wells.                                                     **
+   **  (3) Inactive well layers (those not listed on the most recent PERF line)     **
+   **      have their status written to RESULTS as CLOSED and is so displayed.      **
+   **                                                                               **
+   **                                                                               **
+   ***********************************************************************************
+   ** CONTACT CMG at (403)531-1300;   282-6495 (fax); support@cmgl.ca               **
+   ***********************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1   'Wells named before type is defined;'
+   *TITLE2   'WLISTSHUT-WLISTOPEN;'
+   *TITLE3   'Layer status of inactive layers displayed.'
+   *CASEID   'MXWWM034'
+   
+   *INUNIT *FIELD
+                 
+   *WPRN   *WELL 1
+   *WPRN   *GRID 0
+   *WPRN   *ITER *BRIEF
+   *OUTPRN *WELL *BRIEF
+   *OUTPRN *RES  *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID *SO *SG *SW *PRES
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL   1
+   *OUTSRF *WELL *LAYER *ALL
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART  9   5    3
+   *DI *CON 1000.0
+   *DJ *CON 1000.0
+   *DK *KVAR
+    50.0 30.0 20.0
+
+   *DEPTH 1 1 1 8400.0
+
+   *POR *CON 0.3
+
+   *CPOR   3.0E-6
+   *PRPOR 14.7
+
+   *PERMI *KVAR
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       20.0   40.0   60.0
+
+
+   *MODEL *BLACKOIL
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35200  2591.000 0.2030000 0.0470000   
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5 
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.9400002   0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    4014.7
+   *REFDEPTH   8400.
+   *REFPRES    4800.
+   *DWOC       9500.
+   *DGOC       7000.  
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        1000.
+   *MAXSTEPS       100
+   *NORM *PRESS  1000.0
+   *NORM *SATUR    0.20
+   *AIM *OFF     
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *GROUP 'Group-1' 'Group-2' *ATTACHTO 'Field'     ** Define the gathering centres.
+   *GROUP 'Inj-Group'           *ATTACHTO 'Field'
+
+  
+   *WELL 1   'Producer 1'  *ATTACHTO 'Group-1'
+   *WELL 2   'Producer 2'  *ATTACHTO 'Group-1'   
+   *WELL 3   'Injector 1'  *ATTACHTO 'Inj-Group'
+   *WELL 4   'Producer 3'  *ATTACHTO 'Group-1'   
+   *WELL 5   'Producer 4'  *ATTACHTO 'Group-1'
+   *WELL 6   'Injector 2'  *ATTACHTO 'Inj-Group'   
+   *WELL 7   'Producer 5'  *ATTACHTO 'Group-2'   
+   *WELL 8   'Producer 6'  *ATTACHTO 'Group-2'
+   *WELL 9   'Producer 3a' *ATTACHTO 'Group-2'
+   *WELL 10  'Producer 4a' *ATTACHTO 'Group-2'   
+
+
+   *PRODUCER  1
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 1
+   ** if     jf     kf     ff                         
+      1      1      1     1.0   
+
+   *PRODUCER  2
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff                         
+      1      5      1     1.0
+
+   *INJECTOR    3  
+   *INCOMP *GAS
+   *OPERATE  *MAX  *STG  10e6   *CONT  
+   *PERF GEO 3
+   ** if     jf     kf     ff 
+      3      3      3      1
+
+** Well types and operating constraints are not defined at this time for
+** Well 4 'Producer 3' and Well 5 'Producer 4'.
+
+   *INJECTOR   6  
+   *INCOMP *GAS
+   *OPERATE  *MAX  *STG  10e6  *CONT  
+   *PERF GEO 6
+   ** if     jf     kf    ff 
+      7      3      3      1.0
+
+   *PRODUCER  7
+   *OPERATE *MAX  *STO 3000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 7
+   ** if     jf     kf     ff                         
+       9      1     1     1.0   
+
+   *PRODUCER  8
+   *OPERATE *MAX  *STO 3000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 8
+   ** if     jf     kf     ff                         
+       9      5     1     1.0   
+
+   *PRODUCER  9
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 9
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *PRODUCER  10
+   *OPERATE *MAX  *STO 1000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 10
+   ** if     jf     kf     ff                         
+      5      5      1     0.5
+
+   *GCONP 'Group-1'
+      *GTARGET *STO 1950. *CONT           
+
+   *GCONP 'Group-2'
+      *GTARGET *STO 4950. *CONT
+
+   *GCONI 'Inj-Group'
+      *GTARGET STG 9e6
+
+   *APPOR-METHOD  *PROD  'Group-1' 'Group-2'  *IP
+   *APPOR-METHOD  *GASI  'Inj-Group'  *IP
+
+*AUTODRILL 1,10
+
+*GAPPOR 'Group-1' 'Group-2' *AUTODRILL *ON
+
+   *AIMSET *CON 1
+
+
+   **OPEN 4, 5	       ** opening untyped wells is disallowed.
+
+
+
+   *TIME 365.0
+
+** Perforations available now for Well 4 'Producer 3' and Well 5 'Producer 4' --
+** Types have still not been defined for these wells.  Wells remain shut.
+
+   *PERF *GEO 4
+      5      1      1     0.5
+   *PERF *GEO 5
+      5      5      1     0.5
+   *SHUTIN 7   ** Shut well 7 -- WOPENLIST will not open it  
+
+
+   *TIME 730.0
+
+** Wells 3 and 4 have type and constraints specified and start operating
+
+   *PRODUCER  4
+   *OPERATE *MAX  *STO  1000.0 *CONT
+   *OPERATE *MIN  *BHP   200.0 *CONT
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+
+   *PRODUCER  5
+   *OPERATE *MAX  *STO  1000.0 *CONT
+   *OPERATE *MIN  *BHP   200.0 *CONT
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+**----------------------------------------------------------
+   *TIME 800.
+   *WLISTSHUT 1:10  ** Shut all wells with WLISTSHUT
+
+   *TIME 900.
+   *WLISTOPEN 2:10  ** Open wells 2:10 -- well 7 will remain shut
+                    ** and well 10 will reacquire its AUTODRILL status
+
+   *TIME 1200.
+   *OPEN 7
+
+   *TIME 2700.
+     *WLISTOPEN 1  ** Well 1 reacquires its AUTODRILL status
+
+   *TIME 2900.
+** REPERFORATE WELL 4 - the replaced layer will be displayed
+** in RESULTS as having CLOSED status
+   *PERF *GEO 4
+      5      1      2     0.5
+
+   *TIME 3650.0
+   *STOP

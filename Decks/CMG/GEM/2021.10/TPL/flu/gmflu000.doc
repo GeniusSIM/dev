@@ -1,0 +1,14 @@
+             FLUID TYPES
+             -----------
+
+
+
+Templates in the Fluid Types (FLU) directory:
+
+GMFLU001.DAT --  Condensate Reservoir with Gas Recycling
+GMFLU002.DAT --  Wasson Fluid with Injected CO2 -- Quasi-LLV behavior
+GMFLU003.DAT --  Use of H2 and He properties from GEM's Component library
+
+Cross references to templates in other directories:
+
+GMSPR003.DAT -- CO2 Pattern Flood

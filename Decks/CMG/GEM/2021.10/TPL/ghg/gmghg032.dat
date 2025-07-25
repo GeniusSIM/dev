@@ -1,0 +1,203 @@
+**--------------------------------------------------------------------**
+** GMGHG032.DAT:  CO2 Sequestration - Use of *TRACE-INTERNAL-OFF      **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMGHG032.DAT                                                **
+**                                                                    **
+** MODEL: CART 100x1x20 GRID            CO2 INJECTION INTO A          **
+**        2 COMPONENTS                  LARGE AQUIFER                 **
+**        WATER-GAS MODEL               AQFILL ON                     **
+**        SI UNITS                      CONSTRAINT RESIDUAL           **
+**                                      CONVERGENCE CHECKING          **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set is constructed to model CO2 sequestration   **
+** into an aquifer.  Large volume modifiers are used at the edge of   **
+** the model to mimic a large aquifer. C1 is used as a trace          **
+** component. *AQFILL *ON ensures that no CO2 is present in the       **
+** system at the start of the run.                                    **
+**                                                                    **
+**                                                                    **
+** Residual sum of squares is checked and iterations are repeated     **
+** till specified tolerance (via *CONVERGE *CEQAQU) is met within     **
+** the specified no. of checking iterations (*NCHECK-CEQ), else       **
+** unconverged status flag is printed to the log file.                **
+**                                                                    **
+** Keyword *DIARY *CHANGES-UNCONV is used to additionally print the   **
+** convergence status flags.                                          **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'Sequestration of CO2 into an aquifer'
+*TITLE2 'Use of *TRACE-INTERNAL-OFF'
+*INUNIT *SI
+
+*WPRN *GRID 0
+*OUTPRN *GRID *NONE
+*OUTPRN *RES *NONE
+*WRST 0
+*WSRF *GRID 0
+*WSRF *WELL 0
+**
+*DIARY *CHANGES-UNCONV ** Print convergence status flags to log/out file
+ 
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION          0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+**-------------------------- RESERVOIR & GRID DATA------------
+*GRID *VARI 100 1 20
+*KDIR DOWN
+*DI IVAR 
+ 100*10
+*DJ JVAR 
+ 10
+*DK ALL
+ 2000*5
+*DTOP
+ 100*1200
+*POR   *CON 0.18
+*PERMI *CON 100
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*VOLMOD *CON  1
+*MOD 
+  100:100  1:1 1:20 = 1e+005
+
+*CPOR 5.8E-7
+*PRPOR 11800
+
+**--------------------------- FLUID PROPERTY DATA--------------
+*MODEL *PR
+*NC 2 2
+*COMPNAME 'CO2'            'C1' 
+*HCFLAG
+ 0 0 
+*VISCOR *HZYT
+*MIXVC 1
+*VISCOEFF 1.0230000E-01 2.3364000E-02 5.8533000E-02 -4.0758000E-02 9.3324000E-03 
+*MW      4.4010000E+01     1.6043000E+01 
+*AC      0.225             0.008 
+*PCRIT   7.2800000E+01     4.5400000E+01 
+*VCRIT   9.4000000E-02     9.9000000E-02 
+*TCRIT   3.0420000E+02     1.9060000E+02 
+*PCHOR   78                77 
+*SG      0.818             0.3 
+*TB      -78.45            -161.45 
+*OMEGA   0.457236          0.457236 
+*OMEGB   0.0777961         0.0777961 
+*VSHIFT  0                 0 
+*VISVC   9.4000000E-02     9.9000000E-02 
+*BIN     
+    1.0300000E-01 
+
+*TRES 50 
+*SOLUBILITY
+** HENRYC calculated at    50.00 deg C
+*HENRYC     3.0468645E+05  0
+*REFPH      1.1800000E+04  0
+*VINFINITY  3.5328526E-02  0
+*CW     4.5e-7
+*REFPW  13100
+*DENWS  1020
+
+*AQUEOUS-DENSITY  *ROWE-CHOU
+*AQUEOUS-VISCOSITY  *KESTIN
+*AQFILL *ON
+
+*TRACE-INTERNAL-OFF ** (Not recommended)
+
+**-------------------------------------ROCK FLUID DATA------------------
+*ROCKFLUID
+*RPT 1
+*SWT
+**$        Sw       krw      krow
+          0.2         0         1
+       0.2899    0.0022    0.6769
+       0.3778     0.018    0.4153
+       0.4667    0.0607    0.2178
+       0.5556    0.1438    0.0835
+       0.6444    0.2809    0.0123
+          0.7    0.4089         0
+       0.7333    0.4855         0
+       0.8222    0.7709         0
+       0.9111         1         0
+            1         1         0
+*SGT
+**$        Sg       krg      krog
+       0.0006         0         1
+         0.05         0      0.88
+       0.0889     0.001    0.7023
+       0.1778      0.01    0.4705
+       0.2667      0.03    0.2963
+       0.3556      0.05    0.1715
+       0.4444       0.1    0.0878
+       0.5333       0.2     0.037
+       0.6222      0.35     0.011
+         0.65      0.39         0
+       0.7111      0.56         0
+          0.8         1         0
+*HYSKRG 0.4
+
+**--------------------------- INITIAL RESERVOIR CONDITION ------
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_GAS *EQUIL *NOTRANZONE
+*ZGAS      0.  1.
+*REFPRES   11800
+*REFDEPTH  1200
+*DWGC      1150
+*SWOC      0.9999
+*GASZONE  *NOOIL
+
+**------------------------------ NUMERICAL METHOD -----------------
+
+*NUMERICAL
+  *NORM *PRESS  1000.
+     *NORM *SATUR  0.05 
+     *NORM *GMOLAR 0.005
+     *MAXCHANGE *SATUR  0.8
+     *MAXCHANGE *GMOLAR 0.8
+    
+     *CONVERGE *MAXRES 5.E-05
+     *CONVERGE *CEQAQU 1.E-08    ** Constraint eqn residual convergence tolerance 
+     *NCHECK-CEQ 8               ** Constraint eqn residual checking iterations
+
+     *NORTH 80
+     *ITERMAX 200
+     
+
+     *DTMIN 1.E-06
+     *DTMAX 185.
+     *MAXSTEPS 10
+**-------------------------------------WELL DATA------------------------
+     
+*RUN
+*DATE  2000 1 1
+*DTWELL 0.1
+**$
+*WELL  'CO2 INJ'
+*INJECTOR 'CO2 INJ'
+*INCOMP  SOLVENT  1.  0.
+*OPERATE  *MAX  *STG  10000.  *CONT *REPEAT
+*OPERATE  *MAX  *BHP  44500.  *CONT *REPEAT
+**$          rad  geofac  wfrac  skin
+*GEOMETRY *K  0.0762  0.37  1.  0.
+*PERF  *GEOA  'CO2 INJ'
+**$ UBA     ff  Status  Connection  
+    1 1 18  1.  *OPEN    *FLOW-FROM  'SURFACE'  *REFLAYER
+    1 1 19  1.  *OPEN    *FLOW-FROM  1
+    1 1 20  1.  *OPEN    *FLOW-FROM  2
+*WELLINIT 'CO2 INJ' *ITER
+*DATE 2001 1  1
+  *SHUTIN 'CO2 INJ'
+*DATE 2002 1  1
+*STOP

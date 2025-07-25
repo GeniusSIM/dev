@@ -1,0 +1,895 @@
+
+
+
+
+
+**                         OVERVIEW
+**                         ========
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Well Management Template No. 51'
+*title2 'Illustrate/Verify *MONITOR *WHP *AUTOWELL'
+*title3 'Based on STWWM021'
+
+inunit si 
+outunit si
+outprn grid pres temp sw so sg  
+wprn grid 3
+outprn well all
+outprn iter *newton
+wprn iter 1
+prntorien 1 0
+
+outsrf grid pres temp sw so sg
+outsrf well layer all 
+wsrf grid time
+wsrf well 1
+wrst 5     ** write a restart record at every TIME card
+**rewind 3  ** save only the last 3 restart records in the restart file
+
+*OUTSRF *SPECIAL 
+                  stmqual 'W#1-IWB'
+                  wellenergy 'W#1-IWB'   rate
+                  wellenergy 'W#1-PWB'   rate
+                  well_layer 'W#1-IWB' 3,1,24 temp
+                  well_layer 'W#1-IWB' 7,1,24 temp
+                  well_layer 'W#1-IWB' 11,1,24 temp
+                  well_layer 'W#1-IWB' 15,1,24 temp
+                  well_layer 'W#1-IWB' 19,1,24 temp
+                  well_layer 'W#1-IWB' 3,1,24 stqual
+                  well_layer 'W#1-IWB' 7,1,24 stqual
+                  well_layer 'W#1-IWB' 11,1,24 stqual
+                  well_layer 'W#1-IWB' 15,1,24 stqual
+                  well_layer 'W#1-IWB' 19,1,24 stqual
+                  well_layer 'W#1-PWB' 3,1,24 temp
+                  well_layer 'W#1-PWB' 7,1,24 temp
+                  well_layer 'W#1-PWB' 11,1,24 temp
+                  well_layer 'W#1-PWB' 15,1,24 temp
+                  well_layer 'W#1-PWB' 19,1,24 temp
+
+**restart 
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 21 4 26 ** 1/2 Symmetry Element - Well Split along axis in x-direction.
+kdir down
+** Horizontal well = 810 metres in layer K=34 and J = 1
+** Inter-well spacing = 80 metres.
+di ivar 210.0 90.0 10.0 90.0 10.0 90.0 10.0 90.0 10.0 90.0 10.0 90.0 
+        10.0 90.0 10.0 90.0 10.0 90.0 10.0 90.0 210.0                                     ** x-length = 1410 metres
+dj jvar  2.0 3.0 2*4.0                                                                     ** y-length = 41 metres
+dk kvar 4.240 1.500 0.480 4.170 4.170 4.250 0.560 3.090 3.910 0.360 2.810 
+        3.400 2.580 4.630 4.900 0.310 3.040 3.240 2.600 0.770 4.700 2.350 0.370 2.100
+        0.590 0.910                                                                        ** z-height = 452.55 metres
+depth  1 1 24  451.06
+** CSS Well #1 : At J=1:K=34 ( DISCRETIZED WELL )
+**   a) Modelled as a discretized well, ie. a multi-layer perforated well.
+**   b)  Equivalent Annulus Radius         = 0.07440000 m = r3 ie (Did-dod+did)/2
+**       Outside  Tubing Radius            = 0.05715000 m = r2 (4.5 inch Tubing)
+**       Inside   Tubing Radius            = 0.04868000 m = r1 (4.5 inch Tubing)
+
+**           key             v      ai      aj       ak     
+vamod       2            0.5   0.5    1.0     0.5               **  J=1  plane
+**        Assign  geometry type to fundamental blocks
+vatype  con  1
+    mod   1:21 1 1:26  = 2
+
+
+por kvar 
+          0.275 0.324 0.278 2*0.232 0.309 0.298 0.299 0.265 0.248 0.245 0.309 0.242 0.203
+          0.222 0.248 0.245 0.296 0.201 0.225 2*0.248 0.217 0.186 0.173 0.159 
+ mod  
+          1:21 1:2 3 = 0.001
+          1:21 4 3 = 0.001
+          1:21 3 7 = 0.001
+          1:21 1:2 10 = 0.001
+          1:21 4 10 = 0.001
+          1:21 3 16 = 0.001
+          1:21 1:2 20 = 0.001
+          1:21 4 20 = 0.001
+          1:21 3 23 = 0.001
+          1:21 1:2 25 = 0.001
+          1:21 4 25 = 0.001
+
+permi kvar 
+          4820.0 4270.0 2335.0 2*400.0 8220.0 8330.0 8360.0 7500.0 7355.0 4730.0 2510.0 6103.0 5770.0 
+          3383.0 4345.0 4730.0 4140.0 3950.0 3425.0 2*2900.0 2912.5 2925.0 2068.0 1210.0               ** kx, mD
+ mod 
+          1:21 1:2 3 = 0.05
+          1:21 4 3 = 0.05
+          1:21 3 7 = 0.05
+          1:21 1:2 10 = 0.05
+          1:21 4 10 = 0.05
+          1:21 3 16 = 0.05
+          1:21 1:2 20 = 0.05
+          1:21 4 20 = 0.05
+          1:21 3 23 = 0.05
+          1:21 1:2 25 = 0.05
+          1:21 4 25 = 0.05
+
+permj equalsi                                                                                         ** ky = kx
+
+permk kvar 
+           3615.0 3202.5 1751.25 2*300.0 4110.0 5206.25 5545.5 2290.5 1838.75 1182.5 1882.5 3260.8
+           1442.5 338.3 434.5 473.0 414.0 395.0 342.5 2*725.0 509.69 292.5 361.9 302.5                ** kz, mD
+ mod  
+          1:21 1:2 3 = 0.05
+          1:21 4 3 = 0.05
+          1:21 3 7 = 0.05
+          1:21 1:2 10 = 0.05
+          1:21 4 10 = 0.05
+          1:21 3 16 = 0.05
+          1:21 1:2 20 = 0.05
+          1:21 4 20 = 0.05
+          1:21 3 23 = 0.05
+          1:21 1:2 25 = 0.05
+          1:21 4 25 = 0.05
+
+*end-grid
+
+*rocktype 1                             ** Deformed Matrix heat properties
+*cpor 0.0
+rockcp 2.35e6
+thconr 6.6e5
+prpor 2654.0
+**thconw 1.469e5  thcono 1.469e5  thcong 1.469e5
+thconw 5.350e4
+thcono 1.150e4
+thcong 140.0
+*hlossprop overbur 2.35e6 1.417e5 underbur 2.35e6 1.417e5  
+
+rocktype 2                             ** Matrix heat properties
+cpor 0.98e-5
+rockcp 1.975e6
+thconr 6.6e5
+prpor 2654.0
+thconw 5.350e4
+thcono 1.150e4
+thcong 140
+hlossprop overbur 1.569e6 1.417e5 underbur 1.569e6 1.417e5
+
+rocktype 3                             ** Wellbore annulus heat properties
+cpor 0.0
+rockcp 0.0
+thconr 0.00  **  thermal props of mild steel  
+thconw 7.345e6
+thcono 7.345e6
+thcong 7.345e6  
+**thconr 1.5e5  thconw  5.35e4  thcono 1.15e4  thcong 1.4e+2
+
+rocktype 4                             ** Wellbore tubing heat properties  
+cpor 0
+rockcp 0
+thconr 0   ** Nowsco insulated tubing 
+thconw 1.495e3
+thcono 1.495e3
+thcong 1.495e3  
+
+rocktype 5                             ** Wellblock heat properties  
+cpor 5.0e-5
+ctpor 0.972e-8 
+rockcp 1.975e6
+thconr 7.490e4
+prpor 2654.0  
+thconw 5.350e4
+thcono 1.150e4
+thcong 140.0
+**thconw 5.350e4  thcono 1.150e4  thcong 3.364e3 
+hlossprop overbur 1.569e6 1.417e5 underbur 1.569e6 1.417e5
+
+*rocktype 6                             ** Deformed Matrix heat properties
+*cpor 0.0
+rockcp 2.35e6
+thconr 0.0
+prpor 2654.0
+**thconw 1.469e5  thcono 1.469e5  thcong 1.469e5
+thconw 0.00
+thcono 0.00
+thcong 0.00
+*hlossprop overbur 2.35e6 1.417e5 underbur 2.35e6 1.417e5  
+
+
+thtype ijk
+       1:21 1:4 1:26  2
+
+**prpor 100.0
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+model 3 3 3   ** ncomp= W,OIL,GAS = Total # of Components
+              ** numy = W,OIL,GAS = Total # of Components in 3 phases
+              ** numx = W,OIL,GAS = Total # of Components in 2 Liq phases
+
+compname       'Water'    'OIL'     'GAS'
+**             -------   --------  --------
+cmm               0        0.508   0.01604     ** kg/gmole
+molden            0       1960.6   42411.0     ** gmole/m3
+cp                0       1.09E-6  4.35E-6     ** 1/kPa
+ct1               0       2*8.48E-4  **2.30E-2     ** 1/deg C
+pcrit             0         0       4640.0     ** kPa
+tcrit             0         0       -82.49     ** deg C  
+cpl1              0       1130.0     12.83
+avg               0         0      2.80E-4 
+bvg               0         0        0.667
+avisc             0       5.37E-9  1.90E-4    
+bvisc             0       8692.63  3423.41
+kv1               0         0    0.43910E5
+kv2               0         0         0   
+kv3               0         0         1.97
+kv4               0         0    -.19589E3
+kv5               0         0      -273.16
+
+
+** Reference conditions
+prsr 101.3
+temr 15.5
+psurf 101.3
+tsurf 15.5
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+
+    0.2000    0.000000     1.000000
+    0.2400    0.000001     0.777469
+    0.2800    0.000020     0.592631
+    0.3200    0.000099     0.441407
+    0.3600    0.000312     0.319872
+    0.4000    0.000762     0.224256
+    0.4400    0.001578     0.150956
+    0.4800    0.002922     0.096542
+    0.5200    0.004981     0.057773
+    0.5600    0.007974     0.031606
+    0.6000    0.012147     0.015216
+    0.6400    0.017776     0.006015
+    0.6800    0.025166     0.001686
+    0.7200    0.034648     0.000221
+    0.7600    0.046587     0.000001
+    0.8000    0.061371     0.000000
+    0.8400    0.079422     0.000000
+    0.8800    0.101187     0.000000
+    0.9200    0.127143     0.000000
+    0.9600    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.4300    0.570000       0.000000
+    0.4585    0.503523       0.000559
+    0.4870    0.441515       0.003162
+    0.5155    0.383924       0.008714
+    0.5440    0.330693       0.017889
+    0.5725    0.281764       0.031250
+    0.6010    0.237074       0.049295
+    0.6295    0.196557       0.072472
+    0.6580    0.160144       0.101193       
+    0.6865    0.127757       0.135841
+    0.7150    0.099315       0.176777
+    0.7435    0.074729       0.224340       
+    0.7720    0.053900       0.278855
+    0.8005    0.036718       0.340630
+    0.8290    0.023057       0.409963
+    0.8575    0.012770       0.487139       
+    0.8860    0.005679       0.572433
+    0.9145    0.001553       0.666112
+    0.9430    0.000044       0.768433
+    0.9715    0.000000       0.879648
+    1.0000    0.000000       1.000000      
+  
+
+rpt 2    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.3000    0.000000     1.000000
+    0.3350    0.000001     0.777469
+    0.3700    0.000020     0.592631
+    0.4050    0.000099     0.441407
+    0.4400    0.000312     0.319872
+    0.4750    0.000762     0.224256
+    0.5100    0.001578     0.150956
+    0.5450    0.002922     0.096542
+    0.5800    0.004981     0.057773
+    0.6150    0.007974     0.031606
+    0.6500    0.012147     0.015216
+    0.6850    0.017776     0.006015
+    0.7200    0.025166     0.001686
+    0.7550    0.034648     0.000221
+    0.7900    0.046587     0.000001
+    0.8250    0.061371     0.000000
+    0.8600    0.079422     0.000000
+    0.8950    0.101187     0.000000
+    0.9300    0.127143     0.000000
+    0.9650    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.5013    0.570000       0.000000
+    0.5262    0.502629       0.000559
+    0.5511    0.439851       0.003162
+    0.5761    0.381613       0.008714
+    0.6010    0.327854       0.017889
+    0.6259    0.278515       0.031250
+    0.6509    0.233529       0.049295
+    0.6758    0.192828       0.072472
+    0.7008    0.156337       0.101193       
+    0.7257    0.123977       0.135841
+    0.7506    0.095662       0.176777
+    0.7756    0.071297       0.224340       
+    0.8005    0.050778       0.278855
+    0.8254    0.033987       0.340630
+    0.8504    0.020791       0.409963
+    0.8753    0.011031       0.487139       
+    0.9003    0.004512       0.572433
+    0.9252    0.000977       0.666112
+    0.9501    0.000000       0.768433
+    0.9751    0.000000       0.879648
+    1.0000    0.000000       1.000000   
+
+
+rpt 3    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.4000    0.000000     1.000000
+    0.4300    0.000001     0.777469
+    0.4600    0.000020     0.592631
+    0.4900    0.000099     0.441407
+    0.5200    0.000312     0.319872
+    0.5500    0.000762     0.224256
+    0.5800    0.001578     0.150956
+    0.6100    0.002922     0.096542
+    0.6400    0.004981     0.057773
+    0.6700    0.007974     0.031606
+    0.7000    0.012147     0.015216
+    0.7300    0.017776     0.006015
+    0.7600    0.025166     0.001686
+    0.7900    0.034648     0.000221
+    0.8200    0.046587     0.000001
+    0.8500    0.061371     0.000000
+    0.8800    0.079422     0.000000
+    0.9100    0.101187     0.000000
+    0.9400    0.127143     0.000000
+    0.9700    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.5725    0.570000       0.000000
+    0.5939    0.501398       0.000559
+    0.6153    0.437565       0.003162
+    0.6366    0.378442       0.008714
+    0.6580    0.323966       0.017889
+    0.6794    0.274073       0.031250
+    0.7008    0.228694       0.049295
+    0.7221    0.187754       0.072472
+    0.7435    0.151176       0.101193       
+    0.7649    0.118872       0.135841
+    0.7863    0.090752       0.176777
+    0.8076    0.066713       0.224340       
+    0.8290    0.046643       0.278855
+    0.8504    0.030414       0.340630
+    0.8718    0.017878       0.409963
+    0.8931    0.008861       0.487139       
+    0.9145    0.003142       0.572433
+    0.9359    0.000414       0.666112
+    0.9573    0.000000       0.768433
+    0.9786    0.000000       0.879648
+    1.0000    0.000000       1.000000   
+
+
+rpt 4      ** -----------------  WELLBORE  -------------------
+ 
+swt        **   Water-Oil Relative Permeabilities
+
+**       Sw           Krw              Krow   
+**      ------       ------           --------    
+         0.0          0.0               1.0  
+         1.0          1.0               0.0    
+
+slt        **    Liquid-Gas Relative Permeabilities  
+
+**         Sl          Krg              Krog  
+**        _____       ______           ________   
+           0.0          1.0               0.0  
+           1.0          0.0               1.0  
+
+rpt 5    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities(Drainage)
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+ 
+    0.2000    0.000000     1.000000
+    0.2400    0.000001     0.880444
+    0.2800    0.000020     0.767471
+    0.3200    0.000099     0.661212
+    0.3600    0.000312     0.561812
+    0.4000    0.000762     0.469431
+    0.4400    0.001578     0.384254
+    0.4800    0.002922     0.306489
+    0.5200    0.004981     0.236382
+    0.5600    0.007974     0.174222
+    0.6000    0.012147     0.120366
+    0.6400    0.017776     0.075270
+    0.6800    0.025166     0.039550
+    0.7200    0.034648     0.014139
+    0.7600    0.046587     0.000846
+    0.8000    0.061371     0.000000
+    0.8400    0.079422     0.000000
+    0.8800    0.101187     0.000000
+    0.9200    0.127143     0.000000
+    0.9600    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.4300    0.570000       0.000000
+    0.4585    0.503523       0.000559
+    0.4870    0.441515       0.003162
+    0.5155    0.383924       0.008714
+    0.5440    0.330693       0.017889
+    0.5725    0.281764       0.031250
+    0.6010    0.237074       0.049295
+    0.6295    0.196557       0.072472
+    0.6580    0.160144       0.101193       
+    0.6865    0.127757       0.135841
+    0.7150    0.099315       0.176777
+    0.7435    0.074729       0.224340       
+    0.7720    0.053900       0.278855
+    0.8005    0.036718       0.340630
+    0.8290    0.023057       0.409963
+    0.8575    0.012770       0.487139       
+    0.8860    0.005679       0.572433
+    0.9145    0.001553       0.666112
+    0.9430    0.000044       0.768433
+    0.9715    0.000000       0.879648
+    1.0000    0.000000       1.000000   
+
+
+rpt 6    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities(Drainage)
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+ 
+    0.3000    0.000000     1.000000
+    0.3350    0.000001     0.880444
+    0.3700    0.000020     0.767471
+    0.4050    0.000099     0.661212
+    0.4400    0.000312     0.561812
+    0.4750    0.000762     0.469431
+    0.5100    0.001578     0.384254
+    0.5450    0.002922     0.306489
+    0.5800    0.004981     0.236382
+    0.6150    0.007974     0.174222
+    0.6500    0.012147     0.120366
+    0.6850    0.017776     0.075270
+    0.7200    0.025166     0.039550
+    0.7550    0.034648     0.014139
+    0.7900    0.046587     0.000846
+    0.8250    0.061371     0.000000
+    0.8600    0.079422     0.000000
+    0.8950    0.101187     0.000000
+    0.9300    0.127143     0.000000
+    0.9650    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.5013    0.570000       0.000000
+    0.5262    0.502629       0.000559
+    0.5511    0.439851       0.003162
+    0.5761    0.381613       0.008714
+    0.6010    0.327854       0.017889
+    0.6259    0.278515       0.031250
+    0.6509    0.233529       0.049295
+    0.6758    0.192828       0.072472
+    0.7008    0.156337       0.101193       
+    0.7257    0.123977       0.135841
+    0.7506    0.095662       0.176777
+    0.7756    0.071297       0.224340       
+    0.8005    0.050778       0.278855
+    0.8254    0.033987       0.340630
+    0.8504    0.020791       0.409963
+    0.8753    0.011031       0.487139       
+    0.9003    0.004512       0.572433
+    0.9252    0.000977       0.666112
+    0.9501    0.000000       0.768433
+    0.9751    0.000000       0.879648
+    1.0000    0.000000       1.000000   
+
+
+rpt 7    **  -----------  MATRIX  ------------
+
+swt   **  Water-Oil Relative Permeabilities(Drainage)
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+ 
+    0.4000    0.000000     1.000000
+    0.4300    0.000001     0.880444
+    0.4600    0.000020     0.767471
+    0.4900    0.000099     0.661212
+    0.5200    0.000312     0.561812
+    0.5500    0.000762     0.469431
+    0.5800    0.001578     0.384254
+    0.6100    0.002922     0.306489
+    0.6400    0.004981     0.236382
+    0.6700    0.007974     0.174222
+    0.7000    0.012147     0.120366
+    0.7300    0.017776     0.075270
+    0.7600    0.025166     0.039550
+    0.7900    0.034648     0.014139
+    0.8200    0.046587     0.000846
+    0.8500    0.061371     0.000000
+    0.8800    0.079422     0.000000
+    0.9100    0.101187     0.000000
+    0.9400    0.127143     0.000000
+    0.9700    0.157798     0.000000
+    1.0000    0.193684     0.000000
+
+slt   **  Liquid-Gas Relative Permeabilities
+
+**   Sl        Krg          Krog
+**  ----    --------      --------
+    0.5725    0.570000       0.000000
+    0.5939    0.501398       0.000559
+    0.6153    0.437565       0.003162
+    0.6366    0.378442       0.008714
+    0.6580    0.323966       0.017889
+    0.6794    0.274073       0.031250
+    0.7008    0.228694       0.049295
+    0.7221    0.187754       0.072472
+    0.7435    0.151176       0.101193       
+    0.7649    0.118872       0.135841
+    0.7863    0.090752       0.176777
+    0.8076    0.066713       0.224340       
+    0.8290    0.046643       0.278855
+    0.8504    0.030414       0.340630
+    0.8718    0.017878       0.409963
+    0.8931    0.008861       0.487139       
+    0.9145    0.003142       0.572433
+    0.9359    0.000414       0.666112
+    0.9573    0.000000       0.768433
+    0.9786    0.000000       0.879648
+    1.0000    0.000000       1.000000 
+
+
+**           Assign rel  perm  sets(Imbibition)
+
+krtype ijk 
+1:21 1:4 1 2
+1:21 1:4 2:5 3
+1:21 1:4 6:7 2
+1:21 1:4 8:10 3
+1:21 1:4 11 1
+1:21 1:4 12:13 3
+1:21 1:4 14:23 1
+1:21 1:4 24:25 2
+1:21 1:4 26 3
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+pres kvar  2654.0 2682.7 2692.6 2715.85 2757.55 2799.65 2823.70 2841.95 2876.95 2898.30 2914.15 2945.20 2975.10 
+           3011.15 3058.80 3084.85 3101.60 3133.00 3162.20 3179.05 3206.40 3241.65 3255.25 3267.60 3281.05 3288.55 
+
+**pres wellbore 1:19 1  24  con 12500.0  
+**vertical  *depth_ave
+**refblock  1 1 1
+**refpres  2654.0
+**pres wellbore 1:19  1  34  con 3267.60
+** Same conditions in wellbore and matrix
+
+
+
+** Assuming Minimum Water Saturation.
+sw  kvar 0.472 0.613 0.523 2*0.433 0.469 0.513 0.581 0.501 0.372 0.376 0.667 0.498 0.358 0.425
+         0.453 0.462 0.458 0.390 0.402 2*0.415 0.365 0.315 0.397 0.480  
+
+** Assuming Maximum Oil Saturation.
+so  kvar 0.528 0.387 0.477 2*0.567 0.531 0.487 0.419 0.499 0.628 0.624 0.333 0.502 0.642 0.575
+         0.547 0.538 0.542 0.610 0.598 2*0.585 0.635 0.685 0.603 0.520    
+
+temp con 14.5  ** initial reservoir temp = 14.5 C
+
+**mfrac_oil 'OIL' con 0.886 
+**mfrac_oil 'GAS' con 0.114
+mfrac_oil 'OIL' con 0.9  
+mfrac_oil 'GAS' con 0.1  
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+newtoncyc 18
+itermax 50
+sdegree 1
+sorder redblack  **rcmrb ** precc 1.E-4
+*aim  stab  **off
+minpres 101       **  minimum pressure limit for simulation.
+dtmax 10.0
+
+rangecheck off
+norm     press 5000 satur  .25     temp 80   x  0.20  y 0.2 ** fluidh  4000.0 **x 0.20
+converge press   50.0  satur  .05    temp  3.0   y 0.05  x 0.05
+**tform zh
+converge maxres ENERGY 4.0
+**converge totres normal
+
+precc 1E-4
+rangecheck on  
+pivot on
+
+**maxsteps 4
+upstream klevel   
+ 
+**  ==============  RECURRENT DATA  ======================
+
+run
+
+date 1996 1 1.0
+
+   dtwell 1.0e-1
+
+   well 1 'W#1-IWB'  frac 0.50              ** Horizontal Injector #1 Wellbore
+   well 2 'W#1-PWB'  frac 0.50              ** Horizontal Producer #1 Wellbore
+**   well 3 'W#1-PMP'  frac 0.50              ** Horiz. Producer Pump at Heel.
+   
+**transwb wellbore 1:2 1 24  con 0.0
+**transwb wellbore 4:4 1 24  con 0.0
+**transwb wellbore 6:6 1 24  con 0.0
+**transwb wellbore 8:8 1 24  con 0.0
+**transwb wellbore 10:10 1 24  con 0.0
+**transwb wellbore 12:12 1 24  con 0.0
+**transwb wellbore 14:14 1 24  con 0.0
+**transwb wellbore 16:16 1 24  con 0.0
+**transwb wellbore 18:18 1 24  con 0.0
+
+
+** Perforate producer and injector only in the horizontal section  
+
+   injector mobweight 'W#1-IWB'                      ** Inject through Wellbore.
+phwellbore
+samodel
+rtubin 0.15
+depth  451.061
+wlength  600.0
+rcasin 0.2
+rhole  0.3
+surface_temp 14.5  
+ **constrnchk off
+   tinjw 328
+   qual .75
+   incomp water  1.0  0.0  0.0
+
+  *operate max whp   12481.0                ** Maximum BHP  **operate max whp   12481.0                ** Maximum BHP 
+  *operate     stw   500.0                  ** Water (steam) rate
+   **operate     stw   30.0                 ** Water (steam) rate
+   geometry  i  0.15 1.0   1.0  0                  ** Discretized Horizontal Well
+   perf  geo 'W#1-IWB'     ** i j k                   ** Attach Horizontal Well to Sink/Source 
+                    3:19 1 24   1.0  **1.0e8               ** well at (1,1,1)
+
+
+   producer 'W#1-PWB'                                ** Producer through Wellbore.
+phwellbore
+samodel
+rtubin 0.15
+depth  451.061
+wlength  600.0
+rcasin 0.2
+rhole  0.3  
+surface_temp 14.5 
+   operate max stl    400.0                 ** Liquid (oil + water ) rate  
+   operate min whp    500.0                 ** Min BHP  
+   monitor min sto    10.0 stop             ** Min Oil Rate .
+   monitor max whp   5000.0 autowell 1.0
+
+   geometry  i  0.15 1.0   1.0  0              
+
+   perf geo 'W#1-PWB'     ** i j k                   ** Attach Horizontal Well to Sink/Source 
+                    3:19 1 24   1.0                  ** well at (1,1,1)       
+
+   shutin 'W#1-PWB'
+head-method 'W#1-IWB' 'W#1-PWB'
+          grav-fric-hlos
+**  producer 3                                ** Producer through Heel.
+**   operate max stl    400.0                 ** Liquid (oil + water ) rate  
+**   operate min bhp    500.0                 ** Min BHP 
+**   monitor min sto     10.0 stop         ** Min Oil Rate .
+**   perf  3    ** i j k           wi         ** Attach Horizontal Well to Sink/Source 
+**                 1 1 34  wb  ss 100.0       ** well at (1,1,1)       
+
+**   shutin 3 
+
+
+ pfrac ijk
+          3:19 1:4 1:26  8500.0                 
+    pfracf ijk
+          3:19 1:4 1:26  10500.0 
+
+    ptransi  ijk
+          3:19 1:4 1:26 1.0
+          11:11 1:4 1:26 10
+          3:19 1:2 3 1.00
+    ptransj  ijk
+          3:19 1:4 1:26 1.0
+          11:11 1:4 1:26 10
+
+    ptransk  ijk
+          3:19 1:4 1:26 1.0
+          11:11 1:4 1:26 10
+
+
+*****************************************************
+** WELL # 1 ;  CYCLE #1 STEAMING PERIOD STARTS.**
+*****************************************************
+
+time 4.0
+time 4.5
+time 5.0
+
+time 30
+
+   dtwell 1.0
+
+*******************************************************
+** WELL # 1 ; CYCLE #1 SOAKING PERIOD  STARTS. **
+*******************************************************
+    shutin 'W#1-IWB'
+
+time 40   
+*dtwell 1.0e-1
+
+********************************************************
+** WELLS # 1 , 2 & 3; CYCLE # 1  PRODUCTION PERIOD STARTS.**
+********************************************************
+**           Assign rel  perm  sets(Drainage)
+
+krtype ijk 
+1:21 1:4 1     6
+1:21 1:4 2:5   7
+1:21 1:4 6:7   6
+1:21 1:4 8:10  7
+1:21 1:4 11    5
+1:21 1:4 12:13 7
+1:21 1:4 14:23 5
+1:21 1:4 24:25 6
+1:21 1:4 26:26 7
+
+  open 'W#1-PWB'
+
+time 200
+stop
+
+*dtwell 1.0e-1
+shutin 'W#1-PWB'
+open 'W#1-IWB'
+krtype ijk 
+1:21 1:4 1 2
+1:21 1:4 2:5 3
+1:21 1:4 6:7 2
+1:21 1:4 8:10 3
+1:21 1:4 11 1
+1:21 1:4 12:13 3
+1:21 1:4 14:23 1
+1:21 1:4 24:25 2
+1:21 1:4 26 3
+time 240.0
+dtwell 1.0
+shutin 'W#1-IWB'
+time 250.0
+*dtwell 1.0e-1
+open 'W#1-PWB'
+krtype ijk 
+1:21 1:4 1     6
+1:21 1:4 2:5   7
+1:21 1:4 6:7   6
+1:21 1:4 8:10  7
+1:21 1:4 11    5
+1:21 1:4 12:13 7
+1:21 1:4 14:23 5
+1:21 1:4 24:25 6
+1:21 1:4 26:26 7 
+time 600
+*dtwell 1.0e-1
+shutin 'W#1-PWB'
+open 'W#1-IWB'
+krtype ijk 
+1:21 1:4 1 2
+1:21 1:4 2:5 3
+1:21 1:4 6:7 2
+1:21 1:4 8:10 3
+1:21 1:4 11 1
+1:21 1:4 12:13 3
+1:21 1:4 14:23 1
+1:21 1:4 24:25 2
+1:21 1:4 26 3
+time 650.0
+dtwell 1.0
+shutin 'W#1-IWB'
+time 660.0
+*dtwell 1.0e-1
+open 'W#1-PWB'
+krtype ijk 
+1:21 1:4 1     6
+1:21 1:4 2:5   7
+1:21 1:4 6:7   6
+1:21 1:4 8:10  7
+1:21 1:4 11    5
+1:21 1:4 12:13 7
+1:21 1:4 14:23 5
+1:21 1:4 24:25 6
+1:21 1:4 26:26 7 
+time 900
+*dtwell 1.0e-1
+shutin 'W#1-PWB'
+open 'W#1-IWB'
+krtype ijk 
+1:21 1:4 1 2
+1:21 1:4 2:5 3
+1:21 1:4 6:7 2
+1:21 1:4 8:10 3
+1:21 1:4 11 1
+1:21 1:4 12:13 3
+1:21 1:4 14:23 1
+1:21 1:4 24:25 2
+1:21 1:4 26 3
+time 940.0
+dtwell 1.0
+shutin 'W#1-IWB'
+time 950.0
+*dtwell 1.0e-1
+open 'W#1-PWB'
+krtype ijk 
+1:21 1:4 1     6
+1:21 1:4 2:5   7
+1:21 1:4 6:7   6
+1:21 1:4 8:10  7
+1:21 1:4 11    5
+1:21 1:4 12:13 7
+1:21 1:4 14:23 5
+1:21 1:4 24:25 6
+1:21 1:4 26:26 7 
+time 1500
+stop

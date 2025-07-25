@@ -1,0 +1,219 @@
+   *****************************************************************************
+   ** Template (mxgmc031.dat):  3D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC031.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         CAP MODEL                                        13X18X5 RADIAL GRID     **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **  This example includes:                                                          **
+   **                                                                                  **
+   **    3D radial grids                                                               **
+   **    Cap model                                                                     **
+   **    Two way coupling between STARS and geomechanics module                        **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #031'
+*TITLE2
+   '3D Radial Grids'
+*TITLE3
+   'Cap Model'
+
+*INUNIT *FIELD
+
+*OUTPRN *GRID PRES
+*OUTPRN *WELL *ALL
+
+*WPRN *GRID TIME  
+*WSRF *GRID 1
+
+OUTSRF GRID  PRES POROS YOUNG
+             VERDSPLGEO STRESI STRESJ STRESK VDISPL STRESSH 
+             STRESMXP *STRESEFF *STRNEPL *YLDSTATE
+
+*OUTSRF *SPECIAL 2,1,4 *PRES      
+*OUTSRF *SPECIAL 2,1,4 *POROS    
+*OUTSRF *SPECIAL 2,1,4 *STRNEPL   
+*OUTSRF *SPECIAL 2,1,4 *STRESEFF  
+
+*OUTSRF *SPECIAL 2,1,5 *PRES      
+*OUTSRF *SPECIAL 2,1,5 *POROS    
+*OUTSRF *SPECIAL 2,1,5 *STRNEPL   
+*OUTSRF *SPECIAL 2,1,5 *STRESEFF  
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 13 18 5 *RW 0.00001
+
+*DI *IVAR  3 10*10 40 120
+
+*DJ *CON 20
+
+*DK *KVAR 20 25 10 10 5
+*KDIR DOWN
+
+*DEPTH 1 1 1 10.0
+
+*POR KVAR
+   0.1  0.1  0.2 0.3  0.25
+
+*PERMI *KVAR 100  100 100 2000 1000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI / 2
+
+*CPOR 7.54E-5
+*PRPOR 75
+
+** ============= FLUID DEFINITIONS =============
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+     5000.000   335.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER   63.02
+   *CO               1.0E-5        ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0           ** Water formation volume factor
+   *CW               0.0           ** Water compressibility
+   *REFPW            14.7          ** Reference pressure
+   *VWI              0.96          ** Water viscosity at reference pressure
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 125
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 100
+*SW *CON 1.0
+*SO *CON 0.0
+*PB *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*SDEGREE *GAUSS
+
+*NORM     *PRESS 150
+*CONVERGE *MAXRES 1.E-6
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH
+
+*GEOM3D
+*GCFACTOR 1
+*NITERGEO 500
+*FORCETOL 1.0e-2
+*DISPLACTOL 1.0e-3
+
+** Elasto-plastic Cap model
+   *GCAPMODEL 1
+   *ELASTMOD 3.94E4   ** PSI
+   *POISSRATIO 0.3
+   *COHESION 14.5     ** PSI
+   *FRICANGLE 30.0 
+   *THEXPCOEF 18.28E-06  ** 1/K
+   *GCAPR 2              ** Aspect ratio
+   *GCAPD 3E-4           ** Parameter D (1/PSI)
+   *GCAPW 0.0001         ** Parameter W
+   *GCAPLOC 1500.0       ** Initial hardening parameter
+   *GCAPTEN -100         ** Tension cut-off (PSI)
+   *GCINCRMT 5           ** Number of strain divisions for convergence
+
+*STRESS3D 1400.0  1400.0  1400.0  0.0  0.0  0.0
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 1973 9 25.5
+
+   DTWELL .001
+
+   WELL 1 'prod1' VERT 1 1
+   PRODUCER 'prod1'
+   OPERATE     STL 80
+   OPERATE MIN BHP 17
+   GEOMETRY K  .3 .5 1 0
+   PERFV GEO 'prod1'   **  k
+                    3   3904.
+                    4   78079.
+                    5   19520.
+
+TIME 25
+
+STOP

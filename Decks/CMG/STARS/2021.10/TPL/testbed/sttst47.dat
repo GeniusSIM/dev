@@ -1,0 +1,248 @@
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 47'
+*title2 'Test Bed No. 9, with Zero-Porosity Blocks and Full Printout'
+
+*inunit field   ** Output units same as input
+
+*outprn *grid all
+*outprn *well *all
+outprn iter newton
+*wprn *grid 1
+*wprn *iter 1
+
+outsrf grid all
+
+wrst
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *vari 22 5 1
+
+*di *ivar 384.8 3*192.41 17*96.21 144.32
+*dj *con 96.21
+*dk *ivar 35.7 35.2 34.8 34.5 34.6 34.2 33.7 32.9 32.2 31.3 30.7 7*30.1 29.8 29.1 28.6 28.
+
+*dtop      ** Depths to top of each column
+
+ 3865 3859 3854 3849 3845 3844 3841 3839 3837 3834 3831 3826 3823 3820 3817 3815 3814 3813 3812 3811 3812 3813
+ 3866 3860 3855 3850 3846 3845 3843 3841 3839 3837 3833 3829 3826 3823 3819 3816 3814 3813 3812 3811 3812 3813
+ 3866 3860 3855 3850 3848 3846 3845 3844 3842 3840 3837 3833 3829 3826 3823 3820 3817 3815 3813 3811 3811 3813
+ 3872 3866 3861 3856 3852 3849 3846 3844 3842 3840 3838 3836 3834 3829 3825 3822 3819 3817 3815 3813 3811 3813
+ 3875 3869 3864 3859 3855 3852 3849 3846 3844 3842 3840 3838 3836 3832 3828 3824 3822 3820 3818 3816 3816 3816
+
+**  Trim grid to put block centers on reservoir boundary
+
+*vamod  2   0.5    0.5  1.0  0.5
+
+*vatype *all   2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+               1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+               1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+               1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+               2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+
+*por *con 0.19264
+   *mod 1:5 1 1 = 0
+        1:4 2 1 = 0
+        1:3 3 1 = 0
+        1:2 4 1 = 0
+        1   5 1 = 0
+*permi *con 872
+       *mod 22 1:5 1 = 697.6
+*permj *equalsi     
+*permk *con 1.0e-8
+*end-grid
+*cpor 6.123e-5
+*prpor 1000
+*rockcp 35.6
+*thconr 36
+*thconw 36
+*thcono 36
+*thcong 36
+*hlossprop overbur 35.6 36 underbur 35.6 36
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname      'WATER'     'OIL'
+**             --------   -------
+
+*cmm              0         216
+*molden           0       0.28389
+*cp               0       4.45e-6
+*ct1              0       5.05e-4
+*pcrit          3206.8      328
+*tcrit          705.4       530
+*avg           8.822e-6      0
+*bvg            1.116        0
+
+*cpl1             0       -1.7691
+*cpl2             0       0.00422
+*cpg1             0          0
+
+*visctable
+**     Temp
+        75        0        5780
+       100        0        1380
+       150        0         187
+       200        0          47
+       250        0        17.4
+       300        0         8.5
+       350        0         5.2
+       500        0         2.5
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow       Pcow
+**  -----      ------     ------      ----
+    0.230      0.0        1.0         2.05
+    0.275      0.0075     0.840       1.4
+    0.343      0.022      0.625       0.8
+    0.376      0.037      0.545       0.61
+    0.444      0.080      0.362       0.4
+    0.484      0.117      0.268       0.36
+    0.511      0.143      0.216       0.34
+    0.557      0.220      0.131       0.31
+    0.586      0.262      0.082       0.29
+    0.611      0.316      0.059       0.27
+    0.647      0.382      0.034       0.25
+    0.685      0.453      0.013       0.22
+    0.697      0.475      0.0068      0.21
+    0.711      0.500      0.0         0.2
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg        Krog
+**  -----     -------     ------
+    0.519     0.4         0.0
+    0.586     0.318       0.0051
+    0.615     0.284       0.0097
+    0.649     0.249       0.018
+    0.685     0.206       0.03
+    0.720     0.169       0.049
+    0.748     0.14        0.069
+    0.788     0.111       0.105
+    0.815     0.09        0.141
+    0.841     0.072       0.172
+    0.863     0.056       0.207
+    0.885     0.041       0.243
+    0.905     0.03        0.295
+    0.929     0.018       0.366
+    0.943     0.012       0.445
+    0.954     0.0087      0.517
+    0.973     0.0038      0.67
+    0.988     0.00012     0.83
+    1.0       0.0         1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 1085
+*refblock 1 1 1
+
+*sw *con 0.231   ** So by difference since Sg = 0
+
+*temp *con 94
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*maxsteps 1
+
+*norm      press 100  satur 0.3   temp 50  y 0.3   x 0.3
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .5
+
+
+   well 1 'INJECTOR 1'  vert  8 1  frac .5
+   well 2 'PRODUCER 1'  vert  8 5  frac .5
+   well 3 'PRODUCER 2'  vert 12 1  frac .5
+   well 4 'INJECTOR 2'  vert 12 5  frac .5
+   well 5 'INJECTOR 3'  vert 16 1  frac .5
+   well 6 'PRODUCER 3'  vert 16 5  frac .5
+
+   ** Well Map:   o o o o o o o 2 o o o 4 o o o 6 o o o o o o
+   **             o o o o o o o o o o o o o o o o o o o o o o
+   **             o o o o o o o o o o o o o o o o o o o o o o
+   **             o o o o o o o o o o o o o o o o o o o o o o
+   **             o o o o o o o 1 o o o 3 o o o 5 o o o o o o
+
+
+   ** All injectors are same type
+
+   injector 'INJECTOR 1' 'INJECTOR 2' 'INJECTOR 3'
+   incomp  water  1.0  0.0
+   tinjw 518
+   qual .675
+   operate stw 350
+   operate max bhp 1750
+   perfv 'INJECTOR 1' 'INJECTOR 2' 'INJECTOR 3'
+                **  k   wi
+                    1  7.94
+
+
+   ** All producers are same type
+   producer 'PRODUCER 1'
+   operate min bhp    50
+   operate max stl    500
+   operate max steam  200 shutin
+   geometry ** rw    cc    ff   ss
+             k   .4  .2488   1    0
+   perfv kh 'PRODUCER 1'
+                    ** k  fh  wlprm
+                       1   5606.16
+   producer 'PRODUCER 2' 'PRODUCER 3'
+   operate min bhp    50
+   operate max stl    500
+   operate max steam  200 shutin
+   geometry ** rw    cc    ff   ss
+             k   .4  .2488   1    0
+   perfv kh 'PRODUCER 2' 'PRODUCER 3'
+                    ** k  fh  wlprm
+                       1  5129.04
+
+time .5

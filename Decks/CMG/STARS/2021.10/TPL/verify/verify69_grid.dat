@@ -1,0 +1,23 @@
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 1 1 12  ** 12 blocks in the K direction (normal vertical)
+
+**  Tube I.D. = 2.17 inches.  Cross-sectional area is pi*(d/2)**2
+**  = 0.02568 ft2 = L*L.  so equivalent block side is L = 0.1602 ft.
+**  Total tube length is 2.646 ft;  block = 2.646/12 = .22048 ft
+*di *con 0.1602
+*dj *con 0.1602
+*dk *con 0.22048
+
+*por *con 0.4142
+*permi *con 12700
+*permj *equalsi
+*permk *equalsi
+*end-grid
+*rockcp 35.02
+*thconr 1
+*thconw 0.36
+*thcono 0.077
+*thcong 0.0833
+

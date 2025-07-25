@@ -1,0 +1,2126 @@
+
+**************************************************************************************
+** Template  (flu00f.dat): Combustion Phase of Wolf Lake Combustion Project         **
+**************************************************************************************
+************************************************************************************** 
+**                                                                                  **
+** FILE :   STFLU00F.DAT                                                            **
+**                                                                                  **
+** MODEL:   AREAL MODEL                SI UNITS             18x9x1 CARTESIAN GRID   **  
+**          REPEATING PATTERN OF WELLS REPRESENTING ROWS ON AND OFF FRACTURE TREND  **  
+**          USE OF PRESSURE DEPENDENT TRANSMISSIBILITIES TO MODEL FRACTURING        **
+**          7 COMPONENTS INCLUDING COKE FORMED VIA CRACKING AND 2 COMBUSTION GASES  **
+**                                                                                  **
+** USAGE:   MODELLING OF COMBUSTION PHASE OF FIELD INSITU COMBUSTION PILOT          **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**     Dataset based on Rubin and Bitter, "Development of Operating Strategy for a  ** 
+**     Wolf Lake Satellite Underlain by a Water Leg Using Numerical Model Studies"  **
+**     paper SPE/DOE 17393 presented at the SPE/DOE Symp on EOR, Tulsa, April,1988  **
+**                                                                                  **
+**     Cycling strategy for individual rows of wells is employed although since     **  
+**     induced fracturing creates interwell communication on trend, the cycle       **
+**     size and timing of individual row injector/production switching must be      **
+**     adjusted to minimize well interactions and maximize production               **
+**                                                                                  **
+**     The above reference describes further aspects of vertical pseudoization      **   
+**     techniques to account for effects of a bottom water leg. THis dataset        **
+**     employs the resulting single layer which accounts for the pseudoization      **
+**                                                                                  **
+**     Cyclic steaming represents the thermal initiation phase of conducted insitu  **  
+**     combustion pilot employed in this reservoir. The details of the development  **
+**     strategy for insitu combustion can be found in the paper by Hallam and       **
+**     Donnelly, "Pressure-Up Blowdown Combustion: A Chanelled Reservoir Recovery   **
+**     Process", paper SPE 18071, the 63th Ann Tech Conf, Houston, Oct 1988         **
+**                                                                                  **
+**************************************************************************************
+
+
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+** ==== INPUT/OUTPUT CONTROL ============================
+
+*TITLE1 'STARS Fluid Model Template #25'
+*TITLE2 'Wolf Lake Pad Symmetry Element'
+*TITLE3 'Combustion Phase'
+
+*INUNIT *SI 
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *X ** *Y 
+*OUTPRN *ITER NEWTON **UNCONV
+
+*OUTPRN *WELL *WELLCOMP
+*WPRN *ITER 1
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *X **TRMI *TRMJ *TRMK ** *Y 
+
+
+** ========= RESERVOIR DESCRIPTION ====================================
+*GRID *CART 18 9 1
+*KDIR *DOWN
+*DI *IVAR 30. 40. 40. 30. 40. 40. 30. 40. 40. 30.
+          40. 40. 30. 40. 100. 200. 400. 1e+03
+*DJ *JVAR  2.  2.  4.  8.  20.   8.   4.  2.  2.  
+*DK *CON 21.
+**      key     v            ai       aj        ak         ai-       aj-      ak-
+*VAMOD  2      0.2500000 0.5000000 0.5000000 0.2500000 0.5000000 0.5000000 0.2500000
+*VAMOD  3      0.5000000   1.00000 0.5000000 0.5000000   1.00000 0.5000000 0.5000000
+*VAMOD  4      0.5000000 0.5000000   1.00000 0.5000000 0.5000000   1.00000 0.5000000 
+*VAMOD  5        0.5E+03   0.50000   1.0E+03   0.5E+03   0.50000   1.0E+03   0.5E+03
+*VAMOD  6        1.0E+03   1.00000   1.0E+03   1.0E+03   1.00000   1.0E+03   1.0E+03
+*VATYPE  *CON 1
+         *MOD 1    1    1  = 2
+              1    9    1  = 2
+              1    2:8  1  = 3
+              2:17 1    1  = 4
+              2:17 9    1  = 4 
+              18   1    1  = 5
+              18   9    1  = 5
+              18   2:8  1  = 6
+
+*POR   *CON 0.25
+*PERMI *CON 1000
+*PERMJ *CON 1000
+*PERMK *CON 100
+
+*END-GRID
+
+*PRPOR 2750.
+*CPOR 3.E-06 
+                                              
+                                             
+** ==============  Thermal and heatloss properties of the rock
+*ROCKCP 2.35E+06  0.   
+*THCONR 6.E+05
+*THCONW 5.35E+04
+*THCONO 1.2E+04
+*THCONG 3.2E+03  
+**         *THCONMIX *COMPLEX
+*HLOSST 16.
+*HLOSSPROP  *OVERBUR     2.350e6   1.496e5    
+*HLOSSPROP  *UNDERBUR    2.350e6   1.496e5     
+                        
+
+** ============= COMPONENT PROPERTIES ==================================
+*MODEL        7  6   4   1
+*COMPNAME 'water'  'bitumn'    'ch4'    'co2'   'co/n2'  'oxygen' 'coke'
+*CMM     0.01802     0.508    0.016    0.044     0.028     0.032  0.0174
+*PCRIT   21977.0     861.0   4585.0   7353.0    3384.0    5030.0 
+*TCRIT     374.3      659.    -82.0     30.0    -147.0    -120.0 
+*KV1         0.         0. 545468.3 119950.0  
+*KV2         0.         0.      0.0      0.0 
+*KV3         0.         0.      0.0     4.55
+*KV4         0.         0.  -879.84   -236.8
+*KV5         0.         0.  -265.00    -79.1
+*MOLDEN      0.      1960.  59199.7  18103.6
+*CP          0.     1.E-06   1.E-06   1.E-06
+*CT1         0.   848.E-06 848.E-06 848.E-06
+
+*SOLID_DEN 'coke' 1740 0 0
+*SOLID_CP  'coke' 17.0   0
+
+*AVG    .000017  .00010573  .00010573 .0001070  .0003213  .0003355
+*BVG      1.116      0.820     0.8126   0.8655    0.7020     0.721    
+
+*CPL1       0.0     1060.0      19.25    19.79     31.14     28.10
+*CPL2       0.0        0.0     .05211    .0734   -.01356 -.0000037
+*CPL3       0.0        0.0   .0001197  .000056 .00002678 .00004745
+*CPL4       0.0        0.0  -1.131e-8 1.715e-8 -1.167e-8 -1.065e-8 
+
+*HVR        0.0        0.0        0.0      0.0 
+*EV         0.0        1.0       0.38     0.38    
+
+*XNACL 0.
+*PRSR 2750.
+*TEMR 16.
+*PSURF 101.
+*TSURF 16.
+
+*VISCTABLE
+** temp,(visc(i), i=1,numx)     ** unusual co2 contribution is fitted 
+ 10.00000   0.0  3.4090e+5   4391.000    2.059
+ 20.00000   0.0    77000.0    335.000    2.099
+ 30.00000   0.0    21570.0   53.20000    2.138
+ 40.00000   0.0   7222.000   14.00000    2.178
+ 50.00000   0.0   2806.000    5.21000    2.217
+ 60.00000   0.0   1235.000    2.45000    2.256
+ 70.00000   0.0    604.000    1.36000    2.294
+ 80.00000   0.0    323.000  0.8440000    2.333
+ 90.00000   0.0    186.000  0.5700000    2.371
+  100.000   0.0    114.000  0.4100000    2.409
+  200.000   0.0    6.81000  0.0838800    2.780
+  300.000   0.0    1.98000  0.0600000    3.140
+  400.000   0.0  0.9770000  0.0561700    3.494
+  500.000   0.0  0.6190000  0.0553200    3.844
+  600.000   0.0  0.4540000  0.0550900    4.192
+  700.000   0.0  0.3660000  0.0550200    4.539
+  800.000   0.0  0.3140000  0.0549900    4.887
+  900.000   0.0  0.2820000  0.0549800    5.236
+ 1000.000   0.0  0.2610000  0.0549800    5.586
+ 2000.000   0.0  0.2070000  0.0549800    9.258
+                                              
+** Chemical Reactions  
+** ====== REACTION 1   Bitumen ---> CH4 + COKE 
+*STOREAC    0.0         1.0      0.0        0.0      0.0      0.0     0.0
+*STOPROD    0.0         0.0     10.0        0.0      0.0      0.0     20.0
+**FREQFAC  1.296E+3
+*FREQFAC  1.296E+19
+*EACT  2.463e5
+*RENTH  -6.86E+06
+*RPHASE  0 2 0 0 0 0 0
+*RORDER  0 1 0 0 0 0 0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 1500.
+
+** ====== REACTION 2   Bitumen + O2 ---> H2O + CH4 + CO2 + CO/N2  + COKE
+*STOREAC    0.0         1.0      0.0        0.0      0.0      16.0     0.0
+*STOPROD    12.5        0.0      5.0        9.5      1.277    0.0      15.0
+*FREQFAC  4.56E+9
+*EACT     8.41e4
+*RENTH    6.29E+06
+*RPHASE  0  2  0  0  0  3   0
+*RORDER  0  1  0  0  0  0.5 0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 250.
+*RXCRITCON 'oxygen' 1
+
+** ====== REACTION 3   COKE + O2 ---> H2O + CO2 + CO/N2
+*STOREAC    0.0         0.0      0.0        0.0      0.0      1.225    1.0
+*STOPROD    0.5         0.0      0.0        0.95     0.2068   0.0      0.0
+*FREQFAC  2.28E+05
+*EACT    5.478E+04
+*RENTH   5.58E+05
+*RPHASE  0 0 0 0 0 3   4
+*RORDER  0 0 0 0 0 1.0 1.0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 1500.
+
+
+** ======= ROCK-FLUID PROPERTIES ==========================  
+*ROCKFLUID                           
+
+*SWT               
+**water-oil system
+**      sw        krw       krow         pc
+    0.3210     0.0000     1.0000     0.0000
+    0.4560     0.0018     0.7080     0.0000
+    0.5705     0.0100     0.4300     0.0000
+    0.6236     0.0200     0.2660     0.0000
+    0.6713     0.0330     0.1520     0.0000
+    0.7158     0.0530     0.0670     0.0000
+    0.7585     0.0730     0.0330     0.0000
+    0.8011     0.1130     0.0130     0.0000
+    0.8200     0.1200     0.0000     0.0000
+*SLT
+**gas-liquid system
+**      sl        krg       krog         pc
+    0.5010     0.0380     0.0000     0.0000
+    0.5322     0.0260     0.0160     0.0000
+    0.5867     0.0200     0.0500     0.0000
+    0.6367     0.0150     0.1000     0.0000
+    0.6886     0.0100     0.1500     0.0000
+    0.7415     0.0070     0.2200     0.0000
+    0.7934     0.0045     0.3000     0.0000
+    0.8452     0.0026     0.4400     0.0000
+    0.8970     0.0016     0.6000     0.0000
+    0.9280     0.0006     0.8400     0.0000
+    0.9389     0.0003     0.9300     0.0000
+    0.9500     0.0000     1.0000     0.0000
+
+
+** ============== INITIALIZATION =================================
+*INITIAL
+*PRES *CON 2750.   ** kPa 
+*TEMP *CON 16.0    ** C
+*SW   *CON 0.34
+*SO   *CON 0.66
+*MFRAC_OIL 'bitumn' *CON 0.886
+*MFRAC_OIL 'ch4'    *CON 0.114
+
+
+
+** ============  NUMERICAL CONTROL ================================
+
+*NUMERICAL
+*NORM  *PRESS 2000.000   *SATUR 0.250 *TEMP 49.00  *Y .300   *X  0.30  *W  0.30
+*TFORM *SXY
+*DTMAX 20.
+
+
+
+** ============  RECURRENT DATA  =================================
+
+*RUN
+*DATE  1988 11 18 
+*DTWELL 0.1 
+                       
+                
+** Steam Injectors
+*WELL 1 'wel1w'
+*WELL 2 'wel2w'
+*WELL 3 'wel3w'
+*WELL 4 'wel4w'
+*WELL 5 'wel5w'
+
+** Producers
+*WELL 6 'well1p' 
+*WELL 7 'well2p' 
+*WELL 8 'well3p' 
+*WELL 9 'well4p' 
+*WELL 10 'well5p' 
+
+
+*INJECTOR 'wel1w'
+*TINJW 320.
+*QUAL 0.54
+*INCOMP *WATER 1. 0. 0.  0.
+*OPERATE  *MAX *STW  62.5
+*OPERATE  *MAX *BHP 12000.
+*PERF 'wel1w'
+**            i      j       k    wi
+              1      9       1    1.3  **.100
+
+
+*INJECTOR 'wel2w'
+*TINJW 320.
+*QUAL 0.54 
+*INCOMP *WATER 1. 0. 0. 0. 
+*OPERATE  *MAX *STW  125.
+*OPERATE  *MAX *BHP 12000.
+*PERF 'wel2w'
+**            i      j       k    wi
+              7      9       1    2.6  **.200
+
+
+*INJECTOR 'wel3w'
+*TINJW 320.
+*QUAL 0.54 
+*INCOMP *WATER 1. 0. 0. 0.
+*OPERATE  *MAX *STW  125.
+*OPERATE  *MAX *BHP 12000.
+*PERF 'wel3w'
+**            i      j       k    wi
+             13      9       1    2.6  **.200
+
+
+*INJECTOR 'wel4w'
+*TINJW 320.
+*QUAL 0.54 
+*INCOMP *WATER 1. 0. 0. 0.
+*OPERATE  *MAX *STW  125.
+*OPERATE  *MAX *BHP 12000.
+*PERF 'wel4w'
+**            i      j       k    wi
+              4      1       1    2.6  **.200
+
+
+*INJECTOR 'wel5w'
+*TINJW 320.
+*QUAL 0.54 
+*INCOMP *WATER 1. 0. 0.  0.
+*OPERATE  *MAX *STW  125.
+*OPERATE  *MAX *BHP 12000.
+*PERF 'wel5w'
+**            i      j       k    wi
+             10      1       1    2.6  **.200
+
+
+*PRODUCER 'well1p'
+*OPERATE  *MAX *STL  37.5
+*OPERATE  *MIN *BHP 100.
+*PERF 'well1p'
+**            i      j       k    wi
+              1      9       1    1.4659e3  **.125
+
+
+
+*PRODUCER 'well2p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well2p'
+**            i      j       k    wi
+              7      9       1    2.9319e3  **.250
+
+
+*PRODUCER 'well3p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well3p'
+**            i      j       k    wi
+             13      9       1    2.9319e3  **.250
+
+
+*PRODUCER 'well4p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well4p'
+**            i      j       k    wi
+              4      1       1    2.9319e3  **.250
+
+
+*PRODUCER 'well5p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well5p'
+
+**            i      j       k    wi
+             10      1       1    2.9319e3  **.250
+
+
+*SHUTIN 'wel2w' 'wel3w' 'wel4w' 'wel5w' 'well1p' 'well2p' 'well3p' 'well4p' 'well5p'
+
+** Well 1 - Injection Cycle 1
+
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+
+*TIME 32. 
+
+** Well 1 - soak cycle 1
+** Well 2 - injection cycle 1
+*DTWELL 0.1
+*SHUTIN 'wel1w'
+*OPEN 'wel2w'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+
+*TIME 39.   
+
+** Well 1 (6) - production cycle 1
+*DTWELL 0.1
+*OPEN 'well1p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+
+*TIME 64. 
+
+** Well 2 - soak cycle 1
+** Well 3 - injection cycle 1
+*DTWELL 0.1
+*SHUTIN 'wel2w'
+*OPEN 'wel3w'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 71.
+
+** Well 2 (7) - production cycle 1
+*DTWELL 0.1
+*OPEN 'well2p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 96.
+
+** Well 3 - soak cycle 1
+** Well 4 - injection cycle 1
+*DTWELL 0.1
+*SHUTIN 'wel3w'
+*OPEN 'wel4w'   
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 103.
+
+** Well 3 (8) - production cycle 1
+*DTWELL 0.1
+*OPEN 'well3p'
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 128.
+           
+** Well 4 - soak cycle 1
+** Well 5 - injection cycle 1
+*DTWELL 0.1
+*SHUTIN 'wel4w'
+*OPEN 'wel5w'
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 135.
+**stop
+** Well 4 (9) - production cycle 1
+*DTWELL 0.1
+*OPEN 'well4p'
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 160.
+          
+** Well 5 - soak cycle 1
+*DTWELL 2.
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 167.
+
+** Well 5 (10) - production cycle 1
+*SHUTIN 'wel5w'
+*OPEN 'well5p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 200.
+
+** Well 1 (6) - shut-in cycle 1
+*SHUTIN 'well1p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 208.
+
+** Well 1 - injection cycle 2
+*OPEN 'wel1w'
+*ALTER 'wel1w'
+37.5
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 240.
+
+** Well 2 (7) - shut-in cycle 1
+*SHUTIN 'well2p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 248.
+
+** Well 1 - soak cycle 2
+** Well 2 - injection cycle 2
+*SHUTIN 'wel1w'
+*OPEN 'wel2w'
+*ALTER 'wel2w'
+75.0
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 255.
+
+** Well 1 (6) - production cycle 2
+*DTWELL 0.1
+*OPEN 'well1p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 280.
+
+** Well 3 (8) - shut-in cycle 1 
+*DTWELL 0.1
+*SHUTIN 'well3p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 288 
+           
+** Well 2 - soak cycle 2
+** Well 3 - injection cycle 2
+*DTWELL 0.1
+*SHUTIN 'wel2w'
+*OPEN 'wel3w'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 295.
+
+** Well 2 (7) - production cycle 2
+*DTWELL 0.1
+*OPEN 'well2p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 320.
+
+** Well 4 - shut-in cycle 1
+*DTWELL 0.1
+*SHUTIN 'well4p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 328.
+
+** Well 3 - soak cycle 2     
+** Well 4 - injection cycle 2
+*SHUTIN 'wel3w'
+*OPEN 'wel4w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 335.
+
+
+** Well 3 (8) - production cycle 2
+*OPEN 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 360. 
+
+** Well 5 (10)  - shut-in cycle 2
+*SHUTIN 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 368.
+
+** Well 4 - soak cycle 2     
+** Well 5 - injection cycle 2
+*SHUTIN 'wel4w'
+*OPEN 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 375. 
+
+
+** Well 4 (9) - production cycle 2
+*OPEN 'well4p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME  400.
+
+
+** Well 1  - shut-in cycle 2
+*SHUTIN 'well1p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME  408.
+
+
+** Well 1 - injection cycle 3     
+** Well 5 - soak cycle 2
+*OPEN 'wel1w'
+*SHUTIN 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  415.
+
+
+** Well 5 (10) - production cycle 2
+*OPEN 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  440.
+
+
+** Well 2 (7) - shut-in cycle 2
+*SHUTIN 'well2p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  448.
+
+
+** Well 1 - soak cycle 3     
+** Well 2 - injection cycle 3
+*SHUTIN 'wel1w'
+*OPEN 'wel2w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 455. 
+
+
+** Well 1 (6) - production cycle 3
+*OPEN 'well1p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 480. 
+
+
+** Well 3 (8) - shut-in cycle 2
+*SHUTIN 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 488. 
+
+
+** Well 2 - soak cycle 3     
+** Well 3 - injection cycle 3
+*SHUTIN 'wel2w'
+*OPEN 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 495. 
+
+** Well 2 (7) - production cycle 3
+*OPEN 'well2p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 520. 
+
+
+** Well 4 (9) - shut-in cycle 2
+*SHUTIN 'well4p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 528.
+
+
+** Well 3 - soak cycle 3     
+** Well 4 - injection cycle 3
+*SHUTIN 'wel3w'
+*OPEN 'wel4w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 535. 
+
+** Well 3 (8) - production cycle 3
+*OPEN 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME  560.
+
+
+** Well 5 (10)  - shut-in cycle 2
+*SHUTIN 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 568. 
+
+
+** Well 4 - soak cycle 3     
+** Well 5 - injection cycle 3
+*SHUTIN 'wel4w'
+*OPEN 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME  575.
+
+
+** Well 4 (9) - production cycle 3
+*OPEN 'well4p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 608. 
+
+** Well 5 - soak cycle 3
+*SHUTIN 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 615.
+
+** Well 5 (10) - production cycle 3
+*OPEN 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 675. 
+
+
+** Well 1 (6) - shut-in cycle 3
+** Well 2 (7) - shut-in cycle 3
+** Well 3 (8) - shut-in cycle 3
+*SHUTIN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 1:1 1:1 = 10000.
+*TIME 683. 
+
+** Well 1 - injection cycle 4
+** Well 2 - injection cycle 4
+** Well 3 - injection cycle 4
+*OPEN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 728. 
+
+
+** Well 1 - soak cycle 4
+** Well 2 - soak cycle 4
+** Well 3 - soak cycle 4
+*SHUTIN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 735.
+
+
+** Well 1 (6) - production cycle 4
+** Well 2 (7) - production cycle 4
+** Well 3 (8) - production cycle 4
+*OPEN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  765.
+
+
+** Well 4 - shut-in cycle 4
+** Well 5 - shut-in cycle 4
+*SHUTIN 'well4p' 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  773. 
+
+
+** Well 4 - injection cycle 4
+** Well 5 - injection cycle 4
+*OPEN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME  818.
+
+
+** Well 4 - soak cycle 4
+** Well 5 - soak cycle 4
+*SHUTIN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  825.
+
+
+** Well 4 (9)  - production cycle 4
+** Well 5 (10) - production cycle 4
+*OPEN 'well4p' 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  915.
+
+
+** Well 1 (6) - shut-in cycle 4
+** Well 2 (7) - shut-in cycle 4
+** Well 3 (8) - shut-in cycle 4
+*SHUTIN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  923.
+
+
+** Well 1 - injection cycle 5
+** Well 2 - injection cycle 5
+** Well 3 - injection cycle 5
+*OPEN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  973.
+
+
+** Well 1 - soak cycle 5
+** Well 2 - soak cycle 5
+** Well 3 - soak cycle 5
+*SHUTIN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  980.
+
+
+** Well 1 (6) - production cycle 5
+** Well 2 (7) - production cycle 5
+** Well 1 (8) - production cycle 5
+*OPEN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 1015.
+
+
+** Well 4 (9)  - shut-in cycle 4
+** Well 5 (10) - shut-in cycle 4
+*SHUTIN 'well4p' 'well5p'
+*DTWELL 0.1
+*TIME  1023.
+
+
+** Well 4   - injection cycle 5
+** Well 5   - injection cycle 5
+*OPEN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME   1073.
+
+
+** Well 4  - soak cycle 5
+** Well 5  - soak cycle 5
+*SHUTIN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 1080.
+
+** Well 1 (6)  - impose production cut-off of 3 m3/d
+** Well 4 (9)  - production cycle 5
+** Well 5 (10) - production cycle 5
+*PRODUCER 'well1p'
+*OPERATE  *MAX *STL  37.5
+*OPERATE  *MIN *BHP 100.
+**OPERATE  *STL 0.75 *STOP
+*OPEN 'well4p' 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1170.
+
+
+** Well 1 (6) - shut-in cycle 5
+** Well 2 (7) - shut-in cycle 5
+** Well 3 (8) - shut-in cycle 5
+*SHUTIN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1178.
+
+
+** Well 1 - injection cycle 6
+** Well 2 - injection cycle 6
+** Well 3 - injection cycle 6
+*OPEN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1233.
+
+** Well 1 - soak cycle 6
+** Well 2 - soak cycle 6
+** Well 3 - soak cycle 6
+*SHUTIN 'wel1w' 'wel2w' 'wel3w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1240.
+
+** Well 1 (6) - production cycle 6
+** Well 2 (7) - production cycle 6
+** Well 1 (8) - production cycle 6
+*OPEN 'well1p' 'well2p' 'well3p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1280.
+
+** Well 4 (9)  - shut-in cycle 5
+** Well 5 (10) - shut-in cycle 5
+*SHUTIN 'well4p' 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME  1288.
+     
+** Well 4   - injection cycle 6
+** Well 5   - injection cycle 6
+*OPEN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 1
+*TRANSI  *CON 0.75 
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 1:1 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 1:1 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 1:1 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 1:1 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 1:1 1:1 = 10000.
+*TIME   1343.
+
+** Well 4  - soak cycle 6
+** Well 5  - soak cycle 6
+*SHUTIN 'wel4w' 'wel5w'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 1350.
+
+** Well 4 (9)  - production cycle 6
+** Well 5 (10) - production cycle 6
+*OPEN 'well4p' 'well5p'
+*DTWELL 0.1
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+**         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+**         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+**         *MOD 1:16 9:9 1:1 = 8000.    
+*PFRACF  *CON 6750.
+**         *MOD 1:16 9:9 1:1 = 10000.
+*TIME 1500.
+
+** end of 6th cycle ====       
+
+*DTWELL 0.1
+
+** Gas Injectors
+*WELL 11 'well2g'
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+*PERF 'well2g'
+**            i      j       k    wi
+              7      9       1    0.367 **10.
+
+*SHUTIN 'well2p'
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.    
+
+*TIME 1505.  ** Cycle 7 Air Injection
+*INJECTOR 'well2g'
+*INCOMP *GAS  0. 0. 0. 0. 0.01 0.99 
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 1545.
+*SHUTIN 'well2g'
+*OPEN 'wel2w'  
+
+*INJECTOR 'wel2w'
+*TINJW 40.
+*QUAL 0. 
+*INCOMP *WATER 1. 0. 0. 0. 
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STW  150.
+*PERF 'wel2w'
+**            i      j       k    wi
+              7      9       1    0.1
+
+*PRODUCER 'well1p'
+*OPERATE  *MAX *STL  37.5
+*OPERATE  *MIN *BHP 100.  
+*OPERATE *MAX *STG 1250.  
+
+*PRODUCER 'well3p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+
+*PRODUCER 'well4p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+
+*PRODUCER 'well5p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+*TIME 1590.
+
+*SHUTIN 'wel2w'
+*OPEN 'well2g'
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 1595.                
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 1635.
+*SHUTIN 'well2g'
+*OPEN 'wel2w'
+*TIME 1680.
+*SHUTIN 'wel2w'
+*TIME 1950.     
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   **Cycle 8 air injection
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 1955.   
+*DTWELL 0.1             
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 1995.
+*DTWELL 0.1
+*TIME 2040. 
+*DTWELL 0.1               
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2045.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2085.
+*DTWELL 0.1
+*TIME 2130.   
+*SHUTIN 'well2g'
+*DTWELL 0.1
+*TIME 2400.
+*OPEN 'well2g'
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   ** Cycle 9 Air Injection
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2405.                
+*DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2490.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21 
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2495.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2535.
+*DTWELL 0.1
+*TIME 2580.
+*SHUTIN 'well2g'
+
+*WRST *TNEXT
+
+*TIME 2850.
+*OPEN 'well2g'
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   ** Cycle 10 Air Injection
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2855.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2895.
+*DTWELL 0.1
+*TIME 2940.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2945.                
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99  
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*TIME 2985.
+*DTWELL 0.1
+*TIME 3030.
+*SHUTIN 'well2g'
+*TIME 3300.
+*STOP

@@ -1,0 +1,288 @@
+
+*****************************************************************************
+** Template (stsmo007.dat): W/O/G Vertical Equil. with 2 Transition Zones  **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STSMO007.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE TIMESTEP RADIAL RUN       FIELD UNITS   10X1X5 RADIAL GRID        **  
+**                                                                                  **
+** USAGE:  CHECKS WATER/OIL/GAS VERTICAL EQUILIBRIUM                                **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    Test and illustrate the Mass-Consistent vertical equilibrium                  **
+**    option installed in Oct 1994.                                                 **
+**                                                                                  **
+**    Special Features:                                                             **
+**                                                                                  **
+**    1)  Based on Test Bed #20.                                                    **
+**                                                                                  **
+**    2)  Keywords *DWOC and *DGOC define a water/oil/gas system.                   **
+**                                                                                  **
+**    3)  Oil beneath GOC is quite undersaturated as defined by initial             **
+**        oil mole fraction of solution gas.  Oil composition in gas zone           **
+**        is adjusted to ensure liquid/vapour equilibrium.                          **
+**                                                                                  **
+**    4)  Both Pcow and Pcog tables are entered, so there is a liquid/gas           **
+**        transition zone as well as a water/oil zone.  The liquid/gas              **
+**        zone is from 1602.2 ft to 1574.79 ft, but the water/oil zone is           **
+**        very large, from 1668.8 ft to 1502.09 ft, which includes the              **
+**        entire reservoir above the WOC.                                           **
+**                                                                                  **
+**    5)  Search for word "STATIC" to find output for this calculation.             **
+**                                                                                  **
+**    6)  Test multiple initialization regions.  The two regions are the            **
+**        same except for being 200 ft different in depth.                          **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 62'
+*TITLE2 'Water/Oil/Gas Ver. Eq. with Two Transition Zones'
+*TITLE3 'Based on Test Bed #20'
+
+*INUNIT *FIELD   ** Output iunits the same as input
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y *X *OBHLOSS *VISO *PCOW *PCOG
+*OUTPRN *WELL *ALL
+*OUTPRN *ITER *NEWTON
+*WRST 300
+*WPRN *GRID 300
+*WPRN *ITER 300
+
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *PCOW *PCOG *INSETN
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *RADIAL 10 1 11  *RW 0.0  ** Radial cross-sectional grid
+                               ** Zero inner radius matches previous treatment
+*NINEPOINT *IK
+
+**  Logarithmic spacing in the radial direction (in feet)
+*DI *IVAR 0.713 1.25 2.18 3.82 6.69 11.7 20.5 35.8 62.7 109
+*DJ *CON 360  ** Full circle
+*DK *KVAR 5*22.2 89 5*22.2
+
+*DEPTH *TOP 1 1 5 1580
+
+*POR *KVAR 5*0.23 0 5*0.23
+*PERMI *CON 41  **  Permeability is 41 md hoizontally
+*PERMJ *EQUALSI
+*PERMK *CON 53  **  Permeability is 53 md vertically
+
+*END-GRID
+
+*CPOR 8.8E-5
+*PRPOR 670
+*CTPOR 5.4E-5
+*ROCKCP 34.5 ** in Btu/ft3-deg F
+**  Rock and fluid thermal conductivities in Btu/day-ft-deg F
+*THCONR 38.16
+*THCONW 8.98
+*THCONO 1.67
+*THCONG 0.48
+
+**  Thermal conductivity of overlying and underlying formation
+*HLOSSPROP *OVERBUR 34.5 38.16 *UNDERBUR 34.5 38.16
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 4 4 4   **  Standard water properties plus three oils 
+               **  PCRIT for 'Soln Gas' is 667.2 from manual
+
+*COMPNAME     'Water'   'Hevy Oil'  'Lite Oil'  'Soln Gas'
+**            --------  ----------  ----------  ----------
+
+*CMM            18        378.93      152.23      16.043
+*PCRIT        3217.1      149.65      267.54      361.96
+*TCRIT        705.47     1107.81      738.68     -116.59
+
+*MOLDEN          0        0.1515      0.3485       2.746
+*CP              0        1.5e-5      1.5e-5      1.5e-5
+*CT1             0       5.93e-4     3.11e-4     0.00123
+**Spec. Grav.              0.92        0.85        0.703
+
+*AVG          1.169e-5   4.04e-6     4.04e-6      6.22e-5
+*BVG           1.075      1.1027      1.1027      0.8197
+*AVISC           0       3.4238e-6   0.010807     0.0138
+*BVISC           0       10733.6       2459        205.9
+
+*CPL1            0        189.15      76.15        10.8
+*HVR             0          0        1839.68      525.65
+*EV              0          0          0.38        0.38
+
+**  Reference conditions
+*PRSR 14.65
+*TEMR 77
+*PSURF 14.65
+*TSURF 62
+*XNACL 0.015
+
+*KVTABLIM 50 1250 90 690   ** Low/high p & T
+
+*KVTABLE 'Hevy Oil'    ** Hev_Oil  (nonvapourizable at low T)
+
+7*0
+7*0
+7*0
+7*0
+7*0
+0.0007   0.0002   0.0002   0.0001    0.0001   0.0001   0.0001
+0.006    0.002    0.0014   0.0012    0.0011   0.001    0.001
+
+*KVTABLE 'Lite Oil'    ** Lit_Oil  (more vapourizable liquid part)
+
+0.0017   0.0005   0.0004   0.0004    0.0004   0.0004   0.0005
+0.0247   0.0063   0.0044   0.0038    0.0036   0.0035   0.0035
+0.1609   0.0381   0.0249   0.0201    0.0177   0.0165   0.0158
+0.6295   0.1425   0.0893   0.0693    0.0592   0.0532   0.0495
+1.7392   0.3864   0.2363   0.1792    0.1495   0.1316   0.1199
+3.6816   0.8238   0.4988   0.3733    0.3072   0.2667   0.2397
+6.3836   1.4416   0.8744   0.6515    0.5325   0.4588   0.4089
+
+*KVTABLE 'Soln Gas'    ** Soln_Gas  (soluble hydrocarbon gas - CH4)
+
+ 95.853  19.9007  11.4608   8.2140   6.4946   5.4297   4.7052
+124.741  25.6380  14.6273  10.3914   8.1470   6.7584   5.8130
+144.301  29.4742  16.7317  11.8309   9.2360   7.6293   6.5365
+154.848  31.4554  17.8091  12.5629   9.7860   8.0672   6.8984
+158.334  31.7949  17.9853  12.6776   9.8683   8.1295   6.9474
+157.186  30.7469  17.3906  12.2659   9.5532   7.8737   6.7318
+150.630  28.7399  16.1894  11.4273   8.9123   7.3561   6.2979
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      -----      ------      ------
+    0.514      0.0         1.0          7.2
+    0.609      0.053      0.289         2.6
+    0.629      0.067      0.249         2.2
+    0.655      0.081      0.161         1.8
+    0.670      0.092      0.120         1.6
+    0.684      0.109      0.097         1.5
+    0.690      0.116      0.088         1.4
+    0.713      0.134      0.053         1.2
+    0.724      0.151      0.041         1.2
+    0.733      0.160      0.033         1.1
+    0.744      0.175      0.026         1.1
+    0.760      0.186      0.016         1.1
+    0.773      0.204      0.010         1.0
+    0.788      0.215      0.006         1.0
+    0.797      0.220      0.0042        1.0
+    0.804      0.222      0.0032        1.0
+    0.810      0.224      0.0025        0.9
+    0.829      0.224      0.0           0.7
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg        Krog        Pcog
+**  -----      ------     ------      ------
+    0.737      0.411      0.0          26.7
+    0.761      0.310      0.035        25.7
+    0.787      0.233      0.076        25.4
+    0.803      0.185      0.109        24.7
+    0.818      0.149      0.146        24.1
+    0.841      0.111      0.235        23.4
+    0.862      0.080      0.328        22.3
+    0.878      0.054      0.383        22.0
+    0.889      0.040      0.445        21.0
+    0.906      0.021      0.516        20.0
+    0.917      0.013      0.573        19.5
+    0.924      0.0093     0.608        19.1
+    1.0        0.0        1.0          15.9
+
+*KRTEMTAB  *SWR   *SORW
+    104    .355   .247
+    400    .443   .198
+
+*SGR .02
+*SORG .1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+*INITREGION 1
+   *REFDEPTH 1602.2
+   *REFPRES 717
+   *DGOC 1602.2
+   *DWOC 1668.8
+
+*INITREGION 2
+   *REFDEPTH 1402.2
+   *REFPRES 717
+   *DGOC 1402.2
+   *DWOC 1468.8
+
+*INTYPE *KVAR 5*1 2 5*2
+
+*GASZONE *OIL  ** Applies to all regions
+
+*TEMP *CON 93
+
+**  Solution gas is below bubble point
+*MFRAC_OIL 'Hevy Oil' *CON 0.65175
+*MFRAC_OIL 'Lite Oil' *CON 0.2947
+*MFRAC_OIL 'Soln Gas' *CON 0.05355
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*SDEGREE 1
+*NORM *PRESS 290
+
+*MAXSTEPS 1
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*DATE 1983 6 17.5
+
+   *DTWELL 1E-4
+
+   *WELL 1 'CYC_1 INJT'
+
+   *INJECTOR 'CYC_1 INJT'
+   *INCOMP  *WATER  1.0   0.0  0.0  0.0
+   *TINJW 588
+   *QUAL .71  ** Steam conditions at the wellhead
+   *OPERATE *STW 675
+   *PERF 'CYC_1 INJT'  ** i j k  wi
+              1 1 1 21.5
+
+*TIME 15
+*STOP
+

@@ -1,0 +1,471 @@
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    This is template STGCH012 with new solid species input.
+**    Geochem equilibrium solid species are made stationary by immediate conversion
+**    to a STARS solid component counterpart.
+
+**    Test and illustrate geochemistry of a NaCO3 with precipitation and adsorption
+**    Core length is 60 cm with 4.88 x 4.88 cm cross sectional area.
+**    80 x 1 x 1 cartesian grid
+**        This run simulates example 12 of utchem example data sets
+**        model for simulating water chemistry of:
+**			7 stars components,
+**                      5 geo-elements,                                             
+**                      11 water species,                                           
+**                      6 chemical reactions                           
+
+**    Hydrogen adsorption on clays is represented in stars as water adsoption.
+
+**    Hydrogen element mole concentration is represented by stars water component. 
+
+**    Hydrogen is set as a stars component to identify its presence but           
+**        mole concentration is set to zero.                                        
+
+**    Geo-chem outputs are in mol/l (water) for water species                     
+**        and in mol/l and eq/l (pore volume) for solid and sorbed species, respectively.                  
+
+**    Water chemistry with NaCO3 flood                                          
+**	  adsorption of hydrogen, sodium, and calcium on clays,                      
+**        precipitation of calcium carbonate and calcium hydroxide.                  
+
+**    Oil does not contain acid - no asp flooding.                               
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Geochem Model Template #25'
+*TITLE2 'NaCO3 Flood in Core with *COMP-GEO Solid'
+*TITLE3 'Based on STGCH012'
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Y *Z *SG *PRES    *PERMI  *PERMK                               
+               *ADSORP   *VISW	*VISO *KRW *KRO *LOGIFT *LOGCAPN *WATMOB *OILMOB *IFT
+               *ADSPCMP *VPOROS *FPOROS
+*OUTSRF *GRID *ALL
+
+** GEOCHEM OUTPUTS
+** Include log of saturation index to confirm solid and fluid are in equilibrium
+** LSATIND will always equal zero for solid equilibrium (*EQL) runs
+*OUTSRF *GRID  *AQ-SP *SRB-SP *SLD-SP *PHAQ *LSATIND
+	       
+*OUTPRN *WELL  *ALL
+*OUTPRN *ITER *NEWTON **UNCONV
+ 
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 80 1 1  ** One-dimensional grid
+
+*DI *CON .00762
+*DJ *CON .0488
+*DK *CON .0488
+
+*POR *CON 0.20	** POROSITY
+
+
+*PERMI *CON 500  ** 500 milli-darcies
+*PERMJ *EQUALSI  ** EQUAL TO I DIRECTION VALUE
+*PERMK *CON 50
+
+*END-GRID
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+*MODEL 8 7 7 6   ** All components except oil are aqueous based
+ 
+*COMPNAME    'WATER'  	'CO3'  	'CALCIUM'	'H'	'Na'	'CHLORIDE'	'OIL'	'CaCO3x'
+**           -------	------	--------  	-----	----	---------	-----
+*CMM          .018   	.06   	.04		.001   .023   	.0355		0.100	    0.1  **Molecular weight IN SI UNITS
+
+** Geochem inputs
+
+** Geo-element flags
+
+** Input total number of elements, aqueous species, solid elements, solid species, sorbed species
+** note - there are 3 elements that make up the solid species
+*GEOCHEM 5 11 2 1 3
+** flag stars components that will participate in geochem reactions
+** water participates by default so flag to zero (follow order of COMPNAME)
+** Solid component can be flagged as geo-component, avoiding the need to use fluid/solid component
+** reaction stoichimetry (STOREAC/STOPROD), as done in STGCH012.dat
+*COMP-GEO 0 1 1 1 1 1 0 1
+
+** Aqueous species inputs
+***************************
+** identify aqueous species by name
+*CMPNAME-AQ 'CO3--' 'Ca++' 'H+' 'Na+' 'H2O' 'CaOH+' 'CaHCO3+' 'OH-' 'HCO3-' 'H2CO3' 'CaCO3'
+** identify aqueous species charge numbers (follow order of COMPNAME-AQ)
+*CHARGE-AQ -2 2 1 1 0 1 1 -1 -1 0 0
+
+** construct the element abundance matrix, a matrix of columns
+** equal to the number of total species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	  'CO3--' 'Ca++' 'H+' 'Na+' 'H2O' 'CaOH+' 'CaHCO3+' 'OH-' 'HCO3-' 'H2CO3' 'CaCO3'
+** CO3     1    0     0    0    0     0     1        0     1      1       1
+** Ca	   0    1     0    0    0     1     1        0     0      0       1
+** H	   0    0     1    0    2     1     1        1     1      0       0
+** Na      0    0     0    1    0     0     0        0     0      0       0
+** Cl	   0    0     0    0    0     0     0        0     0      0       0
+
+*AMAT_AQ
+1    0     0    0    0     0     1        0     1      1       1
+0    1     0    0    0     1     1        0     0      0       1
+0    0     1    0    2     1     1        1     1      2       0
+0    0     0    1    0     0     0        0     0      0       0
+0    0     0    0    0     0     0        0     0      0       0
+
+** Build the aqueous stoichiometry matrix, consisting of columns equal to 
+** the number of aqueous fluids and rows equal to the number of reactions
+** Each equation is followed with the associated reaction constant
+** In this example there are 11 aqueous species (independents and dependents) and
+** 6 reactions (equivalent to the number of dependent species)
+** total number of equations is number of total species  minus number of independent species
+** NOTE, H2O is not flagged when used in reactions because its concentration is adsorbed
+**       into the equilibrium constant
+**   1    2    3    4     5	6	7	8	9	10	11
+**	  'CO3--' 'Ca++' 'H+' 'Na+' 'H2O' 'CaOH+' 'CaHCO3+' 'OH-' 'HCO3-' 'H2CO3' 'CaCO3'
+** Equation 1: CaOH reaction
+** Ca++ + H2O -> Ca(OH)+ H+
+*STOICH_AQ 0 1 -1 0 0 -1 0 0 0 0 0
+*LG-KEQ -12.60d0
+** Equation 2: CaHCO3 reaction
+** Ca++ + H+ + CO3-- -> Ca(HCO3)+
+*STOICH_AQ 1 1 1 0 0 0 -1 0 0 0 0
+*LG-KEQ 11.55d0
+** Equation 3: OH reaction (water dissociation)
+** H20 -> H+ + OH-
+*STOICH_AQ 0 0 -1 0 0 0 0 -1 0 0 0
+*LG-KEQ -14.0d0
+** Equation 4: HCO3
+** H+ + CO3-- -> HCO3-
+*STOICH_AQ 1 0 1 0 0 0 0 0 -1 0 0
+*LG-KEQ 10.33d0
+** Equation 5: H2CO3, dissolved CO2
+** 2H+ + CO3-- -> H2CO3
+*STOICH_AQ 1 0 2 0 0 0 0 0 0 -1 0
+*LG-KEQ 16.6d0
+** Equation 6: CaCO3
+** Ca++ + CO3-- -> CaCO3
+*STOICH_AQ 1 1 0 0 0 0 0 0 0 0 -1
+*LG-KEQ 3.2d0
+
+
+** Solid species inputs
+***************************
+** identify solid species by name
+**CMPNAM-SLD 'CAL-CARB'
+**Solid species naming is optional if solid is flagged using *COMP-GEO
+**Solid species will be named using solid component name with extension '_ss'
+ 
+** construct the solid element abundance matrix, a matrix of columns
+** equal to the number of total solid species and rows equal to the number of elements
+** matrix coeffecients represent the number of elements in each species
+**	  'CAL-CARB'
+** CO3     1    	
+** Ca	   1    	
+** H	   0    	
+** Na      0    	
+** Cl	   0    	
+
+*AMAT_SLD
+1    
+1    
+0    
+0    
+0    
+
+** Add stoichiometry input for solids
+** NOTE stoich coefficient input per line is only over the independent species
+** and keyword input must be in the same order as the order of input solid species names
+** Each equation is followed with the associated reaction constant
+
+**   			1    2    3    4     5
+**  			'CO3' 'Ca' 'H' 'Na' 'Cl'
+** Equation 1: CaCO3 reaction
+** CaCO3 -> Ca++ + CO3--
+*STOICH_SLD 		1       1    0   0    0
+*LG-KSP -8.860d0
+
+*************************************************************************************************
+** SOLID KINETICS:
+** Option 2: treats precipitates as stationary solids. Solids in equilibrium with fluid.
+*SLD_KIN *EQL
+** concentrations are initialized with *CONC_SLD
+** See Initial Conditions section below
+*************************************************************************************************
+
+** Sorbed species inputs
+***************************
+** identify sorbed species by name
+*CMPNAM-SRB 'sorb-H' 'sorb-Na' 'sorb-Ca'
+** identify sorbed species charge numbers (follow order of COMPNAM-SRB)
+*CHARGE-SRB 1 1 2
+
+** construct the adsorption abundance matrix, a matrix of columns
+** equal to the number of sorbed species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	  sorb-H' 'sorb-Na'  'sorb-Ca'
+** CO3     0         0          0
+** Ca	   0         0          1
+** H	   1         0          0
+** Na      0         1          0
+** Cl	   0         0          0
+
+*AMAT_SRB 
+           0         0          0
+	   0         0          1
+	   1         0          0
+           0         1          0
+	   0         0          0
+
+
+** Add stoichiometry input for adsorption
+** NOTE stoich coefficient input per line is only over the independent species (including the sorbed species)
+** and keyword input must be in the same order as the order of input sorbed species names
+** Each equation is followed with the associated reaction constant
+
+**   1    2    3    4     5	  6	   7	      8
+**  'CO3--' 'Ca++' 'H+' 'Na+' 'H2O' 'sorb-H' 'sorb-Na'  'sorb-Ca'
+** Equation 1: Ca/Na reaction
+** Ca++ + 2Na+_s -> Ca++_s + 2Na+
+*STOICH_SRB 0 -1 0 2 0 0 -2 1
+*LG-KEX 1.086d0
+** Equation 2: H/Na reaction
+** H+_s + Na+ -> H+ + Na+_s
+*STOICH_SRB 0 0 -1 1 0 1 -1 0
+*LG-KEX 6.43d0
+** identify valence difference of sorbed reaction pairs
+*VAL-SRB -1 0
+** identify exchange capacity of reservoir clay
+*EXCHG-CAP 9.997E-2
+
+** Location of hydrogen element
+** Must identify location of hydrogen in the *CMPNAME-AQ species list
+****************
+*HYDROGEN 3
+
+**----------------------------------------------------------------------------- 
+*MASSDEN    1000    	1000     1000   1000	1000   1000    924     **Density 
+*SOLID_DEN  'CaCO3x'  2710 0 0
+
+**-----------------------------------------------------------------------------   
+*CP           3e-6    3e-6     3e-6	3e-6     3e-6	3e-6	1e-5      **Compressibility (units 1/kPa)   
+*CT1          0e-6    0e-6	0e-6     0e-6	0e-6     0e-6	0e-6	  **Thermal expansion
+*PCRIT        22110.0   0	0        0	0        0	0	**Critical pressure in kPa
+*TCRIT        374.150   0	0        0	0        0	0         **Critical temperature in deg C
+
+*AVISC         0.6    0.6	0.6     0.6	0.6     0.6   3.2	**Assigned liq. viscosity
+
+*PRSR  101.1
+*TEMR 17
+*PSURF 101.1
+*TSURF 17 
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+** Add geochem adsorption input
+** Must associate every geochem sorbed-species name with a stars component name
+** If present, the hydrogen ion sorbed-species is always associated with STARS water component
+*IONCOMP 'Na' 'sorb-Na'
+*IONCOMP 'CALCIUM' 'sorb-Ca'
+*IONCOMP 'WATER' 'sorb-H'
+
+**  Begin rel-perm input data
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW 
+**  ----      -------    -------
+0.37			0			0.95
+0.4			0.011785714		0.743725507
+0.425		0.021607143		0.592347414
+0.45		0.031428571		0.459290062
+0.475		0.04125			0.34421076
+0.5			0.051071429		0.246728533
+0.525		0.060892857		0.166413244
+0.55		0.070714286		0.10276903
+0.575		0.080535714		0.055207056
+0.6			0.090357143		0.022995215
+0.625		0.100178571		0.005145323
+0.65		0.11			0
+
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.37      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   0.95 
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES *CON 101.1 **set const pressure of 101.1 kPa    
+*SW   *CON  0.65    
+*SO *CON 0.35
+*TEMP *CON 17 ** convert to lab units and lab value
+
+** Reservoir initializes with:
+** CaCO3 precipitate = 0.13715 mol/L pore volume
+** Cl = 0.29 eq/(L water)
+** Ca = 1.9138278423824e-2 (eq/L water)
+** Na = .2711726581251 eq/(L water)
+** CO3 = 7.0112226419302e-4 eq/(L water)
+
+*************************************************************************************************
+** INITIAL SOLID AMOUNT INITIALIZATION:
+** Option 2: solids amounts are initialized using the *CONC_SLD keyword
+** See template STGCH021 and STGCH026 for options 1 and 3 (*TST and *EQLTRAP)
+** Equilibrium calculations will determine precipitate amount and assign it to the solid:
+
+*MFRAC_WAT 'WATER' *CON 0.98972
+** initial Cl conc of .29 eq/L (X.018 L/mol water)
+*MFRAC_WAT 'CHLORIDE' *CON 5.22e-3
+** initial Calcium conc is 1.9138278423824e-2 eq/L with 2eq/mol and water is .018L/mol
+** Total Ca element = 1.7224e-4
+*MFRAC_WAT 'CALCIUM' *CON 1.7224e-4
+**initial Na fluid conc is .2711726581251 eq/(L of water), 1 mol = 1 eq for Na
+** water has 0.018 kg/mol and 1L = 1 kg, therefore 0.018L/mol for water
+** Na fluid conc = (.27117 mol/Lwater)(0.018Lwater/mol) = 4.88e-3 (mol Na)/(mol wat)
+*MFRAC_WAT 'Na' *CON 4.88106e-3
+** initial carbonate conc is (7.0112226419302e-4 eq/L) with 2eq/mol and 
+** water is .018L/mol = 6.31e-6 mol/mol_wat
+*MFRAC_WAT 'CO3' *CON 6.31e-6 
+
+** Initialize STARS solid component using CONC_SLD
+*CONC_SLD 'CaCO3x' *CON 137.15 ** STARS SI units are in mol/m3
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*ITERMAX 100 
+*DTMAX .005 ** smaller time steps required for significant ion exchange from precipitate     
+*TFORM *ZT
+*ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *ZAQ .2  
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*TIME 0
+
+   *DTWELL 0.0025 
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   **OPERATE *BHP 101.3
+ ** GEOMETRY *J .11 .3687 1 0  ** rw,cc,ff,ss
+ *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+  *PERF *TUBE-END 'PRODN'   **  i j k
+                    80 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT CHEMICAL FLOOD
+
+**COMPNAME    		'WATER'  	'CO3'  		'CALCIUM'	'H'	'Na'		'CHLORIDE'	'OIL'
+**           		-------		----------	--------  	-----	----		---------	-----
+   *INCOMP WATER    	.993106		1.698e-3     	9.0e-10		0.00 	4.296e-3	.0009	 	0.0
+   
+   *OPERATE *STW 1.45e-4 **.00512 ft3/day as in example 12
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   
+*TIME .125
+
+   
+*TIME .1875 
+
+*TIME .25
+
+    
+*TIME .3125
+
+   
+*TIME .375
+*TIME .4375
+*TIME .5
+*TIME .5625
+*TIME .625
+*TIME .6875
+*TIME .75
+*TIME .8125
+*TIME .875
+*TIME .9375
+
+   *WRST *TNEXT
+
+*TIME 1    ** 1 DAY
+*TIME 1.5
+*TIME 2
+*TIME 3
+*TIME 4

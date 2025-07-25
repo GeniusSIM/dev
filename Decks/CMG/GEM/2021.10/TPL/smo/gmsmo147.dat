@@ -1,0 +1,271 @@
+******************************************************************************
+** GMSMO147.DAT:   Discrete Dilation Test Case                              **
+******************************************************************************
+******************************************************************************
+**                                                                          **
+** FILE   GMSMO147.DAT                                                      **
+**                                                                          **
+** GRID      10x10x3  DISCRETE DILATION TEST CASE          WATER INJECTION  **
+** COMONENTS 11       FIELD UNITS
+**                                                                          **
+******************************************************************************
+**                                                                          **
+** This is a 10x10x3 cartesian grid dilation test case water injection      **
+** problem. The water injector is located in block (1,1,3), and the         **
+** producer in block (10,10,1). There is a large permeability contrast in   **
+** the vertical direction.                                                  **
+**                                                                          **
+******************************************************************************
+** CONTACT:    CMG,   (403)531-1300;   support@cmgl.ca                      **
+******************************************************************************
+
+RESULTS SIMULATOR GEM
+
+******************************************************************************
+** I/O Control Section                                                      **
+******************************************************************************
+
+*TITLE1
+'Dilation Test Case'
+
+
+*INUNIT *FIELD              
+
+*WPRN   *WELL   10
+*WPRN   *GRID   *TIME 
+*WPRN   *ITER   *BRIEF
+
+*OUTPRN *WELL   *BRIEF
+*OUTPRN *RES    *NONE
+
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   1 
+*OUTSRF *GRID   *SO *SG *PRES *POROS *SW
+*OUTSRF *SPECIAL *PRES  10 10 3
+*OUTSRF *SPECIAL *POROS 10 10 3  
+*OUTSRF *SPECIAL *PRES  1  1  1  
+*OUTSRF *SPECIAL *POROS 1  1  1  
+
+******************************************************************************
+** Reservoir Description Section                                            **
+******************************************************************************
+
+*GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+** 3 layers in the K (z) direction.
+*DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+*DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+*DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+** middle and uppermost layers, respectively.   
+
+*DEPTH 1 1 1 1000.0         ** Depth to center of first block, in bottom layer.
+
+*POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+
+*CPOR   3.0E-6              ** Rock compressibility and
+*PRPOR 14.7                 ** reference pressure.   
+
+*CROCKTYPE 1
+
+**CROCKTABE : a table of porosity multiplier and permeability multipliers or 
+**            transmissibility multipliers versus pressures is given
+**            for the primary elastic path 
+
+*CROCKTABE
+14.7  1            1   1
+400   1.03928191   1   1
+
+**CROCKTABD : for primary dilation path. 
+
+*CROCKTABD
+400    1.03928191   1   1
+420    1.06610648   1   1
+500    1.17340476   1   1
+2000   3.18524752   1   1
+
+**CROCKTABU : for dilation "U"nloading path  starting at 500   -> 200 psi 
+
+*CROCKTABU
+500.00  1.17340476   1   1
+200.00  1.08169581   1   1
+
+*CROCKTABC
+200.00  1.08169581   1   1
+145.00  1.02280453   1   1
+
+*CROCKTABR
+145.00  1.02280453   1   1
+420.00  1.06610648   1   1
+
+*PERMI *KVAR             ** Each of the I, J, and K permeabilities are
+200.0   50.0  500.0      ** constant within each layer of the reservoir,
+*PERMJ *KVAR             ** but vary from layer to layer. Hense the use
+200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+*PERMK *KVAR             ** that the first K layer is at bottom of the
+20.0   40.0   60.0       ** reservoir.
+
+
+***************************************************************************
+** Component Property Section                                            **
+***************************************************************************
+
+*MODEL *PR
+*NC 11 11
+*TRES   200.0
+*COMPNAME  'C1'      'C2'      'C3'      'C4'      'C5'      'C6'
+        'C7-13'  'C14-20'  'C21-28'    'C29+'     'CO2'
+*HCFLAG       0         0         0         0         0         0
+              0         0         0         0         0
+*PCRIT    45.40     48.20     41.90     37.50     33.30     32.46
+          26.17     16.89     12.34      7.96     72.80
+*VCRIT 0.099000  0.148000  0.203000    0.2550    0.3040  0.344000
+       0.489000  0.852000  1.181000    1.7620    0.0940
+*TCRIT    190.6     305.4     369.8     425.2     469.6     507.5
+          606.5     740.0     823.6     925.9     304.2
+*AC      0.0080    0.0980    0.1520    0.1930    0.2510    0.2637
+         0.3912    0.6300    0.8804    1.2457    0.2250
+*MW      16.043    30.070    44.097    58.124    72.151    86.000
+        125.960   227.86    325.560   484.700    44.010
+*BIN  0.003
+      0.009     0.002
+      0.015     0.005     0.001
+      0.021     0.009     0.003     0.001
+      0.025     0.012     0.005     0.001     0.000
+      0.041     0.023     0.013     0.007     0.004     0.002
+      0.073     0.049     0.033     0.024     0.017     0.014     0.005
+      0.095     0.068     0.050     0.038     0.030     0.025     0.013  0.002   
+      0.125     0.095     0.073     0.059     0.049     0.043     0.027  0.009     0.003  
+      0.103     0.130     0.135     0.130     0.125     0.125     0.130  0.130     0.130     0.130
+      
+
+*PHASEID *OIL
+*RHOW    1571.10
+*CW      3.3E-06
+*REFPW   14.6960
+*VISW    0.80
+
+******************************************************************************
+** Rock-Fluid Property Section                                              **
+******************************************************************************
+*ROCKFLUID
+*RPT
+*SGT
+      0.005     0.0       0.740           0.0
+      0.040     0.005     0.650           0.0
+      0.080     0.013     0.513           0.0
+      0.120     0.026     0.400           0.0
+      0.160     0.040     0.315           0.0
+      0.200     0.058     0.250           0.0
+      0.240     0.078     0.196           0.0
+      0.280     0.100     0.150           0.0
+      0.320     0.126     0.112           0.0
+      0.360     0.156     0.082           0.0
+      0.400     0.187     0.060           0.0
+      0.440     0.222     0.040           0.0
+      0.480     0.260     0.024           0.0
+      0.520     0.300     0.012           0.0
+      0.560     0.348     0.005           0.0
+      0.600     0.400     0.0             0.0
+      0.640     0.450     0.0             0.0
+      0.680     0.505     0.0             0.0
+      0.720     0.562     0.0             0.0
+      0.760     0.620     0.0             0.0
+      0.800     0.680     0.0             0.0
+      0.840     0.740     0.0             0.0
+   
+*SWT
+      0.160     0.0       0.740      50.00000
+      0.200     0.002     0.680      32.00000
+      0.240     0.010     0.620      21.00000
+      0.280     0.020     0.562      15.50000
+      0.320     0.033     0.505      12.00000
+      0.360     0.049     0.450       9.20000
+      0.400     0.066     0.400       7.00000
+      0.440     0.090     0.348       5.30000
+      0.480     0.119     0.300       4.20000
+      0.520     0.150     0.260       3.40000
+      0.560     0.186     0.222       2.70000
+      0.600     0.227     0.187       2.10000
+      0.640     0.277     0.156       1.70000
+      0.680     0.330     0.126       1.30000
+      0.720     0.390     0.100       1.00000
+      0.760     0.462     0.078       0.70000
+      0.800     0.540     0.058       0.50000
+      0.840     0.620     0.040       0.40000
+      0.880     0.710     0.026       0.30000
+      0.920     0.800     0.013       0.20000
+      0.960     0.900     0.005       0.10000
+      0.995     1.0       0.0         0.0
+
+
+*INITIAL
+******************************************************************************
+** Initial Conditions Section                                               **
+******************************************************************************
+*VERTICAL *COMP
+*REFDEPTH   1000.           ** Give a reference depth  and
+*REFPRES    100.            ** associated pressure.
+*DWOC       2000.           ** Depth to water-oil contact
+*ZDEPTH 1000.0 
+0.0141  0.0143  0.0243  0.0173  0.0357
+0.0418  0.4554  0.1646  0.0854  0.1472
+0.0000
+*NUMERICAL
+******************************************************************************
+** Numerical Control Section                                                **
+******************************************************************************
+*DTMAX        31.          ** Maximum time step size
+*NORM *PRESS  145.0        ** Normal maximum changes per time step
+*NORM *SATUR   0.15
+
+*RUN
+******************************************************************************
+** Well and Recurrent Data Section                                          **
+******************************************************************************
+*DATE 1986 04 22
+*DTWELL 0.5
+
+*WELL 1  'Injector'   
+
+*INJECTOR  1                         ** Define the type of well 1.
+*INCOMP    *WATER                    ** Injecting water.
+*OPERATE   *MAX  *STW  1000.         ** Operating on a rate specification.       
+*OPERATE   *MAX  *BHP  20000.0       
+
+*PERF 1 
+** if     jf     kf     wi 
+1      1      3      1.0E+5
+
+*WELL 2   'Producer' *VERT  10 10
+
+*PRODUCER 2
+*OPERATE *MAX *STO 2000.
+*OPERATE *MIN *BHP  100.
+
+*GEOMETRY *K  0.25  0.34  1.0  0.0
+*PERFV *GEO 2
+1  1.0
+*SHUTIN 2
+*TIME 1000.0       
+*ALTER
+1        2
+20000.0  8000.0
+*TIME 1500.0
+*SHUTIN 1       
+*TIME 2000.0
+*SHUTIN 2
+*ALTER
+1
+10000.0
+*TIME 3000.0
+*SHUTIN 1
+*ALTER
+2
+15000.0
+*TIME 4000.0
+*SHUTIN 2
+*ALTER
+1
+5000.0
+*TIME 6000.0
+*STOP                   

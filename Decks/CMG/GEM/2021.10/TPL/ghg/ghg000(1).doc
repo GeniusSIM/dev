@@ -1,0 +1,75 @@
+               GREENHOUSE GAS
+               --------------
+
+
+
+Templates in the Green-House Gas (GHG) directory:
+
+GMGHG001.DAT:  CO2 Sequestration Without Geochemistry
+GMGHG002.DAT:  CO2 Sequestration w/o Geochemistry, Low Temperature
+GMGHG003.DAT:  CO2 Sequestration - Henry Constants from Li-Nghiem
+GMGHG004.DAT:  CO2 Sequestration - Henry Constants from Harvey
+GMGHG005.DAT:  CO2 Sequestration - Gas phase hysteresis.
+GMGHG006.DAT:  CO2 Sequestration With Geochemistry
+GMGHG007.DAT:  CO2 Sequestration With Aqueous Concentration Norms
+GMGHG008.DAT:  CO2 Sequestration - CO2 Inventory Output
+GMGHG009.DAT:  CO2 Sequestration - Analytical Derivatives of Rx'ns
+GMGHG010.DAT:  CO2 Sequestration - Numerical Derivatives of Rx'ns
+GMGHG011.DAT:  CO2 Sequestration - Specify Primary Aqueous Molality
+GMGHG012.DAT:  CO2 Sequestration With No Trace Component
+GMGHG013.DAT:  CO2 Sequestration With 2 Initialization Regions
+GMGHG014.DAT:  CO2 Sequestration With Geochemistry and gas phase hysteresis
+GMGHG015.DAT:  CO2 Sequestration With Brine Injection
+GMGHG016.DAT:  CO2 Sequestration - Cap Rock Leakage Using Wells
+GMGHG017.DAT:  CO2 Sequestration - Cap Rock Leakage Restart
+GMGHG018.DAT:  CO2 Sequestration - Water Vaporization
+GMGHG019.DAT:  Brine Injection - 3D Heterogeneous Model
+GMGHG020.DAT:  CO2 Sequestration - AQFILL ON; constraint equation residual checking  
+GMGHG021.DAT:  CO2 Sequestration With Adsorption
+GMGHG022.DAT:  CO2 Sequestration With Geochemistry and Thermal effects
+GMGHG023.DAT:  Brine Injection with varying salinity and temperature
+GMGHG024.DAT:  CO2 Sequestration - Creation of Mineral
+GMGHG025.DAT:  CO2 Injection into an oil reservoir with Geochemistry -- 
+               activity coefficients are input via *ACTIVCOEF keyword.
+GMGHG026.DAT:  CO2 Injection into an oil reservoir with Geochemistry --
+               *ACTIVCOEF-SOL *ON is used to set the activity coefficient
+               of soluble compenents equal to salting out coefficients.
+GMGHG027.DAT:  Use of *NORM *AQUEOUS to control material balance error.
+
+GMGHG028.DAT:  Polymer Injection in a Model with Geochemistry.
+GMGHG029.DAT:  Empirical Foam Model with Geochemistry.
+GMGHG030.DAT:  Use of *DIFCOR-AQU keyword for molecular diffusion
+
+GMGHG031.DAT:  Use of *HENRY-MOD1- for modeling of CO2 and H2S solubility.
+               CO2-H2O and H2S-H2O BINs are calcualted as a function of reservoir 
+               temperature at time=0, using keywords *BIN-TDEP-CO2 and *BIN-TDEP-H2S.
+
+GMGHG032.DAT:  CO2 Sequestration - Use of *TRACE-INTERNAL-OFF
+
+GMGHG033.DAT:  Use of *CRDAMP-ALL and *CRDAMP to damp chemical reactions
+GMGHG034.DAT:  Use of *MRDAMP-ALL and *MRDAMP to damp mineral reactions
+GMGHG035.DAT:  Use of *MINERAL-ERA and *NORM *MINERAL-VFR
+
+GMGHG036.DAT:  Switching-off Water Vaporization in models with *H2O_INCLUDED.
+
+GMGHG037.DAT:  Use of Pitzer Activity Model -- Pitzer coefficients from GEM's internal library
+GMGHG038.DAT:  Use of Pitzer Activity Model -- Pitzer coefficients supplemented by user input.
+GMGHG039.DAT:  Use of Pitzer Activity Model -- full Pitzer terms using *PITZER2.
+GMGHG040.DAT:  Use of Pitzer Activity Model -- full Pitzer terms using *PITZER2; high salinity brine.
+GMGHG041.DAT:  Use of Pitzer Activity Model -- *PITZER instead of PITZER2; high salinity brine.
+
+GMGHG042.DAT:  Use of *PORMNR in Resistance Factor calculations.
+
+GMGHG043.DAT:  Water Vaporization and Halite Precipitation during CO2 Injection.
+
+GMGHG044.DAT:  K-Value formulation for aqueous phase solubility.
+GMGHG045.DAT:  Use of different solubility models for CO2 and H2S via *SOLUBILITY-MODEL keyword.
+GMGHG046.DAT:  CO2 Sequestration and Water Vaporization using pre-generated K-value tables.
+
+GMGHG047.DAT:  Mineral Equilibrium Reaction in CO2 Storage Modeling.
+GMGHG048.DAT:  Halite Precipitaion using Mineral Equilibrium Reaction.
+
+GMGHG049.DAT:  Modeling of Methanation Reaction during H2 and CO2 storage in aquifer.
+
+GMGHG050.DAT:  Solubility Options and their Precedence.
+GMGHG051.DAT:  Solubility Options and use of *SOLUBILITY-MODEL keywords.

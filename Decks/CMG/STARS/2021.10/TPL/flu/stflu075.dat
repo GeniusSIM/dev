@@ -1,0 +1,434 @@
+
+************************************************************************************** 
+** stflu075.dat: Polymer/surfactant injection with viscosity group mixing rules     **
+**************************************************************************************
+**************************************************************************************
+**         			                                                    **
+** This template demonstrates the application of *VSMIXGROUP option:                **
+** 1) Two polymer and one surfactant components are identified as nonlinear mixers  **
+** 2) Nonlinear polymer mixers, grouped together using *VSMIXGROUP, will be mixed   **
+**    with water component (linear mixer)                                           **
+** 3) Poly-Water mix is then mixed with surfactant (nonlinear mixer)                **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**                                                                                  **
+**   INJECTION SEQUENCE:                                                            **
+**                                                                                  **
+**      Day 0 - WATER FLOOD TO ESTABLISH BASELINE                                   **
+**      Day 0.625 - First poly flood                                                **
+**      Day 0.25  - First and second poly flood                                     **
+**      Day 0.5   - First and second poly flood with surfactant                     **
+**      Day 0.75  - First and second poly flood, taper                              **
+**      Day 1.0   - First and second poly flood, further tapering                   **
+**      Day 1.5   - Water flood                            			    **
+**      Day 2.0   - End                                  			    **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #75'
+*TITLE2 'Illustrate Viscosity Nonlinear Mixing with *VSMIXGROUP'
+*TITLE3 'Based on STFLU020'
+
+*MASSBASIS    ** USE MASS DENSITIES, MASS FRACTIONS, ETC. REMOVE MASS BASIS FOR LAB
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+** SG to prn and srf files KF
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Z *SG *PRES    *PERMI  *PERMK                               
+               *VISW *VISO *KRW *KRO *LOGIFT *LOGCAPN *WATMOB *OILMOB *IFT
+**OUTPRN *WELL  *ALL
+**OUTSRF *GRID  *ALL
+
+**OUTSRF *WELL DOWNHOLE COMPONENT ALL
+***WSRF *GRID 500  *WSRF *WELL 500 
+*WSRF *GRID 1
+*WRST 500
+*WPRN *GRID 500
+*WPRN *ITER 1   
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 30 1 1  ** One-dimensional grid
+
+*DI *CON .01
+*DJ *CON .0396
+*DK *CON .0396
+
+** REMOVE POROSITY GRID AND MAKE CONSTANT
+*POR *CON 0.25	** POROSITY
+
+
+** REMOVE PERM GRID AND MAKE CONST
+*PERMI *CON 500  ** 500 milli-darcies
+*PERMJ *EQUALSI  ** EQUAL TO I DIRECTION VALUE
+*PERMK *EQUALSI
+
+*END-GRID
+
+** ROCK COMPRESSIBILITIES
+** CONVERT PRESSURE TO KPa FOR LAB UNITS
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+ 
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+*MODEL 6 6 6 5   ** All components except oil are aqueous based
+ 
+*COMPNAME    'WATER'  'CHLORIDE' 'POLYMER'  'POLY2'	'SURF'   'OIL'
+**           -------   -------   -------  ---------  -------
+*CMM            .018    .03545	    100.     100.      .548 	.100        **Molecular weight IN SI UNITS
+**            polymer molecular weight is assumed
+**            oil     molecular weight is assumed  
+**----------------------------------------------------------------------------- 
+*MASSDEN    1000    1000     1000    1000    1000   924        **Density 
+**-----------------------------------------------------------------------------   
+*CP           3e-6    3e-6     3e-6	3e-6	3e-6        1.0e-5      **Compressibility (units 1/kPa)   
+*CT1          0e-6    0e-6	0e-6     0e-6     0e-6     -5.883e-4    **Thermal expansion
+*PCRIT        22110.0    0	0        0        0        0            **Critical pressure in kPa
+*TCRIT        374.150      0	0        0        0        0            **Critical temperature in deg C
+
+**            Critical properties used for gas density (not necessary here)
+
+*SOLID_DEN 'POLYMER' 1000 0 0
+*SOLID_DEN 'SURF'    1000 0 0
+
+**  Xanthan polymer effects on viscosity (20 cp at 0.075 mass fraction)
+**  Surfactant chosen to get 10 cp at 0.02 mass frac.
+
+*AVISC         0.600    .6 	30.   25.0   30.0       3.2         **Assigned liq. viscosity
+
+*VSMIXGROUP  'POLYMER' 'POLY2'
+
+** Nonlinear mixing rules for first polymer
+*VSMIXCOMP 'POLYMER'
+*VSMIXENDP 0 0.002                     **Between 0 & 2000 ppm
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+**For Xanthan (poly component 1 with thinning)
+
+*SHEARTHIN 0.77	.0002
+ 
+** Nonlinear mixing rules for second polymer
+*VSMIXCOMP 'POLY2'
+*VSMIXENDP 0 0.0020                     **Between 0 & 2000 ppm
+*VSMIXFUNC 0 0.15 0.35 0.45 0.55 0.65 0.75 0.79 0.87 0.94 1
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+**For HPAM (poly component 2 with thickening)
+*SHEARTHICK 2.0	.25 200
+ 
+** Nonlinear mixing rules for surfactant viscosity
+*VSMIXCOMP 'SURF'
+*VSMIXENDP 0 0.2                    
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+
+*PRSR  101.1
+*TEMR 17
+*PSURF 101.1
+*TSURF 17 
+
+**  Default K values for water, polymer, surf are overwritten (set to zero)
+ 
+*GASLIQKV           ** The following are gas-liquid K values
+*KVTABLIM  101.1 7213.8  17 149    **P-low, P-high, T-low, T-high 
+**KVTABLIM  101.3 7213.8  15.5 148.9    **P-low, P-high, T-low, T-high
+ 
+*KVTABLE 'WATER'     ** Want no water in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'POLYMER'   ** Want no polymer in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'POLY2'   ** Want no polymer in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'SURF'      ** Want no surfactant in gas phase (override default)
+  2*0
+  2*0                         
+
+*KVTABLE 'CHLORIDE'      ** Want no chloride in gas phase (override default)
+  2*0
+  2*0  
+  
+*LIQLIQKV   ** Define liquid-liquid K values (for lower phase micro emulsions)            
+**  Limited concentration K value table:                                     
+**  (with K values for maximum surfactant concentrations equal to injected)
+*KVTABLIM 101.1 7213.8  17 149 ** need to change pressure to kPa units
+*KVKEYCOMP 'SURF' *RATIOW 0 0.03  1.0 0.0
+ 
+** Modified old stuflu020 to give a BNC similar to UTCHEM
+** z21 = (1/A)(z33/z13)^2
+** using A = 0.07438 as was used in constructing IFT table below ( same as old stuflu020)
+*KVTABLE 'OIL'          ** Each component has a P-T dependent table at
+   *KEYCOMP              ** the following values of ratiow :
+      2*0
+      2*0               **  0.0 0.01 0.02 0.03
+   *KEYCOMP
+      2*0.0013
+      2*0.0013
+   *KEYCOMP
+      2*0.0053
+      2*0.0053 
+   *KEYCOMP
+      2*0.012
+      2*0.012
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+ 
+**  Interpolation between 2 sets:  high versus low IFT/ Cap No. situations.
+ 
+*INTCOMP 'OIL' *WATER
+*INTLIN   ** Linear interpolation of X(oil)
+
+*IFTTABLE   
+ 
+**       oil mass frac      IFT
+**       -------------    --------   
+             0.00          20.0000 
+             0.01          0.68060  
+             0.02          0.10000       
+             0.03          0.05080       
+
+ 
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+ 
+*KRINTRP 1
+ 
+*DTRAPW  -4.4
+*DTRAPN -5.0
+
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW  Pcow
+**  ----      -------    ------- -----
+    0.19      0.000000  1.00000  40.72 **5.91
+     0.20      0.000159  0.95162  37.21  **5.40
+     0.22      0.001149  0.85959  33.83 **4.91
+     0.24      0.002881  0.77370  30.66 **4.45
+     0.26      0.005279  0.66373  27.69 **4.02
+     0.28      0.008299  0.61947  24.94 **3.62
+     0.30      0.011909  0.55070  22.32 **3.24
+     0.32      0.016087  0.48723  19.91 ** 2.89
+     0.34      0.020813  0.42882  17.63 ** 2.56
+     0.36      0.026073  0.37529  15.57 ** 2.26
+     0.38      0.031852  0.32640  13.64 ** 1.98
+     0.40      0.038139  0.28196  11.92 ** 1.73
+     0.42      0.044925  0.24174  10.33 ** 1.50
+     0.44      0.052200  0.20555  8.82 ** 1.28
+     0.46      0.059956  0.17316  7.51 ** 1.09
+     0.48      0.068186  0.14436  6.34 ** 0.92
+     0.50      0.076883  0.11895  5.31 ** 0.77
+     0.52      0.086041  0.09671  4.34 ** 0.63
+     0.54      0.095654  0.07743  3.51 ** 0.51
+     0.56      0.105716  0.06090  2.895 ** 0.40
+     0.58      0.116224  0.04691  2.137 ** 0.31
+     0.60      0.127172  0.03524  1.655 ** 0.24
+     0.62      0.138555  0.02569  1.172 ** 0.17
+**     0.64      0.150370  0.01804  0.14
+     0.66      0.162613  0.01208  .689 ** 0.1
+**     0.68      0.175280  0.00761   0.0
+     0.70      0.188367  0.00440   0.0
+**     0.72      0.201872  0.00225   0.0
+     0.74      0.215791  0.00095   0.0
+     0.76      0.230120  0.00028   0.0
+     0.80      0.260000  0.00000   0.0
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.29      0.4200    0.000
+                   0.32      0.36898   0.00179
+                   0.34      0.33737   0.00496
+                   0.36      0.30762   0.00972
+                   0.38      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   1.00000 
+ 
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+ 
+*KRINTRP 2 *COPY 1 1
+ 
+*DTRAPW -1.8
+*DTRAPN -2.8  
+
+*SWT   **  Water-oil relative permeabilities
+ 
+**   Sw         Krw       Krow
+**  -----     -------    -------   
+
+    0.0         0.0       1.
+    0.1         0.1       0.9
+    0.2         0.2       0.8
+    0.3         0.3       0.7
+    0.4         0.4       0.6
+    0.5         0.5       0.5
+    0.6         0.6       0.4
+    0.7         0.7       0.3
+    0.8         0.8       0.2
+    0.9         0.9       0.1
+    1.0         1.0       0.0
+**WCRV 2 OCRV 2
+ 
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*PRES *CON 101.1 **set constant pressure of 101.3 kPa    
+*SW   *CON  0.65    
+*SO *CON 0.35
+*TEMP *CON 17 ** convert to lab units and lab value
+*MFRAC_WAT 'WATER' *CON 1
+*MFRAC_OIL 'OIL'   *CON 1
+   
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+*ITERMAX 100 
+**DTMAX 90
+*DTMAX .025 ** change max time step to .025 days in lab     
+*TFORM *ZT
+*ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *TEMP 50  *ZNCG .2   *ZAQ .2  
+**NORM      *PRESS 1  *ZO .1    *TEMP 50  *ZNCG .1   *ZAQ .1
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+** change field date to time in lab
+**DATE 1976 1 1.5
+*TIME 0
+
+   *DTWELL 0.0025    ** One pore volume is 0.25 day
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   **OPERATE *BHP 101.3
+ ** GEOMETRY *J .11 .3687 1 0  ** rw,cc,ff,ss
+ *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+  *PERF *TUBE-END 'PRODN'   **  i j k
+                    30 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT WATER BASELINE
+   ** TINJW 207.
+   ** QUAL 0.0 
+   *INCOMP WATER 1.0 0.0000	0.0000 0.0 0.0000   0.0   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   ** OPERATE *MAX *BHP 1000.
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   DTWELL 0.0025               **INJECT FIRST POLYMER  DRIVE
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+   ** TINJW 207.
+   ** QUAL 0.0                                                          
+   *INCOMP *WATER .99925 0.0000	0.00075 0.0 0.0 0.0000   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+  
+*TIME .125   
+*TIME .1875 
+
+*TIME .25
+   DTWELL 0.0025               **INJECT FIRST AND SECOND POLYMER  DRIVE
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+   ** TINJW 207.
+   ** QUAL 0.0                                                          
+   *INCOMP *WATER .998 0.0000	0.00075 .00125  0.0 0.0000   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+*TIME .3125
+*TIME .375
+*TIME .4375
+*TIME .5
+   *DTWELL 0.0025               **INJECT POLYMER SURF SLUG
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER .798 	0.0000	0.00075 .00125  0.2       0.0000     
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+    
+*TIME .5625
+*TIME .625  ** 10 YEARS
+*TIME .6875
+*TIME .75
+   *DTWELL 0.0025              **INJECT POLY TAPER
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER 0.99875    	0.0000		0.0005 	0.00075  	0.0000 	0.0000   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+ 
+*TIME .8125
+*TIME .875
+*TIME .9375  ** 15 YEARS
+*TIME 1    ** 1 DAY
+   
+   *DTWELL 0.0025              **INJECT POLY TAPER
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER 0.99925 	0.0000	0.00025 .0005  0.0000 0.0000   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+*TIME 1.5
+   *DTWELL 0.0025              **INJECT WATER DRIVE
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER 1.0 0.0000	0.000 0.0000 0.0  0.0000           ** INJECT ONLY WATER   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+*TIME 2

@@ -1,0 +1,402 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**   Verify and illustrate the application of *SWINIT and *VERTICAL *DEPTH_AVE *EQUIL
+**   for a water/oil/gas system with oil as the wetting phase. *SWINIT adjusts the Pcow
+**   curve and *EQUIL adjusts the Pcog curve to ensure reasonable hydrostatic equilibrium
+**   for each cell.
+
+**   With *SWINIT, no-flow condition should be preserved. Therefore the change of pressure
+**   at time steps should be small (no more than 0.5 psi), and saturation changes should
+**   be negligible (less than 0.0001), if no wells are opened. In comparison, when
+**   saturations are entered with *SW keyword, no Pcow adjustment will be made.
+
+
+
+RESULTS SIMULATOR STARS 
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 99'
+*TITLE2 'Verify/Illustrate *SWINIT for oil-wetted water/oil/gas initialization'
+
+INUNIT SI
+WSRF WELL 1
+WSRF GRID 1
+WSRF SECTOR TIME
+OUTSRF GRID all
+OUTSRF WELL LAYER NONE
+WPRN GRID 1
+OUTPRN GRID sw so pres pcow pcog sg x
+OUTPRN RES NONE
+WRST TIME
+
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+OUTPRN RES *ALLSMALL
+OUTSRF *SPECIAL *AVGVAR *PRES
+                *AVGVAR *SW
+                *AVGVAR *SO         
+                *AVGVAR *SG
+
+
+** ========= GRID AND RESERVOIR PROPERTIES ============
+
+GRID CART 3 1 40
+KDIR DOWN
+DI con 1.0 
+DJ con 10
+DK con 1.0
+
+REFINE 2:2 1:1 25:35 into 3 1 2
+ 
+DTOP
+ 3*300
+
+POR CON          0.3
+
+PERMI CON 4000
+
+PERMJ CON 4000
+
+PERMK CON 1000
+
+
+END-GRID
+
+ROCKTYPE 1
+PRPOR 650
+CPOR 1.8E-5
+ROCKCP 2e6 0
+THCONR 1.50e5
+THCONW 5.35e4
+THCONO 1.15e4
+THCONG 140
+THCONMIX SIMPLE
+HLOSST 15
+
+	 
+** ============ FLUID PROPERTIES ==================
+
+MODEL 3 3 3 1
+COMPNAME    'H2O'   'CH4' 	'HOIL' 
+**          -----   --------    -------
+CMM    	      0     0.016043 	0.6958    ** MOLECULAR MASS Kg/gm MOLE
+PCRIT         0 	4600 	924.16    ** CRITICAL PRESSURE  kPa 
+TCRIT         0       -82.55 	514.37    ** CRITICAL TEMPERATURE C 
+kv1           0      0.4391E5     0   
+kv2           0        0          0      	    
+kv3           0       1.97        0   
+kv4           0     -.19589E3     0   
+kv5           0      -273.16      0   
+
+PRSR 101.325
+TEMR 15
+PSURF 101.325
+TSURF 15.556
+
+MASSDEN     0	    289.76 	900.34 
+CP          0 	    7.028e-06 	4.918e-07 
+CT1         0 	    0.001537 	-6.417e-05 
+CT2         0 	    6.827e-06 	1.129e-06 
+CPT         0 	   -4.623e-06 	-4.535e-09 
+
+VISCTABLE
+**$      temp                                    
+            5         0    0.06225      1.475e+007
+           17         0    0.057768     1.8906e+006
+           29         0    0.051032     323640
+           41         0    0.045977     70470
+           53         0    0.040667     18768
+           65         0    0.035297     5923
+           77         0    0.030044     2158.3
+           89         0    0.025055     889.01
+          101         0    0.020448     406.69
+          113         0    0.016307     203.61
+          125         0    0.012683     110.21
+          137         0    0.0095986    63.82
+          149         0    0.0070495    1.196
+          161         0    0.0050078    1.039
+          173         0    0.0034278    1.034
+          185         0    0.0022506    1.001
+          197         0    0.0014099    1.007742
+          209         0    0.00083742   1.005862
+          221         0    0.00046813   1.0000785
+          233         0    0.00024412   1.00
+          245         0    0.0001175    0.933
+          257         0    5.15E-05     0.0552
+          269         0    2.03E-05     0.02162
+          281         0    7.03E-06     0.01763
+          293         0    2.09E-06     0.0095
+          305         0    5.21E-07     0.0039
+
+
+** =========== ROCK FLUID PROPERTIES ===============
+
+ROCKFLUID
+RPT 1 OILWET
+SWT
+**$        Sw         krwo       kro		Pcow
+** ----------------------------------------------------------
+         0.15            0         1	        -0.1
+        0.185  0.000499773      0.99		int
+          0.2  0.001100844      0.98		int
+         0.25  0.005107475      0.94		int
+          0.3  0.012533499       0.9		int
+         0.35  0.023696635     0.825		int
+          0.4   0.03883698      0.75		int
+         0.45  0.058150404      0.64		int
+          0.5  0.081803696      0.56		int
+         0.55         0.11     0.465		int
+          0.6         0.15      0.37		int
+        0.651       0.2112    0.2986		int
+          0.7         0.27      0.23		int
+         0.75         0.36     0.161		int
+          0.8         0.45     0.092		int
+         0.85         0.9      0.0		-10.0
+
+SLT
+**$        Sl         krg        krwg	       Pcog
+** -----------------------------------	      ------------
+         0.25         0.2           0	      50
+     0.295625    0.175781  0.00390625	      44.10170139
+      0.34125    0.153125    0.015625	      38.57347222
+     0.386875    0.132031   0.0351563	      33.4153125
+       0.4325      0.1125      0.0625	      28.62722222
+     0.478125   0.0945313   0.0976563	      24.20920139
+      0.52375    0.078125    0.140625	      20.16125
+     0.569375   0.0632812    0.191406	      16.48336806
+        0.615        0.05        0.25	      13.17555556
+     0.660625   0.0382812    0.316406	      10.2378125
+      0.70625    0.028125    0.390625	      7.670138889
+     0.751875   0.0195313    0.472656	      5.472534722
+       0.7975      0.0125      0.5625	      3.645
+     0.843125  0.00703125    0.660156	      2.187534722
+      0.88875    0.003125    0.765625	      1.100138889
+     0.934375  0.00078125    0.878906	      0.3828125
+         0.98           0         0.9	      0.0
+
+*bpcwmax con -15.0
+*bpcgmax con 100.0
+*bswcon con 0.15
+*bswcrit con 0.2
+
+
+** =========== INITIAL CONDITIONS ====================
+
+INITIAL
+VERTICAL DEPTH_AVE EQUIL
+DIM_DEPTH_TABLE *MIN_DSIZE 0.01 MD_SEG 400
+
+REFPRES 1000
+REFDEPTH 315
+
+DWOC 322.2
+DGOC 314.3
+
+MFRAC_OIL 'HOIL' kvar
+0.987
+0.987
+0.986
+0.986
+0.986
+0.985
+0.985
+0.985
+0.985
+0.984
+0.984
+0.984
+0.984
+0.983
+0.983
+0.983
+0.983
+0.982
+0.982
+0.982
+0.981
+0.981
+0.981
+0.981
+0.980
+0.980
+0.980
+0.979
+0.979
+0.979
+0.979
+0.978
+0.978
+0.978
+0.977
+0.977
+0.977
+0.976
+0.976
+0.976
+
+MFRAC_OIL 'CH4' kvar
+0.013
+0.013
+0.014
+0.014
+0.014
+0.015
+0.015
+0.015
+0.015
+0.016
+0.016
+0.016
+0.016
+0.017
+0.017
+0.017
+0.017
+0.018
+0.018
+0.018
+0.019
+0.019
+0.019
+0.019
+0.020
+0.020
+0.020
+0.021
+0.021
+0.021
+0.021
+0.022
+0.022
+0.022
+0.023
+0.023
+0.023
+0.024
+0.024
+0.024
+
+MFRAC_WAT 'H2O' CON 1.0
+
+*swinit ijk    
+   2,1,1 0.1
+   3,1,1 0.18
+   1,1,2 0.7
+   1,1,4 0.19
+   1,1,5 0.18
+   1,1,26 0.8
+   2,1,26 0.8
+   2,1,35 0.6496
+   2,1,36 0.2
+   1,1,38 0.15
+   2,1,40 0.9999
+   1,1,26 0.8
+   2,1,26 0.8
+   3,1,39 0.98
+
+temp con 25
+GASZONE nooil
+
+**sw ijk 1,1,2 0.7
+
+
+** ============ NUMERICAL CONTROL ====================
+
+NUMERICAL
+
+
+RUN
+
+
+** ===================== Recurrent Data ==============
+
+DATE 2012 1 1
+DTWELL 0.1
+
+   WELL  'Inj'
+   INJECTOR MOBWEIGHT IMPLICIT 'Inj'
+   INCOMP  WATER  1.  0.  0.
+   TINJW  205.
+   QUAL  0.85
+   OPERATE  MAX  STW  150.  CONT REPEAT
+   OPERATE  MAX  BHP  3500.  CONT REPEAT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Inj'
+   **$ UBA     ff  Status  Connection  
+       1 1 1   1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+
+   WELL  'Prod'
+   PRODUCER 'Prod'
+   OPERATE  MIN  BHP  200.  CONT REPEAT
+   OPERATE  MAX  STL  450.  CONT REPEAT
+   OPERATE  MAX  STEAM 20 
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Prod'
+   **$ UBA     ff  Status  Connection  
+       1 1 1   1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+
+   WELL  'Inj2'
+   INJECTOR MOBWEIGHT IMPLICIT 'Inj2'
+   INCOMP  WATER  1.  0.  0.
+   TINJW  205.
+   QUAL  0.85
+   OPERATE  MAX  STW  150.  CONT REPEAT
+   OPERATE  MAX  BHP  3500.  CONT REPEAT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Inj2'
+   **$ UBA      ff  Status  Connection  
+       1 1 1    1.  OPEN    FLOW-FROM  'SURFACE'
+
+   WELL  'Prod2'
+   PRODUCER 'Prod2'
+   OPERATE  MIN  BHP  200.  CONT REPEAT
+   OPERATE  MAX  STL  900.  CONT REPEAT
+   OPERATE  MAX  STEAM 20
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Prod2'
+   **$ UBA      ff  Status  Connection  
+       1 1 1    1.  OPEN    FLOW-TO  'SURFACE'
+	
+   SHUTIN 'Inj'
+   SHUTIN 'Prod'	
+   SHUTIN 'Inj2'
+   SHUTIN 'Prod2'
+	
+DATE 2012 2  1.00000
+
+DATE 2012 3  1.00000
+
+   DTWELL .1
+
+DATE 2012 4  1.00000
+DATE 2012 5  1.00000
+DATE 2012 6  1.00000
+DATE 2012 7  1.00000
+DATE 2012 8  1.00000
+DATE 2012 9  1.00000
+DATE 2012 10  1.00000
+DATE 2012 11  1.00000
+DATE 2012 12  1.00000
+DATE 2013 1  1.00000
+DATE 2013 2  1.00000
+DATE 2013 3  1.00000
+DATE 2013 4  1.00000
+DATE 2013 5  1.00000
+DATE 2013 6  1.00000
+DATE 2013 7  1.00000
+DATE 2013 8  1.00000
+DATE 2013 9  1.00000
+DATE 2013 10  1.00000
+DATE 2013 11  1.00000
+DATE 2013 12  1.00000

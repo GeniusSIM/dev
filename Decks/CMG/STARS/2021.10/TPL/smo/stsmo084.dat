@@ -1,0 +1,302 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**   Verify and illustrate the Potential Gradient Threshold option specified by
+**   *PTHRESHI, *PTHRESHJ and *PTHRESHK, along with *PGT_WATER and *PGT_GAS, in
+**   the Rock-Fluid section.
+
+**   As the option is activated, the reservoir is in quiescent condition. The fluid
+**   flow and convective heat flow occur only when the flow potential is larger than
+**   the defined gradient threshold.  Note that initial water saturation from
+**   vertical equilibrium is overridden. 
+
+**   To verify the effect of the option, run a case without PGT and compare.
+
+**   This template also illustrates the automatic tuning option enabled by *AUTOTUNE.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS 
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 84'
+*TITLE2 'Verify/Illustrate Potential Gradient Threshold *PTHRESHI/J/K'
+*TITLE3 'Verify/Illustrate Automatic Tuning *AUTOTUNE'
+
+INUNIT SI
+
+WSRF WELL 1
+WSRF GRID time
+WSRF SECTOR TIME
+OUTSRF GRID pres sw so ENCONVRAT **all
+OUTSRF WELL LAYER NONE
+WPRN GRID time
+OUTPRN GRID sw so pres pcow
+OUTPRN RES NONE
+WRST TIME
+
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+OUTPRN RES *ALLSMALL
+
+outsrf grid fluxrc
+
+** ========= GRID AND RESERVOIR PROPERTIES ============
+
+GRID CART 5 5 40
+KDIR DOWN
+DI con 1.0 
+DJ con 10
+DK con 1.0
+
+*DEPTH *TOP 1 1 1 300 
+
+DIP 4.0
+POR CON          0.3
+
+PERMI CON 4000
+
+PERMJ CON 4000
+
+PERMK CON 1000
+
+
+END-GRID
+
+ROCKTYPE 1
+PRPOR 650
+CPOR 1.8E-5
+ROCKCP 2e6 0
+THCONR 1.50e5
+THCONW 5.35e4
+THCONO 1.15e4
+THCONG 140
+THCONMIX SIMPLE
+	
+	 
+** ============ FLUID PROPERTIES ==================
+
+MODEL 3 3 3 1
+COMPNAME    'H2O'   'CH4' 	'HOIL' 
+**          -----   --------    -------
+CMM    	      0     0.016043 	0.6958    ** MOLECULAR MASS Kg/gm MOLE
+PCRIT         0 	4600 	924.16    ** CRITICAL PRESSURE  kPa 
+TCRIT         0       -82.55 	514.37    ** CRITICAL TEMPERATURE C 
+kv1           0      0.4391E5     0   
+kv2           0        0          0      	    
+kv3           0       1.97        0   
+kv4           0     -.19589E3     0   
+kv5           0      -273.16      0   
+
+PRSR 101.325
+TEMR 15
+PSURF 101.325
+TSURF 15.556
+
+MASSDEN     0	    289.76 	900.34 
+CP          0 	    7.028e-06 	4.918e-07 
+CT1         0 	    0.001537 	-6.417e-05 
+CT2         0 	    6.827e-06 	1.129e-06 
+CPT         0 	   -4.623e-06 	-4.535e-09 
+
+VISCTABLE
+**$      temp                                    
+            5         0    0.06225     1.475e+007
+           17         0    0.057768    1.8906e+006
+           29         0    0.051032     323640
+           41         0    0.045977      70470
+           53         0    0.040667      18768
+           65         0    0.035297       5923
+           77         0    0.030044     2158.3
+           89         0    0.025055     889.01
+          101         0    0.020448     406.69
+          113         0    0.016307     203.61
+          125         0    0.012683     110.21
+          137         0    0.0095986      63.82
+          149         0    0.0070495     39.196
+          161         0    0.0050078     25.339
+          173         0    0.0034278     17.134
+          185         0    0.0022506     12.051
+          197         0    0.0014099     8.7742
+          209         0    0.00083742     6.5862
+          221         0    0.00046813     5.0785
+          233         0    0.00024412     4.0099
+          245         0    0.0001175      3.233
+          257         0    5.15E-05     2.6552
+          269         0    2.03E-05     2.2162
+          281         0    7.03E-06     1.8763
+          293         0    2.09E-06     1.6095
+          305         0    5.21E-07     1.3973
+
+
+** =========== ROCK FLUID PROPERTIES ===============
+
+ROCKFLUID
+RPT 1
+SWT
+**$        Sw          krw      krow		 Pcow
+** ----------------------------------------------------------
+         0.15            0         1	        15
+        0.185  0.000499773      0.99		13.79013841
+          0.2  0.001100844      0.98		13.28719723
+         0.25  0.005107475      0.94		11.67820069
+          0.3  0.012533499       0.9		10.17301038
+         0.35  0.023696635     0.825		8.771626298
+          0.4   0.03883698      0.75		7.474048443
+         0.45  0.058150404      0.64		6.280276817
+          0.5  0.081803696      0.56		5.190311419
+         0.55         0.11     0.465		4.204152249
+          0.6         0.15      0.37		3.321799308
+        0.651       0.2112    0.2986		2.528740484
+          0.7         0.27      0.23		1.868512111
+         0.75         0.36     0.161		1.297577855
+          0.8         0.45     0.092		0.830449827
+         0.85         0.57     0.046		0.467128028
+          0.9         0.69         0		0.207612457
+         0.95        0.845         0		0.051903114
+            1            1         0		0
+SLT
+**$        Sl         krg        krog	       Pcog
+** -----------------------------------	      ------------
+         0.25         0.2           0	      **50
+     0.295625    0.175781  0.00390625	      **44.10170139
+      0.34125    0.153125    0.015625	      **38.57347222
+     0.386875    0.132031   0.0351563	      **33.4153125
+       0.4325      0.1125      0.0625	      **28.62722222
+     0.478125   0.0945313   0.0976563	      **24.20920139
+      0.52375    0.078125    0.140625	      **20.16125
+     0.569375   0.0632812    0.191406	      **16.48336806
+        0.615        0.05        0.25	      **13.17555556
+     0.660625   0.0382812    0.316406	      **10.2378125
+      0.70625    0.028125    0.390625	      **7.670138889
+     0.751875   0.0195313    0.472656	      **5.472534722
+       0.7975      0.0125      0.5625	      **3.645
+     0.843125  0.00703125    0.660156	      **2.187534722
+      0.88875    0.003125    0.765625	      **1.100138889
+     0.934375  0.00078125    0.878906	      **0.3828125
+         0.98           0           1	      **0.0
+
+
+PTHRESHI con 0.1       **I-D Potential Gradient Threshold
+PTHRESHJ con 0.1       **J-D Potential Gradient Threshold
+PTHRESHK con 0.1       **K-D Potential Gradient Threshold
+
+PGT_WATER 0.8          **Potential Gradient Threshold for water phase
+PGT_GAS 1.0            **Potential Gradient Threshold for gas phase
+
+PGT_ADJUST ON          **PGT control on the adjustment of hydrostatc head
+PGT_UPDATE NEWTON      **PGT control on the update frequency
+
+
+
+** =========== INITIAL CONDITIONS ============0=======
+
+INITIAL
+VERTICAL DEPTH_AVE EQUIL
+
+REFPRES 1000
+REFDEPTH 310
+
+DWOC 337.2
+DGOC 200
+
+MFRAC_OIL 'HOIL' CON 1.0
+MFRAC_WAT 'H2O' CON 1.0
+
+sw ijk 1:5 1:5  5  0.1
+           1:5 1:5 10 0.15
+           1:5 1:5 11 0.4
+           1:5 1:5 12 0.4
+           1:5 1:5 15 0.8
+           1:5 1:5 28 0.1
+           1:5 1:5 30 0.15
+           1:5 1:5 39 0.5
+
+temp con 150
+
+GASZONE nooil
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+NUMERICAL
+*converge varonly press 50
+
+*AUTOTUNE *ON *IGNORE_EXISTING *OFF
+
+*TUNING_TOOLS
+    *DT_ADJUST  *NRSTEP  4  *SC_ADJ  135  15 *NC_ADJ  6  1
+
+*MATBALTOL  1.0e-5 *MAT_MONITOR  10.0
+
+*VARI_URF  *A_GLOBAL *OFF *V_GLOBAL *ON
+
+RUN
+
+** ===================== Recurrent Data ==============
+
+DATE 2012 1 1
+DTWELL 0.1
+
+   WELL  'Inj'
+   INJECTOR MOBWEIGHT IMPLICIT 'Inj'
+   INCOMP  WATER  1.  0.  0.
+   TINJW  205.
+   QUAL  0.85
+   OPERATE  MAX  STW  150.  CONT REPEAT
+   OPERATE  MAX  BHP  3500.  CONT REPEAT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Inj'
+   **$ UBA     ff  Status  Connection  
+       1 1 5:8  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+
+   WELL  'Prod'
+   PRODUCER 'Prod'
+   OPERATE  MIN  BHP  200.  CONT REPEAT
+   OPERATE  MAX  STL  450.  CONT REPEAT
+   OPERATE  MAX  STEAM 20 
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  I  0.086  0.249  1.  0.
+   PERF  GEOA  'Prod'
+   **$ UBA     ff  Status  Connection  
+       1 1 9:10  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+
+
+   SHUTIN 'Inj'
+   SHUTIN 'Prod'
+
+*AUTOTUNE *ON
+
+DATE 2012 2  1.00000
+
+DATE 2012 3  1.00000
+
+   DTWELL 0.1
+
+DATE 2012 4  1.00000
+DATE 2012 5  1.00000
+DATE 2012 6  1.00000
+DATE 2012 7  1.00000
+DATE 2012 8  1.00000
+
+   DTWELL 0.01
+
+  open 'Inj'
+  open 'Prod'
+
+DATE 2012 9  1.00000
+DATE 2012 10  1.00000
+
+DATE 2012 11  1.00000
+
+DATE 2012 12  1.00000
+stop

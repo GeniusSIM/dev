@@ -1,0 +1,80 @@
+** This command file (input file) demonstrates how to obtain two tables - one 
+** for each component, each showing the 'Cumulative Gas Moles' at the surface 
+** conditions for a production well and an injection well.
+**
+** input file: stt01a.rwd
+**
+
+FILE 'sttst01.sr3'
+
+PRECISION 4
+WIDTH     12
+
+TABLE_FOR  component 'INRT GAS' 'OXYGEN'
+	COLUMN-FOR  WELL 'PRODUCER' 'INJECTOR'
+			PARAMETERS 'Cumulative Gas Moles(COMPONENT) SC' 
+TABLE_END
+
+
+
+** ..............................Description ......................................
+**
+**
+** FILE 'sttst01.sr3'
+**
+** Simulation results file from which data for the table will be obtained.
+** NOTE: Always ensure that the path and the file name are specified correctly.
+**
+** 
+** PRECISION 4
+**
+** User defined, it indicates the number of significant digits of all columns.
+** (PRECISION can be redefined within TABLE_FOR - TABLE_END for a particular
+**  column)
+**
+**
+** WIDTH     12	
+**
+** User defined, it indicates the width of all columns (can be redefined for
+** each particular column)
+**
+**
+** TABLE_FOR  component 'INRT GAS' 'OXYGEN'
+**
+** Defines 2 tables for components 'INRT GAS' and 'OXYGEN', containing data
+** in column(s) specified below.
+** (NOTE: The components specified after TABLE_FOR must exist in file 
+**  'sttst01.sr3' in order for this command file to work)
+**
+**
+** COLUMN-FOR  WELL 'PRODUCER' 'INJECTOR'
+** 
+** Defines columns for wells 'PRODUCER' (production well) and 'INJECTOR' 
+** (injection well), containing data of parameter type defined below.
+** 
+**
+** PARAMETERS 'Cumulative Gas Moles(COMPONENT) SC' 
+**
+** Defines what parameter(s) to use for each column (in this case only one
+** parameter type is specified: 'Cumulative Gas Moles SC').
+** The (COMPONENT) option tells the Report Writer that each table should
+** contain the specified parameter(s) for one of the defined components 
+** ('INRT GAS' or 'OXYGEN'), and appear in the order of which the components
+** were defined.
+**
+**
+** TABLE_END
+**
+** Defines the end of table --> table is drawn according to the above 
+** specifications.
+** Output: 
+**	2 Tables printed: one for component 'INRT GAS' 
+** 		      and one for component 'OXYGEN'
+**     	Each table containing the following:
+**		3 columns
+** 		    1 column containing time (default), 
+**		    2 columns containing 'Cumulative Gas Moles SC' data for
+**		      wells 'PRODUCER' and 'INJECTOR'.
+**
+** ............................................................................
+	

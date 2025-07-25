@@ -1,0 +1,232 @@
+   ** PAR016.INC (16 MB) will suffice.
+   ******************************************************************************
+   ** mxgro004.dat:            2,175 grids model (16 MB common blocks)         **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:                 MXGRO004.DAT                                               **
+   **                                                                                  **
+   ** MODEL:  29x15x5                  50 WELLS                       FIELD UNIT       **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** A cartesian  29x15x5  grids model with 50 producers. It is designed for testing **
+   ** 16 MB common blocks model only.                                                  ** 
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+*TITLE1
+   'Test for 16 Mb. Common'
+*TITLE2
+   'TOTAL Blocks = 2175, Active = 1450, Null = 725 Wells = 50'   
+
+*TITLE3
+   'Maximum Perforations per well = 5, Maximum perforating blocks = 250'
+
+   *INUNIT *FIELD              
+   **RANGECHECK *OFF
+
+   *WPRN   *WELL   *TIME
+   *WPRN   *GRID   *TIME
+   *WPRN   *ITER   *NEWTON
+   *OUTPRN *WELL   *all
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL    1
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 29  15  5 
+                        
+   *DI *CON 1000.0         
+   *DJ *CON 1000.0         
+   *DK *con 30
+                        
+   *DEPTH 1 1 1 8400.0     
+
+   *null *ijk 
+     1:29 1:15  4:5  0
+     1:29 1:2   4:5  1 
+     1:29 3:3   4:4  1
+
+   *POR *CON 0.3           
+                
+   *CPOR   3.0E-6          
+   *PRPOR 14.7             
+
+   *PERMI *con 100
+   *PERMJ *con 100
+   *PERMK *con 10
+
+
+   *MODEL *BLACKOIL        
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                            
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *ON               ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       9500.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        90.         ** Maximum time step size
+   *MAXSTEPS      1
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.20
+   *AIM  *off   
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *aimset *con 1
+                  
+   *WELL 1   'pro1  '  *vert 11  3
+   *WELL 2   'pro2  '  *vert 12  3
+   *WELL 3   'pro3  '  *vert 13  3
+   *WELL 4   'pro4  '  *vert 14  3
+   *WELL 5   'pro5  '  *vert 15  3
+   *WELL 6   'pro6  '  *vert 16  3
+   *WELL 7   'pro7  '  *vert 17  3
+   *WELL 8   'pro8  '  *vert 18  3
+   *WELL 9   'pro9  '  *vert 19  3
+   *WELL 10  'pro10 '  *vert 20  3
+   *WELL 11  'pro11 '  *vert 21  3
+   *WELL 12  'pro12 '  *vert 22  3
+   *WELL 13  'pro13 '  *vert 23  3
+   *WELL 14  'pro14 '  *vert 24  3
+   *WELL 15  'pro15 '  *vert 25  3
+   *WELL 16  'pro16 '  *vert 26  3
+   *WELL 17  'pro17 '  *vert 27  3
+   *WELL 18  'pro18 '  *vert 28  3
+   *WELL 19  'pro19 '  *vert 29  3
+   *WELL 20  'pro20 '  *vert 11  7
+   *WELL 21  'pro21 '  *vert 12  7
+   *WELL 22  'pro22 '  *vert 13  7
+   *WELL 23  'pro23 '  *vert 14  7
+   *WELL 24  'pro24 '  *vert 21  13
+   *WELL 25  'pro25 '  *vert 22  13
+   *WELL 26  'pro26 '  *vert 23  13
+   *WELL 27  'pro27 '  *vert 24  13
+   *WELL 28  'pro28 '  *vert 25  13
+   *WELL 29  'pro29 '  *vert 26  13   
+   *WELL 30  'pro30 '  *vert 15  7
+   *WELL 31  'pro31 '  *vert 16  7
+   *WELL 32  'pro32 '  *vert 17  7
+   *WELL 33  'pro33 '  *vert 18  7
+   *WELL 34  'pro34 '  *vert 19  7
+   *WELL 35  'pro35 '  *vert 20  7
+   *WELL 36  'pro36 '  *vert 21  7
+   *WELL 37  'pro37 '  *vert 22  7
+   *WELL 38  'pro38 '  *vert 23  7
+   *WELL 39  'pro39 '  *vert 24  7
+   *WELL 40  'pro40 '  *vert 25  7
+   *WELL 41  'pro41 '  *vert 26  7
+   *WELL 42  'pro42 '  *vert 27  7
+   *WELL 43  'pro43 '  *vert 13  11
+   *WELL 44  'pro44 '  *vert 14  11
+   *WELL 45  'pro45 '  *vert 15  11
+   *WELL 46  'pro46 '  *vert 16  11
+   *WELL 47  'pro47 '  *vert 17  11
+   *WELL 48  'pro48 '  *vert 18  11
+   *WELL 49  'pro49 '  *vert 19  11
+   *WELL 50  'pro50 '  *vert 20  11
+
+
+   *PRODUCER  1:50
+   *OPERATE *MAX  *STO 20.0            
+   *OPERATE *MIN  *BHP  500.0          
+   *MONITOR *GOR       20000.0  *STOP  
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERFV *GEO 1:50
+   ** kf     ff                         
+      1:2   1.0      
+
+
+   *TIME 3650.0                        
+   *STOP                               

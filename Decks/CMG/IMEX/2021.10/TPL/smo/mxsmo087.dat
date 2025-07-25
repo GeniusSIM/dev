@@ -1,0 +1,201 @@
+   ******************************************************************************
+   ** mxsmo087.dat:      Decoupled Krow & Krg Hysteresis Test Model            **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO087.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  1x1x50    Decoupled Krow and Krg Hysteresis Test Water/Gas Injection     **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This model Injects water into every block and produces oil and water from        **
+   ** every block.  Each block has a different initial water saturation.               **
+   **                                                                                  **
+   ** The varying initial water saturation produces a different scanning curve         **
+   ** in each block. Production will be very sensitive to the hysteresis model         **
+   ** implementation                                                                   **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   TITLE1 'Decoupled Krow & Krg Hysteresis Test'
+
+   INUNIT FIELD
+   OUTUNIT FIELD
+   WPRN    WELL     1
+   WPRN    GRID     10
+   WPRN    SECTOR   TIME
+
+   OUTPRN  *WELL     *ALL
+   OUTPRN  *GRID     *So    *SW    *PRES  kro krw
+   OUTSRF  *GRID     *So    *SW    *PRES  kro krw
+   WSRF    *GRID    10
+   WSRF    *WELL    1
+
+   OUTSRF SPECIAL 1 1  1 SW
+   OUTSRF SPECIAL 1 1 10 SW
+   OUTSRF SPECIAL 1 1 20 SW
+   OUTSRF SPECIAL 1 1 30 SW
+   OUTSRF SPECIAL 1 1 40 SW
+   OUTSRF SPECIAL 1 1 50 SW
+
+   OUTSRF SPECIAL 1 1  1 KRO
+   OUTSRF SPECIAL 1 1 10 KRO
+   OUTSRF SPECIAL 1 1 20 KRO
+   OUTSRF SPECIAL 1 1 30 KRO
+   OUTSRF SPECIAL 1 1 40 KRO
+   OUTSRF SPECIAL 1 1 50 KRO
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   GRID VARI 1 1 50
+   KDIR DOWN
+   DI CON 1000.0
+   DJ CON 1000.0
+   DK CON 10.0
+   DTOP   1000
+   POR  CON 0.25
+   PRPOR    15.0
+   CPOR     3.0E-6
+   PERMI   CON 100.0
+   PERMJ   CON 100.0
+   PERMK   con 10.0
+
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   MODEL BLACKOIL
+   PVT BG 1  
+**     P  Rs    Bo   Bg           VISoil VISgas
+      300 0.0   1.00 1.21820E-02  1.00   0.01609
+     6200 100.  1.02 6.55100E-04  0.60   0.03263
+
+   GRAVITY  *GAS   0.852
+   DENSITY  *WATER 63.02
+   BWI             1.01420
+   CW              3.0E-6
+   REFPW           14.7
+   VWI             0.96
+   CVW             0.0
+   DENSITY OIL     60
+   CO              3.0e-6
+
+   PTYPE  CON  1
+
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   ROCKFLUID
+
+   RPT 1
+
+   KROIL STONE2 SWSG
+
+   SWT
+     **  Sw       Krw    Krow   Pcow   Pcowi
+       0.3980   0.0000    1.0   7.50   7.50
+       0.6237   0.0400   *INT   *int   *int
+       0.6614   0.0600   *INT   *int   *int
+       0.6990   0.0800   *INT   *int   *int
+       0.7366   0.1100   *INT   *int   *int
+       0.7743   0.1423   *INT   *int   *int
+       0.8119   0.2126   *INT   *int   *int
+       0.8495   0.3005   *INT   *int   *int
+       1.0000   1.0000   0.0    0.0   -10.0
+  
+  HYSKRO  DECOUPLED_CARLSON  0.15
+  
+   SLT 
+     **  Sl       Krg    Krog   Pcog   Pcogi
+       0.3980    0.9500  0.0    5.0    5.0
+       0.6235    0.1520  *INT   *int   *int
+       0.6517    0.0804  *INT   *int   *int
+       0.6799    0.0329  *INT   *int   *int
+       0.7081    0.0123  *INT   *int   *int
+       0.7362    0.0042  *INT   *int   *int
+       0.9500    0.0000  *INT   *int   *int
+       1         0       1.0    0.0    -5.0
+ 
+  HYSKRG DECOUPLED_CARLSON  0.1
+
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   INITIAL
+   VERTICAL   BLOCK_CENTER 
+   REFPRES    1000
+   REFDEPTH   1000
+   DWOC       1500
+   DGOC       1000
+   PB CON     400      
+
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   NUMERICAL
+   DTMAX        31.
+   DTMIN        0.001
+ 
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   RUN
+   DATE 2000  1   1 
+   DTWELL    1.0
+
+   WELL   1 'P01'  *VERT   1 1     
+   WELL   2 'I01'  *VERT   1 1
+   WELL   3 'I02'  *VERT   1 1
+                                            
+**               rad   geofac  wfrac  skin
+   GEOMETRY  *K  0.02    0.37     1.0   0 
+                       
+   PRODUCER 'P01'
+   OPERATE  MIN  BHP       1000.00  
+   PERFV     geo    'P01'       
+     **k    WI
+    1:50   1.0
+
+   INJECTOR 'I01'
+   INCOMP WATER
+   OPERATE  MAX  STW       2000.00  
+   PERFV     geo    'I01'       
+     **k    WI
+     1:50   1.0
+
+   INJECTOR 'I02'
+   INCOMP GAS
+   OPERATE  MAX  STG       5.0e+06  
+   PERFV     geo    'I02'       
+     **k    WI
+     1:50   1.0
+
+  SHUTIN 3
+
+  DATE 2001 1 1 
+  SHUTIN 2
+  OPEN 3
+  
+  DATE 2002 1 1
+  SHUTIN 3
+  OPEN 2
+
+  DATE 2003 1 1 
+  SHUTIN 2
+  SHUTIN 3
+
+  DATE 2004 1 1 
+  DATE 2005 1 1 
+  DATE 2006 1 1 
+ 
+  STOP

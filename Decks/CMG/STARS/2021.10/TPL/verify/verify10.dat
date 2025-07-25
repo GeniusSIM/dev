@@ -1,0 +1,250 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Show that the aquifer model with *AQUIFER *BOUNDARY assigns
+**            aquifer regions to the correct blocks.
+
+**  USAGE:    Run this data as is.
+
+**  RESULTS:  For horizontal hybrid grid in I direction, aquifer regions are
+**            assigned only to the hybrid grid blocks on the -I and +I side
+**            boundaries since these are in it's axial direction.
+
+**  CONTEXT:  Used to test the integration of LGR with aquifer model.
+
+**  ORIGIN:   This run is based on TB #34.
+
+**  DESCR:    This run is the same as TB #34 but with
+**               a) hybrid grid axial refinement increased from 1 to 2,
+**               b) *AQUIFER *BOUNDARY,
+**               c) initial SW changed to 75%, and
+**               d) one timestep.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #10'
+*title2 'Test *AQUIFER *BOUNDARY Option with Hybrid Grid'
+
+inunit  field
+
+outprn grid pres sw so sg temp y
+outprn well all
+wprn grid 300
+wprn iter 300
+
+outsrf grid pres temp
+
+outsrf special blockvar temp 3,1,1
+               blockvar temp 2,1,1 / 1,1,1
+               blockvar temp 2,1,1 / 2,1,1
+               blockvar temp 2,1,1 / 1,1,2
+               blockvar temp 1,1,1 / 1,1,2
+               blockvar temp 3,1,1 / 1,1,1
+
+*aqstat on
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 5 6
+
+refine 1:5 1 1  into  2 4 2
+hybrid  rw 0.3 idir **rwi 3.0  5.735  16.7
+
+di con 131.24     
+dj con 131.24
+dk kvar 41.5  6.561 2*19.683 2*6.561
+
+por con 0.35  
+permi con 2000  
+permj equalsi  
+permk equalsi * 0.1
+
+aquifer boundary
+AQMETHOD semi-analytical
+aqgeom rectang infinite
+AQPROP  0.0  0.3 1000.0  0.0 0.0 0.0
+aqcomp 7.0945E-05
+hfprop 33.0 42.24 
+
+end-grid
+
+cpor 1.0e-4
+rockcp 33.0
+thconr 42.24
+thconw 42.24
+thcono 42.24
+thcong 42.24
+**hlossprop **overbur  33.0   35.28
+            ** underbur 33.0   35.28
+hlossprop -k 33.0   35.28
+          +k 33.0   35.28
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'   'DEAD OIL'
+**              -----     --------
+cmm             18.02      600.0
+pcrit          3206.2       0           ** flag for ideal gas
+tcrit           705.4        0
+molden            0        0.10113
+cp                0        5.0e-6
+ct1               0        5.0E-4
+
+cpl1              0         300
+
+avg            1.13e-5       0
+bvg             1.075        0
+
+visctable
+**   Temp
+      74          0       1275
+     100          0        380
+     150          0         91.2
+     200          0         28.8
+     250          0         13.5
+     300          0          7.9
+     350          0          5.2
+     500          0          2
+
+prsr 14.7
+temr 74.0
+tsurf 60.0
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.2        0.0        0.8475
+    0.25       0.0045     0.71
+    0.3        0.01       0.6
+    0.35       0.02       0.51
+    0.4        0.03       0.43
+    0.45       0.04       0.355
+    0.5        0.05       0.287
+    0.6        0.075      0.16
+    0.65       0.09       0.1175
+    0.7        0.105      0.057
+    0.75       0.12       0.02
+    0.79       0.135      0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  -----     ------    ------
+    0.285     0.127     0.0
+    0.35      0.105     0.015
+    0.4       0.09      0.025
+    0.45      0.073     0.037
+    0.5       0.06      0.05
+    0.55      0.045     0.065
+    0.6       0.035     0.085
+    0.65      0.027     0.1175
+    0.7       0.02      0.137
+    0.75      0.015     0.175
+    0.8       0.012     0.225
+    0.85      0.007     0.29
+    0.9       0.0       0.39
+    1.0       0.0       0.8475
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+vertical depth_ave
+refpres 200.0
+refblock  1 1 1 / 1 1 1
+
+sw kvar  6*0.75   ** So by difference, since Sg = 0
+temp con 74.0
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+norm     press 200 satur 0.2   temp 180  y 0.2   x 0.2
+
+*maxsteps 1
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1e-2
+
+   well 1 'STEAM INJT'
+   well 2 'PRODUCER'
+
+   injector  mobweight 'STEAM INJT'
+   incomp  water  1.0  0.0
+   tinjw 480
+   qual .7  ** Wet steam at 70 % quality
+   operate     stw 629.0   ** Condensed steam equivalent
+   operate max bhp 750.0
+   perf 'STEAM INJT'
+           **  UBA                wi
+               1 1 1 / 1  1  1:2  45159.27 ** 50.902   ** Inject into 5 layers
+               2 1 1 / 1  1  1:2  45159.27 ** 50.902
+               3 1 1 / 1  1  1:2  135476.9 ** 152.705
+               4 1 1 / 1  1  1:2  135476.9 ** 152.705
+               5 1 1 / 1  1  1:2  45159.27 ** 50.902
+
+   producer 'PRODUCER'
+   operate     stl 500.0
+   operate min bhp 17.0
+   perf 'PRODUCER'
+           **  UBA                wi
+               1 1 1 / 1  1  1:2  45159.27 ** 50.902   ** Produce from 5 layers
+               2 1 1 / 1  1  1:2  45159.27 ** 50.902
+               3 1 1 / 1  1  1:2  135476.9 ** 152.705
+               4 1 1 / 1  1  1:2  135476.9 ** 152.705
+               5 1 1 / 1  1  1:2  45159.27 ** 50.902
+
+   shutin 'PRODUCER'
+
+time 10
+
+   shutin 'STEAM INJT'
+
+time 17
+
+   open 'PRODUCER'
+
+time 150

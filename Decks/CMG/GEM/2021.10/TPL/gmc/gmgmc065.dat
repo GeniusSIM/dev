@@ -1,0 +1,342 @@
+
+**************************************************************************************
+** Template  (gmgmc065.dat): Stress-Dependent Matrix Perm Multipliers               **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc065.DAT                                                             **
+**                                                                                  **
+** MODEL:  INVERTED 5 SPOT WATER DRIVE  FIELD UNITS    8X8X10 CARTESIAN GRID        **
+**                                                                                  **
+**         CAPILLARY PRESSURES AFFECT MATRIX-MATRIX TRANSFER                        **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  SINGLE PERMEABILITY MODEL WITH CAPILLARY PRESSURE EFFECTS                **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       In this test problem, table lookup table is used in a single               **
+**       porosity model for fracture closure.                                       **
+**       Water is injected by a single vertical well into dead oil.                 **
+**       The main purpose of this problem is using the lookup table                 **
+**       to get very permeability in a matrix block to mimic a fracture occuring.   **
+**                                                                                  **
+**       Features:                                                                  **
+**       Vertical well in a matrix block                                            **
+**       Normal effective stress-dependent matrix permeability                      **
+**       Lookup tables are used on assigned matrix blocks                           **
+**       Model 100 ft of overburden                                                 **
+**                                                                                  **
+**************************************************************************************
+** After stgeo081.dat, gmgmc013.dat
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #65'
+*TITLE2 'Test/Illustrate Matrix Perm Multiplier Tables *GPERMNEX/Z_MT'
+*TITLE3 'Matrix Permeability Varies with Normal Effective Stress'
+
+*INUNIT *FIELD 
+
+*OUTPRN *GRID *IMPL *PRES *SW *SO *SG *PERM
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+
+*WSRF *GRID 10
+
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP  *POROS  *PERM
+               *STRESMXP *STRESMNP *STRESEFF *STRESSM *VMSTRESS
+               *STRNEPL *STRAINI *STRAINJ *STRAINK *STRAINSH *STRNMXP *STRNMNP
+               *STRESNORM  *STRAINVOL  *STRESI  *STRESJ  *STRESK
+
+*OUTSRF *WELL  *STRESMNP  4,6,4 
+               *STRESNORM 4,6,4 
+               *STRESNORM 1,4,10 
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 8 7 10       
+
+*DI *CON 75
+*DJ *JVAR 3*75 5 3*75
+*DK *KVAR 5*5   ** 25 ft pay
+          5*20  ** 100 ft overburden
+
+*POR  KVAR 5*0.19
+           5*0.10
+
+*PERMI *KVAR 5*1
+             5*1e-4
+
+*PERMJ *KVAR 5*1
+             5*1e-4
+
+*PERMK *KVAR 5*1
+             5*1e-4
+
+
+*TRANSI    *IJK 3:4 2 1 1.6
+*TRANSJ    *IJK 3:4 2 1 1.6
+
+
+*CPOR 3E-6
+*PRPOR 200
+*CROCKTYPE 1
+ *CCPOR  3.E-06
+ *CCPOR  3.E-06
+ *PRPOR  200
+
+*CROCKTYPE 2
+ *CCPOR  3.E-06
+ *CCPOR  3.E-06
+ *PRPOR  200
+*CTYPE  *CON 1
+
+*CTYPE  *CON 1
+
+*END-GRID
+
+*CTPOR  54.8E-06
+*TRPOR  120
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL   *PR
+*NC    1    1
+*TRES        120.000
+*COMPNAME
+           'HC30'
+*SG         7.8638000E-01
+*TB         6.5183250E+02
+*PCRIT      1.1003743E+01
+*VCRIT      1.1757000E+00
+*TCRIT      7.6715000E+02
+*AC         1.0000000E+00
+*MW         4.0000000E+02
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1757000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      9.2860000E+02
+*BIN
+
+*ENTHCOEF
+            0.0000000E+00  2.6300600E-02  3.9898700E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENWS 62.7
+*CW   3.5E-06
+*REFPW 14.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+
+
+**   Assign rel perm sets
+
+*RTYPE    *CON 1
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL
+
+*REFDEPTH 62.5
+*REFPRES 500
+*DWOC 200
+
+*SWINIT  *CON 0.25   
+
+*TEMPER  *CON 120
+
+*ZOIL 1.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+*NUMERICAL 
+
+*NORM *PRESS 145.
+*NORM *SATUR 0.05
+*MAXCHANGE *SATUR 0.8
+*MAXCHANGE *PRESS 1000.
+
+*AIM *THRESH 0.1
+*CONVERGE *MAXRES 1.E-04
+*PRECC 1.E-06
+
+*NORTH 80
+*ITERMAX 100
+
+*DTMAX 31.
+
+** **  ============== GEOMECHANICS SECTION =====================
+ *GEOMECH          ** Main keyword for geomechanic option
+ *GEOM3D           ** 3D Finite elements
+ *GCFACTOR 1.0
+ *NITERGEO 200
+ *FORCETOL 0.01
+ *GEOROCK 1           ** rock type # 1 for matrix
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *USTRESCUR
+    *GPERMNEY_MT          ** Normal effective stress in J direction      
+    ** Normal eff stress (y)     ky/ky0
+                -1000.0            10E5
+                 -500.0            10E4
+                 -100.0            10E3
+                    0.0            10E2
+                   50.0            10E1
+                  100.0            10E0
+                  200.0            1.0
+                  300.0            0.8
+                  400.0            0.6
+                  500.0            0.5
+                  600.0            0.4 
+ *GEOROCK 2           ** rock type # 2 for matrix
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *USTRESCUR        ** using current stress
+    *GPERMNEX_MT         ** Normal effective stress in I direction
+    ** Normal eff stress (x)      kx/kx0
+                 -100.0            10E4
+                    0.0            10E3
+                   50.0            10E2
+                  100.0            10E1
+                  200.0            1.0
+                  300.0            0.8
+                  400.0            0.6
+                  500.0            0.5
+                  600.0            0.4
+
+    *GPERMNEZ_MT        ** Normal effective stress in K direction
+    ** Normal eff stress (z)      kz/kz0
+                 -100.0            10E4
+                    0.0            10E3
+                   50.0            10E2
+                  100.0            10E1
+                  200.0            1.0
+                  300.0            0.9
+                  400.0            0.8
+                  500.0            0.6
+                  600.0            0.5
+
+*GEOROCK 3           ** rock type # 3 for matrix
+     *ELASTMOD 3.95E5
+     *POISSRATIO 0.3
+     *COHESION 100000
+     *THEXPCOEF 54.8E-06 
+     *GPERMVL   ** kx/kx0    ky/ky0   kz/kz0   ** Volumetric strain dependent permeability lookup table
+        1E-3      1E-3         1E-3     1E-3
+        1E-4      1E-2         1E-2     1E-2
+        1E-5      1E-1         1E-1     1E-1
+        1E-6      5E-1         5E-1     5E-1
+        1E+0      1E+0         1E+0     1E+0
+       -1E-6      1E1          1E1      1E1
+       -1E-5      1E2          1E2      1E2
+       -1E-4      1E3          1E3      1E3
+       -1E-3      1E4          1E4      1E4
+       
+*STRESS3d  200   200  200  0  0  0      ** initial stress
+*GEOTYPE     *ijk 1:8  1:7  1:10   3    ** rock type
+                  1:8  3:5  1:10   1
+                  1:8  4    1:10   2
+*MAGNIFYDJ  2000     ** Magnifiy the deformation in J direction
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+
+*DATE 1901 1 1.5
+
+   *DTWELL 0.025
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR  'INJTR'
+   *INCOMP  *WATER
+   *OPERATE *MAX *BHP 3000
+   *OPERATE *MAX *STW 50
+   *GEOMETRY *K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'INJTR'  **  i  j k  ff
+                          1:8 4 3  1.
+
+   *PRODUCER 'PRODN'
+   *OPERATE *MAX  *STL 17.81
+   *OPERATE *MIN *BHP    50
+   *GEOMETRY *K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'PRODN'  **  i  j k  ff
+                          1:8 4 3  1
+   *SHUTIN 'PRODN'
+
+*TIME 200
+
+*WRST *TNEXT
+*TIME 300
+*TIME 750
+*STOP

@@ -1,0 +1,274 @@
+RESULTS SIMULATOR GEM
+
+*****************************************************************************
+** Template (gmgmc006.dat):  CARTESIAN GRID DEFORMATION                    **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc006.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+**         ELASTIC MODEL                                  11X11X5 CARTESIAN GRID    **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN GEM                      **
+**                                                                                  **
+**   The purpose of this problem is:                                                **
+**   Compare cap model with hyperleastic model in template gmgmc007.dat.            **
+**                                                                                  **
+**    *NOCOUPERM:  Disables all the deformation-dependent permeability data, which  **
+**                 is keyword *GPERMLC added before and after *NOCOUPERM.  The      **
+**                 result is the same as having no GPERMLC data.                    **
+**                                                                                  **
+**************************************************************************************
+** after stgeo018.dat
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1 'GEM Geomechanics Template #6'
+*TITLE2 '3D Elasto-Plastic Druck-Prager Yield Criterion'
+*TITLE3 'Comparison of Two Constitutive Models'
+
+*INUNIT  *FIELD
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*WPRN *GRID 1 
+*OUTPRN *GRID *IMPL *POROS *PRES *SO *SG *SW 
+*WPRN *ITER *ALL
+
+*OUTSRF *GRID *VERDSPLGEO *POROS *PRES *YOUNG *POISSON *VDISPL 
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *VPOROSTGEO *PRMXDIR *PRMNDIR
+*OUTSRF *WELL 
+                  *PAVG
+                  *PRES       6,6,1
+                  *STRESEFF   6,6,1
+                  *STRNEPL    6,6,1
+                  *VERDSPLGEO 6,6,1
+                  *VPOROSGEO  6,6,1
+                  *VPOROSTGEO 6,6,1
+                  *POROS      6,6,1
+
+                  *PRES       1,1,1
+                  *STRESEFF   1,1,1
+                  *STRNEPL    1,1,1
+                  *VERDSPLGEO 1,1,1
+                  *POROS      1,1,1
+
+                  *PRES     11,1,1
+                  *STRESEFF 11,1,1
+                  *STRNEPL  11,1,1
+                  *POROS    11,1,1
+
+                  *PRES     1,11,1
+                  *STRESEFF 1,11,1
+                  *STRNEPL  1,11,1
+                  *POROS    1,11,1
+
+                  *PRES     11,11,1
+                  *STRESEFF 11,11,1
+                  *STRNEPL  11,11,1
+                  *POROS    11,11,1
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 11 11 5
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+
+*PERMI *CON 15000.0  
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 1.0
+
+*CROCKTYPE 1
+  *CPOR  1.8570E-6
+  *PRPOR 3000
+*CTYPE *CON 1
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL   *PR
+*NC    2    2
+*TRES       120.000
+*COMPNAME
+           'C1'           'FC45'
+*SG         3.0000000E-01  9.4000000E-01
+*TB        -2.5861000E+02  1.0271300E+03
+*PCRIT      4.5400000E+01  7.1400000E+00
+*VCRIT      9.9000000E-02  1.9550000E+00
+*TCRIT      1.9060000E+02  9.5780000E+02
+*AC         8.0000000E-03  1.3295310E+00
+*MW         1.6043000E+01  5.3900000E+02
+*HCFLAG     0              0
+*BIN
+            1.3287519E-01
+*VSHIFT     0.0000000E+00  0.0000000E+00
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.3030000E+00  7.3780000E-03  1.7904413E+00
+            4.8507880E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      7.7000000E+01  1.0904000E+03
+
+*ENTHCOEF
+           -5.5811400E+00  5.6483400E-01 -2.8297300E-04  4.1739900E-07
+           -1.5255760E-10  1.9588570E-14
+            0.0000000E+00 -9.3523300E-03  3.9617000E-04 -5.5103520E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+*DENWS 62.5
+*DENW  62.5
+*VISW  0.40
+*REFPW 14.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL
+*REFPRES 3035
+*REFDEPTH 5000
+*DWOC 6000
+*ZOIL 0.025 0.975
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL 
+*NORM  *PRESS 145.
+*NORM *SATUR  0.10
+*NORM *GMOLAR 0.10
+*MAXCHANGE *PRESS 1000.
+
+*DTMAX 31.
+
+**  ==============  GEOMECHANIC MODEL  ======================
+*GEOMECH              ** Main keyword for using geomechanics module              
+*GEOM3D               ** Using 3D finite elements
+*SOLVERG *AIMSOL
+*GCFACTOR 0           ** Unconstrained Boundary
+
+*NITERGEO 300         ** Max number of iterations for convergence
+*GCAPMODEL 1          ** Cap model 1
+*ELASTMOD 1.5e4       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.30      ** Poisson's ratio
+*FRICANGLE 30.0       ** Friction angle (degrees)
+*COHESION 14.5        ** Cohesion (PSI)
+*GCAPR 2.0E0          ** Aspect ratio
+*GCAPD 3E-4           ** Parameter D (1/PSI)
+*GCAPW 0.1            ** Parameter W
+*GCAPLOC 45.0         ** Initial hardening parameter
+*GCAPTEN -200         ** Tension cut-off (PSI)
+*GCINCRMT 2           ** Number of strain divisions for convergence
+*STRESS3D 0 0 0 0 0 0
+*PRESCBC3D
+ *IJK  1:11   1:11  5
+       5:8   01:03   0.0
+*GPERMLC 0.5       ** Using Li and Chalaturnyk model
+*NOCOUPERM         ** Disable permeability coupling between geomechanics
+                   ** and fluid flow (*GPERMLC used here or in recurrent
+                   ** sction will be ignored becuase of *NOCOUPERM)
+** ===================RECURRENT DATA ================
+*RUN
+
+*DATE 1996 12 31
+
+   *DTWELL 0.05
+   
+   *WELL 1 'prod1'
+   *PRODUCER 'prod1'
+   *OPERATE *MAX *STO 15000
+   *OPERATE *MIN *BHP 100
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'prod1'
+       6  6  1:5  1.0
+   
+   *WELL 2 'inj1'
+   *INJECTOR 'inj1'
+   *INCOMP WATER
+   *OPERATE *MAX *STW 1500
+   *OPERATE *MAX *BHP 10000
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'inj1'
+       6  6  4:5  1.0
+   *SHUTIN 2
+
+*TIME 1000
+
+   *GPERMLC 0.75       ** Using Li and Chalaturnyk model
+   
+   *SHUTIN 'prod1'
+
+   *WRST *TNEXT
+
+*TIME 1050
+
+   *ELASTMOD 6.5e4       ** change Elastic Young's modulus for unloading
+   *OPEN 'inj1'
+
+   *WRST *TNEXT
+
+*TIME 1250
+
+*TIME 1400
+*STOP
+
+*TIME 1500
+
+*STOP

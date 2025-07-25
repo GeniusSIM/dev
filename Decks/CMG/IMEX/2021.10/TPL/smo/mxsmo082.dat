@@ -1,0 +1,345 @@
+   ******************************************************************************
+   ** mxsmo082.dat :      Rock Compaction Model - *PERMMULT Option             **
+   **                     Bsed on data set mxgmc088.dat                        **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO082.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  31x30x50                                                 ROCK COMPACTION **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This dataset tests the compaction option using porosity and permeability         **
+   ** multipliers in order to create hydraulic fractures. Dataset has one injection    **
+   ** well to inject water through perforations of a horizontal well                   **
+   ** (along y-direction). Water injection is done in four stages to create four       **
+   ** hydraulic fracture planes perpendicular to the horizontal well.                  **
+   ** No production well.                                                              **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Compaction (PERMMULT) Model'
+*TITLE2
+   'Multi-stages Hydraulic Fracturing in 3D'
+*TITLE3
+   'Based on mxgmc088.dat'
+
+*INUNIT *FIELD
+
+*WPRN *GRID TIME
+*OUTPRN *GRID *PRES
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 1
+*OUTSRF *GRID *PRES PERM POROS
+
+*WRST 10
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 31 30 50        ** 3D areal cartesian grid
+
+*DI *IVAR 5*10 5*4.0 11*1  5*4.0  5*10.
+*DJ *JVAR 2*20.0 2*1.0  1*1  2*1.0  2*40.0 2*1.0  1*1  2*1.0 2*40.0  2*1.0  1*1  2*1.0  2*40.0 2*1.0  1*1  2*1.0 2*20.0
+*DK *KVAR 1*0.5 49*1.0
+
+**  The whole reservoir is fractured in all 3 directions
+**  The element size in x and y direction is varied and
+**  10 ft (block size) in z direction. 
+
+*DEPTH 1 1 1 49.25
+
+*DUALPERM
+
+*DIFRAC *CON -1
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   CON 0.19
+*POR FRACTURE CON 0.01        **  Fracture properties
+
+*PERMI *MATRIX   *CON 0.5
+*PERMI *FRACTURE *CON 1e-5    **  Fracture properties
+*MOD   16   5  25   =  10
+       16  12  25   =  10
+       16  19  25   =  10
+       16  26  25   =  10
+*PERMJ *MATRIX   *CON 0.5
+*PERMJ *FRACTURE *CON 1e-5     **  Fracture properties
+*MOD   16   5  25   =  10
+       16  12  25   =  10
+       16  19  25   =  10
+       16  26  25   =  10
+*PERMK *MATRIX   *CON 0.5
+*PERMK *FRACTURE *CON 1e-5     **  Fracture properties
+*MOD   16   5  25   =  10
+       16  12  25   =  10
+       16  19  25   =  10
+       16  26  25   =  10
+
+
+CPOR  3E-6
+PRPOR 14.7
+
+*CROCKTYPE 1
+   *CCPOR  *MATRIX 3E-6
+   *CPRPOR *MATRIX 14.7
+
+*CROCKTYPE 2
+
+*CROCKTAB *PERMMULT           
+** P  porom    permm_x        permm_y  permm_z
+200   1.00000  1.000          1.000 1.000
+1000  1.00240  2718955.196    1.000 888889.837
+5000  1.01440  16313726.176   1.000 5333334.020
+8000  1.02340  26509804.412   1.000 8666667.157
+10000 1.02940  33307189.902   1.000 10888889.248
+12000 1.03540  40104575.392   1.000 13111111.340
+13000 1.03840  43503268.137   1.000 14222222.386
+15500 1.04590  52000000.000   1.000 17000000.000
+            
+*CROCKTABH
+1000  1.00240  2718955.196    1.000 888889.837
+5000  1.01042  8865450.314    1.000 2988506.433
+8000  1.01643  13475321.653   1.000 4563218.881
+10000 1.02044  16548569.212   1.000 5613027.179
+12000 1.02445  19621816.771   1.000 6662835.478
+13000 1.02646  21158440.551   1.000 7187739.627
+15500 1.03147  25000000.000   1.000 8500000.000
+            
+*CROCKTABH
+5000  1.01440  16313726.176   1.000 5333334.020
+8000  1.02049  21652661.555   1.000 6952381.443
+10000 1.02454  25211951.807   1.000 8031746.391
+12000 1.02860  28771242.059   1.000 9111111.340
+13000 1.03063  30550887.185   1.000 9650793.814
+15500 1.03570  35000000.000   1.000 11000000.000
+            
+*CROCKTABH
+8000  1.02340  26509804.412   1.000 8666667.157
+10000 1.02749  30107189.902   1.000 9822222.582
+12000 1.03159  33704575.392   1.000 10977778.007
+13000 1.03363  35503268.137   1.000 11555555.719
+15500 1.03875  40000000.000   1.000 13000000.000
+            
+*CROCKTABH
+10000 1.02940  33307189.902   1.000 10888889.248
+12000 1.03352  37195484.483   1.000 12129293.158
+13000 1.03558  39139631.774   1.000 12749495.113
+15500 1.04072  44000000.000   1.000 14300000.000
+            
+*CROCKTABH
+12000 1.03540  40104575.392   1.000 13111111.340
+13000 1.03747  42360410.994   1.000 13736508.100
+15500 1.04265  48000000.000   1.000 15300000.000
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *IJK
+   1:31  05:05    1:50  2
+   1:31  12:12    1:50  2
+   1:31  19:19    1:50  2
+   1:31  26:26    1:50  2
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT
+      ** p              rs      bo          eg    viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+    55000.000   335.000   1.02550   338.980   1.14000 0.0135000
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0 
+
+*TRES 120
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *MATRIX   *CON 200
+*PRES *FRACTURE *CON 200
+
+*SW *MATRIX   *CON 0.25
+*SW *FRACTURE *CON 0.25
+
+*SO *MATRIX   *CON 0.75
+*SO *FRACTURE *CON 0.75
+
+*PB *MATRIX   *CON 0.0
+*PB *FRACTURE *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMAX 0.1
+*DTMIN  1E-10
+
+*NORM *PRESS 1000
+*CONVERGE *MAXRES 1.E-3
+*NCUTS 7
+
+**  ============== GEOMECHANICS SECTION =====================
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1901 1 1.5
+
+*DTWELL 1e-6   
+
+*WELL 1 'INJTR'
+
+
+   *INJECTOR *MOBWEIGHT 'INJTR'
+   *INCOMP  *WATER
+   **OPERATE     *BHP   0.99E6
+   *OPERATE MAX  *STW 20     CONT REPEAT
+**$            rad  geofac  wfrac  skin
+   *GEOMETRY *I .125 .432     1      0
+   *PERF *WI 'INJTR'  ** i j k  wi
+              16  1  25   1.78E5  CLOSED     FLOW-FROM  'SURFACE'  REFLAYER
+              16  5  25   1.78E5  CLOSED     FLOW-FROM  1
+              16  12  25  1.78E5  CLOSED     FLOW-FROM  2
+              16  19  25  1.78E5  CLOSED     FLOW-FROM  3
+              16  26  25  1.78E5  OPEN       FLOW-FROM  4
+
+*TIME 0.02
+   *STOP
+   *PERF *WI 'INJTR'  ** i j k  wi
+              16  1  25   1.78E5  CLOSED     FLOW-FROM  'SURFACE'  REFLAYER
+              16  5  25   1.78E5  CLOSED     FLOW-FROM  1
+              16  12  25  1.78E5  CLOSED     FLOW-FROM  2
+              16  19  25  1.78E5  OPEN       FLOW-FROM  3
+              16  26  25  1.78E5  CLOSED     FLOW-FROM  4
+
+*TIME 0.04
+
+   *PERF *WI 'INJTR'  ** i j k  wi
+              16  1  25   1.78E5  CLOSED     FLOW-FROM  'SURFACE'  REFLAYER
+              16  5  25   1.78E5  CLOSED     FLOW-FROM  1
+              16  12  25  1.78E5  OPEN       FLOW-FROM  2
+              16  19  25  1.78E5  CLOSED     FLOW-FROM  3
+              16  26  25  1.78E5  CLOSED     FLOW-FROM  4
+
+TIME  0.06
+
+   *PERF *WI 'INJTR'  ** i j k  wi
+              16  1  25   1.78E5  CLOSED     FLOW-FROM  'SURFACE'  REFLAYER
+              16  5  25   1.78E5  OPEN       FLOW-FROM  1
+              16  12  25  1.78E5  CLOSED     FLOW-FROM  2
+              16  19  25  1.78E5  CLOSED     FLOW-FROM  3
+              16  26  25  1.78E5  CLOSED     FLOW-FROM  4
+
+TIME  0.08
+
+*STOP

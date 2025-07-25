@@ -1,0 +1,339 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Verify and illustrate special connection *SCONNECT in an isothermal
+**    naturally fractured system.
+
+**    This data is based on STGRO030 but is isothermal.  It also has an
+**    artificially low oil viscosity so that modest connection changes produce
+**    visible result changes.
+
+**    This data uses *TRANSI, *TRANSK and *TRANSMF to apply zero transmissibility
+**    multipliers to F-F, M-M and M-F connections, which removes them since the
+**    run is isothermal.
+
+**    Keyword *SCONNECT effectively restores those connections, with the same
+**    transmissibility values observed via debug printout in the base case run
+**    (without zero tranmissibility multipliers and special connections).  The
+**    simulation results with the special connections are very close to the
+**    base case run.
+
+**    Note that a transmissibility multiplier (e.g., *TRANSF) is not applied to
+**    a special connection, so the transmissibility value entered via *SCONNECT
+**    must include any desired multiplier.
+
+**    When reading matrix and fracture cell addresses, *SCONNECT accepts both
+**    the standard UBA matrix/fracture designators MT and FR as well as the
+**    abbreviated designators M and F.
+
+**    Keyword *SCONNECT may appear in recurrent data.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'Verification Run #79'
+title2 'Test/Illustrate *SCONNECT in Isothermal Naturally Fractured System'
+title3 'Based on STGRO030'
+
+inunit field
+
+outprn grid pres sw so sg temp y obhloss
+outprn well all
+outprn iter tss
+wprn grid 400
+wprn iter 400
+wrst 300
+prntorien 2 0
+
+outsrf grid  pres sw so sg temp
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 1 10        ** 2D vertical cross-sectional cartesian grid
+
+
+di ivar 5 10 15 20 25
+dj con 5
+dk con 3
+
+dualperm             ** Fracture spacing mimics Lee's sigma=3 value
+difrac con 1.633     ** Reservoir has vertical fractures only
+djfrac equalsi
+dkfrac con 0.0
+
+por matrix    con 0.28
+por fracture  con 0.02
+
+permi matrix   con 050
+permi fracture con 2000
+permj matrix   con 050
+permj fracture con 2000
+permk matrix   con 050
+permk fracture con 2000
+
+transi matrix   ijk 1:2 1 5 3.5
+transk matrix   ijk 1:2 1 5 4.5
+transi fracture ijk 1:2 1 5 3.6
+transk fracture ijk 1:2 1 5 4.6
+
+transf 'Fault 1' 0.5
+   1 1 4 kdir 1 1 5
+   1 1 5 idir+        ** compounded with transi
+   2 1 6 kdir-
+   2 1 6 idir 3 1 6
+   3 1 7 kdir 3 1 6
+   4 1 7 idir-
+   4 1 7 kdir+
+   4 1 8 idir+
+   5 1 8 kdir 5 1 9
+   
+transmf ijk
+   3 1 3 0.0	**33411
+   1 1 4 0.0	**11137
+   2 1 4 0.0	**22274   
+   
+transi matrix ijk
+   1 1 4 0.0	**98.995
+   2 1 4 0.0    **59.397
+transi fracture ijk
+   1 1 4 0.0	** 4000.0
+   2 1 4 0.0    ** 2400.
+
+transk matrix ijk
+   1 1 4 0.0 ** 408.33
+
+transk fracture ijk
+   1 1 4 0.0 ** 16667.
+
+
+
+** add sconnect to compensate the transk
+
+sconnect
+** transmf
+   3 1 3 MT 3 1 3 FR 33411
+   1 1 4 MT 1 1 4 FR 11137
+   2 1 4 MT 2 1 4 FR 22274  
+** transi matrix 
+   1 1 4 MT 2 1 4 MT 98.995
+   2 1 4 MT 3 1 4 MT 59.397
+
+** transi fracture
+   1 1 4 F 2 1 4 FR 4000.0
+   2 1 4 F 3 1 4 FR 2400.0
+
+
+   
+   
+
+*end-grid
+
+** Intrinsic formation/matrix properties
+cpor 5e-4
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop overbur 35 24 underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**              -----    --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       8.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+
+visctable
+
+**    Temp
+      70          0     2
+      80          0     1
+
+** Reference conditions
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0
+    1.0        1.0          0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+
+**   Assign rel perm sets
+
+krtype matrix con 1
+krtype fracture con 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+** Fractures in layer 5 will have initial pressure of 150 psi
+** Pressure in other layers (matrix and fracture) will be adjusted
+** according to gravity
+*VERTICAL *DEPTH_AVE
+refpres 150
+refblock 1 1 5
+
+sw matrix   con 0.45
+sw fracture con 0.95
+
+temp matrix   con 75
+temp fracture con 75
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+newtoncyc 10
+sdegree 1
+sorder rcmrb
+dtmax 90
+upstream klevel
+
+norm      press 200  satur  .2   temp 180  y .2   x .2
+
+tform zt
+isothermal
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+
+   dtwell .004
+
+   well 1 'Injector 1'      ** Horizontal well in J direction
+   well 2 'Producer 1'      **             "
+
+   injector mobweight 'Injector 1'
+   incomp water 1.0  0.0
+   tinjw 360.77
+   qual .7
+   operate     bhp   155    ** Start on BHP
+   operate max stw   1000   ** Maximum water rate
+   perf 'Injector 1'
+          ** i j k wi = 0.007082 *k * h / ln(0.5 * re / rw)
+             1 1 2 36926.102 **41.62
+
+   producer 'Producer 1'
+   operate     bhp    154   ** Start on BHP
+   operate max stl    1000  ** Maximum liquid rate
+   operate max steam  5e-2  cont  ** maximum steam rate
+   geometry j .3 .5 1 0  ** rw cc ff ss
+   perf geo 'Producer 1'
+              ** i j k
+                 1 1 1   1.0
+   sconnect
+      **transk matrix ijk
+      1 1 4 MT 1 1 5 M 204.167   **408.33
+      **transk fracture ijk
+      1 1 4 F 1 1 5 FR 18333.5	**16667.
+
+time 45 
+
+   transi matrix   ijk 1:2 1 5 0.5
+   transi fracture ijk 1:2 1 5 0.6
+   transk fracture ijk 1:2 1 5 1.6
+
+time 90
+time 150
+time 210
+time 365
+time 730

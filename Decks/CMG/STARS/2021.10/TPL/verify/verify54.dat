@@ -1,0 +1,332 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Verify and illustrate the usage of axial refinement with the
+**            discretized-in-hybrid option.
+
+**  USAGE:    Run as is.  
+
+**  ORIGIN:   Based on "sttst64.dat", but with some refinement in the axial
+**            direction.  Converted from Discretized Wellbore to FlexWell (Aug 2016).
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+RESULTS SIMULATOR STARS
+*interrupt *stop
+
+*title1 'Verification Run #54'
+*title2 'Verify FlexWell in Hybrid grid with Axial Refinement'
+
+inunit field  except  6 1  ** Darcy instead of md
+              except 12 0  ** kPa-m instead of dynes/cm
+
+outprn grid pres sw so sg temp obhloss viso
+            kro krg krw masdeno masdeng masdenw
+wprn grid 400
+outprn well all
+outprn iter newton
+wprn iter 1
+prntorien 2 0
+
+outsrf special matbal well 'OIL'
+               matbal well 'Water'
+               blockvar temp 1,1,1
+               blockvar temp 1,1,2
+               blockvar temp 2,1,2 / 1,1,1
+               blockvar temp 2,1,2 / 2,1,1
+               blockvar temp 3,1,2 / 3,3,1
+               blockvar temp 3,1,2 / 4,3,1
+               blockvar temp 3,1,2 / 2,4,1
+               blockvar temp 3,1,2 / 3,4,1
+               blockvar temp 4,1,2 / 2,1,1
+               blockvar temp 4,1,2 / 2,2,1
+               blockvar temp 4,1,2 / 2,3,1
+               blockvar temp 3,1,2
+outsrf grid pres sw so sg temp
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 4 9
+
+di ivar 40 80 120 160 200  ** Blocks small near well;  outer block is large
+dj jvar 10 20 30 40
+dk con 5
+
+refine 2:4 1 2 into 4 4 2
+  hybrid idir  rw 0.15
+
+por con .3    
+
+permi con 2
+permj equalsi  
+permk equalsi
+
+*end-grid
+
+prpor 75
+
+*CPOR 5E-4
+*ROCKCP 35
+*THCONR 106
+*THCONW 8.6
+*THCONO 1.8
+*THCONG 0.64
+*HLOSSPROP OVERBUR 35 24 UNDERBUR 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**             -------   --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       3.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+avg            1.13e-5      0
+bvg             1.075       0
+
+visctable
+
+**    Temp
+       70          0     2.9666e5
+       80          0     1.3466e5
+       90          0       65248
+      100          0       33500
+      125          0        7839
+      150          0        2349
+      175          0       853.2
+      200          0       360.7
+      250          0        90.7
+      300          0        31.7
+      350          0        13.9
+      400          0        7.22
+      450          0        4.23
+      500          0        2.71
+      550          0        1.87
+
+** Reference conditions
+prsr 14.7
+temr 125
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+pres con 154  ** Same conditions in wellbore and matrix
+
+sw  con 0.45
+
+so con 0.55
+
+temp con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+sdegree 1
+dtmax 5.
+
+numset 1
+converge press 1.  temp 2.
+NORM PRESS 15 SATUR 0.2 TEMP 50 Y 0.2 X 0.2
+
+numset 2
+converge press 1.  temp 2.
+NORM PRESS 15 SATUR 0.2 TEMP 30 Y 0.2 X 0.2
+rangecheck on
+NUMTYPE CON 2
+
+north 300
+itermax 300
+
+converge varonly
+
+upstream klevel
+precab 1.d-6
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+
+dtwell .001
+WELL  'ANNULUS'			
+WELL  'Producer 1'		
+WELL  'TUBING'			
+
+
+producer 'ANNULUS'
+operate     bhp   154      ** Start on BHP
+operate max stl   180      **50000    ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.4    0.249       1  0.0
+PERF_FLX  GEO  'ANNULUS'
+**$ UBA            ff   Status  Connection  
+    2 1 2 / 1 1 1  1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    2 1 2 / 1 1 2  1.0  OPEN    FLOW-TO  1
+    3 1 2 / 1 1 1  1.0  OPEN    FLOW-TO  2
+    3 1 2 / 1 1 2  1.0  OPEN    FLOW-TO  3
+    4 1 2 / 1 1 1  1.0  OPEN    FLOW-TO  4
+    4 1 2 / 1 1 2  1.0  OPEN    FLOW-TO  5
+
+
+producer 'Producer 1'
+operate     bhp    153 **136     ** Start on BHP
+operate max stl    80            ** Maximum liquid rate
+operate min  steamtrap 5.0
+GEOMETRY  I  0.15    0.235       1  0.0
+PERF_FLX  GEO  'Producer 1'
+**$ UBA      ff   Status  Connection  
+    1 1 1    1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    2 1 1    1.0  OPEN    FLOW-TO  1
+    3 1 1    1.0  OPEN    FLOW-TO  2
+    4 1 1    1.0  OPEN    FLOW-TO  3
+
+
+injector mobweight 'TUBING'
+incomp water  1.0  0.0
+tinjw 355
+qual .7
+operate     bhp   155      ** Start on BHP
+operate max stw   100      ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.15    0.249       1  0.0
+PERF_FLX  GEO  'TUBING'
+**$ UBA             ff   Status  Connection  
+    2 1 2  / 1 1 1  1.0  CLOSED  FLOW-FROM  'SURFACE'  REFLAYER
+    2 1 2  / 1 1 2  1.0  CLOSED  FLOW-FROM  1
+    3 1 2  / 1 1 1  1.0  CLOSED  FLOW-FROM  2
+    3 1 2  / 1 1 2  1.0  CLOSED  FLOW-FROM  3
+    4 1 2  / 1 1 1  1.0  CLOSED  FLOW-FROM  4
+    4 1 2  / 1 1 2  1.0  OPEN    FLOW-FROM  5
+ 
+FLX_WELLBORE 'FlexWell-1' ATTACHTO 'ANNULUS' 'TUBING'
+	SOLID_BLOCK OFF
+	ANNULUS ATTACHTO 'ANNULUS'
+		TUBULARS CONSTANT
+			ID 0.8
+			OD 0.801
+	WALL_CP 54.13
+	WALL_HCN 24
+	CEMENT_HEAT_PROP 27.56 18.96
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+	TUBING ATTACHTO 'TUBING'
+		TUBULARS CONSTANT
+			ID 0.3
+			OD 0.301
+	WALL_CP 54.13
+	WALL_HCN 24
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+ 
+
+
+FLX_WELLBORE 'FlexWell-2' ATTACHTO 'Producer 1'
+	SOLID_BLOCK OFF
+	ANNULUS ATTACHTO 'Producer 1'
+		TUBULARS CONSTANT
+			ID 0.3
+			OD 0.301
+	WALL_CP 54.13
+	WALL_HCN 24
+	CEMENT_HEAT_PROP 27.56 18.96
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+
+
+
+time 5
+time 10
+time 20
+time 50  
+ 
+dtwell 0.1
+
+   shutin 'ANNULUS'
+
+time 100
+time 182
+time 365
+STOP

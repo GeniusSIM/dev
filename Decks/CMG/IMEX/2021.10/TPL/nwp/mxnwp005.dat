@@ -1,0 +1,547 @@
+*************************************************************************************
+** mxnwp005.dat:              Oil Well Water Coning                                **
+*************************************************************************************
+*************************************************************************************************     
+**                                                                                             **
+** FILE:   MXNWP005.DAT                                                                        **      
+**                                                                                             **
+** MODEL:  RADIAL 12x1x20     OIL WELL WITH BOTTOM AQUIFER WATER CONING       FIELD UNITS      **
+**                                                                                             **
+** USAGE:  OPTIMUM  OIL  RATE  VS  WATER  CONING                                               **         
+**                                                                                             **
+*************************************************************************************************
+**                                                                                             **
+** THIS TEMPLATE ILLUSTRATES THE USE OF A RADIAL GRID MODEL TO SIMULATE THE INFLUENCE OF AN    **          
+** ACTIVE BOTTOM AQUIFER ON AN OIL WELL'S WATER AND OIL PRODUCTION PERFORMANCE.                ** 
+**                                                                                             **
+*************************************************************************************************
+**************************************************************************************
+** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+**************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+*TITLE1     'IMEX TEMPLATE MXNWP005'
+*TITLE2     'WATER CONING TEST'
+*CASEID     'MXNWP005'
+
+*INUNIT *FIELD
+
+        *WPRN     *WELL    *TIME
+        *WPRN     *GRID    *TIME
+        *OUTPRN   *GRID    *SW    *PRES
+        *OUTPRN   *TABLES  *NONE
+        *OUTPRN   *WELL    *ALL
+        *OUTPRN   *RES     *NONE
+        *WSRF     *WELL    *TIME
+        *WSRF     *GRID    *TIME
+        *OUTSRF   *GRID    *SW    *PRES
+
+*****************************************************
+** RESERVOIR DESCRIPTION SECTION
+*****************************************************
+
+*GRID *RADIAL  12   1   20   *RW 0.35  
+*KDIR *DOWN
+
+*DEPTH 1 1 1  8721.0
+
+*DI *IVAR
+      0.7     0.7     0.7    5.9    10.0   20.0   35.0
+     70.0   120.0   200.0  400.0   675.0 
+
+*DJ *CON 360
+
+*DK *KVAR
+  9*1.64  2.3 2.95 1.31 3*1.64 0.82 2.46 2*1.64 6.56
+
+
+*POR *KVAR
+  .176  .182  .182  .191  .212  .218  .213  .214  .217  .213 
+  .148  .201  .224  .232  .232  .173  .05   .182  .207  .235
+
+*MOD * .55
+
+*PRPOR  3580.0
+
+*CPOR   3.00E-6
+
+*PERMI *KVAR
+   3*200 1*700  5*8650  3*2350  4*12350  2*1850  2*12350 
+
+*MOD * 0.5
+
+*PERMJ  *EQUALSI
+
+*PERMK *KVAR **EQUALSI 
+   3*200 1*700  5*8650  3*2350  4*12350  2*1850  2*12350 
+*MOD * 0.25            
+
+*TRANSK *IJK
+     1:10      1:1   11   0.015                       
+     1:9       1:1   18   0.0
+                                       
+*AQUIFER *BOTTOM
+**        h   phi   perm  radius  angle 
+*AQPROP   50  0.25   40    500     0
+
+*************************************************
+**COMPONENT PROPERTIES SECTION
+*************************************************
+*MODEL  *OILWATER         
+
+*PVT  *EG
+**     PB      RS       BO      1/Bg     VISO     VISG         CO
+     353.0     76      1.1136   1190     1.164    0.0228      3.73E-7
+    3553.0     78      1.1336   1200     1.154    0.0238      3.73E-7
+*DENSITY *OIL     45.39      
+*DENSITY *GAS      0.07      
+*DENSITY *WATER   63.23      
+
+*CVO      2.484e-4          
+*BWI      1.0423            
+*CW       2.682E-6          
+*REFPW 3580.0               
+*VWI      0.35              
+*CVW      0.0               
+
+**************************************************
+**Rock-Fluid Property Section
+**************************************************
+
+*ROCKFLUID
+*RPT  1                     
+*SWT
+**      SW       KRW      KROW     PCOW
+      0.20       0.00     1.00     1.0       
+      0.30       0.01     1.00     0.80      
+      0.420      *INT     1.0000   0.60       
+      0.440      *INT     *INT     *INT
+      0.465      0.0180   0.8300   0.500     
+      0.510      0.0360   0.5000   0.450     
+      0.560      0.0580   0.2700   0.400     
+      0.610      0.0760   0.1100   0.250     
+      0.655      0.1000   0.0600   0.070     
+      0.700      0.1200   0.0300   0.002     
+      0.740      0.1500   0.0000   0.000     
+      1.000      1.0000   0.0000   0.000    
+
+**********************************************
+** Initial Conditions Section
+**********************************************
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL 
+*PB  *CON    353.0              
+*REFPRES     3553               
+*REFDEPTH    8748.0             
+*DWOC        8748.0             
+
+
+****************************************
+** Numerical Control Section
+****************************************
+
+*NUMERICAL
+*DTMAX          31.0             
+*DTMIN          0.01
+*NORM *PRESS    500.0             
+*NORM *SATUR    0.20            
+*AIM  *OFF      
+
+****************************************
+** Well Data Section
+****************************************
+
+*RUN
+*DATE    1994     06      08
+*DTWELL  0.025
+*AIMSET  *CON 1 
+
+*WELL 1 'test1' *VERT    1    1
+*PRODUCER 1
+*OPERATE *MAX   *STO 5000.00
+*OPERATE *MIN   *BHP  500.00
+*MONITOR *MIN   *STO   28.00     *STOP
+*MONITOR *WCUT          0.97     *STOP
+
+**             rad   geofac   wfrac    skin
+*GEOMETRY *K  0.35    0.50     1.0      0.0
+
+*PERFV *GEO 1  
+**  kf    ff
+    1     1.0
+    2     1.0   
+    3     1.0
+    4     1.0
+    5     1.0
+    6     1.0
+    7     1.0
+
+*ALTER  'test1'
+        4868
+*DATE  1994 06 08.05
+
+*ALTER  'test1'
+        4804
+*DATE  1994 06 10 
+
+*ALTER  'test1'
+        4670
+*DATE  1994 06 11
+
+*ALTER  'test1'
+        4273
+*DATE   1994 06 12
+
+*ALTER  'test1'
+        3979
+*DATE   1994 06 13
+
+*ALTER  'test1'
+         3384
+*DATE   1994 06 14
+
+*ALTER  'test1'
+         3444
+*DATE   1994 06 15
+
+*ALTER  'test1'
+         4009
+*DATE   1994 06 16 
+
+*ALTER  'test1'
+         3904
+*DATE   1994 06 17
+
+*ALTER  'test1'
+         3909
+*DATE   1994 06 18
+
+*ALTER  'test1'
+         3893
+*DATE   1994 06 20
+
+*ALTER  'test1'
+        3892
+*DATE   1994 06 21
+
+*ALTER  'test1'
+        3895
+*DATE   1994 06 22
+
+*ALTER  'test1'
+        3869
+*DATE   1994 06 23
+
+*ALTER  'test1'
+        3732
+*DATE   1994 06 24
+
+*ALTER  'test1'
+        3558
+*DATE   1994 06 27
+
+*ALTER  'test1'
+        3230
+*DATE   1994 06 29
+
+*ALTER  'test1'
+        3111
+*DATE   1994 06 30
+
+*ALTER  'test1'
+        3121
+*DATE  1994 07 01
+
+*ALTER  'test1'
+        3179
+*DATE  1994 07 02
+
+*ALTER  'test1'
+        3330
+*DATE  1994 07 03
+
+*ALTER  'test1'
+        3329
+*DATE   1994 07 04
+
+*ALTER  'test1'
+         3038
+*DATE    1994 07 05
+
+*ALTER  'test1'
+         3078
+*DATE    1994 07 06
+
+*ALTER  'test1'
+         2831
+*DATE    1994 07 07
+
+*ALTER  'test1'
+         2704
+*DATE    1994 07 08
+
+*ALTER  'test1'
+         2576
+*DATE    1994 07 09
+
+*ALTER  'test1'
+         2360
+*DATE    1994 07 10
+
+*ALTER  'test1'
+         2315
+*DATE    1994 07 11
+
+*ALTER  'test1'
+         2281
+*DATE    1994 07 17
+
+*ALTER  'test1'
+         2070
+*DATE    1994 07 18
+
+*ALTER  'test1'
+         1894
+*DATE    1994 07 19 
+
+*ALTER  'test1'
+         1961
+*DATE    1994 07 23
+
+*ALTER  'test1'
+         2214
+*DATE    1994 07 24
+
+*ALTER  'test1'
+         2168
+*DATE    1994 07 25
+
+*ALTER  'test1'
+         2176
+*DATE    1994 07 28
+
+*ALTER  'test1'
+        2205
+*DATE   1994 08 07
+
+*ALTER  'test1'
+        1904
+*DATE   1994 08 20
+
+*ALTER  'test1'
+         1772
+*DATE   1994 08 21
+
+*ALTER  'test1'
+        1587
+*DATE   1994 08 23
+
+*ALTER  'test1'
+        1502
+*DATE   1994 08 24
+
+*ALTER  'test1'
+        1500
+*DATE   1994 08 27
+
+*ALTER  'test1'
+        1482
+*DATE   1994 08 28
+
+*ALTER  'test1'
+        1497
+*DATE   1994 09 04
+
+*ALTER  'test1'
+        1499
+*DATE   1994 09 08
+
+*ALTER  'test1'
+        1461
+*DATE   1994 09 09
+
+*ALTER  'test1'
+        1518
+*DATE   1994 09 17
+
+*ALTER  'test1'
+        1410
+*DATE   1994 09 19
+
+*ALTER  'test1'
+        1297
+*DATE   1994 09 21
+
+*ALTER  'test1'
+        1273
+*DATE   1994 09 23
+
+*ALTER  'test1'
+        1241
+*DATE   1994 09 27
+
+*ALTER  'test1'
+        1218
+*DATE   1994 10 01
+
+*ALTER  'test1'
+        1217
+*DATE   1994 10 05
+
+*ALTER  'test1'
+        1206
+*DATE   1994 10 09
+
+*ALTER  'test1'
+        1205
+*DATE   1994 10 12
+
+*ALTER  'test1'
+        1208
+*DATE   1994 10 13
+
+*ALTER  'test1'
+        1099
+*DATE   1994 10 17
+
+*ALTER  'test1'
+        1003
+*DATE   1994 10 18
+**STOP
+*ALTER  'test1'
+        919
+*DATE   1994 10 20
+
+*ALTER  'test1'
+         802
+*DATE   1994 10 21
+
+*ALTER  'test1'
+         908
+*DATE   1994 10 24
+
+*ALTER  'test1'
+        899
+*DATE   1994 10 29
+
+*ALTER  'test1'
+        898
+*DATE   1994 11 04
+
+*ALTER  'test1'
+         887
+*DATE   1994 11 07
+
+*ALTER  'test1'
+         887
+*DATE   1994 11 10
+
+*ALTER  'test1'
+         782
+*DATE   1994 11 13
+
+*ALTER  'test1'
+         733
+*DATE   1994 11 19
+
+*ALTER  'test1'
+         728
+*DATE   1994 12 01
+
+*ALTER  'test1'
+         730
+*DATE   1994 12 07
+
+*ALTER  'test1'
+         733
+*DATE   1994 12 16
+
+*ALTER  'test1'
+         734
+*DATE   1994 12 22
+
+*ALTER  'test1'
+         746
+*DATE   1994 12 25
+
+*ALTER  'test1'
+         715
+*DATE   1994 12 28
+
+*ALTER  'test1'
+         574
+*DATE   1995 01 06
+
+*ALTER  'test1'
+         496
+*DATE  1995 01 07
+
+*ALTER  'test1'
+         485
+*DATE   1995 01 09
+
+*ALTER  'test1'
+         474
+*DATE   1995 01 13
+
+*ALTER  'test1'
+         476
+*DATE   1995 01 17
+
+*ALTER  'test1'
+         490
+*DATE   1995 01 26
+
+*ALTER  'test1'
+         490
+*DATE   1995 02 01 
+
+*ALTER  'test1'
+         506
+*DATE   1995 02 04
+
+*ALTER  'test1'
+        505
+*DATE   1995 02 07
+
+*ALTER  'test1'
+        501
+*DATE   1995 02 11
+
+*ALTER  'test1'
+         506
+*DATE   1995 02 17
+
+*ALTER  'test1'
+         488
+*DATE   1995 02 23
+
+*ALTER  'test1'
+         488
+*DATE   1995 02 28
+
+*ALTER  'test1'
+         489
+*DATE  1995 03 05 
+
+*ALTER  'test1'
+         489
+*DATE   1995 03 12
+
+*ALTER  'test1'
+         440
+*DATE   1995 03 16
+
+*ALTER  'test1'
+         411
+*DATE   1995 03 18
+
+*ALTER  'test1'
+         372
+*DATE   1995 03 22
+
+*STOP
+
+

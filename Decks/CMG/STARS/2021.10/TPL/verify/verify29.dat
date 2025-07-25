@@ -1,0 +1,438 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Forward dry combustion in a 1-d vertical tube is simulated.
+**  Air is injected at the top of the tube at a constant rate.  Fluids
+**  are produced at the bottom of the tube at constant back-pressure.
+
+**  Special Features:
+
+**  1)  Three hydrocarbon components:  two liquid and one solid.
+
+**  2)  Two non-condensible gases:  oxygen & inert gases.
+
+**  3)  Four chemical reactions:
+**      (a) cracking of heavy oil to light oil and coke,
+**      (b) heavy oil burning,
+**      (c) light oil burning,
+**      (d) coke burning.
+**      Burning produces water and CO+CO2 mixture (CO2/CO=1.2).
+
+**  4)  High initial pressure (2014.7 psia).
+
+**  5)  Injection end heated externally from 100 to 700 F.
+
+**  6)  Simulation stops when producing end reaches 600 F.
+
+**  7)  Both liquid phases disappear in each grid block.
+
+**  8)  Comprehensive simulation results file produced.
+
+
+**  Note:  This run gives the same result as sttst01 (with only a few
+**         differences between log files) when
+
+**            - heat loss *UHTR and *TMPSET is disabled,
+**            - adiabatic heating *ADHEAT is disabled
+**            - *THCONR 0.3 is commented out, and
+**            - *SDEGREE *GAUSS is used.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #29'
+*title2 'Verify Adiabatic Heater Option'
+*title3 '2D Cylindrical Version of STTST01'
+
+*inunit field except  1 1  ** hrs instead of days
+              except 11 1  ** ft3 instead of bbl
+
+*outprn *grid pres sw so sg temp y x solconc obhloss viso cchloss
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well component all mass mole downhole
+
+outsrf grid pres sw so sg temp y x w solconc obhloss
+            masdenw masdeno  masdeng pcow pcog visw viso visg
+            krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+            cmpviso cmpvisg cchloss
+
+outsrf special blockvar temp 2,1,1
+               blockvar temp 1,1,2
+               blockvar temp 5,1,2
+               blockvar sw 1,1,2
+               blockvar solconc 1,1,2 'COKE'
+               blockvar y 1,1,2 'OXYGEN'
+               blockvar kro 1,1,2
+               avgvar temp
+               maxvar solconc 'COKE'
+               matbal reaction 'WATER'
+               matbal reaction 'HEVY OIL'
+               matbal reaction energy
+               cchloss                 ** net cum heat from heaters
+               tfront 400  1 1 12:1    ** 400 deg front, axial, forward-facing
+               tfront 400  5 1 12:1    ** 400 deg front, sleave, forward-facing
+               tfront 800 1 1 12:1     ** 800 deg front, axial, forward-facing
+               tfront 800 5 1 12:1     ** 800 deg front, sleave, forward-facing
+               tfront 800 1 1 1:12     ** 800 deg front, axial, backward-facing
+               tfront 800 1 1 3:10     ** 800 deg custom column
+               tfront 800 1 1 12:7     ** 800 deg custom column
+               volfrac 'PRODUCER' 'HEVY OIL'
+               volfrac 'PRODUCER' 'LITE OIL'
+               volfrac 'PRODUCER' 'INRT GAS'
+               volfrac 'PRODUCER' 'OXYGEN'
+               massfrac 'PRODUCER' 'HEVY OIL'
+               massfrac 'PRODUCER' 'LITE OIL'
+               massfrac 'PRODUCER' 'INRT GAS'
+               massfrac 'PRODUCER' 'OXYGEN'
+               molefrac 'PRODUCER' 'HEVY OIL'
+               molefrac 'PRODUCER' 'LITE OIL'
+               molefrac 'PRODUCER' 'INRT GAS'
+               molefrac 'PRODUCER' 'OXYGEN'
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*grid *radial 5 1 12 *rw 0  ** 12 blocks in the K direction (normal vertical)
+
+** Base this run as closely as possible on sttst01 where tube cross-section is
+** (0.1602 ft) = pi*R5**2 since ni = 5;  ==>  R5 = 0.090383171 ft.  If each
+** ring has equal cross-sectional area, Ri = sqrt(i)*R1 and
+** R1 = 0.090383171 ft / sqrt(5) = 0.040420583 ft.
+** R1 = sqrt(1) * R1 = 0.040420583 ft;  dR1 = R1      = 0.040420583 ft.
+** R2 = sqrt(2) * R1 = 0.057163337 ft;  dR2 = R2 - R1 = 0.016742754 ft.
+** R3 = sqrt(3) * R1 = 0.070010503 ft;  dR3 = R3 - R2 = 0.012847167 ft.
+** R4 = sqrt(4) * R1 = 0.080841166 ft;  dR4 = R4 - R3 = 0.010830663 ft.
+** R5 = sqrt(5) * R1 = 0.090383171 ft;  dR5 = R5 - R4 = 0.009542005 ft.
+*di *ivar 0.040420583 0.016742754 0.012847167 0.010830663 0.009542005
+
+** Full circle
+*dj *con 360
+
+** Total tube length is 2.646 ft;  dK = 2.646 ft / 12 blocks = .22048 ft
+*dk *con 0.22048
+
+*por *con 0.4142
+*permi *con 12700
+*permj *equalsi
+*permk *equalsi
+
+*end-grid
+
+*rockcp 35.02
+*thconr 1
+*thconw 0.36
+*thcono 0.077
+*thcong 0.0833
+*thconr 0.3
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 6 5 3   ** Number of noncondensible gases is numy-numx = 2
+               ** Number of solid components is ncomp-numy = 1
+
+*compname 'WATER'  'HEVY OIL' 'LITE OIL' 'INRT GAS' 'OXYGEN'     'COKE'
+**         -----    --------   --------   --------   ------     --------
+*cmm        18        675       156.7       40.8       32          13
+*pcrit     3155       120       305.7       500        730
+*tcrit     705.7     1138       651.7      -232       -181
+
+*avg     8.822e-6   3.926e-6   2.166e-6   2.1267e-4  2.1960e-4
+*bvg       1.116     1.102      0.943      0.702      0.721
+*avisc      0       4.02e-4    4.02e-4
+*bvisc      0        6121.6     6121.6
+
+*cpg1       0       -8.14       -1.89      7.44       6.713
+*cpg2       0       0.549      0.1275     -0.0018    -4.883e-7
+*cpg3       0       -1.68e-4   -3.9e-5     1.975e-6   1.287e-6
+*cpg4       0       1.98e-8     4.6e-9    -4.78e-10  -4.36e-10
+*hvr        0        12198       1917
+*ev         0        0.38        0.38
+
+*molden   3.466      0.0914     0.3195    ** LBMOLE/FT3
+*cp        3e-6       5e-6       5e-6
+*ct1      1.2e-4    1.496e-4   2.839e-4
+**                   61.69       50.07       LB/FT3
+**                   11.6        44.8        API
+
+*solid_den 'COKE' 57.2 0 0
+*solid_cp  'COKE' 4.06 0
+
+
+** Note:  Inert gas is 80% CO2 and 20% CO, so Mw = 40.8
+
+** Cracking:  heavy oil -> light oil + coke (50/50 by mass)
+
+*storeac    0          1          0          0          0        0
+*stoprod    0          0        2.154        0          0      25.96
+*freqfac 4.167e5
+*eact 27000
+*renth 40000
+
+
+** Light oil burning:  light oil + o2 -> water + inert gas + energy
+
+*storeac    0          0          1          0        14.06      0
+*stoprod  6.58         0          0        11.96        0        0
+*freqfac 3.020e10
+*eact 59450
+*renth 2.9075e6
+
+
+** Heavy oil burning:  heavy oil + o2 -> water + inert gas + energy
+
+*storeac    0          1          0          0        60.55      0
+*stoprod  28.34        0          0        51.53        0        0
+*freqfac 3.020e10
+*eact 59450
+*renth 1.2525e7
+
+
+** Coke oil burning:  coke oil + o2 -> water + inert gas + energy
+
+*storeac    0          0          0          0        1.18       1
+*stoprod  0.55         0          0          1          0        0
+*freqfac 416.7
+*eact 25200
+*renth 2.25e5
+
+
+**   K value tables
+**      for pressures 1915 to 2115 psi by 100 psi intervals
+**      for temperatures 77 to 1777 F by 50 deg intervals
+*kvtablim 1915 2115 77 1777
+
+*kvtable 'HEVY OIL'
+** 1915 psi  2015 psi  2116 psi
+   2.51e-9   2.39e-9   2.39e-9   **    77 F
+   2.23e-8   2.12e-8   2.12e-8   **   127 F
+   1.54e-7   1.46e-7   1.46e-7   **   177 F
+   8.50e-7   8.08e-7   8.08e-7   **   227 F
+   3.91e-6   3.72e-6   3.72e-6   **   277 F
+   2.63e-5   2.50e-5   2.50e-5   **   327 F
+   8.42e-5   8.00e-5   8.00e-5   **   377 F
+   2.42e-4   2.30e-4   2.30e-4   **   427 F
+   4.10e-4   3.90e-4   3.90e-4   **   477 F
+   5.89e-4   5.60e-4   5.60e-4   **   527 F
+   8.84e-4   8.40e-4   8.40e-4   **   577 F
+   0.00166   0.00158   0.00158   **   627 F
+   0.00284   0.0027    0.0027    **   677 F
+   0.00389   0.0037    0.0037    **   727 F
+   0.00558   0.0053    0.0053    **   777 F
+   0.00768   0.0073    0.0073    **   827 F
+   0.0105    0.01      0.01      **   877 F
+   0.0179    0.017     0.017     **   927 F
+   0.0179    0.017     0.017     **   977 F
+   0.0179    0.017     0.017     **  1027 F
+   0.0179    0.017     0.017     **  1077 F
+   0.0179    0.017     0.017     **  1127 F
+   0.0179    0.017     0.017     **  1177 F
+   0.0179    0.017     0.017     **  1227 F
+   0.0179    0.017     0.017     **  1277 F
+   0.0179    0.017     0.017     **  1327 F
+   0.0179    0.017     0.017     **  1377 F
+   0.0179    0.017     0.017     **  1427 F
+   0.0179    0.017     0.017     **  1477 F
+   0.0179    0.017     0.017     **  1527 F
+   0.0179    0.017     0.017     **  1577 F
+   0.0179    0.017     0.017     **  1627 F
+   0.0179    0.017     0.017     **  1677 F
+   0.0179    0.017     0.017     **  1727 F
+   0.0179    0.017     0.017     **  1777 F
+
+*kvtable 'LITE OIL'
+** 1915 psi  2015 psi  2116 psi
+   1.54e-4   1.46e-4   1.46e-4   **    77 F
+   4.80e-4   4.56e-4   4.56e-4   **   127 F
+   0.00128   0.00122   0.00122   **   177 F
+   0.00304   0.00289   0.00289   **   227 F
+   0.00648   0.00616   0.00616   **   277 F
+   0.0126    0.012     0.012     **   327 F
+   0.0179    0.017     0.017     **   377 F
+   0.0231    0.022     0.022     **   427 F
+   0.0295    0.028     0.028     **   477 F
+   0.0347    0.033     0.033     **   527 F
+   0.04      0.038     0.038     **   577 F
+   0.0452    0.043     0.043     **   627 F
+   0.0505    0.048     0.048     **   677 F
+   0.0568    0.054     0.054     **   727 F
+   0.0631    0.06      0.06      **   777 F
+   0.0694    0.066     0.066     **   827 F
+   0.0768    0.073     0.073     **   877 F
+   0.0884    0.084     0.084     **   927 F
+   0.0884    0.084     0.084     **   977 F
+   0.0884    0.084     0.084     **  1027 F
+   0.0884    0.084     0.084     **  1077 F
+   0.0884    0.084     0.084     **  1127 F
+   0.0884    0.084     0.084     **  1177 F
+   0.0884    0.084     0.084     **  1227 F
+   0.0884    0.084     0.084     **  1277 F
+   0.0884    0.084     0.084     **  1327 F
+   0.0884    0.084     0.084     **  1377 F
+   0.0884    0.084     0.084     **  1427 F
+   0.0884    0.084     0.084     **  1477 F
+   0.0884    0.084     0.084     **  1527 F
+   0.0884    0.084     0.084     **  1577 F
+   0.0884    0.084     0.084     **  1627 F
+   0.0884    0.084     0.084     **  1677 F
+   0.0884    0.084     0.084     **  1727 F
+   0.0884    0.084     0.084     **  1777 F
+
+**  Reference conditions
+*prsr 14.7
+*temr 77
+*psurf 14.65
+*tsurf 62
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+    0.1        0.0        0.9
+    0.25       0.004      0.6
+    0.44       0.024      0.28
+    0.56       0.072      0.144
+    0.672      0.168      0.048
+    0.752      0.256      0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    -------
+    0.21       0.784      0.0
+    0.32       0.448      0.01
+    0.4        0.288      0.024
+    0.472      0.184      0.052
+    0.58       0.086      0.152
+    0.68       0.024      0.272
+    0.832      0.006      0.448
+    0.872      0.0        0.9
+
+**  Override critical saturations on table
+*swr 0.25
+*sorw 0.25
+*sgr 0.12
+*sorg 0.2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*pres *con 2014.7     ** high initial pressure
+
+*sw *con 0.178
+*so *con 0.654        ** initial gas saturation is 0.168
+
+*temp *con 100.
+
+** Gas in tube is air (79% N2 & 21% O2)
+*mfrac_gas 'INRT GAS' *con 0.79
+*mfrac_gas 'OXYGEN'   *con 0.21
+
+*mfrac_oil 'HEVY OIL' *con 0.256
+*mfrac_oil 'LITE OIL' *con 0.744
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+
+*norm     press 15   satur .1    temp 40  y .1    x .1
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .05
+
+
+   well 1 'INJECTOR'
+   injector 'INJECTOR'
+   incomp gas 0 0 0 .79 .21  ** air injection
+   tinjw 70
+   pinjw 3000
+   operate stg .554
+   perf 'INJECTOR'
+          **  i   j  k  wi(gas)
+             1:5  1 12   1.108    ** 5.54 / 5
+
+
+   well 2 'PRODUCER'
+   producer 'PRODUCER'
+   operate bhp 2014.7
+   monitor temp 600 stop
+   geometry k 1 1 1 0  ** Linear pressure drop at tube end
+   perf tube-end 'PRODUCER'
+               **  i   j  k
+                  1:5  1  1   1.0
+
+   heatr ijk 1:5 1 12  40      ** = 200 / 5
+
+   ** Convective heat loss from outer ring to tube sleave at 70 deg F
+   uhtr   ijk 5 1 1:12  -0.01
+   tmpset ijk 5 1 1:12  70
+
+time .25
+         outsrf grid none
+time .5
+         heatr con 0      ** Shut off external heaters
+
+         ** Adiabatic heating controlled from axial temperature
+         adheat  5 1 1:12  100.  ref 1 1 1:12
+
+time 5
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 10
+         outsrf grid none
+time 15
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 20
+         outsrf grid none
+time 25
+time 30
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 40
+stop

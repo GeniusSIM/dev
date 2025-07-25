@@ -1,0 +1,44 @@
+** This example shows how to use Results Report to prepare data for
+** Merak's Petroleum Economic Evaluation Program (PEEP).
+
+** You will need to change the file name in the following line to your simulation
+** results file:
+
+FILES      'mxdrm005.sr3'
+
+** You can change the following file name if desired, but Merak's importer will look 
+** for the TXT extention by default:
+
+OUTPUT 'formerak.txt'
+
+
+** Don't change the following settings:
+
+LINES-PER-PAGE  50000     ** Don't have any page breaks in the table
+TABLE-WIDTH       132     ** 
+NO-BLANKS                 ** Always put a value (placeholder) in each column
+TIME              OFF     ** No time column
+DATE               ON     ** First column will be date
+SPREADSHEET               ** Make the output columns tab separated
+
+** For Merak import, the units for rates must be either "m3/day" (SI) or
+** bbl/day and ft3/day (FIELD).  Don't even think about using mixed units
+** or lab units. (Do you run economics on your lab experiments??)
+
+** First, output a table for each GROUP.  Merak expects monthly output.
+
+TABLE-FOR     GROUPS      ALL
+  COLUMN-FOR  PARAMETERS 'Oil Rate SC - Monthly' 
+                         'Water Rate SC - Monthly'
+                         'Gas Rate SC - Monthly'
+TABLE-END   
+
+** Next, output a table for each WELL.  Again, monthly output is required.
+
+TIMES-FROM 2
+TABLE-FOR     WELLS       ALL
+   COLUMN-FOR PARAMETERS 'Oil Rate SC - Monthly' 
+                         'Water Rate SC - Monthly'
+                         'Gas Rate SC - Monthly'
+                         'Well operating mode'
+TABLE-END   

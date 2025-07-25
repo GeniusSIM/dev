@@ -1,0 +1,226 @@
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'STARS Geomechanics Template #13'
+title2 'COUPLED GEOMECHANIC-THERMAL SIMULATION'
+title3 '2D CARTESIAN-GRID CYCLIC STEAM PROCESS, WITH ELASTOPLASTICITY'
+
+inunit field  except 5 2
+outunit field  except 5 2
+
+
+outprn grid pres sw sg temp vporos
+outprn well wellcomp
+outprn iter newton
+wprn iter 1
+wrst
+
+outsrf grid pres sw sg temp vporos
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+grid cart 16 8 1
+
+di ivar 26.75 27.29 30.58 31.32 31.66 31.84 31.96 32.03
+        32.08 32.12 32.14 32.16 32.18 32.19 32.25 50
+dj jvar 2.25  5.25  13.5  28    39    67.5  130   487.5
+dk con  108
+
+por con .277
+
+permi con 765
+permj equalsi
+permk con 1000
+
+end-grid
+
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2
+
+compname         'WATER'        'OIL'
+**             -----------   -----------
+cmm               18.02          400
+
+pcrit             3155          161.7
+tcrit             705.7         921.2
+molden            3.464          .15
+cp                3e-6          1e-5
+ct1               4e-4          4e-4
+cpl1                0           95.56
+
+visctable
+
+**      Temp
+          32      7.141      3138000
+          77      1.021        40040
+         122       .55          2251
+         167       .372          315.4
+         212       .281           79
+         257       .225           28.8
+         302       .187           13.5
+         392       .14             4.6
+         482       .111            2.2
+         572       .091            1.2
+         662       .077             .8
+
+prsr 400
+temr 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**    Sw        Krw       Krow
+**  ------    ------    -------
+    0.265     0.0        1.0
+    0.3292    0.0006     0.9
+    0.3875    0.0017     0.685
+    0.4458    0.005      0.49
+    0.5042    0.011      0.325
+    0.545     0.018      0.215
+    0.5917    0.056      0.1
+    0.6208    0.1        0.043
+    0.685     0.16       0.0
+    1.0       1.0        0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      ------     -------
+
+    0.5        1.00       0.0
+    0.98       0.0        0.75
+    1.0        0.0        1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+pres con 400
+sw con .3
+so con .7
+temp con 60
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical
+
+aim stab
+
+rangecheck off
+norm     press 5000 satur .05  temp 50
+rangecheck on
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+
+geomech
+
+gcoupling 1
+elastmod 2e5
+poissratio .3
+cohesion 100
+fpvolm .03
+tdmax 10
+
+stress 585 1163 0 585
+
+rpwtabd   **    Sw       Krw       Krow
+          **  ------    ------     -----
+              0.245     0.0        1.0
+              0.3292    0.0120     0.9
+              0.3875    0.0340     0.685
+              0.4458    0.0500     0.49
+              0.5042    0.1100     0.325
+              0.545     0.1800     0.215
+              0.5917    0.2489     0.1
+              0.6208    0.2711     0.043
+              0.685     0.3200     0.0
+              1.0       1.0        0.0
+
+rpltabd   **   Sl        Krg       Krog
+          **  ----      -----      ----
+              0.5       1.0        0.0
+              0.98      0.0        0.75
+              1.0       0.0        1.0
+
+run
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1990 1 1
+
+   dtwell .0001
+
+   well 1 'INJECTOR'
+   injector mobweight 'INJECTOR'
+   incomp  water  1.0  0.0
+   tinjw 500
+   operate     stw 393
+   operate max bhp 1100
+   perf 'INJECTOR'
+           ** i j k wi
+              1 1 1 4169749.6 ** 4700
+
+time 1
+time 5
+time 10
+time 20
+time 30
+time 40
+
+   shutin 'INJECTOR'
+
+   well 2 'PRODUCER'
+   producer 'PRODUCER'
+   operate     stl 98.25
+   operate min bhp 200
+   perf 'PRODUCER'
+          ** i j k wi
+             1 1 1 44359.04 ** 50
+
+   dtwell 1
+
+time 60
+
+   producer 'PRODUCER'
+   operate bhp 200
+   perf 'PRODUCER'
+          ** i j k wi
+             1 1 1 8871.808 ** 10
+
+time 240
+stop

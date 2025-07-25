@@ -1,0 +1,215 @@
+   *****************************************************************************
+   ** Template (mxgmc004.dat):  2D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC004.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **                                                          13X1X4 RADIAL GRID      **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **               Different rock types are assigned in the geomechanics              **
+   **               section due to different Young's modulus on each layer.            **
+   **               Output stresses, subsidence and displacement vector.               **
+   **               *RIGIDTOP keyword is applied so that the cap of reservoir          **
+   **               is not allowed moving upward.                                      **
+   **               The value of Young's modulus is obtained from the formula given by **
+   **               Settari and Mourits (SPEJ, pp. 219-226,1998)                       **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #004'
+*TITLE2
+   'Four Rock Types and Rigid Reservoir Top'
+
+*INUNIT *FIELD
+
+*WPRN *GRID TIME
+*OUTPRN *GRID *PRES
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 1
+*OUTSRF *GRID  *PRES *STRESI *STRESJ *STRESK
+               *VDISPL *VERDSPLGEO *SUBSIDGEO
+
+*OUTSRF *SPECIAL 2 1 2 *PRES
+*OUTSRF *SPECIAL 2 1 2 *VERDSPLGEO
+*OUTSRF *SPECIAL 2 1 2 *SUBSIDGEO
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 13 1 4 *RW 0.00001
+
+*DI *IVAR  3 10*10 40 120
+
+*DJ *CON 360
+
+*DK *KVAR 25 25 20 10
+
+*POR KVAR
+   0.3  0.25  0.28  0.31
+
+*PERMI *KVAR 2000 1000 500 2000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  / 2
+*DEPTH 1 1 1 167.5
+
+*CPOR 5E-6
+*PRPOR 175
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+     5000.000   335.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER   61.5987
+   *CO               1.0E-5        ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.01420       ** Water formation volume factor
+   *CW               3.4E-6        ** Water compressibility
+   *REFPW            14.7          ** Reference pressure
+   *VWI              0.5366        ** Water viscosity at reference pressure
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 125
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+*RPT 1
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+*PRES *CON 200
+*SW *CON 1.
+*SO *CON 0.
+*PB *CON 0.
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*SDEGREE GAUSS
+*DTMAX 90
+
+*NORM     PRESS 200
+*NORM     SATUR 0.2
+
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH
+
+*GEOROCK 1           ** rock type # 1
+   *ELASTMOD 4.95E5
+   *POISSRATIO 0.3
+
+*GEOROCK 2           ** rock type # 2
+   *ELASTMOD 5.94E5
+   *POISSRATIO 0.3
+
+*GEOROCK 3           ** rock type # 3
+   *ELASTMOD 5.31E5
+   *POISSRATIO 0.3
+
+*GEOROCK 4           ** rock type # 4
+   *ELASTMOD 4.79E5
+   *POISSRATIO 0.3
+
+*GEOTYPE   IJK
+**         i      j   k    rocktype
+           1:13   1   1     1
+           1:13   1   2     2
+           1:13   1   3     3
+           1:13   1   4     4
+
+*RIGIDTOP
+*STRESS 1020.2 1898. 0 1020.2
+*STRESSGRAD 0.320 0.596 0 0.320
+*GEORBLOCK 1 1 4
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+DATE 1973 9 25.5
+
+   DTWELL .02
+
+   WELL 1 'prod1' VERT 1 1
+   PRODUCER 'prod1'
+   OPERATE MIN BHP 100
+   PERFV WI 'prod1'   **  K
+            4   78000.
+            3   39000.
+            2   97500.
+            1   195000.
+
+TIME 1095
+
+STOP

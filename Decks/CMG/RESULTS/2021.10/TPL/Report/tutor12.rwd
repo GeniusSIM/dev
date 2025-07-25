@@ -1,0 +1,8 @@
+*FILES *FHF 'samplee.fhf'
+
+*UNITS *LAB
+
+*TABLE-FOR *WELL 'PRODN'
+    *COLUMN-FOR *PARAMETERS 'Cumulative Water Mass$C SC' *COMPONENT 'NaOH'
+    *COLUMN-FOR *PARAMETERS 'Cumulative Water Mass(POLYMER) SC' 
+*TABLE-END

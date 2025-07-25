@@ -1,0 +1,225 @@
+**--------------------------------------------------------------------**
+** GMSPR020.DAT: Non-Darcy Correction Factor Test Model               **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSPR020.DAT                                                **
+**                                                                    **
+** MODEL: 10x10x1 Grid                  6 COMPONENTS                  **
+**        FIELD UNITS                   NONDARCY FG1                  **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Uses Frederick and Graves model I paramaters for non-darcy flow.   **
+** Symmetric patern, velocity vectors can be used to check results.   **
+** Outputs gas resistance factor and has a token non Darcy correction **
+** factor (1.001) to check output.  Large rate changes are made so    **
+** that RFG changes during the run.                                   **   
+** Modified from IMEX template mxsmo025.                              **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+RESULTS SIMULATOR GEM
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Non Darcy Velocity 2d Test Model'
+
+   *INUNIT *FIELD
+   
+   *WPRN   *WELL   1
+   *WPRN   *GRID   1
+   *WPRN   *ITER   *BRIEF
+
+   *OUTPRN *WELL   *BRIEF
+   *OUTPRN *RES    *ALL
+   *OUTPRN *GRID   *IMPL *RFG *PRES *VISG *SG *DENG
+
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *VELOCRC *RFG *PRES *VISG *SG *DENG *SW
+   *OUTSRF *RES    *ALL
+   
+   *WRST 0
+   
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *VARI  10   10   1 
+                            
+   *DI *CON 32.80           
+   *DJ *CON 32.80           
+   *DK *CON 32.80                
+
+   *DEPTH 1 1 1 7424.0
+
+   *POR *CON 0.13           
+                
+   *CPOR   3.0E-6           
+   *PRPOR 3500              
+
+   *PERMI *CON 150.0                 
+   *PERMJ *CON 150.0                 
+   *PERMK *CON  15.0                 
+
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+*MODEL   *PR
+*NC    6    6
+*TRES       135.000
+*COMPNAME
+           'N2-C1'        'CO2-C2'       'C3'           'IC4-NC4'
+           'IC5-NC5'      'C6+'
+*SG         3.0130652E-01  3.7054157E-01  5.0700000E-01  5.7181217E-01
+            6.2738626E-01  7.4290000E-01
+*TB        -2.5759262E+02 -1.1474736E+02 -4.3690000E+01  1.9209647E+01
+            8.7968521E+01  2.8224269E+02
+*PCRIT      4.5355206E+01  4.9037092E+01  4.1900000E+01  3.6633731E+01
+            3.3362240E+01  2.7517975E+01
+*VCRIT      9.8961763E-02  1.4519067E-01  2.0300000E-01  2.5956134E-01
+            3.0519948E-01  4.4727492E-01
+*TCRIT      1.9033264E+02  3.0535271E+02  3.6980000E+02  4.1532111E+02
+            4.6406185E+02  5.7665684E+02
+*AC         8.1266760E-03  1.0416505E-01  1.5200000E-01  1.8328571E-01
+            2.3660000E-01  3.5214629E-01
+*MW         1.6090385E+01  3.0746699E+01  4.4097000E+01  5.8124000E+01
+            7.2151000E+01  1.1400000E+02
+*HCFLAG     0              0              0              0
+            0              0
+*BIN
+            2.4441751E-03
+            8.5461672E-03  1.8694605E-03
+            1.5311918E-02  5.6004473E-03  1.0060669E-03
+            2.0797675E-02  9.1334053E-03  2.7651711E-03  4.3710309E-04
+            3.6834764E-02  2.0757491E-02  1.0317307E-02  4.9166600E-03
+            2.4301116E-03
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      8.7210000E-02  1.2465000E-01  2.0300000E-01  2.3641000E-01
+            2.8765000E-01  4.3279000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02
+*PCHOR      7.6857489E+01  1.0654369E+02  1.5030000E+02  1.8510000E+02
+            2.2760000E+02  3.2390000E+02
+
+*DENWS  62.238   
+*DENW   59.787   
+*CW    2.9886E-6
+*REFPW 14.7
+*VISW   0.31     
+                 
+
+*PHASEID *GAS
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw    krw   krow 
+    0.0     0.0   1.0
+    1.0     1.0   0.0    
+                               
+   *SLT
+   **  sl   krg     krog
+    0.0     1.0     0.0
+    1.0     0.0     1.0  
+
+   *NONDARCY *FG1    ** Frederick and Graves model I         
+   
+   **Non-Darcy correction factor 
+   *NDARCYCOR *ALL
+    100*1.001
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_GAS 
+   *REFDEPTH   8400.           
+   *REFPRES    3500.           
+   *DWGC       9500.                   
+
+   *SWOC  0.999
+   *ZGAS
+          7.2315080E-01  9.5114969E-02  7.0181919E-02  9.0497738E-02
+          1.8468926E-02  2.5856496E-03
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        30.        
+   *NORM *PRESS  500.0      
+   *NORM *SATUR     0.10    
+   *NORM *GMOLAR    0.10
+   *MAXCHANGE *PRESS   100000.0
+   *MAXCHANGE *SATUR   0.85
+   *MAXCHANGE *GMOLAR   0.85
+   *AIM *THRESH 0.1
+   *CONVERGE *MAXRES *TIGHTER
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 03 01
+   *DTWELL 0.1
+                     
+   *AIMWELL *WELLNN
+
+   *WELL 1  'Producer'
+   *PRODUCER  'Producer'               
+   *OPERATE *MIN  *BHP  3400.0         
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+
+   *PERF *GEO  'Producer'
+   ** if     jf     kf     ff                           
+      1      1      1     1.0      
+  
+   *WELL 2  'Injector'
+  
+   *INJECTOR  'Injector'               
+   *INCOMP *SOLVENT   7.2315080E-01  9.5114969E-02  7.0181919E-02  9.0497738E-02  1.8468926E-02  2.5856496E-03
+
+   *OPERATE *MAX  *STG 25.0E+06         
+                                       
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+
+   *PERF *GEO  'Injector'
+   ** if      jf     kf     ff                           
+      10      10      1     1.0       
+
+   *DATE 1987 03 01
+    *ALTER 2
+          1e6
+   *DATE 1988 03 01
+    *ALTER 2
+          25e6
+   *DATE 1989 03 01
+    *ALTER 2
+          1e6
+   *DATE 1990 03 01
+    *ALTER 2
+          25e6
+   *DATE 1991 1 01
+   *STOP

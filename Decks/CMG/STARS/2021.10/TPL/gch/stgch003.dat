@@ -1,0 +1,829 @@
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate geochemistry for a lower-phase surfactant polymer 
+**       flood with precipitation and adsorption.
+
+**    This is the STARS counterpart to the geochemistry of the STARS-ME stmeg003.dat
+**       template, which is a true ASP flood.
+
+**    Geochemistry:
+**			11 stars components,
+**                      7 geo-elements,
+**                      18 water species,
+**                      4 sorbed species,
+**                      4 solid species
+**                      11 chemical reactions
+
+**    Demonstrate INTSPECIES keyword on acid anion species to control IFT and relperm
+**       behavior (in-situ surfactant).
+
+**    NOTE - A species is one representation of a STARS component.
+**           In this example, the STARS ACID component is represented by three geochem
+**           species, [Acid] = [HAw] + [A-] + HAo]:
+**		1) Acid anion (A-) (the in-situ surfactant)
+**		2) Acid in water (HAw)
+**		3) Acid in Oil (HAo)
+
+**    The amount of A- species depends on pH via goechem equation:
+**           HAo -> H+ + A-
+
+**    Thus, use of *INTSPECIES 'A-' is more mechanistic than *INTCOMP 'Acid'
+
+**    Demonstrate INTCOMP2 keyword on surfactant component as secondary control of IFT
+**       and relperm behavior (added surfactant).
+
+**    Hydrogen adsorption on clays is represented in stars as water adsoption.
+
+**    Hydrogen element mole concentration is represented by stars water component.
+
+**    Hydrogen is set as a stars component to identify its presence but
+**       mole concentration is set to zero.
+                   
+**    Geo-chem outputs are in mol/l (water) for water species.
+**       and in mol/l (pore volume) for solid and sorbed species.
+
+**    80x1x1 Cartesian grid
+
+**    Water chemistry with NaCO3 flood.
+**       adsorption of hydrogen, sodium, and calcium on clays.
+**        precipitation of calcium carbonate and calcium hydroxide
+
+**    Partition of ACID in oil and water is done on initialization
+**    and kept constant using STARS K-value.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Geochem Model Template #3'
+*TITLE2 'Verify/Illustrate ASP flood in Core with Adsorption and Precipitation'
+*TITLE3 'Solid Kinetics *SLD_KIN *TST'
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *VISG *VISO *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Z *SG *PRES    *PERMI  *PERMK                               
+               *ADSORP   *VISW	*VISO *KRW *KRO *LOGIFT *LOGCAPN *WATMOB *OILMOB *IFT
+               *ADSPCMP
+
+** GEOCHEM OUTPUTS TO FOLLOW
+*OUTSRF *GRID  *AQ-SP *SRB-SP *SLD-SP *PHAQ
+
+*OUTPRN *WELL  *ALL
+*OUTPRN *ITER *NEWTON **UNCONV
+*OUTPRN *ITER-GCH *DBG
+
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 80 1 1  ** One-dimensional grid
+
+*DI *CON .00334794
+*DJ *CON .0336585
+*DK *CON .0336585
+
+*POR *CON 0.1988	** POROSITY
+*PERMI *CON 236  ** 236 milli-darcies
+*PERMJ *CON 236  ** EQUAL TO I DIRECTION VALUE
+*PERMK *CON 118
+
+*END-GRID
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+*MODEL 12 11 11 10   ** All components except oil and acid are aqueous based
+ 
+*COMPNAME    'WATER'  	'SURF'		 'POLYMER' 	'CALCIUM'	'Mg'	'CO3'  	'Na'	'H'	'Acid' 'CHLORIDE'	'OIL'	'CaCO3x'
+**           -------	----------	--------  	---------	------	-----   -----   -----   ----- ----------- 	-------
+*CMM          .018   	.427		10.0		.04		.0243	.06   	.023   .001   	.500	.0355		0.160	  0.1  **Molecular weight IN SI UNITS
+
+** Input total number of elements, aqueous species, solid elements, solid species, sorbed species
+** note - there are 5 elements that make up the 4 solid species
+** there are 4 sorbed species
+*GEOCHEM 7 18 2 1 4
+** flag stars components that will participate in geochem reactions
+** water participates by default so flag to zero (follow order of COMPNAME)
+*COMP-GEO     0           0                0              1              1       1        1      1        1        1        0       1
+
+** Aqueous species inputs
+***************************
+** identify aqueous species by name
+*CMPNAME-AQ  'Ca++' 'Mg++' 'CO3--' 'Na+' 'H+' 'HAo' 'H2O' 'CaOH+' 'MgOH+' 'CaHCO3+' 'MgHCO3+' 'A-' 'OH-' 'HCO3-' 'H2CO3' 'CaCO3' 'MgCO3' 'HAw'
+** identify aqueous species charge numbers (follow order of COMPNAME-AQ)
+*CHARGE-AQ   2    2    -2    1    1    0     0      1       1        1         1      -1    -1     -1      0       0      0       0
+
+** construct the element abundance matrix, a matrix of columns
+** equal to the number of total species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	Ca++	Mg++	Co3--	Na*	H+	Hao	H2O	CaOH+	MgOH+	CaHCO3+	MgHCO3+	A-	OH-	HCO3-	H2CO3	CaCO3	MgCO3	Haw
+**Ca	1	0	0	0	0	0	0	1	0	1	0	0	0	0	0	1	0	0
+**Mg	0	1	0	0	0	0	0	0	1	0	1	0	0	0	0	0	1	0
+**C	0	0	1	0	0	0	0	0	0	1	1	0	0	1	1	1	1	0
+**Na	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+**H	0	0	0	0	1	1	2	1	1	1	1	0	1	1	2	0	0	1
+**Acid	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	1
+**Cl	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+
+*AMAT_AQ
+	1	0	0	0	0	0	0	1	0	1	0	0	0	0	0	1	0	0
+	0	1	0	0	0	0	0	0	1	0	1	0	0	0	0	0	1	0
+	0	0	1	0	0	0	0	0	0	1	1	0	0	1	1	1	1	0
+	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+	0	0	0	0	1	1	2	1	1	1	1	0	1	1	2	0	0	1
+	0	0	0	0	0	1	0	0	0	0	0	1	0	0	0	0	0	1
+	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+
+
+** Sorbed species inputs
+***************************
+** identify sorbed species by name
+*CMPNAM-SRB 'sorb-H' 'sorb-Na' 'sorb-Ca' 'sorb-Mg'
+** identify sorbed species charge numbers (follow order of COMPNAM-SRB)
+*CHARGE-SRB 1 1 2 2
+** construct the adsorption abundance matrix, a matrix of columns
+** equal to the number of sorbed species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	  sorb-H' 'sorb-Na'  'sorb-Ca' 'sorb-Mg'
+** Ca	   0         0          1          0
+** Mg      0         0          0          1
+** C       0         0          0          0
+** Na      0         1          0          0
+** H	   1         0          0          0
+** Acid    0         0          0          0
+** Cl	   0         0          0          0
+
+*AMAT_SRB 
+  	   0         0          1          0
+           0         0          0          1
+           0         0          0          0
+           0         1          0          0
+ 	   1         0          0          0
+           0         0          0          0
+  	   0         0          0          0
+
+** Solid species inputs
+***************************
+** identify solid species by name
+*CMPNAM-SLD 'CAL-CARB'
+** construct the solid element abundance matrix, a matrix of NSLD_SP columns and NELET rows
+** equal to the number of total solid species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**	  'CAL-CARB' 
+** Ca        1    
+** Mg	     0      
+** CO3	     1    	
+** Na	     0    	
+** H         0    	
+** Acid	     0    	
+** Cl        0         
+
+*AMAT_SLD
+        1    
+        0    
+        1    
+        0    
+        0    
+        0    
+        0   
+
+** Build the aqueous stoichiometry matrix, consisting of columns equal to 
+** the number of aqueous fluids and rows equal to the number of reactions
+** Each equation is followed with the associated reaction constant
+** In this example there are 18 aqueous species (independents and dependents) and
+** 11 reactions (equivalent to the number of dependent species)
+** total number of equations is number of total species  minus number of independent species
+** NOTE, H2O is not flagged when used in reactions because its concentration is adsorbed
+**       into the equilibrium constant
+
+**         1    2    3     4    5    6     7	  8	  9	  10	    11      12   13     14      15       16      17    18
+**      'Ca++' 'Mg++' 'CO3--' 'Na+' 'H+' 'HAo' 'H2O' 'CaOH+' 'MgOH+' 'CaHCO3+' 'MgHCO3+' 'A-' 'OH-' 'HCO3-' 'H2CO3' 'CaCO3' 'MgCO3' 'HAw'
+** Equation 1: CaOH reaction
+** Ca++ + H2O -> Ca(OH)+ H+
+*STOICH_AQ    1    0    0     0   -1    0     0     -1       0        0         0       0    0      0       0        0       0     0
+*LG-KEQ -12.92d0
+** Equation 2: MgOH reaction
+** Mg++ + H2O -> Mg(OH)+ H+
+*STOICH_AQ    0    1    0     0   -1    0     0     0       -1        0         0       0    0      0       0        0       0     0
+*LG-KEQ -11.41d0
+** Equation 3: CaHCO3 reaction
+** Ca++ + H+ + CO3-- -> Ca(HCO3)+
+*STOICH_AQ    1    0    1     0   1     0     0     0        0       -1         0       0    0      0       0        0       0     0
+*LG-KEQ 11.15d0
+** Equation 4: MgHCO3 reaction
+** Mg++ + H+ + CO3-- -> Mg(HCO3)+
+*STOICH_AQ    0    1    1     0   1     0     0     0        0        0        -1       0    0      0       0        0       0     0
+*LG-KEQ 11.76d0
+** Equation 5: ACID reaction
+** HAo -> H+ + A-
+*STOICH_AQ    0    0    0     0   -1     1    0     0        0        0         0      -1    0      0       0        0       0     0
+*LG-KEQ -11.81d0
+** Equation 6: OH reaction (water dissociation)
+** H20 -> H+ + OH-
+*STOICH_AQ    0    0    0     0   -1     0    0     0        0        0         0       0   -1      0       0        0       0     0
+*LG-KEQ -14.0d0
+** Equation 6: HCO3
+** H+ + CO3-- -> HCO3-
+*STOICH_AQ    0    0    1     0    1     0    0     0        0        0         0       0    0     -1       0        0       0     0
+*LG-KEQ 10.33d0
+** Equation 7: H2CO3, dissolved CO2
+** 2H+ + CO3-- -> H2CO3
+*STOICH_AQ    0    0    1     0    2     0    0     0        0        0         0       0    0      0      -1        0       0     0
+*LG-KEQ 16.6d0
+** Equation 8: CaCO3
+** Ca++ + CO3-- -> CaCO3
+*STOICH_AQ    1    0    1     0    0     0    0     0        0        0         0       0    0      0       0       -1       0     0
+*LG-KEQ 3.2d0
+** Equation 8: MgCO3
+** Mg++ + CO3-- -> MgCO3
+*STOICH_AQ    0    1    1     0    0     0    0     0        0        0         0       0    0      0       0        0      -1     0
+*LG-KEQ 3.68d0
+** Equation 9: HAw (Partition equation of Acid, HAo:acid in oil, HAw:acid in water)
+** HAo -> HAw
+*STOICH_AQ    0    0    0     0    0     1    0     0        0        0         0       0    0      0       0        0       0    -1
+*LG-KEQ -3.8d0
+
+** Add stoichiometry input for adsorption
+** NOTE stoich coefficient input per line is only over the independent species (including the sorbed species)
+** and keyword input must be in the same order as the order of input sorbed species names
+** Each equation is followed with the associated reaction constant
+
+**             1    2    3     4    5    6     7	  8	    9	   10         11
+**  '          Ca' 'Mg' 'CO3' 'Na' 'H' 'HAo' 'H2O' 'sorb-H' 'sorb-Na'  'sorb-Ca'  'sorb-Mg'
+** Equation 1: Ca/Na reaction
+** Ca++ + 2Na+_s -> Ca++_s + 2Na+
+*STOICH_SRB    -1    0   0     2    0    0     0     0        -2            1        0
+*LG-KEX 0.899d0
+** Equation 2: Mg/Na reaction
+** Mg++ + 2Na+_s -> Mg++_s + 2Na+
+*STOICH_SRB    0    -1   0     2    0    0     0     0        -2            0        1
+*LG-KEX 0.716d0
+** Equation 3: H/Na reaction
+** H+_s + Na+ -> H+ + Na+_s
+*STOICH_SRB    0     0   0     1    -1   0     0     1        -1            0        0
+*LG-KEX 6.43d0
+
+** identify valence difference of sorbed reaction pairs
+*VAL-SRB -1 -1 0
+** identify exchange capacity of reservoir clay
+*EXCHG-CAP 0.3063196E-2
+
+** Add stoichiometry input for solids
+** builds the solid species exponent array exsld
+** NOTE stoich is only over the independent species and must be in the order of solid component names
+**         	1    2    3     4    5    6     7
+**  '      	Ca' 'Mg' 'CO3' 'Na' 'H' 'HAo' 'H2O'
+** Equation 1: CaCO3 reaction
+** CaCO3 -> Ca++ + CO3--
+*STOICH_SLD 	1     0   1     0    0   0      0
+*LG-KSP -9.3230d0
+
+** Hydrogen element location
+** Must identify location of hydrogen in the *CMPNAME-AQ species list
+****************
+*HYDROGEN 5
+
+** Hydrogen ion location
+*H-ION 5
+
+*********************************************************************************************
+**  Default K values for water, polymer, surf are overwritten (set to zero)
+** all components are zero:'WATER''SURF''POLYMER''CALCIUM''Mg''CO3''Na''H''Acid''CHLORIDE''OIL'
+ 
+*GASLIQKV           ** The following are gas-liquid K values
+*KVTABLIM  101.1 7213.8  17 149    **P-low, P-high, T-low, T-high 
+**KVTABLIM  101.3 7213.8  15.5 148.9    **P-low, P-high, T-low, T-high
+ 
+*KVTABLE 'WATER'     ** Want no water in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'POLYMER'   ** Want no polymer in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'SURF'      ** Want no surfactant in gas phase (override default)
+  2*0
+  2*0                         
+
+*KVTABLE 'CHLORIDE'      ** Want no chloride in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'CALCIUM'      ** Want no CALCIUM in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'Mg'      ** Want no Mg in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'CO3'      ** Want no CO3 in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'Na'      ** Want no Na in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'H'      ** Want no H in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'Acid'      ** Want no Acid in gas phase (override default)
+  2*0
+  2*0  
+
+*KVTABLE 'OIL'      ** Want no OIL in gas phase (override default)
+  2*0
+  2*0  
+  
+** Define liquid-liquid K values (for acid partition)
+** Most acid is in oil phase but acid is defined as water component
+** since geochemistry only works on water components
+*LIQLIQKV    
+*KVTABLIM 101.1 7213.8  17 149 ** need to change pressure to kPa units
+*KVTABLE 'Acid'      ** Keep Acid partition constant
+  2*5.06276e4
+  2*5.06276e4  
+
+
+ 
+**COMPNAME    'WATER'  	'SURF'		'POLYMER' 	'CHLORIDE'	'CALCIUM'	'Mg'	'CO3'  	'Na'	'H'	'HAo' 'OIL'
+**--------------------------------------------------------------------------------------------------------------------------------- 
+*MASSDEN      1000    	978.694              1000            1000	         1000   	1000    1000    1000     1000  	1000	838.8     **Density 
+*SOLID_DEN  'CaCO3x'  2710 0 0
+**---------------------------------------------------------------------------------------------------------------------------------  
+*CP           3e-6      3e-6              3e-6	          3e-6           3e-6		3e-6	3e-6	3e-6	3e-6   3e-6	1e-5      **Compressibility (units 1/kPa)   
+*CT1          0e-6      0e-6	          0e-6            0e-6	         0e-6   	0e-6	0e-6	0e-6	0e-6   0e-6	0e-6  **Thermal expansion
+*PCRIT        22110.0   0		  0        	  0	         0		0        0	0	0	0	0	 **Critical pressure in kPa
+*TCRIT        374.150   0	          0		  0        	 0		0	 0	0	0	0	0	 **Critical temperature in deg C
+
+**  Xanthan polymer effects on viscosity (20 cp at 0.075 mass fraction)
+**  Surfactant choosen to get 10 cp at 0.03 mass frac.
+
+*AVISC         0.995	0.995		35     	0.995		0.995     	0.995    0.995	0.995      0.995     0.995	24.3	**Assigned liq. viscosity
+**             polymer and surfactant viscosities can be investigated further                          
+** Nonlinear mixing rules for liquid phase viscosity
+*VSMIXCOMP 'POLYMER'
+*VSMIXENDP 0 2.7e-6                     **Between 0 & 3000 ppm
+                                                       **For Xanthan (comp. 2)
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+
+
+*PRSR  101.1
+*TEMR 17
+*PSURF 101.1
+*TSURF 17 
+
+*************************************************************************************************
+** SOLID KINETICS:
+** Treats precipitates as TST solids flowing with the fluid
+*SLD_KIN *TST 
+*LOG-TST-RATE-CONSTANT -2.0
+*REACTIVE-SURFACE-AREA 10
+*************************************************************************************************
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+** Add geochem adsorption input
+** Must associate every geochem sorbed-species name with a stars component name
+** If present, the hydrogen ion sorbed-species is always associated with STARS water component
+*IONCOMP 'Na' 'sorb-Na'
+*IONCOMP 'CALCIUM' 'sorb-Ca'
+*IONCOMP 'WATER' 'sorb-H'
+*IONCOMP 'Mg' 'sorb-Mg'
+
+**  Interpolation between 2 sets:  high versus low IFT/ Cap No. situations.
+
+** The following IFT tables match stmeg003.dat which uses the STARS-ME analytical
+** approach using a Huh IFT model and binodal curve relation between oil
+** solubility and surfactant concentration (acid anion plus added surfactant)
+** NOTE in STARS-ME the acid anion and the surfactant behavior use the same binodal curve,
+** thus, they will have the same IFT relation in the tabular data, as well.
+ 
+** Identify the acid anion as the first interpolating species (mol/mol water concentrations)
+*INTSPECIES 'A-'
+** Identify the surfactant as the second interpolating species (mol/mol water concentrations)
+*INTCOMP2 'SURF'
+*INTLIN
+
+*IFTTABLE   ** STARS-ME assumes IFT is function of SURF component and A- species
+
+** IFT has same units in lab and field
+ 
+2CMPW 0
+**       A- species	      IFT
+**       -------------    --------   
+0.0		20
+2.0e-4		10.79135942
+4.0e-4		6.026451749
+6.0e-4		3.597817181
+ 
+2CMPW 2.0e-4
+**       A- species	      IFT
+**       -------------    --------   
+0.0		10.79135942
+2.0e-4		6.026451749
+4.0e-4		3.597817181
+6.0e-4		2.382147411
+                        
+2CMPW 4.0e-4
+**       A- species	      IFT
+**       -------------    --------   
+0.0		6.026451749
+2.0e-4		3.597817181
+4.0e-4		2.382147411
+6.0e-4		1.777284929
+                        
+2CMPW 6.0e-4
+**       A- species	      IFT
+**       -------------    --------   
+0.0		3.597817181
+2.0e-4		2.382147411
+4.0e-4		1.777284929
+6.0e-4		1.46080988
+                        
+2CMPW 8.0e-4
+**       A- species	      IFT
+**       -------------    --------   
+0.0		2.382147411
+2.0e-4		1.777284929
+4.0e-4		1.46080988
+6.0e-4		1.264842529
+                        
+2CMPW 1.0e-3
+**       A- species	      IFT
+**       -------------    --------   
+0.0		1.777284929
+2.0e-4		1.46080988
+4.0e-4		1.264842529
+6.0e-4		1.109764118
+                        
+                      
+
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+ 
+*KRINTRP 1
+ 
+** Use same detrapping values as STARS-ME microemulsion/oil parameters.
+** (Only lower phase is modelled here)
+*DTRAPW  -4.72943
+*DTRAPN -5.68517  ** Critical cap num for detrapping to begin
+
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW  Pcow
+**  ----      -------    ------- -----
+0.0		0.0		1.0
+0.19		0.0		1.0
+0.2		0.0		1.0
+0.22		0.0		1.0
+0.24		0.0		1.0
+0.26		0.0		1.0
+0.28		0.0		1.0
+0.3		0.0		1.0
+0.32		0.0		1.0
+0.34		0.0		1.0
+0.36		0.0		1.0
+0.38		0.0		1.0
+0.4		0.00153022	0.90269521
+0.42		0.003533509	0.797358353
+0.44		0.005673982	0.695143657
+0.46		0.007906688	0.596291275
+0.48		0.010209908	0.501091911
+0.5		0.012570613	0.409906174
+0.52		0.014980048	0.323195846
+0.54		0.017431893	0.241578278
+0.56		0.019921362	0.165931445
+0.58		0.022444691	0.097631446
+0.6		0.024998842	0.039261615
+0.62		0.027581305	0.0
+0.66		0.03282304	0.0
+0.7		0.038156365	0.0
+0.74		0.043571009	0.0
+0.76		0.046306232	0.0
+0.8		0.051828192	0.0
+0.9		0.5		0.0
+1.0		1.0		0.0
+
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.29      0.4200    0.000
+                   0.32      0.36898   0.00179
+                   0.34      0.33737   0.00496
+                   0.36      0.30762   0.00972
+                   0.38      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   1.00000 
+ 
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+ 
+*KRINTRP 2 *COPY 1 1
+ 
+*DTRAPW -2.21461
+*DTRAPN -2.53438  ** Critical cap num for complete detrapping
+
+
+*SWT   **  Water-oil relative permeabilities
+ 
+**   Sw         Krw       Krow
+**  -----     -------    -------   
+
+0.0	0.0		1.0
+0.1	0.446683592	0.963795465
+0.15	0.51479218	0.944705892
+0.2	0.569325319	0.92487171
+0.22	0.588637517	0.916712411
+0.24	0.60683963	0.908415963
+0.26	0.624080585	0.89997636
+0.28	0.640479614	0.89138716
+0.3	0.656133843	0.882641441
+0.32	0.671123571	0.873731754
+0.34	0.68551604	0.864650063
+0.36	0.69936819	0.85538768
+0.38	0.712728719	0.84593519
+0.4	0.725639636	0.836282363
+0.42	0.738137469	0.826418057
+0.44	0.750254202	0.816330099
+0.46	0.762018019	0.806005148
+0.48	0.773453899	0.795428542
+0.5	0.784584098	0.784584098
+0.52	0.795428542	0.773453899
+0.54	0.806005148	0.762018019
+0.56	0.816330099	0.750254202
+0.58	0.826418057	0.738137469
+0.6	0.836282363	0.725639636
+0.62	0.84593519	0.712728719
+0.66	0.864650063	0.68551604
+0.7	0.882641441	0.656133843
+0.74	0.89997636	0.624080585
+0.76	0.908415963	0.60683963
+0.8	0.92487171	0.569325319
+0.9	0.963795465	0.446683592
+0.95	0.982207536	0.350460843
+1.0	1.0		0.0
+ 
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES *CON 101.1 **set const pressure of 101.3 kPa    
+*SW   *CON  0.3829    
+*SO *CON 0.6171
+*TEMP *CON 17 ** convert to lab units and lab value
+
+** Reservoir initializes with:
+** CaCO3 precipitate = 0.766312 mol/L pore volume
+** Cl = 0.059 eq/(L water)
+** Ca = 1.84752e-5 (eq/L water)
+** Mg = 0.002987015 (eq/L water)
+** Na = 0.0997379152 eq/L (eq/(L water)
+** CO3 = 9.131869e-2 eq/(L water)
+** Acid(oil) = 0.01192 (eq/L of oil)
+** Acid(water) = 2.49e-6 (eq/L of water)
+
+*************************************************************************************************
+** INITIAL SOLID AMOUNT INITIALIZATION:
+** Option 1: solids amounts are included in MFRAC_WAT assignments
+** Equilibrium calculations will determine precipitate amount and assign it to the solid:
+
+** Reservoir begins with a CaCO3 solid of 0.766312 mol/L of PV
+** For Sw = .3829 solid is 2.00134 mol/L of water
+** in mole frac (*.018) this is: 3.60241e-2
+** this must be added to aqueous calcium and aqueous carbonate
+**MFRAC_WAT 'WATER' *CON .924246
+** initial Cl conc of .059 Mol/L (X.018 L/mol water)
+**MFRAC_WAT 'CHLORIDE' *CON 1.062e-3
+** initial Calcium fluid conc is 1.84752e-5 eq/L with 2eq/mol and water is .018L/mol
+** this is 1.6627e-7 add to 3.60241e-2 gives
+**MFRAC_WAT 'CALCIUM' *CON 3.60243e-2
+**initial Mg conc is .002987 eq/L
+** gives 2.68831e-5 mol/mol Mg ion conc
+** initial sorbed Mg is (0.248584-5 mol/ L of PV)*(1/0.3829)*(0.018 L/mol) =  1.16859e-7 mol/mol
+**MFRAC_WAT 'Mg' *CON 2.68831e-5
+**initial carbonate conc is 9.131869e-2 Eq/L
+** this is 8.21868-4 add to 3.60241e-2 gives
+**MFRAC_WAT 'CO3' *CON 3.6846e-2
+**initial Na ion conc is .0997379152 eq/L * 0.018 L/mol = 1.795e-3 mol/mol
+**initial Na sorbed conc is (0.174682e-2 eq/L of PV)*(1/0.3829)*(0.018 L/mol) =  8.21174e-5 mol/mol
+**MFRAC_WAT 'Na' *CON 1.795e-3
+** initial acid in water is 2.49e-6 eq/L, 4.49e-8mol/mol
+**MFRAC_WAT 'Acid' *CON 4.49e-8
+**MFRAC_OIL 'OIL' *CON .997727
+**initial A- conc in oil is .01192 eq/L
+** oil mwt is .16 kg/mol, oil density is .839 kg/L, oil is 5.24 mol/L
+**MFRAC_OIL 'Acid' *CON 2.27318e-3
+
+** Option 2: solid amounts are input using *GEO_SLD:
+*MFRAC_WAT 'WATER' *CON .994021
+** initial Cl conc of .059 Mol/L (X.018 L/mol water)
+*MFRAC_WAT 'CHLORIDE' *CON 1.062e-3
+** initial Calcium fluid conc is 1.84752e-5 eq/L with 2eq/mol and water is .018L/mol
+** this is 1.6627e-7
+*MFRAC_WAT 'CALCIUM' *CON 1.6627e-7
+**initial Mg conc is .002987 eq/L
+** gives 2.68831e-5 mol/mol Mg ion conc
+*MFRAC_WAT 'Mg' *CON 2.68831e-5
+**initial carbonate conc is 9.131869e-2 Eq/L
+** this is 8.21868-4
+*MFRAC_WAT 'CO3' *CON 8.21868e-4
+**initial Na ion conc is .0997379152 eq/L * 0.018 L/mol = 1.795e-3 mol/mol
+*MFRAC_WAT 'Na' *CON 1.795e-3
+** initial acid in water is 2.49e-6 eq/L, 4.49e-8mol/mol
+*MFRAC_WAT 'Acid' *CON 4.49e-8
+*MFRAC_OIL 'OIL' *CON .997727
+**initial A- conc in oil is .01192 eq/L
+** oil mwt is .16 kg/mol, oil density is .839 kg/L, oil is 5.24 mol/L
+*MFRAC_OIL 'Acid' *CON 2.27318e-3
+*CONC_SLD 'CaCO3x'  *CON 766.312 **mol/m3 of PV
+**************************************************************************************************
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*ITERMAX 100 
+**DTMAX 90
+*DTMAX .025 ** change max time step to .025 days in lab     
+*TFORM *ZT
+*ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *TEMP 50  *ZNCG .2   *ZAQ .2  
+**NORM      *PRESS 1  *ZO .1    *TEMP 50  *ZNCG .1   *ZAQ .1
+
+** Representing high molecular weight components, such as polymer,
+** in mole concentrations can lead to very low numbers and
+** numerical instabilities.
+** Add molecular weight normalization of the numerical shifts.
+*SHIFT MWT
+matbaltol 5e-5
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*TIME 0
+
+   *DTWELL 0.0025
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   **OPERATE *BHP 101.3
+ ** GEOMETRY *J .11 .3687 1 0  ** rw,cc,ff,ss
+ *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+  *PERF *TUBE-END 'PRODN'   **  i j k
+                    80 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT NaCO3 SLUG
+
+** Inject the following eq/L, conversion factor is mol/#eq x 0.018 L/mol
+**COMPNAME    		'WATER'  	'SURF'		'POLYMER' 	'CALCIUM'	'Mg'	'CO3'  		'Na'		'H'	'Acid' 'CHLORIDE'	'OIL'
+**					0.0		0.0		.0027		0.003	0.094		0.1043		111.043	0.0	0.059		0.0
+
+**COMPNAME    		'WATER'  	'SURF'		'POLYMER' 	'CALCIUM'	'Mg'	'CO3'  		'Na'		'H'	'Acid' 'CHLORIDE'	'OIL'
+**           		-------		----------	--------  	--------	------ 	----		----     	---	-----   --------- 	-----
+   *INCOMP WATER    	.9961633	0.0		0.0		2.43e-5		2.7e-5	8.46e-4     	1.8774e-3	0.0	0.0	1.062e-3	0.0
+   
+   *OPERATE *STW 3.9e-4
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   
+*TIME .125
+   
+*TIME .1875 
+
+*TIME .25
+
+    
+*TIME .3125
+
+   
+*TIME .375
+*TIME .4375
+
+   *WRST *TNEXT
+
+*TIME .4786
+   DTWELL 0.0025               **INJECT different NaCO3 SLUG with high salinity
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+**COMPNAME    		'WATER'  	'SURF'		'POLYMER' 	'CALCIUM'	'Mg'	'CO3'  		'Na'		'H'	'Acid' 'CHLORIDE'	'OIL'
+**           		-------		----------	--------  	--------	----- 	----		----     	---	-----   -------- 	-----
+   *INCOMP WATER    	.990573		0.0		0.0		3.02e-5		8.55e-6	4.68e-5     	4.657e-3	0.0	0.0	4.685e-3	0.0
+   
+   
+   *OPERATE *STW 3.9e-4
+   
+
+*TIME .5
+*TIME .5625
+
+   *WRST *TNEXT
+
+*TIME .6786
+
+** INJECT the SURFACTANT/POLYMER-low sal SLUG, .02 volume frac of surf, conversion factor is (.018 L/mol water)/(.427 L/mol surf)
+   *INJECTOR  'INJTR' **MOBWEIGHT
+**COMPNAME    		'WATER'  	'SURF'		'POLYMER' 	'CALCIUM'	'Mg'	'CO3'  		'Na'		'H'	'Acid' 'CHLORIDE'	'OIL'
+**           		-------		----------	--------  	--------	----- 	----		----     	---	-----   -------- 	-----
+   *INCOMP WATER    	.990809		0.000843	2.7e-6		3.02e-5		8.55e-6	2.764e-3     	5.476e-3	0.0	0.0	7.02e-5		0.0
+   *OPERATE *STW 3.9e-4
+   
+   
+*TIME .75
+*TIME .8125
+*TIME .875
+*TIME .9375
+
+   *WRST *TNEXT
+
+*TIME 0.9886
+** INJECT the POLYMER-low sal SLUG,
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+   *INCOMP WATER    	.996726		0.0		2.7e-6		3.02e-5		8.55e-6	4.68e-5     	1.58e-3		0.0	0.0	1.61e-3		0.0
+   
+   *OPERATE *STW 3.9e-4
+
+*TIME 1    ** 1 DAY
+*TIME 1.5
+*TIME 2.0
+
+   *WRST *TNEXT
+
+*TIME 2.0386
+** INJECT the POLYMER-low sal SLUG,
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+   *INCOMP WATER    	.995617		0.0		0.0		2.43e-5		2.7e-5	8.46e-4     	1.877e-3	0.0	0.0	1.06e-3		0.0
+   
+   *OPERATE *STW 3.9e-4
+
+*TIME 3.0
+*TIME 3.5
+*TIME 3.7386

@@ -1,0 +1,416 @@
+   ******************************************************************************
+   ** wmwwm048.dat:  PTUBE1 Hydraulic tables with ALQ                          **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   wmwwm048.dat                                                             **
+   **                                                                                  **
+   ** MODEL:  9x5x3 GRID.   TWO PRODUCTION MANIFOLDS. ONE GAS INJECTION MANIFOLD.      **
+   **  PRODUCTION MANIFOLDS ON COMPRESSOR PRESSURE TARGET.                             **
+   **  INJECTION MANIFOLD WITH BOTH RATE AND COMPRESSOR PRESSURE MAXIMUM.              **
+   **  PTUBE1/ITUBE1 TABLES TO DEFINE PRESSURE DROP BETWEEN SURFACE AND MANIFOLD.      **
+   **  INJECTION WELLS USE HYDRAULICS TABLE.                                           **
+   **  MORE THAN ONE ALQ VALUE FOR PRODUCTION.                                         **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 9x5x3 cartesian grid gas injection problem with two production         **
+   ** manifold gathering centres and one gas injection manifold gathering centre.      **
+   ** The two production manifolds have a target compressor (surface) pressure         **
+   ** specified.  The gas injection manifold has maximum rate and surface pressure     **
+   ** constraints specified; these are enforced as targets when violated. The          **
+   ** pressure drops from manifold to surface are computed from PTUBE1 and ITUBE1      **
+   ** tables;  the PTUBE1 tables include rows corresponding to different value of the  **
+   ** ALQ. This data set should produce results identical to mxwwm033.dat              **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Gas Injection Manifold Test'
+   *TITLE2
+   'PTUBE1/ITUBE1 tables'
+   *TITLE3
+   'ALQ values for Production'
+
+   *INUNIT *FIELD
+                 
+   *WPRN   *WELL 1
+   *WPRN   *GRID 0
+   *WPRN   *ITER *BRIEF
+   *OUTPRN *WELL *BRIEF
+   *OUTPRN *RES  *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID *SO *SG *SW *PRES
+
+   *WSRF   *GRID   0
+   *WSRF   *WELL   1
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART  9   5    3
+   *DI *CON 1000.0
+   *DJ *CON 1000.0
+   *DK *KVAR
+    50.0 30.0 20.0
+
+   *DEPTH 1 1 1 8400.0
+
+   *POR *CON 0.3
+
+   *CPOR   3.0E-6
+   *PRPOR 14.7
+
+   *PERMI *KVAR
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       20.0   40.0   60.0
+
+
+   *MODEL *BLACKOIL
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35200  2591.000 0.2030000 0.0470000   
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5 
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.9400002   0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    4014.7
+   *REFDEPTH   8400.
+   *REFPRES    4800.
+   *DWOC       9500.
+   *DGOC       7000.  
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        1000.
+   *MAXSTEPS       100
+   *NORM *PRESS  1000.0
+   *NORM *SATUR    0.20
+   *AIM *OFF     
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *GROUP 'Gather-1' 'Gather-2' *ATTACHTO 'Field'     ** Define the gathering centres.
+   *GROUP 'Inj-Group'           *ATTACHTO 'Field'
+
+ *PTUBE1   1                   ** Hydraulics table for producing wells and
+  *DEPTH                       ** for production manifold-to-surface
+   8400.0                      ** pressure drop.  Note that two ALQ values
+  *GOR                         ** (0.0 and 1.0) are specified.
+   0.500000E+03 0.127000E+04
+  *WCUT
+   0.000000E+00 0.500000E+00
+  *OIL
+   0.000000E+00 0.400000E+04 0.800000E+04 0.160000E+05
+  *ALQ
+   0.000000E+00 0.100000E+01
+  *WHP
+   0.200000E+03 0.900000E+03 0.160000E+04
+ *BHP
+  1  1  1  1 0.117610E+04 0.187370E+04 0.257370E+04
+  2  1  1  1 0.113550E+04 0.187660E+04 0.257660E+04
+  3  1  1  1 0.113360E+04 0.188420E+04 0.258420E+04
+  4  1  1  1 0.116010E+04 0.191250E+04 0.261250E+04
+  1  1  2  1 0.164670E+04 0.234470E+04 0.304470E+04
+  2  1  2  1 0.161800E+04 0.235120E+04 0.305120E+04
+  3  1  2  1 0.163090E+04 0.236840E+04 0.306840E+04
+  4  1  2  1 0.169640E+04 0.243340E+04 0.313340E+04
+  1  2  1  1 0.997700E+03 0.167090E+04 0.237090E+04
+  2  2  1  1 0.682700E+03 0.167460E+04 0.237460E+04
+  3  2  1  1 0.463100E+03 0.168450E+04 0.238450E+04
+  4  2  1  1 0.425700E+03 0.172130E+04 0.242130E+04
+  1  2  2  1 0.144770E+04 0.212470E+04 0.282470E+04
+  2  2  2  1 0.118900E+04 0.213230E+04 0.283230E+04
+  3  2  2  1 0.102200E+04 0.215280E+04 0.285280E+04
+  4  2  2  1 0.108000E+04 0.223100E+04 0.293100E+04
+  1  1  1  2 0.317610E+04 0.387370E+04 0.457370E+04
+  2  1  1  2 0.313550E+04 0.387660E+04 0.457660E+04
+  3  1  1  2 0.313360E+04 0.388420E+04 0.458420E+04
+  4  1  1  2 0.316010E+04 0.391250E+04 0.461250E+04
+  1  1  2  2 0.364670E+04 0.434470E+04 0.504470E+04
+  2  1  2  2 0.361800E+04 0.435120E+04 0.505120E+04
+  3  1  2  2 0.363090E+04 0.436840E+04 0.506840E+04
+  4  1  2  2 0.369640E+04 0.443340E+04 0.513340E+04
+  1  2  1  2 0.299770E+04 0.367090E+04 0.437090E+04
+  2  2  1  2 0.268270E+04 0.367460E+04 0.437460E+04
+  3  2  1  2 0.246310E+04 0.368450E+04 0.438450E+04
+  4  2  1  2 0.242570E+04 0.372130E+04 0.442130E+04
+  1  2  2  2 0.344770E+04 0.412470E+04 0.482470E+04
+  2  2  2  2 0.318900E+04 0.413230E+04 0.483230E+04
+  3  2  2  2 0.302200E+04 0.415280E+04 0.485280E+04
+  4  2  2  2 0.308000E+04 0.423100E+04 0.493100E+04
+
+ *ITUBE1  2                    ** Hydraulics table for manifold-to-
+  *DEPTH                       ** platform pressure drop calculations
+   600.0                       ** for gas injection and for injection wells
+  *GAS
+   0.0E+00  0.1E+07  0.2E+07  0.5E+07  0.8E+07  1.0E+07
+  *WHP
+   14.7  1000.0  3000.0  5000.0  9000.0  10000.0
+  *BHP
+   1  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   2  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   3  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   4  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   5  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   6  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+
+  
+   *WELL 1  'Producer 1' *ATTACHTO 'Gather-1'
+   *PRODUCER  1
+   *PWELLBORE 6300. 1
+
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 1
+   ** if     jf     kf     ff                         
+      1      1      1     1.0   
+
+   *WELL 2  'Producer 2' *ATTACHTO 'Gather-1'   
+   *PRODUCER  2
+   *PWELLBORE 6500. 1
+
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff                         
+      1      5      1     1.0
+
+   *WELL 3  'Injector 1' *ATTACHTO 'Inj-Group'
+   *INJECTOR    3  
+   *IWELLBORE table 400 2  **Gas injector using table for THP calculations
+   *INCOMP *GAS GLOBAL    
+   0.77 0.0 0.2 0.03 0.0 0.0 0.0 0.0 0.0
+                            
+   *OPERATE  *MAX  *STG  10e6   *CONT  
+
+   *PERF GEO 3
+   ** if     jf     kf     ff 
+      3      3      3      1
+
+   *WELL 4  'Producer 3' *ATTACHTO 'Gather-1'   
+   *PRODUCER  4
+   *PWELLBORE 6400. 1
+
+   *OPERATE *MAX  *STO  1000.0 *CONT
+   *OPERATE *MIN  *BHP   200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 4
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *WELL 5  'Producer 4' *ATTACHTO 'Gather-1'
+   *PRODUCER  5
+   *PWELLBORE 6300. 1
+
+   *OPERATE *MAX  *STO  1000.0 *CONT
+   *OPERATE *MIN  *BHP   200.0 *CONT
+   
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 5
+   ** if     jf     kf     ff                         
+      5      5      1     0.5   
+
+   *WELL 6  'Injector 2' *ATTACHTO 'Inj-Group'   
+   *INJECTOR   6  
+   *IWELLBORE table 400 2 
+   *INCOMP *GAS  GLOBAL
+   0.77 0.0 0.2 0.03 0.0 0.0 0.0 0.0 0.0
+                               
+   *OPERATE  *MAX  *STG  10e6  *CONT  
+
+   *PERF GEO 6
+   ** if     jf     kf    ff 
+      7      3      3      1.0
+
+   *WELL 7  'Producer 5' *ATTACHTO 'Gather-2'   
+   *PRODUCER  7
+   *PWELLBORE 6400. 1
+
+   *OPERATE *MAX  *STO 3000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 7
+   ** if     jf     kf     ff                         
+       9      1     1     1.0   
+
+   *WELL 8  'Producer 6' *ATTACHTO 'Gather-2'
+   *PRODUCER  8
+   *PWELLBORE 6200. 1
+
+   *OPERATE *MAX  *STO 2000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+  
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 8
+   ** if     jf     kf     ff                         
+       9      5     1     1.0   
+
+   ** Wells 9 and 10 are the same as wells 4 and 5.  They are being duplicated
+   ** to share production.
+
+   *WELL 9  'Producer 3a' *ATTACHTO 'Gather-2'
+   *PRODUCER  9
+   *PWELLBORE 6400. 1
+
+   *OPERATE *MAX  *STO 1000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 9
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *WELL 10  'Producer 4a' *ATTACHTO 'Gather-2'   
+   *PRODUCER  10
+   *PWELLBORE 6400. 1
+
+   *OPERATE *MAX  *STO 1000.0 *CONT
+   *OPERATE *MIN  *BHP  200.0 *CONT
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 10
+   ** if     jf     kf     ff                         
+      5      5      1     0.5
+
+   ** Define production and injection targets for gathering centres.
+
+   *MANIFOLD *PROD 'Gather-1' 'Gather-2' *ON      ** Define Manifolds - production and
+   *MANIFOLD *GASI 'Inj-Group' *ON                ** gas injection
+                                              
+   *PCON-MANIFOLD *PROD 'Gather-1' 'Gather-2' *ON   ** Set pressure translation for manifold
+   *PCON-MANIFOLD *GASI 'Inj-Group'           *ON   ** pressure targets.
+
+   *GPTABLE *PROD 'Gather-1' 'Gather-2'    ** Set hydraulics table numbers for calculation of
+      1                                    ** drop between manifold and surface
+   *GPTABLE *GASI 'Inj-Group'    
+      2
+
+    *GPHYDDEP *PROD 'Gather-1' 'Gather-2'  ** Set depths for use with production manifold
+      2000.                                ** hydraulics table
+
+    *GPHYDDEP *GASI 'Inj-Group'            ** Set depth for use with injection manifold
+      200.                                 ** hydraulics table
+
+                   
+   *GCONP 'Gather-1' 'Gather-2'
+      *GTARGET *CPP 1400. *CONT             ** Set production compressor pressure target           
+
+   *GCONI 'Inj-Group'
+      *MAX STG 9e6                         ** Set gas injection max rate and max
+      *MAX *GCP 5612.7                     ** compressor pressure
+
+   *APPOR-METHOD  *PROD  'Gather-1' 'Gather-2'  *IP
+   *APPOR-METHOD  *GASI  'Inj-Group'  *IP
+
+   GROUPALQ PROD 'Gather-1' 'Gather-2'  ** Set ALQ value for production manifolds
+                   0.5
+
+   WELLALQ  'Producer 1' 'Producer 2' 'Producer 3' 'Producer 4' 'Producer 5' 'Producer 6' 'Producer 3a' 'Producer 4a' 
+         0.5                            ** Set ALQ values for production wells
+
+    setpi mult '*'
+                0.10
+
+   *AIMSET *CON 1
+
+   *TIME 3650.0
+   *STOP

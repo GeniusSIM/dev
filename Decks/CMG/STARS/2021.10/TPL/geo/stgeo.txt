@@ -1,0 +1,444 @@
+
+
+     STARS Data Files Illustrating "Geological Structures"
+     -----------------------------------------------------
+
+stgeo002.dat:
+  title1 'STARS Geomechanics Template #2'
+  title2 'Cyclic Steam Process with Two-Dimensional Axisymmetric Grid'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stgeo003.dat:
+  title1 'STARS Geomechanics Template #3'
+  title2 'Sand Failure due to Pressure Drawdown'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stgeo004.dat:
+  title1 'STARS Geomechanics Template #4'
+  title2 'Axi-symmetric Cyclic Steam Injection'
+  title3 'Four Rock Types and Rigid Reservoir Top'
+
+stgeo004_ob.dat:
+  title1 'STARS Geomechanics Template #4_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY *UPOR_x for *GCOUPLING 2 Deformations'
+  title3 'Based on STGEO004'
+
+stgeo005.dat:
+  title1 'STARS Geomechanics Template #5'
+  title2 'Single-Well Cold Flow with Sand Failure'
+  title3 '2D Radial Model'
+
+stgeo006.dat:
+  title1 'STARS Geomechanics Template #6'
+  title2 'Overburden Loads and Reservoir Body Force'
+
+stgeo007.dat:
+  title1 'STARS Geomechanics Template #7'
+  title2 'Geomechanics Domains and AIMSOL Matrix Solution'
+
+stgeo008.dat:
+  title1 'STARS Geomechanics Template #8'
+  title2 'Corner Point Grid Deformation with Displacement Vectors'
+
+stgeo009.dat:
+  title1 'STARS Geomechanics Template #9'
+  title2 'Corner Point Grid Deformation with Displacement Vectors'
+  title3 'Two Geomechanics Rock Types'
+
+stgeo010.dat:
+  title1 'STARS Geomechanics Template #10'
+  title2 'Axi-symmetric External Loads'
+  title3 'Two Rock Types'
+
+stgeo013.dat:
+  title1 'STARS Geomechanics Template #13'
+  title2 'COUPLED GEOMECHANIC-THERMAL SIMULATION'
+  title3 '2D CARTESIAN-GRID CYCLIC STEAM PROCESS, WITH ELASTOPLASTICITY'
+
+stgeo014.dat:
+  title1 'STARS Geomechanics Template #14'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo015.dat:
+  title1 'STARS Geomechanics Template #15'
+  title2 '3D Distributed Loads'
+  title3 'Single production well with over burden load'
+
+stgeo016.dat:
+  title1 'STARS Geomechanics Template #16'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo017.dat:
+  title1 'STARS Geomechanics Template #17'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo018.dat:
+  title1 'STARS Geomechanics Template #18'
+  title2 '3D Elasto-Plastic Drucker-Prager Yield Criterion'
+  title3 'Comparison of Two Constitutive Models'
+
+stgeo019.dat:
+  title1 'STARS Geomechanics Template #19'
+  title2 'Nonlinear elasticity - Hyperelastic model'
+  title3 'Comparison of Two Constitutive Models'
+
+stgeo020.dat:
+  title1 'STARS Geomechanics Template #20'
+  title2 '3D Elasto-Viscoplastic Model - Flow Function 1'
+
+stgeo021.dat:
+  title1 'STARS Geomechanics Template #21'
+  title2 '3D Elasto-Viscoplastic Model - Flow Function 2'
+
+stgeo022.dat:
+  title1 'STARS Geomechanics Template #22'
+  title2 'Variable Permeability, Multiple Constitutive Models'
+  title3 'Based on STGEO022'
+
+stgeo023.dat:
+  title1 'STARS Geomechanics Template #23'
+  title2 '150k Grid Blocks, 4 Components, *GEOM3D'
+  title3 'Based on STGRO014'
+
+stgeo024.dat:
+  title1 'STARS Geomechanics Template #24'
+  title2 'Pseudo Dilation Model, One-way Coupling'
+  title3 "Young's Modulus from Rock Compressibility"
+
+stgeo025.dat:
+  title1 'STARS Geomechanics Template #25'
+  title2 'Pseudo Dilation Model, One-way Coupling'
+  title3 "Young's Modulus from *PGDILA and *PGPACT"
+
+stgeo026.dat:
+  title1 'STARS Geomechanics Template #26'
+  title2 "Barton-Bandis Model for Dual Porosity Problem"
+
+stgeo027.dat:
+  title1 'STARS Geomechanics Template #27'
+  title2 '3D Cylindrical Grids'
+  title3 'Geomechanics-Dependent Permeability'
+
+stgeo028.dat:
+  title1 'STARS Geomechanics Template #28'
+  title2 'Two Rock Types'
+  title3 'Without Porosity Calibration'
+
+stgeo029.dat:
+  title1 'STARS Geomechanics Template #29'
+  title2 'Two Rock Types'
+  title3 'With Porosity Calibration'
+
+stgeo030.dat:
+  title1 'STARS Geomechanics Template #30'
+  title2 'Barton-Bandis Model for Dual Porosity Problem'
+
+stgeo031.dat:
+  title1 'STARS Geomechanics Template #31'
+  title2 '3D Radial Grids'
+  title3 'Cap Model'
+
+stgeo032.dat:
+  title1 'STARS Geomechanics Template #32'
+  title2 '3D Radial Grids'
+  title3 'Empirical dilation model - One way coupling'
+
+stgeo033.dat:
+  title1 'STARS Geomechanics Template #33'
+  title2 '3D Elasto-Plastic Drucker-Prager Cap Criterion'
+  title3 'Overburden and Grid Deformation'
+
+stgeo036.dat:
+  title1 'STARS Geomechanics Template #36'
+  title2 'Distributed Loads on Boundary Surface with *DLOADBC3D'
+
+stgeo037.dat:
+  title1 'STARS Geomechanics Template #37'
+  title2 'Distributed Loads on Boundary Surface with *DLOADBCIJK'
+
+stgeo038.dat:
+  title1 'STARS Geomechanics Template #38'
+  title2 'Infinite Mohr-Coulomb Medium, Dilation Angle'
+
+stgeo039.dat:
+  title1 'STARS Geomechanics Template #39'
+  title2 'Skempton and Mandel-Cryer Effects'
+
+stgeo039_ob.dat:
+  title1 'STARS Geomechanics Template #39_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY *UPOR_x for *GCOUPLING 3 Deformations'
+  title3 'Based on STGEO039'
+
+stgeo040.dat:
+  title1 'STARS Geomechanics Template #40'
+  title2 '150k Grid Blocks, 4 Components - 2D'
+  title3 'Based on STGEO023'
+
+stgeo041.dat:
+  title1 'STARS Geomechanics Template #41'
+  title2 '3D Single Surface Constitutive Model'
+
+stgeo042.dat:
+  title1 'STARS Geomechanics Template #42'
+  title2 'Infinite Mohr-Coulomb Medium, Associated SS Model'
+
+stgeo043.dat:
+  title1 'STARS Geomechanics Template #43'
+  title2 'Infinite Mohr-Coulomb Medium, Non-associated SS Model'
+
+stgeo044.dat:
+  title1 'STARS Geomechanics Template #44'
+  title2 'Geomaterial Properties vs Fluid Porosity (*GRPORTAB)'
+  title3 'Based on STGEO008'
+
+stgeo045.dat:
+  title1 'STARS Geomechanics Template #45'
+  title2 'Test/Illustrate *GEOSOLID:  Single-Well Cold Flow with Sand Failure'
+  title3 'Based on STGEO005'
+
+stgeo046.dat:
+  title1 'STARS Geomechanics Template #46'
+  title2 'Fluid Pressure Boundary Constraint via *BCDOMAIN'
+
+stgeo047.dat:
+  title1 'STARS Geomechanics Template #47'
+  title2 'Unload Stress for 3D Cylindrical Grid with *UNLOADSTR'
+  title3 'Based on STGEO038'
+
+stgeo048.dat:
+  title1 'STARS Geomechanics Template #48'
+  title2 'Generalized Plastic Model *GENPLAST, plus *DLOADBC3D'
+
+stgeo049.dat:
+  title1 'STARS Geomechanics Template #49'
+  title2 'Test/Illustrate *GRTEMTAB - T-Dependent Geomaterial Properties'
+
+stgeo050.dat:
+  title1 'STARS Geomechanics Template #50'
+  title2 'Test/Illustrate *GEOGRID *GCORNER with *GRID *CORNER'
+
+stgeo051.dat:
+  title1 'STARS Geomechanics Template #51'
+  title2 'Test/Illustrate *GEOGRID *CART with *GRID *RADIAL'
+
+stgeo052.dat:
+  title1 'STARS Geomechanics Template #52'
+  title2 'Test/Illustrate *GEOGRID *RADIAL with *GRID *CART'
+
+stgeo053.dat:
+  title1 'STARS Geomechanics Template #53'
+  title2 'Dean Problem #4, Water Flood - Single *CART Grid'
+  title3 'Compare With Dual-Grid Case STGEO054'
+
+stgeo054.dat:
+  title1 'STARS Geomechanics Template #54'
+  title2 'Dean Problem #4, Water Flood - Dual *CART Grids'
+  title3 'Compare With Single-Grid Case STGEO053'
+
+stgeo055.dat:
+  title1 'STARS Geomechanics Template #55'
+  title2 'Dean Problem #1, Reservoir Embedded in Geomechanics Region'
+
+stgeo056.dat:
+  title1 'STARS Geomechanics Template #56'
+  title2 'Infinite Mohr-Coulomb Medium, Dilation Angle, Over/Underburden'
+  title3 'Based on STGEO038'
+
+stgeo057.dat:
+  title1 'STARS Geomechanics Template #57'
+  title2 'Generalized Plastic Model *GENPLAST with *COHESHARD and *FRANGSOFT'
+
+stgeo058.dat:
+  title1 'STARS Geomechanics Template #58'
+  title2 'Skempton and Mandel-Cryer Effects with Modified Cam Clay Model'
+
+stgeo059.dat:
+  title1 'STARS Geomechanics Template #59'
+  title2 'Verify/Illustrate *GEOGRID with *REFINE and *DUALPERM'
+
+stgeo060.dat:
+  title1 'STARS Geomechanics Template #60'
+  title2 'Verify/Illustrate *GEOGRID with *REFINE and Barton-Bandis *DUALPERM'
+
+stgeo061.dat:
+  title1 'STARS Geomechanics Template #61'
+  title2 'Verify/Illustrate *GNULL - Null Blocks in *GEOGRID'
+  title3 'Based on STGEO046'
+
+stgeo062.dat:
+  title1 'STARS Geomechanics Template #62'
+  title2 'Verify/Illustrate Geomechanics Post Processing - Host Grid - Parent Run'
+  title3 'Based on STGEO006.  Scanned by STGEO063.'
+
+stgeo063.dat:
+  title1 'STARS Geomechanics Template #63'
+  title2 'Verify/Illustrate Geomechanics Post Processing - Host Grid'
+  title3 'Based on STGEO062.  Scans STGEO062.'
+
+stgeo064.dat:
+  title1 'STARS Geomechanics Template #64'
+  title2 'Verify/Illustrate Geomechanics Post Processing - GeoGrid - Parent Run'
+  title3 'Based on STGEO054.  Scanned by STGEO065.'
+
+stgeo065.dat:
+  title1 'STARS Geomechanics Template #65'
+  title2 'Verify/Illustrate Geomechanics Post Processing - GeoGrid'
+  title3 'Based on STGEO064.  Scans STGEO064.'
+
+stgeo067.dat:
+  title1 'STARS Geomechanics Template #67'
+  title2 'Test/Illustrate contracting and expanding grids'
+  title3 'Dual grid system'
+
+stgeo068.dat:
+  title1 'STARS Geomechanics Template #68'
+  title2 'Verify/Illustrate *STRESS_RETURN *GCPA'
+  title3 'Based on STGEO033'
+
+stgeo070.dat:
+  title1 'STARS Geomechanics Template #70'
+  title2 'Verify/Illustrate *GMONETONE with Overlapping Corner-Point Grids'
+  title3 'Based on STGEO050'
+
+stgeo071.dat:
+  title1 'STARS Geomechanics Template #71'
+  title2 'Verify/Illustrate *GRSTRESTAB (Stress-Dependent Mechanical Properties)'
+
+stgeo072.dat:
+  title1 'STARS Geomechanics Template #72'
+  title2 'Verify/Illustrate *GRPRESTAB (Pressure-Dependent Mechanical Properties)'
+
+stgeo073.dat:
+  title1 'STARS Geomechanics Template #73'
+  title2 'Verify/Illustrate *GEOGRID *CART with *GAMALI/J/K'
+  title3 'Based on STGEO051'
+
+stgeo074.dat:
+  title1 'STARS Geomechanics Template #74'
+  title2 'Verify/Illustrate *GCAPMOD Changing Young's Modulus in Hardening Cap'
+  title3 'Triaxial Test, Based on STGEO033'
+
+stgeo075.dat:
+  title1 'STARS Geomechanics Template #75'
+  title2 'Verify/Illustrate *GRMPRSTAB (MPE-Stress-Dependent Mechanical Properties)'
+  title3 'Based on STGEO071'
+
+stgeo076.dat:
+  title1 'STARS Geomechanics Template #76'
+  title2 'Mix Distributed Geomechanical Properties with Multiple Rock Types'
+  title3 'Based on STGEO017'
+
+stgeo077.dat:
+  title1 'STARS Geomechanics Template #77'
+  title2 'Illustrate/Verify *YOUNGMAP - Distributed Young's Modulus'
+  title3 'Based on STGEO006'
+
+stgeo078.dat:
+  title1 'STARS Geomechanics Template #78'
+  title2 'Verify/Illustrate *NETGROSS with *GEOMECH'
+  title3 'Based on STGEO013'
+
+stgeo080.dat:
+  title1 'STARS Geomechanics Template #80'
+  title2 'Test/Illustrate Fracture Perm Multiplier Tables *GPERMNEX/Z'
+  title3 'Fracture Permeability Varies with Normal Effective Stress'
+
+stgeo081.dat:
+  title1 'STARS Geomechanics Template #81'
+  title2 'Test/Illustrate Matrix Perm Multiplier Tables *GPERMNEX/Z_MT'
+  title3 'Fracture Permeability Varies with Normal Effective Stress'
+
+stgeo082.dat:
+  title1 'STARS Geomechanics Template #82'
+  title2 'Test/Illustrate Jointed-Rock Model *ROCKJOINT with Full Jointing'
+  title3 "Report Equivalent Young's Modulus and Poisson's Ratio"
+
+stgeo083.dat:
+  title1 'STARS Geomechanics Template #83'
+  title2 'Test/Illustrate Jointed-Rock Model *ROCKJOINT with Partial Jointing'
+  title3 "Report Equivalent Young's Modulus and Poisson's Ratio"
+
+stgeo084.dat:
+  title1 'STARS Geomechanics Template #84'
+  title2 'Verify/Illustrate *SAFACTOR *TSAFACTOR Output for *GEOGRID'
+  title3 'Based on STGEO073'
+
+stgeo085.dat:
+  title1 'STARS Geomechanics Template #85'
+  title2 'Verify/Illustrate *ROCKJOINT with Radial *GEOGRID'
+  title3 'Based on STGEO052'
+
+stgeo086.dat:
+  title1 'STARS Geomechanics Template #86'
+  title2 'Hydraulic Fracturing in 2D Plane Strain'
+  title3 'Based on STGEO060'
+
+stgeo087.dat:
+  title1 'STARS Geomechanics Template #87'
+  title2 'Multiple Hydraulic Fractures in 3D'
+  title3 'Based on STGEO050'
+
+stgeo088.dat:
+  title1 'STARS Geomechanics Template #88'
+  title2 'Four Stages of 3D Hydraulic Fracturing'
+  title3 'Based on STGEO060'
+
+stgeo089.dat:
+  title1 'STARS Geomechanics Template #89'
+  title2 'Verify/Illustrate *Barton-Bandis *DUALPERM with *USTRESDIF'
+  title3 'Based on STGEO060'
+
+stgeo090.dat:
+  title1 'STARS Geomechanics Template #90'
+  title2 'Illustrate *PREFRAC:  2D Pre-Fracture Opening Under Constant Pressure'
+  title3 'Based on STGEO060'
+
+stgeo091.dat:
+  title1 'STARS Geomechanics Template #91'
+  title2 'Verify/Illustrate *GROCKTAB with Stress-Dependent Perm Multipliers'
+  title3 'Based on STGEO060'
+
+stgeo092.dat:
+  title1 'STARS Geomechanics Template #92'
+  title2 'Verify/Illustrate *GROCKTAB with Stress-Dependent Trans. Multipliers'
+  title3 'Based on STGEO091'
+
+stgeo093.dat:
+  title1 'STARS Geomechanics Template #93'
+  title2 'Illustrate Shear and Tensile Fractures'
+
+stgeo094.dat:
+  title1 'STARS Geomechanics Template #94'
+  title2 'Four Stages of 3D Hydraulic Fracturing'
+
+stgeo095.dat:
+  title1 'STARS Geomechanics Template #95'
+  title2 'Illustrate Shear Fracturing'
+  title3 'Total Tensile Threshold in BB Model'
+
+stgeo096.dat:
+  title1 'STARS Geomechanics Template #96'
+  title2 'Anisotropic Rock - Thermal'
+  title3 'Geomechanics-Dependent Permeability'
+
+stgeo097.dat:
+  title1 'STARS Geomechanics Template #97'
+  title2 'Anisotropic Rock - Isothermal'
+  title3 'Triaxial Test, Based on STGEO074'
+
+stgeo098.dat:
+  title1 'STARS Geomechanics Template #98'
+  title2 'Test *GKRIGING for Initial Stress Assignment'
+
+stgeo099.dat:
+  TITLE1 'STARS Geomechanics Template #99'
+  TITLE2 'Test Weighting Methods for Pressure and Temperature'
+  TITLE3 '*PRES-AT-FENODE, *TEMP-AT-FENODE'
+
+stgeo100.dat:
+  title1 'STARS Geomechanics Template #100'
+  title2 'Saturation-Dependent Geomechanical Properties with *GRWATAB'
+  title3 'Water Weakening'

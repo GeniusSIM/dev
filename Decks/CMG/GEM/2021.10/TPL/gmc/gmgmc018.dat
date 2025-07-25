@@ -1,0 +1,235 @@
+RESULTS SIMULATOR GEM
+
+*****************************************************************************
+** Template (gmgmc018.dat):  Coupling Geomechanics Module to GEM           **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc018.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELLS                                     FIELD UNITS             **
+**         Mohr-Coulomb model                               31X1X2 RADIAL GRID      **
+**                                                                                  **
+** USAGE: Unload stress                                                             **
+**        Unit of unload stress is PSI                                              **
+**                                                                                  **
+** Purpose:                                                                         **
+**        Demonstrate how stresses repond in an infinite Mohr-Coulomb medium when   **
+**        a hole is suddently removed.                                              **
+**        Demonstrate how the dilation angle is used in Mohr-Coulomb model.         **
+**        To see the difference in results, the dilation angle can be changed       **
+**        within the range 0 and friction angle.                                    **
+**        If the dilation angle and friction angle are not the same, the plastic    **
+**        flow rule is nonassociated. Otherwise, the rule is considered as an       **
+**        associated one.                                                           **
+**        Uses keyword NINCS to divide a large load into a number of small even     **
+**        loads to avoid unstability.                                               **
+**                                                                                  **
+**        One-way coupling                                                          **
+**************************************************************************************
+** After: stgeo038.dat
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1 'GEM Geomechanics Template #18'
+*TITLE2 'Infinite Mohr-Coulomb Medium, Dilation Angle'
+
+*INUNIT *FIELD  
+
+*OUTPRN *GRID *IMPL *PRES *X 'HC30' *Y 'HC30' *SW *SG *TEMP *POROS *VISO *VISW
+*WPRN *GRID 1
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+*WPRN *ITER *ALL
+*WRST *TIME
+*OUTSRF *GRID *PRES *SW *SG *TEMP *POROS
+*OUTSRF *GRID *VELOCRC *PRES *SG *SO  *STRAINI *STRAINJ *STRAINK 
+           *STRAINSH *STRESEFF *STRESI *STRESJ *STRESK *STRESSH *STRNEPL *SW *TEMP 
+           *STRAINVOL *YLDSTATE
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 31 1 2  *RW 3.28
+
+*DI *IVAR
+0.04  
+0.21648
+0.238128
+0.2619408
+0.28813488
+0.316948368
+0.348643205
+0.383507525
+0.421858278
+0.464044106
+0.510448516
+0.561493368
+0.617642705
+0.679406975
+0.747347672
+0.82208244
+0.904290684
+0.994719752
+1.094191727
+1.2036109
+1.32397199
+1.456369189
+1.602006108
+1.762206719
+1.938427391
+2.13227013
+2.345497143
+2.580046857
+2.838051543
+3.121856697
+3.434042367
+
+*DJ *CON 360
+*DK *CON 3.28
+*KDIR DOWN
+
+*POR *CON .3
+
+*PERMI *CON 1000.
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+*TRPOR 64.
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    1    1
+*TRES        64.000
+*COMPNAME
+           'HC30'
+*SG         7.8638000E-01
+*TB         6.5183250E+02
+*PCRIT      1.1003743E+01
+*VCRIT      1.1757000E+00
+*TCRIT      7.6715000E+02
+*AC         1.0000000E+00
+*MW         4.0000000E+02
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1757000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      9.2860000E+02
+*BIN
+
+*ENTHCOEF
+            0.0000000E+00  2.6300600E-02  3.9898700E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENWS 62.7
+*CW   3.5E-06
+*REFPW 14.7
+*TRACE-COMP 1
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**    Sw        Krw       Krow
+**  ------    ------    -------
+    0.265     0.0        1.0
+    0.3292    0.0006     0.9
+    0.3875    0.0017     0.685
+    0.4458    0.005      0.49
+    0.5042    0.011      0.325
+    0.545     0.018      0.215
+    0.5917    0.056      0.1
+    0.6208    0.1        0.043
+    0.685     0.16       0.0
+    1.0       1.0        0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      ------     -------
+
+    0.5        1.00       0.0
+    0.95       0.0        0.75
+    1.0        0.0        1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*USER_INPUT
+*PRES *CON 1470.
+*SW *CON 0.999999
+*ZGLOBALC 'HC30' *CON 1.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMAX  0.1
+*DTMIN 1.E-06
+*NORM *PRESS 145.
+*NORM *SATUR 0.05
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+*SOLVERG AIMSOLN           ** Solver for nonassociated flow rule
+*GCOUPLING 0               ** One way coupling
+*GCFACTOR 0
+*ELASTMOD 9.83e5           ** Young's modulus
+*POISSRATIO 0.21           ** Poisson's ratio
+*COHESION 500.38           ** Cohesion
+*FRICANGLE 30              ** Friction angle
+*DILANGLE 0.0              ** dilation angle  
+*NITERGEO  300             ** Maximum iteration for convergence
+*WRADIUS 3.28              ** Well radius
+                           ** By default: Mohr-Coulomb model is used
+*NINCS 2                   ** divide a large load into small even loads
+
+*STRESS    4351. 4351. 0. 4351.   ** Initial stress
+
+*PRESCBC                         ** Prescribed boundary conditions
+ *IJK   1:31   1   1             ** Top constrained
+        1:2   02   0.0
+ *IJK   1:31   1  2              ** Bottom constrained
+        3:4   02   0.0
+
+*UNLOADSTR 1:2  4351             ** Unload stress
+
+
+**  ==============  RECURRENT DATA  ======================
+*RUN
+
+*DATE 2005 1 1
+
+*DTWELL 1.e-2
+
+   *WELL 1 'PRODUCER'
+   *PRODUCER 'PRODUCER'
+   *OPERATE *MAX *STW 1E-3
+   *OPERATE *MIN *BHP 1470.
+   *PERF 'PRODUCER'  ** i j k wi
+              1 1 1:2 1 
+
+*TIME 0.01
+   *SHUTIN 1
+*TIME 1
+
+
+*STOP

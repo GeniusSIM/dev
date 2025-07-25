@@ -1,0 +1,131 @@
+
+       GEM-GEOMECHANICS
+       ----------------
+
+Templates in the Geomechanic Options (GMC) directory:
+
+gmgmc001 -- Geomech effects on gmflu001, one-way coupling
+gmgmc002 -- Geomech effects on gmflu001, iterative coupling.
+gmgmc003 -- Geomech effects on gmflu001, Using 3D finite elements.
+gmgmc004 -- Demonstrate grid deformation and displacement vectors
+gmgmc005 -- Different rock types in geomech section
+gmgmc006 -- Cap model
+gmgmc007 -- Hyperelastic model
+gmgmc008 -- Large model 150000, GEOM3D, designed to run on 64bit only (5 steps)
+gmgmc009 -- Barton-Bandis Isothermal
+gmgmc010 -- Geomech dependent perameability
+gmgmc011 -- Geomech without porosity correction
+gmgmc012 -- Geomech with porosity correction, CALIBPOR
+gmgmc013 -- Barton-Bandis Model Isothermal
+gmgmc014 -- Cap model; Two way coupling
+gmgmc015 -- Grid deformation-isothermal case
+gmgmc016 -- Normal distributed loads on Cartesian grids
+gmgmc017 -- Arbitrarily distributed loads on Cartesian grids
+gmgmc018 -- One way coupling
+gmgmc019 -- Illustrates Skempton's effect to an undrained condition and 
+            Mandel-Cryer's effect to a drained condition
+gmgmc020 -- Large model 150000, fits on 32bit   (5 steps)
+gmgmc021 -- Illustrate the single surface constitutive model
+gmgmc022 -- Associated SS model
+gmgmc023 -- Non-associated SS model
+gmgmc024 -- Demonstrate change of geo-material properties due to change
+gmgmc025 –- Pressure boundary: geomechanics domain/reservoir region (thermal)
+gmgmc026 -- Demonstrate use of unload stress on 3D radial grid
+gmgmc027 -- Barton-Bandis - thermal case with hot water injection
+gmgmc028 -- Grid deformation - thermal case 
+gmgmc029 -- Barton-Bandis - thermal case with cold water injection
+gmgmc030 -- Geomech with porosity correction – thermal case
+
+gmgmc031 -- Water injection and oil production in a quarter of 5 spot pattern
+            Geomech applied to all the gridblocks. For comparison with geogrid
+            option used in gmgmc032.
+gmgmc032 -- Application of geogrid to entire reservoir. Geogrids are coarser
+            than the reservoir grids. For comparison with gmgmc031.
+gmgmc033 -- Dual-grid model. Reservoir embedded in Geomechanics region.
+            Local refinement is used in the reservoir grid.
+gmgmc034 -- A combination of radial reservoir grids and Cartesian geogrids.
+gmgmc035 -- A combination of Cartesian reservoir and radial geogrids.
+gmgmc036 -- A combination corner-point reservoir and corner-point geogrids.
+gmgmc037 -- An example of 2D radial grid with 2D geogrid of different dimensions.
+
+gmgmc038 -- Generate simulator response for geo-postprocessing in gmgmc039.
+gmgmc039 -- One-way geomechanics with geo-postprocessing of sr2 from gmgmc038.
+gmgmc040 -- Generate simulator response for geo-postprocessing in gmgmc041.
+gmgmc041 -- One-way geomechanics with geo-postprocessing of restart from gmgmc040.
+gmgmc042 -- Generate simulator response for geo-postprocessing in gmgmc045.
+gmgmc043 -- Generate simulator response for geo-postprocessing in gmgmc045.
+gmgmc044 -- Generate simulator response for geo-postprocessing in gmgmc045.
+gmgmc045 -- One-way geomechanics with geo-postprocessing of sr2 from gmgmc042,
+            gmgmc043, and gmgmc044. Using parent seeking feature.
+gmgmc046 -- One-way geomechanics with geo-postprocessing of sr2 from gmgmc044.
+            Without using parent seeking feature.
+
+gmgmc047 -- A combination of hardening cohesion and softening friction angle
+            in a generalized plastic model under draining condition.
+gmgmc048 -- Use of Modified Cam Clay model.
+gmgmc049 -- Use of GEOGRID in a dual perm model with LGR in the reservoir grid
+gmgmc050 -- Use of a combination of dual grids LGR in reservoir grid and
+            Barton-Bandis model          
+gmgmc051 -- Use of *GNULL - Null Blocks in *GEOGRID.            
+
+gmgmc052 -- Geomech template demonstrating extending geogrid feature.
+gmgmc053 -- Geomech template demonstrating extending/contracting geogrid feature.
+
+gmgmc054 -- Template to demonstrate use of cutting plane algorithm (CPA) for 
+            plastic stress return.            
+gmgmc055 -- Template to demonstrate use of sub-stepping approach for 
+            plastic stress return.
+
+gmgmc056 -- Illustrate use of keyword *GMONETONE with overlapping corner-point grids
+
+gmgmc057 -- Illustrate use of *GRSTRESTAB (Stress-Dependent Mechanical Properties)
+gmgmc058 -- Illustrate use of *GRPRESTAB (Pressure-Dependent Mechanical Properties)
+gmgmc059 -- Use of amalgamating and contacting grid -- output radial and tangential
+            displacement and effective stress.          
+gmgmc060 -- Demonstrate use of keyword *GCAPMOD in a triaxial test where Young's modulus
+            changes in the hardening cap section.
+gmgmc061 -- Illustrate use of minimum principal effective stress (GRMPRSTAB) to compute 
+            geomechanical properties.           
+gmgmc062 -- Application of per-cell data via keywords *YOUNGMAP, *POISSONMAP and
+            *FRICANGMAP.
+gmgmc063 -- Illustrate/Verify *YOUNGMAP - Distributed Young's Modulus.
+
+gmgmc064 -- Table lookup: Fracture Perm Multiplier vs. Normal Effective Stress.
+gmgmc065 -- Table lookup: Matrix Perm Multiplier vs. Normal Effective Stress.
+
+gmgmc066 -- Test/Illustrate Jointed-Rock Model *ROCKJOINT with Full Jointing.
+gmgmc067 -- Test/Illustrate Jointed-Rock Model *ROCKJOINT with Partial Jointing.
+gmgmc068 -- Rock Joints Used on geomechanical Grid
+gmgmc069 -- Output of Shear and Tensile Safety Factor on Amalgamating and Extending Grid
+
+gmgmc070 -- Hydraulic Fracturing using 2D Plane Strain Geomechanics.
+gmgmc071 -- Hydraulic Fracturing using 3D Geomechanics.
+gmgmc072 -- Multiple HF initiation and propagation in 3D through vertical wells.
+gmgmc073 -- Multiple HF initiation and propagation in 3D through a horizontal well.
+
+gmgmc074 -- Demonstrate use of use of *GPERMBB in conjunction with *USTRESDIF.
+gmgmc075 -- Use of Hydraulic Pre-Fracturing model.
+
+gmgmc076 -- Dilation-Recompaction Model - Stress vs. Perm Multipliers
+gmgmc077 -- Dilation-Recompaction Model - Stess vs. Trans Multipliers
+
+gmgmc078 -- Use of *SOLVERG *PARASOL for Geomech parallel processing
+
+gmgmc079 -- BB Model - Effect of Shear Fracturing
+gmgmc080 -- Horizontal Well Hydraulic Fracturing Model
+gmgmc081 -- Total Tensile Threshold Criterion in BB Model
+gmgmc082 -- Anisotropic rock mechanical properties - Radial Grid
+gmgmc083 -- Anisotropic rock mechanical properties - Cartesian Grid
+
+gmgmc084 -- Use of Preconditioned Conjugate Gradient(PCG) Solver for Geomechanics
+
+gmgmc085 -- Generate UPOR function from Geomechanics response.
+gmgmc085_ob -- Replay outboard Geomechanics software's recorded response via UPOR function.
+
+gmgmc086 -- Pressure and Temperature Weighting Methods
+
+gmgmc087 -- Using kriging method to re-assign initial stresses
+
+gmgmc088 -- Skempton and Mandel-Cryer Effects
+
+gmgmc089 -- Effect of water saturation on geomechanical properties (Water-Weakening)

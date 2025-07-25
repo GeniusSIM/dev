@@ -1,0 +1,67 @@
+
+
+     STARS Data Files Illustrating "Electrical Heating"
+     --------------------------------------------------
+
+elec1.dat:
+  title1 'Electrical Heating Test Data #1'
+  title2 'Test/Illustrate *ELWCOMPTAB and *ELSCOMPTAB'
+
+elec2.dat:
+  title1 'Electrical Heating Test Data #2'
+  title2 'Test in 3D Cartesian Mode'
+
+elec3.dat:
+  title1 'Electrical Heating Test Data #3'
+  title2 'Test/Illustrate Metal Electrode and Constraint Switching'
+
+elec4.dat:
+  title1 'Electrical Heating Test Data #4'
+  title2 'Test/Illustrate the *NOFLASH option'
+
+elec5.dat:
+  title1 'Electrical Heating Test Data #5'
+  title2 'Test/Illustrate Multi-Well Hybrid Grid'
+
+elec6.dat:
+  title1 'Electrical Heating Test Data #6'
+  title2 'Electrical Heating Data #3 with Multiple Phases'
+
+elec7.dat:
+  title1 'Electrical Heating Test Data #7'
+  title2 'Test/Illustrate Isolated Three-Phase Triangular Configuration'
+
+elec1_ob.dat:
+  title1 'Electrical Heating Test Data #1_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC1 Heating Rates'
+  title3 'Based on ELEC1'
+
+elec2_ob.dat:
+  title1 'Electrical Heating Test Data #2_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC2 Heating Rates'
+  title3 'Based on ELEC2'
+
+elec3_ob.dat:
+  title1 'Electrical Heating Test Data #3_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC3 Heating Rates'
+  title3 'Based on ELEC3'
+
+elec4_ob.dat:
+  title1 'Electrical Heating Test Data #4_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC4 Heating Rates'
+  title3 'Based on ELEC4'
+
+elec5_ob.dat:
+  title1 'Electrical Heating Test Data #5_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC5 Heating Rates'
+  title3 'Based on ELEC5'
+
+elec6_ob.dat:
+  title1 'Electrical Heating Test Data #6_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC6 Heating Rates'
+  title3 'Based on ELEC6'
+
+elec7_ob.dat:
+  title1 'Electrical Heating Test Data #7_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC7 Heating Rates'
+  title3 'Based on ELEC7'

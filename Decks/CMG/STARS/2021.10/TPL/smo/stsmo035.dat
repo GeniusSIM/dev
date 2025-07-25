@@ -1,0 +1,266 @@
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate the Mass-Consistent vertical equilibrium option with
+**    oil-wet reservoir.
+
+**  Special Features:
+
+**  1)  There is a water-oil transition zone.  Saturations in this zone work
+**      differently between water-wet and oil-wet cases.
+
+**  2)  Keyword *WOC_SW assigns SW = 1 to the water zone, over-riding the
+**      value of Sw = 0.9999.
+
+
+
+*********************************************************
+** ==== INPUT/OUTPUT CONTROL ============================ 
+*********************************************************
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 35'
+*TITLE2 'Test/Illustrate *OILWET with Vert. Eq. WO Trans. Zone and *WOC_SW'
+
+*INUNIT *LAB
+*OUTUNIT *LAB
+  
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *X *Y
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *X *Y
+
+
+
+*********************************************************
+** ========= RESERVOIR DESCRIPTION: GRID ================
+*********************************************************
+
+*GRID *CART 1 1  15
+
+*DI *CON 5004 
+*DJ *CON 3000
+*DK *CON 1000
+
+
+*POR *CON 0.3
+
+*PERMI *CON 10000
+*PERMJ *CON 10000
+*PERMK *CON 500
+
+*END-GRID
+
+*CPOR   3.0E-6
+*ROCKCP 2.52
+*THCONR 2.5833
+
+*THCONW 0.3715
+*THCONO 0.0799
+*THCONG 0.000972
+
+
+
+*********************************************************
+** ============= COMPONENT PROPERTIES ===================
+*********************************************************
+
+*MODEL     8 6 2 1 
+*COMPNAME 'Water' 'Dead_Ofu' 'co' 'co2' 'n2' 'o2' 'coke1' 'coke2' 
+*CMM       0 0.53736 0.028 0.044 0.028 0.032 0.67304 0.17976 
+*PCRIT     0.0E+0 0.0E+0 3.496E+3 7.376E+3 3.394E+3 5.046E+3 
+*TCRIT     0.0E+0 0.0E+0 -1.4025E+2 3.105E+1 -1.4695E+2 -1.1855E+2 
+*SOLID_DEN 'coke1' 3.26265E-2 0.0E+0 0.0E+0 
+*SOLID_DEN 'coke2' 8.8E-3 0.0E+0 0.0E+0 
+
+*SOLID_CP 'coke1' 1.7E+1 0.0E+0 
+*SOLID_CP 'coke2' 1.7E+1 0.0E+0 
+
+*CPG1      0.0E+0 1.1388E+3 2.9987E+1 1.6864E+1 3.0288E+1 2.7627E+1
+*CPG2      0.0E+0 0.0E+0 -1.542E-3 1.063E-1 -2.572E-3 6.437E-3
+*SURFLASH W O G G G G 
+*PRSR     101
+*TEMR     15
+*PSURF    1.01E+2
+*TSURF    1.5E+1
+
+*MASSDEN   0.0E+0 1.008E-3 
+*CP        0.0E+0 6.8E-7 
+*CT1       0.0E+0 7.677E-4 
+*CT2       0.0E+0 0.0E+0 
+
+*VISCTABLE 
+** Temp        Water       Oil
+   15          0           229374      
+   25          0           54485.9     
+   30          0           30000       
+   48          0           10600       
+   50          0           10600       
+   65          0           3000        
+   100         0           290         
+   150         0           32          
+   200         0           7.5         
+   250         0           2.7         
+   300         0           1           
+   325         0           0.75        
+   350         0           0.6         
+   375         0           0.5         
+   400         0           0.47        
+   425         0           0.41        
+   450         0           0.36        
+   475         0           0.315       
+   500         0           0.28        
+   525         0           0.25        
+   550         0           0.22        
+   2000        0           0.12        
+
+
+**********************************
+** Chemical reactions
+**********************************
+
+** Reaction 1: 1 Dead_Ofu + 4.24 o2 ---> 1 coke1
+*STOREAC 0 1 0 0 0 4.24 0 0 
+*STOPROD 0 0 0 0 0 0 1 0 
+*FREQFAC 0.01
+*RPHASE 0 2 0 0 0 3 0 0 
+*RORDER 0 1 0 0 0 1 0 0 
+*RENTH 1597000
+*EACT 35000
+*RTEMLOWR 10
+*RTEMUPR 1700
+
+
+** Reaction 2: 33.8 o2 + 1 coke1 ---> 22 Water + 4.75 co + 23.77 co2 + 1 coke2
+*STOREAC 0 0 0 0 0 33.8 1 0 
+*STOPROD 22 0 4.75 23.77 0 0 0 1 
+*FREQFAC 250
+*RPHASE 0 0 0 0 0 3 4 0 
+*RORDER 0 0 0 0 0 1 1 0 
+*RENTH 12730000
+*EACT 73000
+*RTEMLOWR 10
+*RTEMUPR 1700
+
+
+** Reaction 3: 12.29 o2 + 1 coke2 ---> 8 Water + 1.73 co + 8.65 co2
+*STOREAC 0 0 0 0 0 12.29 0 1 
+*STOPROD 8 0 1.73 8.65 0 0 0 0 
+*FREQFAC 220
+*RPHASE 0 0 0 0 0 3 0 4 
+*RORDER 0 0 0 0 0 1 0 1 
+*RENTH 4628000
+*EACT 95000
+*RTEMLOWR 10
+*RTEMUPR 1700
+
+
+
+*********************************************************
+** ======= ROCK-FLUID PROPERTIES ========================
+*********************************************************
+
+*ROCKFLUID      
+*RPT 1 *oilwet 
+*SWT   **  Water-oil relative permeabilities
+**   Sw         Krwo       Kro       Pcow
+**  ----      -------    -------   --------
+    0.2        0.0        0.9       -0.264 
+    0.3        0.025      0.625     -0.304 
+    0.4        0.1        0.4       -0.355 
+    0.5        0.225      0.225     -0.431  
+    0.6        0.4        0.1       -0.513 
+    0.7        0.625      0.025     -0.653 
+    0.8        0.9        0.0       -0.975 
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krwg
+**  ----      -------    -------
+    0.21       0.784      0.0
+    0.32       0.448      0.01
+    0.4        0.288      0.024
+    0.472      0.184      0.052
+    0.58       0.086      0.152
+    0.68       0.024      0.272
+    0.832      0.006      0.448
+    0.872      0.0        0.9
+
+
+
+*********************************************************
+** ======= INITIAL CONDITIONS ===========================
+*********************************************************
+
+*INITIAL
+*VERTICAL *DEPTH_AVE
+*REFPRES 4600
+*REFDEPTH 500
+
+*DGOC 2500  
+*DWOC 10500
+*WOC_SW 1.0
+
+*TEMP *CON   44
+
+*MFRAC_OIL 'Dead_Ofu' *CON 1
+*MFRAC_GAS 'n2'       *CON 1.0
+
+
+
+*********************************************************
+** ============  NUMERICAL CONTROL ======================
+*********************************************************
+
+*NUMERICAL
+
+*NCUTS 50
+*NEWTONCYC 30
+*CONVERGE *TOTRES 0.001
+
+
+RUN
+
+*********************************************************
+** ============  RECURRENT DATA  ========================
+*********************************************************
+
+*DATE  2001 1 1 
+
+   *DTWELL 0.1
+
+   *WELL 1 'PROD1' **VERT 1 1
+   *PRODUCER 1
+   *OPERATE *MIN *BHP 2000 *CONT
+   *GEOMETRY *J 20 0.235 1.0 0.0
+   *PERF *GEO 'PROD1'
+      1 1 10  1.
+	
+   *WELL 2 'AIRINJ' *VERT 1 1
+   *INJECTOR 2
+   *TINJW 75
+   *INCOMP *GAS 0.0 0.0 0.0 0.0 0.79 0.21
+   *OPERATE *MAX *STG 1.6E7 **cm3/min
+   *OPERATE *MAX *BHP 8000 *CONT
+   *GEOMETRY *J 20 0.284 0.5 0.0
+   *PERF *GEO 'AIRINJ'
+      1 1 2  1.
+
+   *HEATR *IJK  1 1 1:4 2.5E6
+
+TIME 100
+TIME 500
+TIME 1500
+TIME 5000
+
+   *HEATR *CON 0
+
+TIME 10000
+TIME 20000
+TIME 30000
+
+STOP

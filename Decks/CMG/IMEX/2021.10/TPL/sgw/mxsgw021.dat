@@ -1,0 +1,356 @@
+********************************************************************************
+** mxsgw021.dat: iSegWells: Water reinjection from a DHS - PUMP2              **
+********************************************************************************
+********************************************************************************
+**                                                                            **
+** FILE:   MXSGW021.DAT                                                       **
+**                                                                            **
+** MODEL:  10x10x3    WATER REINJECTION INTO A DEEP LAYER AFTER SEPARATION    **
+**                    BY DHS                                                  **
+**                                                                            **
+********************************************************************************
+**                                                                            **
+** This is a 10x10x3 cartesian grid gas injection problem. The gas injector   **
+** is represented as a conventional well; the producer is represented as an   **
+** iSegWell.  The producer has a downhole separator which removes             **
+** water from the surface-bound streams and puts the water through a pump     **
+** for reinjection into a deeper layer. This template is same as mxsgw011     **
+** except that the presure drop calculation for the PUMP is different.        **
+**                                                                            **
+** Provenance:  \shared\welman.lib\segwell\IMEX QA\dhs-pump-wreinj.dat        **
+**                                                                            **
+********************************************************************************
+** CONTACT: CMG, (403)531-1300; 282-6495 (fax); support@cmgl.ca    (Internet) **
+********************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'iSegWell'
+   *TITLE2
+   'Water Reinjection'
+   *TITLE3
+   'From Downhole Separator'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   1 **10
+   *WPRN   *GRID   *TIME
+   *WPRN   *ITER   *BRIEF
+
+   *OUTPRN *WELL  *ALL
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                               ** 3 layers in the K (z) direction.
+   *DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+   *DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+   *DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+    50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                               ** middle and uppermost layers, respectively.   
+
+   *DEPTH 1 1 1 8400.0         ** Depth to center of first block, in bottom layer.
+
+   *POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.   
+
+   *PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0      ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                ** that the first K layer is at bottom of the
+       20.0   40.0   60.0      ** reservoir.
+
+
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+
+
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+** Note : The above PVT data violates the total hydrocarbon compressibility check. To correct,
+** you could either change rs value at p=5014.7 from 1618 to 1600 or to change the last bo entry 
+** from 2.357 to 2.352.  Other possibilities could be equally appllied. The above corrections 
+** were tested and they have insignificant effects. 
+
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+   
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0   
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *DEPTH_AVE *WATER_OIL_GAS ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       8344. **8300. **8320.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact 
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *AIM *OFF
+   *ITERMAX 200
+   *NORTH 100
+   *NORM *PBUB 500
+   *CONVERGE *WELLBHP 2.0  ** Residual control with BHP convergence
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+   *WELLSITE 'Site2'
+
+                     
+   *WELL 1  'Injector'   
+
+   *INJECTOR  *UNWEIGHT  1 
+   *INCOMP    *GAS         
+   *OPERATE   *MAX  *STG  1.0E+8
+   *OPERATE   *MAX  *BHP  20000.0       
+
+   *PERF 1                      ** Injector has a PERF line and therefore is a conventional, as opposed to segmented well.
+   ** if     jf     kf     wi 
+      1      1      3      1.0E+5
+
+   *WELL 2  'Producer'
+
+   *PRODUCER  2              
+   *OPERATE *MAX  *STO 20000.0 
+   *OPERATE *MIN  *BHP  1000.0 
+                                 ** Producer has no perf lines and so is a segmented well
+                                       
+*HEADITER    '*' ITERATIVE
+*BHPHEADINIT '*' COMBINED                                       
+
+*BRANCH 'Site2-Main' *CONNECT-TO 'Site2' *AT 0.0
+*BEGIN
+    950.00       950.00         0.00         0.00
+    950.00       950.00      8425.00      8425.00
+*END
+
+*PACKERS 'Site2-Main'
+*BEGIN
+  100.
+**  8200.
+  8350.
+  8410.
+*END
+
+*TE-PDMETHOD 'TBE-meth1'
+**POISEU  0.08  0.25
+*CONST 2.0
+
+*TSTRING 'PROD-Tube1'
+*START-AT 'Site2-Main'    0.0 *OPEN 'ZERO'
+*END-AT   'Site2-Main' 8320.  *OPEN 'TBE-meth1'
+
+*TS-PDMETHOD 'tspmeth1'
+*BEGIN
+ *TYPE *PGRAD 0.10 **0.20 **0.5
+*END
+
+*TS-PDPOINTS 'PROD-Tube1'
+*BEGIN
+     0.00 'tspmeth1' 'tspmeth1'
+  8320.00 'tspmeth1' 'tspmeth1'
+*END
+
+*TO-PDMETHOD 'tometh1'
+  *PROPDP 1.
+
+*TSTRING 'PROD-Tube2'
+*START-AT 'Site2-Main' 8000.0 *OPEN 'ZERO'
+*END-AT   'Site2-Main' 8400.  *OPEN 'TBE-meth1'
+
+*TSTRING 'PROD-Tube3'
+*START-AT 'Site2-Main' 7000.0 *OPEN 'ZERO'
+*END-AT   'Site2-Main' 8415.  *OPEN 'TBE-meth1'
+
+*TS-PDPOINTS 'PROD-Tube2'
+*BEGIN
+  8000.00 'tspmeth1' 'tspmeth1'
+*END
+
+*TS-PDPOINTS 'PROD-Tube3'
+*BEGIN
+  7000.00 'tspmeth1' 'tspmeth1'
+*END
+
+*TS-EQPMETHOD 'pumpmeth1'
+ *PUMP *PUMP1 10000.
+
+*TS-EQPMETHOD 'pumpmeth2' 
+*PUMP *PUMP2 10000.0  3000.0	0.5
+
+*TS-EQPMETHOD 'pumpmeth3' 
+*PUMP *PUMP2 10000.0  2000.0	0.5
+
+*TS-EQPT 'PROD-Tube2'
+*BEGIN
+  8001. *PUMP 'pumpmeth2' 'pumpmeth2' 1
+*END
+
+*TS-EQPT 'PROD-Tube3'
+*BEGIN
+  7001. *PUMP 'pumpmeth3' 'pumpmeth3' 1
+*END
+
+*TS-EQSETTING
+*BEGIN
+  *PUMP 'PROD-Tube2' 8001. 400.  
+  *PUMP 'PROD-Tube3' 7001. 400.
+*END
+
+*WB-PFINTVLS 'Site2-Main'
+*BEGIN
+   8330. 8340.
+   8380. 8420.
+*END
+
+*WB-BLOCKBDYS 'Site2-Main'
+*BEGIN
+   10 10 3  950.000 950.000 8325.00 8325.00 950.000 950.000 8345.00 8345.00
+   10 10 2  950.000 950.000 8345.00 8345.00 950.000 950.000 8375.00 8375.00
+   10 10 1  950.000 950.000 8375.00 8375.00 950.000 950.000 8425.00 8425.00
+*END
+
+*WB-PDMETHOD 'wbpmeth1'
+ *BEGIN 
+  *TYPE *PGRAD 0.5
+  *FMULT 1.02
+ *END
+
+*WIMETHOD 'wimeth1'
+*BEGIN
+ *TYPE *SGEOA 1.0
+ *SGRADIUS 0.25
+*END
+
+*WB-PDPOINTS 'Site2-Main'
+*BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   8425.00      'wbpmeth1' 'wbpmeth1'
+*END
+
+*WIPOINTS 'Site2-Main'
+*BEGIN
+      0.00    'wimeth1'
+   8425.00    'wimeth1'
+*END
+
+*DHS-TABLE 'TABLE 1'  ** This table separates water for reinjection
+*BEGIN
+   OIL     1. 0. 0.
+   GAS     1. 0. 0.
+   WATER   0. 0. 1.
+*END
+
+*DHS-PDMETHOD 'DHSPM 1'
+ *CONST 2.0
+
+*DWNHSEP 'PROD-Tube1' 8000.  ** Two downhole separators on PROD-Tube1, one at md 7000, one at md 8000.
+*BEGIN
+  *TABLE 'TABLE 1'
+  *PDROP 'DHSPM 1'
+  *OUTLET2 'PROD-Tube1'
+  *OUTLET3 'PROD-Tube2'
+*END
+
+*DWNHSEP 'PROD-Tube1' 7000.
+*BEGIN
+  *TABLE 'TABLE 1'
+  *PDROP 'DHSPM 1'
+  *OUTLET2 'PROD-Tube1'
+  *OUTLET3 'PROD-Tube3'
+*END
+
+*SGWASSIGN 'SGW-PROD-Tube1' *TO 'Producer'  ** Assign the iSegWell to the 'Producer' simulator well
+
+*SGINFO 1
+ 
+
+*TIME    1
+*TIME    3
+*TIME   10
+*TIME   30
+*TIME  100
+*TIME  300
+*TIME  500
+*STOP

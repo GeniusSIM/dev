@@ -1,0 +1,42 @@
+** This example demonstrates how to obtain GROUP, SECTOR, SPECIAL and
+** LAYER information.
+** 
+** Appendix A of the Results Report manual gives a complete list of all possible
+** *PARAMETERS that can be used with the *SECTOR                                    
+**
+** The best way to obtain a special history name is to copy the it from the 
+** .dat file following the keyword OUTSRF SPECIAL
+ 
+FILE 'mxdrm005.sr3' 
+
+** Set the column width and print precision to apply to all columns
+
+PRECISION 4
+WIDTH     12
+
+*TABLE-FOR
+  *COLUMN-FOR *PARAMETERS 'Cumulative Oil SC' *GROUPS 'Default-Field-PRO'
+*TABLE-END
+
+*TABLE-FOR    
+   *COLUMN-FOR *SECTORS  'Entire  Field' '1' *PARAMETERS 'Ave Pres HC POVO SCTR'
+   *COLUMN-FOR *SECTORS  'Entire  Field' '1' *PARAMETERS 'Oil Ave Sat SCTR'    
+   *COLUMN-FOR *SPECIALS 'PRES  Average Reservoir Pressure.'  
+   *COLUMN-FOR *SPECIALS 'WINFLUX  Total Water Influx.' 
+*TABLE-END   
+
+** This example for getting layer information is commented out, as
+** IMEX no longer writes out layer information by default.  The layer
+** information is not in the "mxdrm005" sr3 file included in the Report
+** Writer tpl directory.
+**
+** If you rerun "mxdrm005" after having changed the keywords controlling
+** the writing of well layer information, you can uncomment the following
+** section to get a table of layer information.
+
+** *TABLE-FOR *PARAMETERS 'Cumulative Gas SC'       
+**    *COLUMN-FOR *LAYERS  'W-11{9,7,3}'  'W-11{9,7,5}'  'W-11{9,7,6}'  
+** *TABLE-END   
+
+
+

@@ -1,0 +1,3659 @@
+
+
+     STARS Data Files Illustrating "Drive Mechanisms"
+     ------------------------------------------------
+
+stdrm001.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+stdrm002.dat:
+  title1 'STARS Test Bed No. 2'
+  title2 'Wet Combustion Tube Experiment'
+  title3 'of Smith and Perkins'
+
+stdrm003.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stdrm004.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stdrm005.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stdrm006.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+stdrm007.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+stdrm008.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+stdrm009.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+stdrm010.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+stdrm011.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+stdrm012.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+stdrm013.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A' "
+
+stdrm015.dat:
+  title1 'STARS Test Bed No. 37'
+  title2 'Sand Failure due to Pressure Drawdown'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stdrm016.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+stdrm017.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+stdrm019.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+stdrm020.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'
+
+
+     STARS Data Files Illustrating "Electrical Heating"
+     --------------------------------------------------
+
+elec1.dat:
+  title1 'Electrical Heating Test Data #1'
+  title2 'Test/Illustrate *ELWCOMPTAB and *ELSCOMPTAB'
+
+elec2.dat:
+  title1 'Electrical Heating Test Data #2'
+  title2 'Test in 3D Cartesian Mode'
+
+elec3.dat:
+  title1 'Electrical Heating Test Data #3'
+  title2 'Test/Illustrate Metal Electrode and Constraint Switching'
+
+elec4.dat:
+  title1 'Electrical Heating Test Data #4'
+  title2 'Test/Illustrate the *NOFLASH option'
+
+elec5.dat:
+  title1 'Electrical Heating Test Data #5'
+  title2 'Test/Illustrate Multi-Well Hybrid Grid'
+
+elec6.dat:
+  title1 'Electrical Heating Test Data #6'
+  title2 'Electrical Heating Data #3 with Multiple Phases'
+
+elec7.dat:
+  title1 'Electrical Heating Test Data #7'
+  title2 'Test/Illustrate Isolated Three-Phase Triangular Configuration'
+
+elec1_ob.dat:
+  title1 'Electrical Heating Test Data #1_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC1 Heating Rates'
+  title3 'Based on ELEC1'
+
+elec2_ob.dat:
+  title1 'Electrical Heating Test Data #2_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC2 Heating Rates'
+  title3 'Based on ELEC2'
+
+elec3_ob.dat:
+  title1 'Electrical Heating Test Data #3_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC3 Heating Rates'
+  title3 'Based on ELEC3'
+
+elec4_ob.dat:
+  title1 'Electrical Heating Test Data #4_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC4 Heating Rates'
+  title3 'Based on ELEC4'
+
+elec5_ob.dat:
+  title1 'Electrical Heating Test Data #5_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC5 Heating Rates'
+  title3 'Based on ELEC5'
+
+elec6_ob.dat:
+  title1 'Electrical Heating Test Data #6_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC6 Heating Rates'
+  title3 'Based on ELEC6'
+
+elec7_ob.dat:
+  title1 'Electrical Heating Test Data #7_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY for ELEC7 Heating Rates'
+  title3 'Based on ELEC7'
+
+
+     STARS Data Files Illustrating "Fluid Types"
+     -------------------------------------------
+
+stflu001.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+stflu002.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+stflu003.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'
+
+stflu004.dat:
+  title1 'STARS Test Bed No. 10'
+  title2 'Dry Combustion Tube Experiment'
+  title3 'Test Bed No.1 with Original and Combustion Water Separate'
+
+stflu005.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stflu006.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+stflu007.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+stflu008.dat:
+  title1 'STARS Test Bed No. 17'
+  title2 'Steam with Two Additives, Lab Run from Alberta Research Council'
+
+stflu009.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+stflu010.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+stflu011.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+stflu012.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+stflu013.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A' "
+
+stflu014.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+stflu015.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+stflu016.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+stflu017.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'
+
+stflu018.dat:
+  title1 'STARS Fluid Model Template #18'
+  title2 'FOAM INJECTION IN A GENERIC NORTH SEA RESERVOIR'
+  title3 'Case sg1 : SAG with Transmissibility Barrier'
+
+stflu019.dat:
+  title1 'STARS Fluid Model Template #19'
+  title2 'GLISP 3-D Foam History Match Study'
+  title3 '1/6 Reservoir Element, 9 Layer-Model, 12 x 12 x 9 Grid'
+
+stflu020.dat:
+  title1 'STARS Fluid Model Template #20'
+  title2 'MICELLAR POLYMER IN STOCHASTIC RESERVOIR'
+  title3 'SURFACTANT-POLYMER CASE'
+
+stflu021.dat:
+  title1 'STARS Fluid Model Template #21'
+  title2 'STARS - ASPHALTENE PROCESSES'
+  title3 'NORTH SEA CROSS SECTION MODEL'
+
+stflu022.dat:
+  title1 'STARS Fluid Model Template #22'
+  title2 'Mole-based Version of Test Bed No. 18'
+  title3 'Insitu Gel Simulation, from Scott'
+
+stflu023.dat:
+  title1 'STARS Fluid Model Template #23'
+  title2 'Mole-based SI Version of Test Bed No. 18'
+  title3 'Insitu Gel Simulation, from Scott'
+
+stflu024.dat:
+  title1 'STARS Fluid Model Template #24'
+  title2 'Wolf Lake Pad Symmetry Element'
+  title3 'Cyclic Steaming Phase'
+
+stflu025.dat:
+  title1 'STARS Fluid Model Template #25'
+  title2 'Wolf Lake Pad Symmetry Element'
+  title3 'Combustion Phase'
+
+stflu026.dat:
+  title1 'STARS Fluid Model Template #26'
+  title2 'Steam Cycling in Initially Frozen Formation'
+  title3 'Based on STTST06'
+
+stflu027.dat:
+  title1 'STARS Fluid Model Template #27'
+  title2 'Steam Flood Encounters Sub-Zero Cooling Well'
+  title3 '*PERMTAB Case'
+
+stflu028.dat:
+  title1 'STARS Fluid Model Template #28'
+  title2 'Steam Flood Encounters Sub-Zero Cooling Well'
+  title3 '*PERMCK Case'
+
+stflu029.dat:
+  title1 'STARS Fluid Model Template #29'
+  title2 'Steam Cycling with Outer Cooling Ring'
+  title3 'Based on STTST06'
+
+stflu030.dat:
+  title1 'STARS Fluid Model Template #30'
+  title2 'Steam Cycling with Outer Cooling Ring & AUTOCOOLER'
+  title3 'Based on STFLU029'
+
+stflu031.dat:
+  title1 'STARS Fluid Model Template #31'
+  title2 'Series of Interacting Cooling Wells'
+
+stflu032.dat:
+  title1 'STARS Fluid Model Template #32'
+  title2 'Test/Illustrate *WATPENTH'
+  title3 'Based on STFLU024'
+
+stflu033.dat:
+  title1 'STARS Fluid Model Template #33'
+  title2 'Test/Illustrate *INIT_FROM_RESTART'
+  title3 'Mimic STFLU025 - Initial Conditions from STFLU024'
+
+stflu034.dat:
+  title1 'STARS Fluid Model Template #34'
+  title2 'Test/Illustrate *SHEARTHIN in Radial Lab-Scale Polymer Flood'
+
+stflu035.dat:
+  title1 'STARS Fluid Model Template #35'
+  title2 'Test/Illustrate *SHEARTHICK - Shear Thickening'
+  title3 'Based on STFLU036'
+
+stflu036.dat:
+  title1 'STARS Fluid Model Template #36'
+  title2 'Test/Illustrate *SHEARTHIN and *SHEARTHICK Together'
+  title3 '1D Coreflood Polymer Shear Thinning Plus Thickening'
+
+stflu037.dat:
+  title1 'STARS Fluid Model Template #37'
+  title2 'Test/Illustrate *SHEARTAB - White Castle Polymer Flood Project'
+
+stflu038.dat:
+  title1 'STARS Fluid Model Template #38'
+  title2 'Test/Illustrate *VISCTABLE *ATPRES with *VISCTYPE, *WATPHASE, *OILPHASE'
+  title3 'Based on VERIFY33'
+
+stflu039.dat:
+  title1 'STARS Fluid Model Template #39'
+  title2 'Test/Illustrate *TORTIKE_VG Steam Viscosity'
+  title3 'Based on STTST07'
+
+stflu040.dat:
+  title1 'STARS Fluid Model Template #40'
+  title2 'Test/Illustrate *VISOLOGLOG Oil Viscosity Mixing Rule'
+  title3 'Based on STTST08'
+
+stflu041.dat:
+  title1 'STARS Fluid Model Template #41'
+  title2 'Test/Illustrate *SHEARTHIN (Shear Rate), Radial Polymer Flood'
+  title3 'Viscosity as Function of Shear Rate'
+
+stflu042.dat:
+  title1 'STARS Fluid Model Template #42'
+  title2 'Test/Illustrate *SHEARTHICK (Shear Rate) - Shear Thickening'
+  title3 'Viscosity as Function of Shear Rate'
+
+stflu043.dat:
+  title1 'STARS Fluid Model Template #43'
+  title2 'Test/Illustrate *SHEARTAB (Shear Rate) - White Castle'
+  title3 'Constant Polymer, Flow = 136 m3/day'
+
+stflu044.dat:
+  title1 'STARS Fluid Model Template #44'
+  title2 'Test/Illustrate *SHEARTAB (Shear rate, Variable Perm) - White Castle'
+  title3 'Const polymer, flow = 1360 m3/day'
+
+stflu045.dat:
+  title1 'STARS Fluid Model Template #45'
+  title2 'Verify/Illustrate *SHIFT *MWT, Micellar Polymer in Core'
+  title3 'Uses Mole Basis'
+
+stflu046.dat:
+  title1 'STARS Fluid Model Template #46'
+  title2 'Verify/Illustrate *SHIFT *MWT, Micellar Polymer in Stochastic Reservoir'
+  title3 'Uses Mole Basis'
+
+stflu047.dat:
+  title1 'STARS Fluid Model Template #47'
+  title2 'Verify/Illustrate *VSSALTCMP, Micellar Polymer in Core'
+  title3 'Salinity Effect on Polymer Viscosity'
+
+stflu048.dat:
+  title1 'STARS Fluid Model Template #48'
+  title2 'Verify/Illustrate *VSSALTCMP, Micellar Polymer in Stochastic Reservoir'
+  title3 'Salinity Effect on Polymer Viscosity'
+
+stflu049.dat:
+  title1 'STARS Fluid Model Template #49'
+  title2 'Verify/Illustrate *RXORDUSE'
+  title3 'Based on STTST02'
+
+stflu050.dat:
+  title1 'STARS Fluid Model Template #50'
+  title2 'Verify/Illustrate *RXEQBASE with Foamy Oil'
+  title3 'Based on STTST65'
+
+stflu051.dat:
+  title1 'STARS Fluid Model Template #51'
+  title2 'Ionic flood in core (Na/Ca exchange)'
+  title3 'Test and illustrate ion exchange with clays'
+
+stflu052.dat:
+  title1 'STARS Fluid Model Template #52'
+  title2 'Lowsal Effect, Calcium and Sodium Ion Exchange via *INTCOMP *WATER'
+
+stflu053.dat:
+  title1 'STARS Fluid Model Template #53'
+  title2 'Lowsal Effect, Calcium and Sodium Ion Exchange via *INTCOMP *ADS'
+  title3 'Wettability Change with Calcium in Water Phase'
+
+stflu054.dat:
+  title1 'STARS Fluid Model Template #54'
+  title2 'Ionic Flood in Core (Na/Ca Exchange)'
+  title3 'Hill and Lake Paper on Ion Exchange with Clays'
+
+stflu056.dat:
+  title1 'STARS Fluid Model Template #56'
+  title2 'Verify/Illustrate *THCONGTAB, *THTYPE_FLX and *THTYPE_SAM'
+  title3 'Based on STWWM059'
+
+stflu057.dat:
+  title1 'STARS Fluid Model Template #57'
+  title2 'Verify/Illustrate *PVTSET/*PTYPE for Heavy Oil SAGD'
+
+stflu058.dat:
+  title1 'STARS Fluid Model Template #58'
+  title2 'Dry Combustion Tube with Enthalpy Departure'
+  title3 'Based on STTST01'
+
+stflu059.dat:
+  title1 'STARS Fluid Model Template #59'
+  title2 'Wet Combustion Tube with Enthalpy Departure'
+  title3 'Based on STTST02'
+
+stflu060.dat:
+  title1 'STARS Fluid Model Template #60'
+  title2 'Multi-Component Heavy-Oil Steam Flood with Enthalpy Departure'
+  title3 'Based on STTST08'
+
+stflu061.dat:
+  title1 'STARS Fluid Model Template #61'
+  title2 'Steam Injection with Oil and Soln Gas and Enthalpy Departure'
+  title3 'Based on STTST20'
+
+stflu062.dat:
+  title1 'STARS Fluid Model Template #62'
+  title2 'Multi-Component Oil and Soln Gas with Enthalpy Departure'
+  title3 'Based on STTST26'
+
+stflu063.dat:
+  TITLE1 'STARS Fluid Model Template #63'
+  TITLE2 'Test/Illustrate *SHEARTHIN in Radial Lab-Scale Polymer Flood'
+  TITLE3 'Multi-component Shear Thinning'
+
+stflu064.dat:
+  title1 'STARS Fluid Model Template #64'
+  title2 'Test/Illustrate *SHEARTAB with Temperature'
+  title3 'Based on STFLU036'
+
+stflu065.dat:
+  title1 'STARS Fluid Model Template #65'
+  title2 'Test/Illustrate *SHEARTHCKT with Temperature'
+  title3 'Based on STFLU036'
+
+stflu066.dat:
+  title1 'STARS Fluid Model Template #66'
+  title2 'Test/Illustrate *SHEARTHCKT/SHEARTHIN with Temperature'
+  title3 'Based on STFLU036'
+
+stflu067.dat:
+  title1 'STARS Fluid Model Template #67'
+  title2 'Illustrate equivalent salinity effect on viscosity'
+  title3 'Surfactant, polymer flood'
+
+stflu068.dat:
+  title1 'STARS Fluid Model Template #68'
+  title2 'Verify/Illustrate *GASSYLIQ for Multiple Properties and Components'
+  title3 'Based on STFLU050'
+
+stflu069.dat:
+  title1 'STARS Fluid Model Template #69'
+  title2 'Verify/Illustrate *ADSCOMP2, Micellar Polymer in Core'
+  title3 'Surfactant Adsorption Depends on Salinity'
+
+stflu070.dat:
+  title1 'STARS Fluid Model Template #70'
+  title2 'Verify/Illustrate *INTCOMP2, Micellar Polymer in Core'
+  title3 'Surfactant Mobilizing Depends on Alkali'
+
+stflu071.dat:
+  title1 'STARS Fluid Model Template #71'
+  title2 'Verify/Illustrate *SWIPV, OMEGA_PW, *RRFTW(O/G)'
+
+stflu072.dat:
+  title1 'STARS Fluid Model Template #72'
+  title2 'Verify/Illustrate *WELLSHEAR with Shear Thinning'
+
+stflu073.dat:
+  title1 'STARS Fluid Model Template #73'
+  title2 'Verify/Illustrate *WPLYFAC with Shear Thinning'
+
+stflu074.dat:
+  TITLE1 'STARS Fluid Model Template #74'
+  TITLE2 'Verify/Illustrate *OMEGA_PW *WL and *OMEGA_PMAX'
+  TITLE3 'Based on STFLU071'
+
+stflu075.dat:
+  TITLE1 'STARS Fluid Model Template #75'
+  TITLE2 'Illustrate Viscosity Nonlinear Mixing with *VSMIXGROUP'
+  TITLE3 'Based on STFLU020'
+
+stflu076.dat:
+  TITLE1 'STARS Fluid Model Template #76'
+  TITLE2 'Test/Illustrate *ADSRATE'
+  TITLE3 'STFLU036 with Rate Controlled Adsorption'
+
+stflu077.dat:
+  TITLE1 'STARS Fluid Model Template #77'
+  TITLE2 'Verify/Illustrate Component Mobility Factor *MOBCFAC'
+  TITLE3 'Based on STFLU071'
+
+
+     STARS Data Files Illustrating "Fractured Reservoirs"
+     ----------------------------------------------------
+
+stfrr001.dat:
+  title1 'STARS Test Bed No. 28'
+  title2 "Modification of Kazimi's Dual Porosity Problem"
+  title3 'Three Cases Give Same Initial In-Place'
+
+stfrr002.dat:
+  title1 'STARS Test Bed No. 29'
+  title2 'Pruess Geothermal Problem (1/8 of a Five-Spot, One Component)'
+  title3 'Natural Fractures Modelled with the MINC Option'
+
+stfrr003.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+stfrr004.dat:
+  title1 'STARS Test Bed No. 31'
+  title2 'Natural Fractures Modelled with the VR Option'
+
+stfrr005.dat:
+  title1 'STARS Test Bed No. 43'
+  title2 'Chen Data with VR Option'
+  title3 'Smaller Version of Test Bed No. 31'
+
+stfrr006.dat:
+  title1 'STARS Fractured Reservoirs No. 6'
+  title2 'Illustrate/Verify SUBDOMAIN-DK Option: *TRANSD, *SD_REINF, *SD_HCMULT'
+  title3 'Based on STFRR004'
+
+
+     STARS Data Files Illustrating "Geochemistry"
+     --------------------------------------------
+
+stgch001.dat:
+  title1 'STARS Geochem Model Template #1'
+  title2 'Acetic acid and NaOH flood in core'
+  title3 'Test and illustrate acid dissociation and pH changes'
+
+stgch002.dat:
+  title1 'STARS Geochem Model Template #2'
+  title3 'Test and illustrate water chemistry with adsorption and precipitation'
+  title2 'NaCO3 flood in core, STARS-ME Template #002'
+
+stgch003.dat:
+  title1 'STARS Geochem Model Template #3'
+  title2 'ASP flood in core with adspn and precn'
+  title3 'Based on STARS-ME stmeg003.dat'
+
+stgch005.dat:
+  title1 'STARS Geochem Model Template #5'
+  title2 'Complex water chemistry'
+  title3 'Test and illustrate complex geochemistry'
+
+stgch006.dat:
+  title1 'STARS Geochem Model Template #6'
+  title2 'ASP flood in stoichastic reservoir'
+  title3 'ASP flood with geochemistry'
+
+stgch007.dat:
+  title1 'STARS Geochem Model Template #7'
+  title2 'ASP flood in core with pH dept adspn'
+  title3 'STGCH003 with pH dept surf adsorption'
+
+stgch008.dat:
+  title1 'STARS Geochem Model Template #8'
+  title2 'ASP flood in stoichastic reservoir'
+  title3 'STGCH006.DAT with explicit geochem calculations'
+
+stgch009.dat:
+  title1 'STARS Geochem Model Template #9'
+  title2 'CO2 K-value and geochemistry'
+  title3 'Test and illustrate liquid-gas geochem'
+
+stgch010.dat:
+  title1 'STARS Geochem Model Template #10'
+  title2 'Lowsal Effect, Relperm Interpolation via Ca++ species'
+
+stgch011.dat:
+  title1 'STARS Geochem Model Template #11'
+  title2 'Lowsal Effect, Relperm Interpolation via sorbed Ca++ species'
+
+stgch012.dat:
+  title1 'STARS Geochem Model Template #12'
+  title2 'NaCO3 flood in core'
+  title3 'STGCH002 with stationary equil solids'
+
+stgch013.dat:
+  title1 'STARS Geochem Model Template #13'
+  title2 'NaCO3 flood in core'
+  title3 'Test and illustrate water chemistry with Temperature dependence'
+
+stgch021.dat:
+  TITLE1 'STARS Geochem Model Template #21'
+  TITLE2 'NaCO3 Flood in Core with *TST Solid'
+  TITLE3 'Based on STGCH002'
+
+stgch022.dat:
+  TITLE1 'STARS Geochem Model Template #22'
+  TITLE2 'Water Chemistry with Exothermic Dissolution'
+  TITLE3 'KCl/NaCl Flood in Core'
+
+stgch023.dat:
+  TITLE1 'STARS Geochem Model Template #23'
+  TITLE2 'Water Chemistry with Exothermic Dissolution and *TST'
+  TITLE3 'KCl/NaCl Flood in Core'
+
+stgch024.dat:
+  TITLE1 'STARS Geochem Model Template #24'
+  TITLE2 'NaCO3 Flood in Core with Non-Geochem Solid'
+  TITLE3 'Based on STGCH002'
+
+stgch025.dat:
+  TITLE1 'STARS Geochem Model Template #25'
+  TITLE2 'NaCO3 Flood in Core with *COMP-GEO Solid'
+  TITLE3 'Based on STGCH012'
+
+stgch026.dat:
+  TITLE1 'STARS Geochem Model Template #26'
+  TITLE2 'NaCO3 Flood in Core with *EQLTRAP Solid'
+  TITLE3 'Based on STGCH012'
+
+
+     STARS Data Files Illustrating "Geological Structures"
+     -----------------------------------------------------
+
+stgeo002.dat:
+  title1 'STARS Geomechanics Template #2'
+  title2 'Cyclic Steam Process with Two-Dimensional Axisymmetric Grid'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stgeo003.dat:
+  title1 'STARS Geomechanics Template #3'
+  title2 'Sand Failure due to Pressure Drawdown'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stgeo004.dat:
+  title1 'STARS Geomechanics Template #4'
+  title2 'Axi-symmetric Cyclic Steam Injection'
+  title3 'Four Rock Types and Rigid Reservoir Top'
+
+stgeo004_ob.dat:
+  title1 'STARS Geomechanics Template #4_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY *UPOR_x for *GCOUPLING 2 Deformations'
+  title3 'Based on STGEO004'
+
+stgeo005.dat:
+  title1 'STARS Geomechanics Template #5'
+  title2 'Single-Well Cold Flow with Sand Failure'
+  title3 '2D Radial Model'
+
+stgeo006.dat:
+  title1 'STARS Geomechanics Template #6'
+  title2 'Overburden Loads and Reservoir Body Force'
+
+stgeo007.dat:
+  title1 'STARS Geomechanics Template #7'
+  title2 'Geomechanics Domains and AIMSOL Matrix Solution'
+
+stgeo008.dat:
+  title1 'STARS Geomechanics Template #8'
+  title2 'Corner Point Grid Deformation with Displacement Vectors'
+
+stgeo009.dat:
+  title1 'STARS Geomechanics Template #9'
+  title2 'Corner Point Grid Deformation with Displacement Vectors'
+  title3 'Two Geomechanics Rock Types'
+
+stgeo010.dat:
+  title1 'STARS Geomechanics Template #10'
+  title2 'Axi-symmetric External Loads'
+  title3 'Two Rock Types'
+
+stgeo013.dat:
+  title1 'STARS Geomechanics Template #13'
+  title2 'COUPLED GEOMECHANIC-THERMAL SIMULATION'
+  title3 '2D CARTESIAN-GRID CYCLIC STEAM PROCESS, WITH ELASTOPLASTICITY'
+
+stgeo014.dat:
+  title1 'STARS Geomechanics Template #14'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo015.dat:
+  title1 'STARS Geomechanics Template #15'
+  title2 '3D Distributed Loads'
+  title3 'Single production well with over burden load'
+
+stgeo016.dat:
+  title1 'STARS Geomechanics Template #16'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo017.dat:
+  title1 'STARS Geomechanics Template #17'
+  title2 '3D Cylindrical Grids'
+  title3 'Two Constitutive Models'
+
+stgeo018.dat:
+  title1 'STARS Geomechanics Template #18'
+  title2 '3D Elasto-Plastic Drucker-Prager Yield Criterion'
+  title3 'Comparison of Two Constitutive Models'
+
+stgeo019.dat:
+  title1 'STARS Geomechanics Template #19'
+  title2 'Nonlinear elasticity - Hyperelastic model'
+  title3 'Comparison of Two Constitutive Models'
+
+stgeo020.dat:
+  title1 'STARS Geomechanics Template #20'
+  title2 '3D Elasto-Viscoplastic Model - Flow Function 1'
+
+stgeo021.dat:
+  title1 'STARS Geomechanics Template #21'
+  title2 '3D Elasto-Viscoplastic Model - Flow Function 2'
+
+stgeo022.dat:
+  title1 'STARS Geomechanics Template #22'
+  title2 'Variable Permeability, Multiple Constitutive Models'
+  title3 'Based on STGEO022'
+
+stgeo023.dat:
+  title1 'STARS Geomechanics Template #23'
+  title2 '150k Grid Blocks, 4 Components, *GEOM3D'
+  title3 'Based on STGRO014'
+
+stgeo024.dat:
+  title1 'STARS Geomechanics Template #24'
+  title2 'Pseudo Dilation Model, One-way Coupling'
+  title3 "Young's Modulus from Rock Compressibility"
+
+stgeo025.dat:
+  title1 'STARS Geomechanics Template #25'
+  title2 'Pseudo Dilation Model, One-way Coupling'
+  title3 "Young's Modulus from *PGDILA and *PGPACT"
+
+stgeo026.dat:
+  title1 'STARS Geomechanics Template #26'
+  title2 "Barton-Bandis Model for Dual Porosity Problem"
+
+stgeo027.dat:
+  title1 'STARS Geomechanics Template #27'
+  title2 '3D Cylindrical Grids'
+  title3 'Geomechanics-Dependent Permeability'
+
+stgeo028.dat:
+  title1 'STARS Geomechanics Template #28'
+  title2 'Two Rock Types'
+  title3 'Without Porosity Calibration'
+
+stgeo029.dat:
+  title1 'STARS Geomechanics Template #29'
+  title2 'Two Rock Types'
+  title3 'With Porosity Calibration'
+
+stgeo030.dat:
+  title1 'STARS Geomechanics Template #30'
+  title2 'Barton-Bandis Model for Dual Porosity Problem'
+
+stgeo031.dat:
+  title1 'STARS Geomechanics Template #31'
+  title2 '3D Radial Grids'
+  title3 'Cap Model'
+
+stgeo032.dat:
+  title1 'STARS Geomechanics Template #32'
+  title2 '3D Radial Grids'
+  title3 'Empirical dilation model - One way coupling'
+
+stgeo033.dat:
+  title1 'STARS Geomechanics Template #33'
+  title2 '3D Elasto-Plastic Drucker-Prager Cap Criterion'
+  title3 'Overburden and Grid Deformation'
+
+stgeo036.dat:
+  title1 'STARS Geomechanics Template #36'
+  title2 'Distributed Loads on Boundary Surface with *DLOADBC3D'
+
+stgeo037.dat:
+  title1 'STARS Geomechanics Template #37'
+  title2 'Distributed Loads on Boundary Surface with *DLOADBCIJK'
+
+stgeo038.dat:
+  title1 'STARS Geomechanics Template #38'
+  title2 'Infinite Mohr-Coulomb Medium, Dilation Angle'
+
+stgeo039.dat:
+  title1 'STARS Geomechanics Template #39'
+  title2 'Skempton and Mandel-Cryer Effects'
+
+stgeo039_ob.dat:
+  title1 'STARS Geomechanics Template #39_OBUP'
+  title2 'Test/Illustrate *OUTBOARD *REPLAY *UPOR_x for *GCOUPLING 3 Deformations'
+  title3 'Based on STGEO039'
+
+stgeo040.dat:
+  title1 'STARS Geomechanics Template #40'
+  title2 '150k Grid Blocks, 4 Components - 2D'
+  title3 'Based on STGEO023'
+
+stgeo041.dat:
+  title1 'STARS Geomechanics Template #41'
+  title2 '3D Single Surface Constitutive Model'
+
+stgeo042.dat:
+  title1 'STARS Geomechanics Template #42'
+  title2 'Infinite Mohr-Coulomb Medium, Associated SS Model'
+
+stgeo043.dat:
+  title1 'STARS Geomechanics Template #43'
+  title2 'Infinite Mohr-Coulomb Medium, Non-associated SS Model'
+
+stgeo044.dat:
+  title1 'STARS Geomechanics Template #44'
+  title2 'Geomaterial Properties vs Fluid Porosity (*GRPORTAB)'
+  title3 'Based on STGEO008'
+
+stgeo045.dat:
+  title1 'STARS Geomechanics Template #45'
+  title2 'Test/Illustrate *GEOSOLID:  Single-Well Cold Flow with Sand Failure'
+  title3 'Based on STGEO005'
+
+stgeo046.dat:
+  title1 'STARS Geomechanics Template #46'
+  title2 'Fluid Pressure Boundary Constraint via *BCDOMAIN'
+
+stgeo047.dat:
+  title1 'STARS Geomechanics Template #47'
+  title2 'Unload Stress for 3D Cylindrical Grid with *UNLOADSTR'
+  title3 'Based on STGEO038'
+
+stgeo048.dat:
+  title1 'STARS Geomechanics Template #48'
+  title2 'Generalized Plastic Model *GENPLAST, plus *DLOADBC3D'
+
+stgeo049.dat:
+  title1 'STARS Geomechanics Template #49'
+  title2 'Test/Illustrate *GRTEMTAB - T-Dependent Geomaterial Properties'
+
+stgeo050.dat:
+  title1 'STARS Geomechanics Template #50'
+  title2 'Test/Illustrate *GEOGRID *GCORNER with *GRID *CORNER'
+
+stgeo051.dat:
+  title1 'STARS Geomechanics Template #51'
+  title2 'Test/Illustrate *GEOGRID *CART with *GRID *RADIAL'
+
+stgeo052.dat:
+  title1 'STARS Geomechanics Template #52'
+  title2 'Test/Illustrate *GEOGRID *RADIAL with *GRID *CART'
+
+stgeo053.dat:
+  title1 'STARS Geomechanics Template #53'
+  title2 'Dean Problem #4, Water Flood - Single *CART Grid'
+  title3 'Compare With Dual-Grid Case STGEO054'
+
+stgeo054.dat:
+  title1 'STARS Geomechanics Template #54'
+  title2 'Dean Problem #4, Water Flood - Dual *CART Grids'
+  title3 'Compare With Single-Grid Case STGEO053'
+
+stgeo055.dat:
+  title1 'STARS Geomechanics Template #55'
+  title2 'Dean Problem #1, Reservoir Embedded in Geomechanics Region'
+
+stgeo056.dat:
+  title1 'STARS Geomechanics Template #56'
+  title2 'Infinite Mohr-Coulomb Medium, Dilation Angle, Over/Underburden'
+  title3 'Based on STGEO038'
+
+stgeo057.dat:
+  title1 'STARS Geomechanics Template #57'
+  title2 'Generalized Plastic Model *GENPLAST with *COHESHARD and *FRANGSOFT'
+
+stgeo058.dat:
+  title1 'STARS Geomechanics Template #58'
+  title2 'Skempton and Mandel-Cryer Effects with Modified Cam Clay Model'
+
+stgeo059.dat:
+  title1 'STARS Geomechanics Template #59'
+  title2 'Verify/Illustrate *GEOGRID with *REFINE and *DUALPERM'
+
+stgeo060.dat:
+  title1 'STARS Geomechanics Template #60'
+  title2 'Verify/Illustrate *GEOGRID with *REFINE and Barton-Bandis *DUALPERM'
+
+stgeo061.dat:
+  title1 'STARS Geomechanics Template #61'
+  title2 'Verify/Illustrate *GNULL - Null Blocks in *GEOGRID'
+  title3 'Based on STGEO046'
+
+stgeo062.dat:
+  title1 'STARS Geomechanics Template #62'
+  title2 'Verify/Illustrate Geomechanics Post Processing - Host Grid - Parent Run'
+  title3 'Based on STGEO006.  Scanned by STGEO063.'
+
+stgeo063.dat:
+  title1 'STARS Geomechanics Template #63'
+  title2 'Verify/Illustrate Geomechanics Post Processing - Host Grid'
+  title3 'Based on STGEO062.  Scans STGEO062.'
+
+stgeo064.dat:
+  title1 'STARS Geomechanics Template #64'
+  title2 'Verify/Illustrate Geomechanics Post Processing - GeoGrid - Parent Run'
+  title3 'Based on STGEO054.  Scanned by STGEO065.'
+
+stgeo065.dat:
+  title1 'STARS Geomechanics Template #65'
+  title2 'Verify/Illustrate Geomechanics Post Processing - GeoGrid'
+  title3 'Based on STGEO064.  Scans STGEO064.'
+
+stgeo067.dat:
+  title1 'STARS Geomechanics Template #67'
+  title2 'Test/Illustrate contracting and expanding grids'
+  title3 'Dual grid system'
+
+stgeo068.dat:
+  title1 'STARS Geomechanics Template #68'
+  title2 'Verify/Illustrate *STRESS_RETURN *GCPA'
+  title3 'Based on STGEO033'
+
+stgeo070.dat:
+  title1 'STARS Geomechanics Template #70'
+  title2 'Verify/Illustrate *GMONETONE with Overlapping Corner-Point Grids'
+  title3 'Based on STGEO050'
+
+stgeo071.dat:
+  title1 'STARS Geomechanics Template #71'
+  title2 'Verify/Illustrate *GRSTRESTAB (Stress-Dependent Mechanical Properties)'
+
+stgeo072.dat:
+  title1 'STARS Geomechanics Template #72'
+  title2 'Verify/Illustrate *GRPRESTAB (Pressure-Dependent Mechanical Properties)'
+
+stgeo073.dat:
+  title1 'STARS Geomechanics Template #73'
+  title2 'Verify/Illustrate *GEOGRID *CART with *GAMALI/J/K'
+  title3 'Based on STGEO051'
+
+stgeo074.dat:
+  title1 'STARS Geomechanics Template #74'
+  title2 'Verify/Illustrate *GCAPMOD Changing Young's Modulus in Hardening Cap'
+  title3 'Triaxial Test, Based on STGEO033'
+
+stgeo075.dat:
+  title1 'STARS Geomechanics Template #75'
+  title2 'Verify/Illustrate *GRMPRSTAB (MPE-Stress-Dependent Mechanical Properties)'
+  title3 'Based on STGEO071'
+
+stgeo076.dat:
+  title1 'STARS Geomechanics Template #76'
+  title2 'Mix Distributed Geomechanical Properties with Multiple Rock Types'
+  title3 'Based on STGEO017'
+
+stgeo077.dat:
+  title1 'STARS Geomechanics Template #77'
+  title2 'Illustrate/Verify *YOUNGMAP - Distributed Young's Modulus'
+  title3 'Based on STGEO006'
+
+stgeo078.dat:
+  title1 'STARS Geomechanics Template #78'
+  title2 'Verify/Illustrate *NETGROSS with *GEOMECH'
+  title3 'Based on STGEO013'
+
+stgeo080.dat:
+  title1 'STARS Geomechanics Template #80'
+  title2 'Test/Illustrate Fracture Perm Multiplier Tables *GPERMNEX/Z'
+  title3 'Fracture Permeability Varies with Normal Effective Stress'
+
+stgeo081.dat:
+  title1 'STARS Geomechanics Template #81'
+  title2 'Test/Illustrate Matrix Perm Multiplier Tables *GPERMNEX/Z_MT'
+  title3 'Fracture Permeability Varies with Normal Effective Stress'
+
+stgeo082.dat:
+  title1 'STARS Geomechanics Template #82'
+  title2 'Test/Illustrate Jointed-Rock Model *ROCKJOINT with Full Jointing'
+  title3 "Report Equivalent Young's Modulus and Poisson's Ratio"
+
+stgeo083.dat:
+  title1 'STARS Geomechanics Template #83'
+  title2 'Test/Illustrate Jointed-Rock Model *ROCKJOINT with Partial Jointing'
+  title3 "Report Equivalent Young's Modulus and Poisson's Ratio"
+
+stgeo084.dat:
+  title1 'STARS Geomechanics Template #84'
+  title2 'Verify/Illustrate *SAFACTOR *TSAFACTOR Output for *GEOGRID'
+  title3 'Based on STGEO073'
+
+stgeo085.dat:
+  title1 'STARS Geomechanics Template #85'
+  title2 'Verify/Illustrate *ROCKJOINT with Radial *GEOGRID'
+  title3 'Based on STGEO052'
+
+stgeo086.dat:
+  title1 'STARS Geomechanics Template #86'
+  title2 'Hydraulic Fracturing in 2D Plane Strain'
+  title3 'Based on STGEO060'
+
+stgeo087.dat:
+  title1 'STARS Geomechanics Template #87'
+  title2 'Multiple Hydraulic Fractures in 3D'
+  title3 'Based on STGEO050'
+
+stgeo088.dat:
+  title1 'STARS Geomechanics Template #88'
+  title2 'Four Stages of 3D Hydraulic Fracturing'
+  title3 'Based on STGEO060'
+
+stgeo089.dat:
+  title1 'STARS Geomechanics Template #89'
+  title2 'Verify/Illustrate *Barton-Bandis *DUALPERM with *USTRESDIF'
+  title3 'Based on STGEO060'
+
+stgeo090.dat:
+  title1 'STARS Geomechanics Template #90'
+  title2 'Illustrate *PREFRAC:  2D Pre-Fracture Opening Under Constant Pressure'
+  title3 'Based on STGEO060'
+
+stgeo091.dat:
+  title1 'STARS Geomechanics Template #91'
+  title2 'Verify/Illustrate *GROCKTAB with Stress-Dependent Perm Multipliers'
+  title3 'Based on STGEO060'
+
+stgeo092.dat:
+  title1 'STARS Geomechanics Template #92'
+  title2 'Verify/Illustrate *GROCKTAB with Stress-Dependent Trans. Multipliers'
+  title3 'Based on STGEO091'
+
+stgeo093.dat:
+  title1 'STARS Geomechanics Template #93'
+  title2 'Illustrate Shear and Tensile Fractures'
+
+stgeo094.dat:
+  title1 'STARS Geomechanics Template #94'
+  title2 'Four Stages of 3D Hydraulic Fracturing'
+
+stgeo095.dat:
+  title1 'STARS Geomechanics Template #95'
+  title2 'Illustrate Shear Fracturing'
+  title3 'Total Tensile Threshold in BB Model'
+
+stgeo096.dat:
+  title1 'STARS Geomechanics Template #96'
+  title2 'Anisotropic Rock - Thermal'
+  title3 'Geomechanics-Dependent Permeability'
+
+stgeo097.dat:
+  title1 'STARS Geomechanics Template #97'
+  title2 'Anisotropic Rock - Isothermal'
+  title3 'Triaxial Test, Based on STGEO074'
+
+stgeo098.dat:
+  title1 'STARS Geomechanics Template #98'
+  title2 'Test *GKRIGING for Initial Stress Assignment'
+
+stgeo099.dat:
+  TITLE1 'STARS Geomechanics Template #99'
+  TITLE2 'Test Weighting Methods for Pressure and Temperature'
+  TITLE3 '*PRES-AT-FENODE, *TEMP-AT-FENODE'
+
+stgeo100.dat:
+  title1 'STARS Geomechanics Template #100'
+  title2 'Saturation-Dependent Geomechanical Properties with *GRWATAB'
+  title3 'Water Weakening'
+
+
+     STARS Data Files Illustrating "Grid Options"
+     --------------------------------------------
+
+stgro001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stgro002.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+stgro003.dat:
+  title1 'STARS Test Bed No. 9'
+  title2 'Variable Depth and Layer Thickness Illustration'
+
+stgro004.dat:
+  title1 'STARS Test Bed No. 22'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 with Local Grid Refinement'
+
+stgro005.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+stgro007.dat:
+  title1 'STARS Grid Option Template No. 7'
+  title2 '3x2 Patterns of 41x41x24, 235k Blocks, 1.3 Gb Allocation, 700 Mb Usage'
+  title3 'Based on STGRO014'
+
+stgro008.dat:
+  title1 'STARS Grid Option Template No. 8'
+  title2 '4x3 Patterns of 41x41x24, 467k Blocks, 2.7 Gb Allocation, 1.3 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro009.dat:
+  title1 'STARS Grid Option Template No. 9'
+  title2 'Validate Operation of MRF Larger Than 2 GB'
+  title3 'Based on STGRO007'
+
+stgro010.dat:
+  title1 'STARS Grid Option Template No. 10'
+  title2 'Restart from MRF Larger Than 2 GB'
+  title3 'Based on STGRO009'
+
+stgro011.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+stgro013.dat:
+  title1 'STARS Grid Option Template No. 13'
+  title2 '7x4 Patterns of 41x41x24, 1 Million Blocks, 6.5 Gb Allocation, 4.1 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro014.dat:
+  title1 'STARS Grid Option Template No. 14'
+  title2 'Large Grid Example:  41x41x24 grid with 40,344 blocks'
+  title3 'Based on Test Bed No. 46'
+
+stgro015.dat:
+  title1 'STARS Grid Option Template No. 15'
+  title2 '9x6 Patterns of 41x41x24, 2 Million Blocks, 16.5 Gb Allocation, 7.9 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro016.dat:
+  title1 'STARS Grid Option Template No. 16'
+  title2 '28x28 Patterns of 41x41x24 Each, 30 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro017.dat:
+  title1 'STARS Grid Option Template No. 17'
+  title2 '8-level LGR blocks with perfs and special histories'
+  title3 'Based on STTST07'
+
+stgro018.dat:
+  title1 'STARS Grid Option Template No. 18'
+  title2 'Recurrent Refinement and Derefinement'
+  title3 'Based on STTST03'
+
+stgro019.dat:
+  title1 'STARS Grid Option Template No. 19'
+  title2 'Recurrent Grid Amalgamation'
+  title3 'Based on STTST03'
+
+stgro020.dat:
+  title1 'STARS Grid Option Template No. 20'
+  title2 'Dynamic Refinement and Derefinement'
+
+stgro021.dat:
+  title1 'STARS Grid Option Template No. 21'
+  title2 'Dynamic Amalgamation and Deamalgamation'
+
+stgro022.dat:
+  title1 'STARS Grid Option Template No. 22'
+  title2 '*TRANSF for a 2D Fault Surface'
+  title3 'Based on STTST06'
+
+stgro023.dat:
+  title1 'STARS Grid Option Template No. 23'
+  title2 '5x4 Patterns of 41x41x24, 776k Blocks, 3 Gb Allocation, 2.4 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro024.dat:
+  title1 'STARS Grid Option Template No. 24'
+  title2 'Test/Illustrate *NINEPOINT with *GRID *CORNER'
+  title3 'Based on STGRO021'
+
+stgro025.dat:
+  title1 'STARS Grid Option Template No. 25'
+  title2 '*TRANSF for a 3D Fault Surface'
+  title3 'Based on STTST46'
+
+stgro026.dat:
+  title1 'STARS Grid Option Template No. 26'
+  title2 '23x23=529 Patterns of 41x41x24, 20e6 Blocks, 120 Gb Allocation, 79 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro027.dat:
+  title1 'STARS Grid Option Template No. 27'
+  title2 '507x1 Patterns of 41x41x24, 20e6 Blocks, 120 Gb Allocation, 56 Gb Usage'
+  title3 'Based on STGRO014'
+
+stgro028.dat:
+  title1 'STARS Grid Option Template No. 28'
+  title2 '*TRANSF with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro029.dat:
+  title1 'STARS Grid Option Template No. 29'
+  title2 '*TRANSF with *MINC'
+  title3 'Based on STTST29'
+
+stgro030.dat:
+  title1 'STARS Grid Option Template No. 30'
+  title2 '*TRANSF with *DUALPERM'
+  title3 'Based on STTST30'
+
+stgro031.dat:
+  title1 'STARS Grid Option Template No. 31'
+  title2 '*TRANSF for a 3D Fault Surface with *SUBDOMAIN'
+  title3 'Based on STTST31'
+
+stgro032.dat:
+  title1 'STARS Grid Option Template No. 32'
+  title2 '250x1 Patterns of 41x41x24, 10 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro033.dat:
+  title1 'STARS Grid Option Template No. 33'
+  title2 '13x10=130 Patterns of 41x41x24, 5 Million Blocks'
+  title3 'Based on STGRO014'
+
+stgro034.dat:
+  title1 'STARS Grid Option Template No. 34'
+  title2 'Test/Illustrate Heatloss Boundary Searching, Without LGR'
+  title3 'Based on STTST07'
+
+stgro037.dat:
+  title1 'STARS Grid Option Template No. 37'
+  title2 'Test/Illustrate Corner-Point Grid Without Discretized Wellbore'
+  title3 'Base Case for STGRO036'
+
+stgro038.dat:
+  title1 'STARS Grid Option Template No. 38'
+  title2 'Test/Illustrate Shale Properties - Base Case'
+  title3 'Base Case for STGRO039'
+
+stgro039.dat:
+  title1 'STARS Grid Option Template No. 39'
+  title2 'Test/Illustrate Shale Properties'
+  title3 'Base Case for STGRO039'
+
+stgro040.dat:
+  title1 'STARS Grid Option Template No. 40'
+  title2 'Test/Illustrate *DYNAGRID with Recurrent New Wells and Perforations'
+
+stgro041.dat:
+  title1 'STARS Grid Option Template No. 41'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro042.dat:
+  title1 'STARS Grid Option Template No. 42'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *MINC'
+  title3 'Based on STTST29'
+
+stgro043.dat:
+  title1 'STARS Grid Option Template No. 43'
+  title2 'Test/Illustrate *SHAPE *K-HARMONIC with *SUBDOMAIN'
+  title3 'Based on STTST31'
+
+stgro044.dat:
+  title1 'STARS Grid Option Template No. 44'
+  title2 'Test/Illustrate *TRANSMF with *MINC'
+  title3 'Based on STTST29'
+
+stgro045.dat:
+  title1 'STARS Grid Option Template No. 45'
+  title2 'Test/Illustrate *DUALPOR with Multi-Level *REFINE'
+  title3 'Based on STTST28'
+
+stgro046.dat:
+  title1 'STARS Grid Option Template No. 46'
+  title2 'Test/Illustrate *DUALPOR with *REFINE and *PARASOL'
+
+stgro048.dat:
+  title1 'STARS Grid Option Template No. 48'
+  title2 'Test/Illustrate Static Followed by Dynamic Gridding'
+  title3 'Based on STGRO040'
+
+stgro049.dat:
+  title1 'STARS Grid Option Template No. 49'
+  title2 'Test/Illustrate Heatloss Boundary Searching, With LGR'
+  title3 'Based on STGRO034'
+
+stgro050.dat:
+  title1 'STARS Grid Option Template No. 50'
+  title2 'Test/Illustrate *SHAPE *PI2 with *DUALPOR'
+  title3 'Based on STTST28'
+
+stgro051.dat:
+  title1 'STARS Grid Option Template No. 51'
+  title2 'Test/Illustrate Partial Inheritance for *FRFRAC and *FORMINFRAC'
+  title3 'Based on STGRO045'
+
+stgro052.dat:
+  title1 'STARS Grid Option Template No. 52'
+  title2 '*NINEPOINT *IJ with Diagonal 25x13 Grid for 1/8 9-Spot Pattern'
+  title3 'Based on STTST07'
+
+stgro053.dat:
+  title1 'STARS Grid Option Template No. 53'
+  title2 '*NINEPOINT *IJ with Parallel 18x18 Grid for 1/8 9-Spot Pattern'
+  title3 'Based on STGRO052'
+
+stgro054.dat:
+  title1 'STARS Grid Option Template No. 54'
+  title2 '*UPWIND *IJ with Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO052'
+
+stgro055.dat:
+  title1 'STARS Grid Option Template No. 55'
+  title2 '*UPWIND *IJ with Parallel 18x18 1/8 9-Spot Pattern'
+  title3 'Based on STGRO053'
+
+stgro056.dat:
+  title1 'STARS Grid Option Template No. 56'
+  title2 '*UPWIND *IJ with *DYNAGRID in Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO054'
+
+stgro057.dat:
+  title1 'STARS Grid Option Template No. 57'
+  title2 '*UPWIND *3D with Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO054'
+
+stgro058.dat:
+  title1 'STARS Grid Option Template No. 58'
+  title2 '*UPWIND *3D with Parallel 18x18 1/8 9-Spot Pattern'
+  title3 'Based on STGRO055'
+
+stgro059.dat:
+  title1 'STARS Grid Option Template No. 59'
+  title2 '*UPWIND *3D with *DYNAGRID in Diagonal 25x13 1/8 9-Spot Pattern'
+  title3 'Based on STGRO057'
+
+stgro060.dat:
+  title1 'STARS Grid Option Template No. 60'
+  title2 'Test/Illustrate *UPWIND *IK with *GRID *CORNER'
+  title3 'Based on STGRO024'
+
+stgro061.dat:
+  title1 'STARS Grid Option Template No. 61'
+  title2 'Verify/Illustrate *IRCONNECT - Radial Grid'
+  title3 'Based on STTST06'
+
+stgro062.dat:
+  title1 'STARS Grid Option Template No. 62'
+  title2 'Verify/Illustrate *IRCONNECT - Cartesian/Hybrid Grid'
+  title3 'Based on STTST34'
+
+stgro063.dat:
+  title1 'STARS Grid Option Template No. 63'
+  title2 'Verify/Illustrate *NODES for Node-Based Corner-Point Data'
+  title3 'Based on STTST14'
+
+stgro064.dat:
+  title1 'STARS Grid Option Template No. 64'
+  title2 'Verify/Illustrate *NODEX/Y/Z for Node-Based Corner-Point Data'
+  title3 'Based on STGRO063'
+
+stgro065.dat:
+  title1 'STARS Grid Option Template No. 65'
+  title2 'Verify/Illustrate *TRANSMULT *ACCUMULATE'
+  title3 'Based on STGEO030'
+
+stgro066.dat:
+  title1 'STARS Grid Option Template No. 66'
+  title2 'Verify/Illustrate *BLOCKS *RG for Node-Based LGR'
+  title3 'Based on STGRO063'
+
+stgro067.dat:
+  title1 'STARS Grid Option Template No. 67'
+  title2 '*DYNAGRID with Recurrent *PERMx Changes'
+  title3 'Based on VERIFY65'
+
+stgro068.dat:
+  title1 'STARS Grid Option Template No. 68'
+  title2 '*DYNAGRID with Recurrent *TRANSx Changes'
+  title3 'Based on VERIFY65'
+
+stgro069.dat:
+  title1 'STARS Grid Option Template No. 69'
+  title2 'Verify/Illustrate *BLOCKGROUP and *REFINE *INNERWIDTH'
+  title3 'Based on STGRO017'
+
+stgro070.dat:
+  title1 'STARS Grid Option Template No. 70'
+  title2 'Verify/Illustrate *BLOCKGROUP with *BG Inside of *MOD'
+  title3 'Based on STGRO069'
+
+stgro071.dat:
+  title1 'STARS Grid Option Template No. 71'
+  title2 'Verify/Illustrate *PLNRFRAC_TEMPLATE and *PLNRFRAC'
+  title3 'Based on STTST16'
+
+stgro072.dat:
+  title1 'STARS Grid Option Template No. 72'
+  title2 'Verify/Illustrate *ROCK_IN_FRAC, *SAT_ADJUST and Tuning Outputs'
+  title3 'Based on STFRR001/STTST28'
+
+stgro073.dat:
+  title1 'STARS Grid Option Template No. 73'
+  title2 'Illustrate Non-DynaGrid Refinement/Derefinement in Recurrent Data'
+  title3 'Based on STGRO018'
+
+stgro074.dat:
+  title1 'STARS Grid Option Template No. 74'
+  title2 'Verify/Illustrate *TRANS_MULT_REGION and *INTER_REGION_TM'
+  title3 'Based on VERIFY62'
+
+stgro075.dat:
+  title1 'STARS Grid Option Template No. 75'
+  title2 'Illustrate/Verify *PORVOL with *VAMOD Volume Fractions'
+  title3 'Based on STTST07'
+
+stgro076.dat:
+  title1 'STARS Grid Option Template No. 76'
+  title2 'Illustrate/Verify *PORVOL with *VOLMOD and *NETPAY'
+  title3 'Based on STTST16'
+
+stgro077.dat:
+  title1 'STARS Grid Option Template No. 77'
+  title2 'Illustrate/Verify *TRANVI, *TRANVJ and *TRANVK'
+  title3 'Based on STGRO076'
+
+stgro078.dat:
+  title1 'STARS Grid Option Template No. 78'
+  title2 'Verify/Illustrate *PVCUTFR with *DUALPERM'
+  title3 'Based on STTST30'
+
+stgro079.dat:
+  title1 'STARS Grid Option Template No. 79'
+  title2 'Verify/Illustrate *AREALPINCH-TOL & *DISTORTED-BLOCK *PINCH-ALL'
+  title3 'Based on STGRO020'
+
+stgro080.dat:
+  title1 'STARS Grid Option Template No. 80'
+  title2 'Test/Illustrate *SHAPE *K-AV2 with *DUALPERM'
+  title3 'Based on STSMO020'
+
+stgro081.dat:
+  title1 'STARS Grid Option Template No. 81'
+  title2 'Test/Illustrate *SHAPE *KX with *DUALPERM'
+  title3 'Based on STSMO020'
+
+stgro082.dat:
+  title1 'STARS Grid Option Template No. 82'
+  title2 '*TRANSF with *PTHRESH-FAULT *PLASTIC'
+  title3 'Based on STGRO030'
+
+stgro083.dat:
+  TITLE1 'STARS Grid Option Template No. 83'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLXB-TYPE *FLUX'
+
+stgro084.dat:
+  TITLE1 'STARS Grid Option Template No. 84'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro083.flxb)'
+
+stgro085.dat:
+  TITLE1 'STARS Grid Option Template No. 85'
+  ITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLXB-TYPE *PRESSURE'
+
+stgro086.dat:
+  TITLE1 'STARS Grid Option Template No. 86'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro085.flxb)'
+
+stgro087.dat:
+  TITLE1 'STARS Grid Option Template No. 87'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Full-Field Run with *FLUX_ISECTOR'
+
+stgro088.dat:
+  TITLE1 'STARS Grid Option Template No. 88'
+  TITLE2 'Test/Illustrate Flux Boundary Options'
+  TITLE3 'Reduced Run (Input: stgro087.flxb)'
+
+stgro089.dat:
+  TITLE1 'STARS Grid Option Template No. 89'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN) with *DUALPOR'
+
+stgro090.dat:
+  TITLE1 'STARS Grid Option Template No. 90'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN)'
+  TITLE3 'Corner Point, Single Porosity'
+
+stgro091.dat:
+  TITLE1 'STARS Grid Option Template No. 91'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN) with *LAYERXYZ'
+
+stgro092.dat:
+  TITLE1 'STARS Grid Option Template No. 92'
+  TITLE2 'Test/Illustrate Discrete Fracture Network (DFN)'
+  TITLE3 'DFN Between Disconnected Regions'
+
+stgro093.dat:
+  TITLE1 'STARS Grid Option Template No. 93'
+  TITLE2 'Test/Illustrate *SIGMAMF and *KAVMF with *DUALPERM'
+
+stgro094.dat:
+  TITLE1 'STARS Grid Option Template No. 94'
+  TITLE2 'Test/Illustrate *TRANSD with *DUALPERM'
+  TITLE3 'Based on STGRO080'
+
+stgro095.dat:
+  title1 'STARS Grid Option Template No. 95'
+  title2 'Hydraulic Fracture in LGR Blocks'
+  title3 'Based on STGRO063'
+
+stgro096.dat:
+  title1 'STARS Grid Option Template No. 96'
+  title2 '*DUALPOR with *PVCUTRG-FR'
+  title3 'Based on STGRO028'
+
+
+     STARS Data Files Illustrating "Horizontal Wells"
+     ------------------------------------------------
+
+sthrw007.dat:
+  title1 'STARS Horizontal Well Template #7'
+  title2 'Steam Injection with 26 Wells Including 3 Horizontal Producers'
+  title3 'Variable Top, 2 Regional Aquifers, Actual 12-Year History'
+
+sthrw008.dat:
+  title1 'STARS Horizontal Well Template #8'
+  title2 'LIAOHE SAGD PROJECT - PHASE 3'
+  title3 '3D Horizontal WELLS with DIP'
+
+
+     STARS Data Files Illustrating "Simulator Options"
+     -------------------------------------------------
+
+stsmo001.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stsmo002.dat:
+  title1 'STARS Test Bed No. 15'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 run with ZH formulation'
+
+stsmo003.dat:
+  title1 'STARS Test Bed No. 24'
+  title2 'Fourth SPE Comparative Solution Project, Problem 1A'
+  title3 'Test Bed No. 6 with Outer Radial Blocks as Aquifer Model'
+
+stsmo004.dat:
+  title1 'STARS Test Bed No. 25'
+  title2 'Verify/Illustrate *BOTTOM Aquifer Model for Radial Grid'
+  title3 'Based on Test Bed No. 17'
+
+stsmo005.dat:
+  title1 'STARS Test Bed No. 47'
+  title2 'Test Bed No. 9, with Zero-Porosity Blocks and Full Printout'
+
+stsmo006.dat:
+  title1 'STARS Test Bed No. 61'
+  title2 'Water/Oil Vertical Equilibrium Illustration'
+  title3 'Based on Test Bed #9'
+
+stsmo007.dat:
+  title1 'STARS Test Bed No. 62'
+  title2 'Water/Oil/Gas Ver. Eq. with Two Transition Zones'
+  title3 'Based on Test Bed #20'
+
+stsmo008.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+stsmo009.dat:
+  title1 'STARS Horizontal Well Template #7'
+  title2 'Steam Injection with 26 Wells Including 3 Horizontal Producers'
+  title3 'Variable Top, 2 Regional Aquifers, Actual 12-Year History'
+
+stsmo010.dat:
+  title1 'STARS Simulator Options No. 10'
+  title2 'Water/Oil/Gas Ver. Eq. with Oil on Bottom, Pc = 0'
+  title3 'Based on Test Bed #62'
+
+stsmo011.dat:
+  title1 'STARS Simulator Options No. 11'
+  title2 'Oil/Water/Gas Ver. Eq. with Oil on Bottom, Non-Zero Pcow'
+  title3 'Based on Test Bed #62'
+
+stsmo012.dat:
+  title1 'STARS Simulator Options No. 12'
+  title2 'Water/Gas Vertical Equilibrium Initialization'
+  title3 'Based on Test Bed #62'
+
+stsmo013.dat:
+  title1 'STARS Simulator Options No. 13'
+  title2 'G-L and L-L Surface K Values'
+  title3 'Based on Test Bed #17'
+
+stsmo014.dat:
+  title1 'STARS Simulator Options No. 14'
+  title2 '*AQFRCOMP and Orig/Aqfr/Injt Water Components'
+  title3 'Based on Test Bed #24'
+
+stsmo015.dat:
+  title1 'STARS Simulator Options No. 15'
+  title2 'Relative Permeability Hysteresis for Non-wetting Oil,'
+  title3 'Wetting Water and Gas Phases Using Killough Method'
+
+stsmo016.dat:
+  title1 'STARS Simulator Options No. 16'
+  title2 'Test/Illustrate *KRTYPE and *KRTYPE_VERT'
+  title3 'Based on STTST06'
+
+stsmo017.dat:
+  title1 'STARS Simulator Options No. 17'
+  title2 'Test/Illustrate *KRSWITCH and Associated Keywords'
+  title3 'Based on STTST06'
+
+stsmo018.dat:
+  title1 'STARS Simulator Options No. 18'
+  title2 'Base Case for Testing Array-Reading Option *BINARY_DATA'
+  title3 'Based on STGRO036'
+
+stsmo019.dat:
+  title1 'STARS Simulator Options No. 19'
+  title2 'Test/Illustrate Array-Reading Option *BINARY_DATA'
+  title3 'Based on STSMO018'
+
+stsmo020.dat:
+  title1 'STARS Simulator Options No. 20'
+  title2 'Base Case for Testing *BINARY_DATA with Natural Fracture'
+  title3 'Based on STTST30'
+
+stsmo021.dat:
+  title1 'STARS Simulator Options No. 21'
+  title2 'Test/Illustrate *BINARY_DATA with Natural Fracture'
+  title3 'Based on STSMO020'
+
+stsmo022.dat:
+  title1 'STARS Simulator Options No. 22'
+  title2 '*LININTERP with Rel Perm Hysteresis of Killough'
+  title3 'Based on STSMO015'
+
+stsmo023.dat:
+  title1 'STARS Simulator Options No. 23'
+  title2 "Illustrate keyword equivalent of '-doms -parasol'"
+  title3 'Based on STTST46'
+
+stsmo024.dat:
+  title1 'STARS Simulator Options No. 24'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN'
+  title3 'Based on STTST46'
+
+stsmo025.dat:
+  title1 'STARS Simulator Options No. 25'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *AUTOPSLAB'
+  title3 'Based on STTST46'
+
+stsmo026.dat:
+  title1 'STARS Simulator Options No. 26'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *PARTITION'
+  title3 'Based on STTST46'
+
+stsmo027.dat:
+  title1 'STARS Simulator Options No. 27'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *PPARTITION'
+  title3 'Based on STTST46'
+
+stsmo028.dat:
+  title1 'STARS Simulator Options No. 28'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *GPARTITION'
+  title3 'Based on STTST46'
+
+stsmo029.dat:
+  title1 'STARS Simulator Options No. 29'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *APARTITION'
+  title3 'Based on STTST46'
+
+stsmo030.dat:
+  title1 'STARS Simulator Options No. 30'
+  title2 'Illustrate *SOLVER *PARASOL with *DTYPE'
+  title3 'Based on STTST46'
+
+stsmo031.dat:
+  title1 'STARS Simulator Options No. 31'
+  title2 'Illustrate *SOLVER *PARASOL with *DPLANES'
+  title3 'Based on STTST46'
+
+stsmo032.dat:
+  title1 'STARS Simulator Options No. 32'
+  title2 'Illustrate *SOLVER *PARASOL with *CHECKRB'
+  title3 'Based on STTST46'
+
+stsmo033.dat:
+  title1 'STARS Simulator Options No. 33'
+  title2 'Illustrate *SOLVER *PARASOL with *PDEGAA and *PDEGAB'
+  title3 'Based on STTST46'
+
+stsmo034.dat:
+  title1 'STARS Simulator Options No. 34'
+  title2 'Illustrate *SOLVER *PARASOL with *PNPROSL'
+  title3 'Based on STTST46'
+
+stsmo035.dat:
+  title1 'STARS Simulator Options No. 35'
+  title2 'Test/Illustrate *OILWET with Vert. Eq. WO Trans. Zone and *WOC_SW'
+
+stsmo036.dat:
+  title1 'STARS Simulator Options No. 36'
+  title2 'Test/Illustrate Water-Gas System Vert. Eq. with *TRANZONE and *WOC_SW'
+
+stsmo037.dat:
+  title1 'STARS Simulator Options No. 37'
+  title2 'Test/Illustrate Counter-Current Rock-Fluid Data with 2-D SAGD'
+
+stsmo038.dat:
+  title1 'STARS Simulator Options No. 38'
+  title2 'Test/Illustrate *PORINTERP *REF - Static Grid'
+  title3 'Based on STGRO037'
+
+stsmo039.dat:
+  title1 'STARS Simulator Options No. 39'
+  title2 'Test/Illustrate *PORINTERP *INIT - Static Grid'
+  title3 'Base case for STSMO038'
+
+stsmo040.dat:
+  title1 'STARS Simulator Options No. 40'
+  title2 'Test/Illustrate *PORINTERP *INIT - Dynamic Grid'
+  title3 'Based on STGRO040'
+
+stsmo041.dat:
+  title1 'STARS Simulator Options No. 41'
+  title2 'Test/Illustrate Over/Underburden Heatloss Through Null Blocks'
+  title3 'Based on STTST07'
+
+stsmo042.dat:
+  title1 'STARS Simulator Options No. 42'
+  title2 'Heater Well - *HTWELL *HTWRATE replacing *HEATR'
+  title3 'Same result as STTST01'
+
+stsmo043.dat:
+  title1 'STARS Simulator Options No. 43'
+  title2 'Heater Well - Heat-only Multi-block Well with *HTWRATEPL'
+  title3 'Based on STSMO042'
+
+stsmo044.dat:
+  title1 'STARS Simulator Options No. 44'
+  title2 'Test/Illustrate *HTWELL with convective/max heat rate'
+  title3 'Based on STTST06'
+
+stsmo045.dat:
+  title1 'STARS Simulator Options No. 45'
+  title2 'Test/Illustrate Heater Well in Cooling Mode'
+  title3 'with *WELL *FRAC and *PERFV *WI'
+
+stsmo046.dat:
+  title1 'STARS Simulator Options No. 46'
+  title2 'Test/Illustrate Heater Well Through Pinched-out, Null and Zero-Porosity Blocks'
+  title3 'Based on STWWM023'
+
+stsmo047.dat:
+  title1 'STARS Simulator Options No. 47'
+  title2 'Test/Illustrate *LAYERXYZ, Anisotropic/Nonuniform Thermal Cond.'
+  title3 'and Heat Rate Cut-off.  Based on STWWM016'
+
+stsmo048.dat:
+  title1 'STARS Simulator Options No. 48'
+  title2 'Multiple Heaters; Completion Length Modifiers; Shut-in Layers'
+  title3 'Based on STTST07'
+
+stsmo049.dat:
+  title1 'STARS Simulator Options No. 49'
+  title2 'Oil-Wet Pc Hysteresis with Non-Wetting Water Kr Hysteresis'
+  title3 'Using BBM Method'
+
+stsmo050.dat:
+  title1 'STARS Simulator Options No. 50'
+  title2 'Oil-Wet Pc Hysteresis with Non-Wetting Water Kr Hysteresis'
+  title3 'Using Killough Method'
+
+stsmo051.dat:
+  title1 'STARS Simulator Options No. 51'
+  title2 'Test/Illustrate *AIM *STAB *BACK in Recurrent Data Only'
+  title3 'Based on STTST57'
+
+stsmo052.dat:
+  title1 'STARS Simulator Options No. 52'
+  title2 'Test/Illustrate *DATUMDEPTH *INITIAL'
+  title3 'Based on STTST69'
+
+stsmo053.dat:
+  title1 'STARS Simulator Options No. 53'
+  title2 'Test/Illustrate *DILATION with Thermal Effects'
+  title3 'Based on STTST48'
+
+stsmo054.dat:
+  title1 'STARS Simulator Options No. 54'
+  title2 'Test/Illustrate *EPCOMPACT with Thermal Effect'
+  title3 'Based on STTST74'
+
+stsmo055.dat:
+  title1 'STARS Simulator Options No. 55'
+  title2 'Test/Illustrate *COMPACT_VAR Rock Model'
+
+stsmo056.dat:
+  title1 'STARS Simulator Options No. 56'
+  title2 'Test/Illustrate *PORFORM *EXP Porosity Formula'
+  title3 'Based on STTST07'
+
+stsmo057.dat:
+  title1 'STARS Simulator Options No. 57'
+  title2 'Test/Illustrate *VOLCONST *BULK Volume Constraint Type'
+  title3 'Based on STTST07'
+
+stsmo058.dat:
+  title1 'STARS Simulator Options No. 58'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX'
+  title3 'Based on STTST20 and MXDRM001'
+
+stsmo059.dat:
+  title1 'STARS Simulator Options No. 59'
+  title2 'Verify/Illustrate *RPT_INTRP *COMP for Surfactant Flood'
+
+stsmo060.dat:
+  title1 'STARS Simulator Options No. 60'
+  title2 'Verify/Illustrate *RESTART_SR2 *SEPARATE'
+  title3 'Based on STTST08'
+
+stsmo061.dat:
+  title1 'STARS Simulator Options No. 61'
+  title2 'Verify/Illustrate *UPOR_CP and *UPOR_CT'
+  title3 'Based on STTST06'
+
+stsmo062.dat:
+  title1 'STARS Simulator Options No. 62'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *AUTOP2D'
+  title3 'Based on STTST46'
+
+stsmo063.dat:
+  title1 'STARS Simulator Options No. 63'
+  title2 'Verify/Illustrate *3PTSCALING, *3PTSCAL_x'
+  title2 'Three-Point Rock-Fluid End-Point Scaling'
+
+stsmo064.dat:
+  title1 'STARS Simulator Options No. 64'
+  title2 'Verify/Illustrate *GASZONE *NOOIL'
+  title3 'Based on STWWM009'
+
+stsmo065.dat:
+  title1 'STARS Simulator Options No. 65'
+  title2 'Verify/Illustrate *BINARY_DATA for *NODES, *BLOCKS'
+  title3 'Based on STTST04'
+
+stsmo066.dat:
+  title1 'STARS Simulator Options No. 66'
+  title2 'Verify/Illustrate Recurrent Permeability - Single Porosity'
+  title3 'Based on STTST07'
+
+stsmo067.dat:
+  title1 'STARS Simulator Options No. 67'
+  title2 'Verify/Illustrate Recurrent Permeability - Dual Porosity'
+  title3 'Based on STGRO045'
+
+stsmo068.dat:
+  title1 'STARS Simulator Options No. 68'
+  title2 'Verify/Illustrate *FLUX-SECTOR Output - RC Volume/Mass'
+  title3 'Based on STWWM036'
+
+stsmo069.dat:
+  title1 'STARS Simulator Options No. 69'
+  title2 'Verify/Illustrate *FLUX-SECTOR Output - RC/SC Volume'
+  title3 'Based on VERIFY49'
+
+stsmo070.dat:
+  title1 'STARS Simulator Options No. 70'
+  title2 'Verify/Illustrate *NUMSET and *NUMTYPE with NatFrac Grid'
+  title3 'Based on VERIFY49'
+
+stsmo071.dat:
+  title1 'STARS Simulator Options No. 71'
+  title2 'Verify/Illustrate *KILLOUGH_MOD, *HYS_CFRACTNW, *HYS_TRAPNW'
+  title3 'Based on STSMO015'
+
+stsmo072.dat:
+  title1 'STARS Simulator Options No. 72'
+  title2 'Verify/Illustrate *AQUIFER *RESBND Option'
+  title3 'Based on VERIFY03'
+
+stsmo073.dat:
+  title1 'STARS Simulator Options No. 73'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX from Separate SR2 File Set and ZP Cells'
+  title3 'Based on STSMO58 and MXDRM001.RSTR'
+
+stsmo074.dat:
+  title1 'STARS Simulator Options No. 74'
+  title2 'Verify/Illustrate *SWINIT and *DEPTH_AVE *EQUIL'
+
+stsmo076.dat:
+  title1 'STARS Simulator Options No. 76'
+  title2 'Illustrate *SOLVER *PARASOL with *JACDOMS'
+  title3 'Based on STTST46'
+
+stsmo077.dat:
+  title1 'STARS Simulator Options No. 77'
+  title2 'Verify/Illustrate Isolating *PERMSHALE with Sharp Break'
+  title3 'Based on STTST06'
+
+stsmo078.dat:
+  title1 'STARS Simulator Options No. 78'
+  title2 'Verify/Illustrate *PERMSHALE with *DYNAGRID'
+  title3 'Based on STTST07'
+
+stsmo079.dat:
+  title1 'STARS Simulator Options No. 79'
+  title2 'Verify/Illustrate Rock-Fluid Three-Point Scaling *KRWIE, BKRWIE, *KROWIE'
+
+stsmo080.dat:
+  TITLE1 'STARS Simulator Options No. 80'
+  TITLE2 'Verify/Illustrate *INTERP_ENDS with *KRINTRP'
+  TITLE3 'Based on STFLU020'
+
+stsmo082.dat:
+  title1 'STARS Simulator Options No. 82'
+  title2 'Test/Illustrate J-Function'
+  title3 'Based on STSMO049'
+
+stsmo083.dat:
+  title1 'STARS Simulator Options No. 83'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX from Output SR2 File Set and ZP Cells'
+  title3 'Based on STSMO73 and MXDRM001'
+
+stsmo084.dat:
+  title1 'STARS Simulator Options No. 84'
+  titel2 'Verify/Illustrate Potential Gradient Threshold *PTHRESHI/J/K'
+
+stsmo085.dat:
+  title1 'STARS Simulator Options No. 85'
+  title2 'Verify/Illustrate *AQEN_CONTROL'
+
+stsmo086.dat:
+  title1 'STARS Simulator Options No. 86'
+  title2 'Verify/Illustrate *ENDP_ADJUST *ON'
+
+stsmo087.dat:
+  title1 'STARS Simulator Options No. 87'
+  title2 'Verify/Illustrate *EPSCAL_IMEX, *SLCON, *BSLCON'
+  title3 'Mimic IMEX Style of Rock-Fluid Endpoint Scaling'
+
+stsmo089.dat:
+  title1 'STARS Simulator Options No. 89'
+  title2 'Verify/Illustrate *WOC_PC and *GOC_PC'
+
+stsmo090.dat:
+  title1 'STARS Simulator Options No. 90'
+  title2 'Verify/Illustrate *RPT *SEGREGATED for Middle Phase Relative Permeability'
+  title3 'Based on STSMO73'
+
+stsmo091.dat:
+  title1 'STARS Simulator Options No. 91'
+  title2 'Test/Illustrate *COMBINATIVE with Defaults Assigned'
+  title3 'Based on STFLU037'
+
+stsmo092.dat:
+  title1 'STARS Simulator Options No. 92'
+  title2 'Test/Illustrate *COMBINATIVE with *FGMRES *OFF'
+  title3 'Based on STSMO091'
+
+stsmo093.dat:
+  title1 'STARS Simulator Options No. 93'
+  title2 'Test/Illustrate *COMBINATIVE and *AMG-COARSEN *AGGRESSIVE'
+  title3 'Based on STSMO064'
+
+stsmo094.dat:
+  title1 'STARS Simulator Options No. 94'
+  title2 'Test/Illustrate *COMBINATIVE with *AMG-DRS *ALL'
+  title3 'Based on STSMO084'
+
+stsmo095.dat:
+  title1 'STARS Simulator Options No. 95'
+  title2 'Test/Illustrate *COMBINATIVE with *AMG-SETUP-FREQ *STRUCTURE'
+  title3 'Based on STGRO066'
+
+stsmo096.dat:
+  title1 'STARS Simulator Options No. 96'
+  title2 'Verify/Illustrate *INTERP_SCAL for Double Interpolation'
+
+stsmo097.dat:
+  title1 'STARS Simulator Options No. 97'
+  title2 'Verify/Illustrate *INTERP_SCAL with *CP_IMBIB and *PCOW_CRV'
+
+stsmo098.dat:
+  title1 'STARS Simulator Options No. 98'
+  title2 'Verify/Illustrate *INTER_SCAL with Hysteresis'
+
+stsmo099.dat:
+  TITLE1 'STARS Simulator Options No. 99'
+  TITLE2 'Verify/Illustrate *SWINIT for oil-wetted water/oil/gas initialization'
+
+stsmo100.dat:
+  TITLE1 'STARS Simulator Options No.100'
+  TITLE2 'Verify/Illustrate *SWINIT for water/gas initialization'
+
+stsmo101.dat:
+  TITLE1 'STARS Simulator Options No. 101'
+  TITLE2 'Test/Illustrate *COMBINATIVE *ILU with Default Settings'
+  TITLE3 'Based on STSMO018'
+
+stsmo102.dat:
+  TITLE1 'STARS Simulator Options No. 102'
+  TITLE2 'Verify/Illustrate *SWINIT with *SWINIT_CPADJST *SCALE'
+
+stsmo103.dat:
+  TITLE1 'STARS Simulator Options No. 103'
+  TITLE2 'Verify/Illustrate *SWINIT for Water/Oil *DUALPERM Model'
+  TITLE3 '*SWINIT_FRAC *OFF Enabled'
+
+stsmo104.dat:
+  TITLE1 'STARS Simulator Options No. 104'
+  TITLE2 'Verify/Illustrate *AR_MM and *DT_ADJUST'
+
+stsmo105.dat:
+  TITLE1 'STARS Simulator Options No. 105'
+  TITLE2 'Verify/Illustrate *MAX_OS_FACTOR and *FORCE_MAXCHK'
+
+stsmo106.dat:
+  title1 'STARS Simulator Options No. 106'
+  title2 'Test/Illustrate Array-Reading Option *SIP_DATA'
+  title3 'Grid Data in SIP Form'
+
+stsmo107.dat:
+  title1 'STARS Simulator Options No. 107'
+  title2 'Test/Illustrate Array-Reading Option *SIP_DATA'
+  title3 'Grid and Property Data in SIP Form'
+
+
+     STARS Data Files Illustrating "SPE Problems"
+     --------------------------------------------
+
+stspe001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stspe002.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stspe003.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'
+
+
+     STARS Data Files Illustrating Tracer Options
+     --------------------------------------------
+
+sttrc001.dat:
+  TITLE1 'STARS Tracer Template #1'
+  TITLE2 'Polymer Injection with Tracer'
+  TITLE3 'Based on STFLU035'
+
+sttrc002.dat:
+  TITLE1 'STARS Tracer Template #2'
+  TITLE2 'Polymer Injection with Tracer and Shut-in Well'
+  TITLE3 'Based on STTRC001'
+
+sttrc003.dat:
+  TITLE1 'STARS Tracer Template #3'
+  TITLE2 'Water Flooding with Well Tracers'
+
+sttrc004.dat:
+  TITLE1 'STARS Tracer Template #4'
+  TITLE2 'Water Flooding with Regional Tracers'
+  TITLE3 'Based on STTRC003'
+
+sttrc005.dat:
+  TITLE1 'STARS Tracer Template #5'
+  TITLE2 'Steam Injection with Tracer'
+  TITLE3 'Based on STFLU008'
+
+sttrc006.dat:
+  title1 'STARS Tracer Template #6'
+  title2 'Test/Illustrate Aquifer Tracer'
+  title3 'Based on STSMO014'
+
+sttrc007.dat:
+  TITLE1 'STARS Tracer Template #7'
+  TITLE2 'Gas-Aquifer Drive with Tracer'
+  TITLE3 'Based on STWWM010.dat'
+
+sttrc008.dat:
+  TITLE1 'STARS Tracer Template #8'
+  TITLE2 'Flux Boundary with Well Tracer - Full-Field Run'
+  TITLE3 '*FLXB-TYPE *PRESSURE'
+
+sttrc009.dat:
+  TITLE1 'STARS Tracer Template #9'
+  TITLE2 'Flux Boundary with Well Tracer - Reduced Run'
+  TITLE3 'Input File sttrc008.flxb'
+
+sttrc010.dat:
+  TITLE1 'STARS Tracer Template #10'
+  TITLE2 'Flux Boundary with Well Tracer - Full-Field Run'
+  TITLE3 '*FLXB-TYPE *FLUX'
+
+sttrc011.dat:
+  TITLE1 'STARS Tracer Template #11'
+  TITLE2 'Flux Boundary with Well Tracer - Reduced Run'
+  TITLE3 'Input File sttrc010.flxb'
+
+sttrc012.dat:
+  TITLE1 'STARS Tracer Template #12'
+  TITLE2 'Test/Illustrate Tracer with *DUALPERM'
+  TITLE3 'Based on VERIFY62'
+
+sttrc013.dat:
+  title1 'STARS Tracer Template #13'
+  title2 'Test/Illustrate Tracer with Mechanical Dispersivity'
+  title3 'Based on VERIFY85'
+
+sttrc014.dat:
+  TITLE1 'STARS Tracer Template #14'
+  TITLE2 'Test/Illustrate Tracer with Molecular Diffusion'
+  TITLE3 'Based on STTRC001'
+
+sttrc015.dat:
+  title1 'STARS Tracer Template #15'
+  title2 'Test/Illustrate Tracer with Total Dispersion and LGR'
+  title3 'Based on VERIFY50'
+
+sttrc016.dat:
+  title1 'STARS Trace Template #16'
+  title2 'Test/Illustrate Well Tracer with Adsorption'
+  title3 'Based on STTST12'
+
+sttrc017.dat:
+  TITLE1 'STARS Trace Template #17'
+  TITLE2 'Test/Illustrate Well Tracer with *DUALPERM and *DYNAGRID'
+
+
+     STARS Data Files Illustrating "Wells and Well Management"
+     ---------------------------------------------------------
+
+stwwm001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stwwm002.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stwwm003.dat:
+  title1 'STARS Test Bed No. 20'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'and Nine-Point Option on Cylindrical Grid'
+
+stwwm005.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+stwwm009.dat:
+  title1 'STARS Well Management Template No. 9'
+  title2 '4-Well Waterflood with Group Control'
+  title3 'Voidage Replacement and Work-Over'
+
+stwwm010.dat:
+  title1 'STARS Well Management Template No. 10'
+  title2 'Combined Gas Cap-Solution Gas-Aquifer Drive'
+  title3 'Gas Cycling, Well Workover, Group Well Control'
+
+stwwm011.dat:
+  title1 'STARS Well Management Template No. 11'
+  title2 'Gas Recycling with Additional Makeup Gas'
+
+stwwm012.dat:
+  title1 'STARS Well Management Template No. 12'
+  title2 'Miscible Flood with Gas Cycling and Group Control'
+
+stwwm013.dat:
+  title1 'STARS Well Management Template No. 13'
+  title2 'Miscible Flood with Nested Group Control and Autodrill'
+
+stwwm014.dat:
+  title1 'STARS Well Management Template No. 14'
+  title2 'Miscible Flood with Group Control, Autodrill, *WELLIST and *ACT-DEFAULT'
+
+stwwm015.dat:
+  title1 'STARS Well Management Template No. 15'
+  title2 'Miscible Flood with Group Control, Autodrill, Gas Re-injection'
+
+stwwm016.dat:
+  title1 'STARS Well Management Template No. 16'
+  title2 'Test/Illustrate *LAYERXYZ'
+  title3 'Based on STTST08'
+
+stwwm017.dat:
+  title1 'STARS Well Management Template No. 17'
+  title2 'Test/Illustrate Multilateral Well'
+  title3 'Based on STFLU018'
+
+stwwm018.dat:
+  title1 'STARS Well Management Template No. 18'
+  title2 'Test/Illustrate Multilateral Well with Null Blocks'
+  title3 'Based on STWWM017'
+
+stwwm019.dat:
+  title1 'STARS Well Management Template No. 19'
+  title2 'Test/Illustrate *GRAV-FRIC-HLOS Head Method'
+  title3 'Based on STHRW007'
+
+stwwm020.dat:
+  title1 'STARS Well Management Template No. 20'
+  title2 'Test/Illustrate Multilateral Well with *GRAV-FRIC Head Method'
+  title3 'Based on STWWM018'
+
+stwwm021.dat:
+  title1 'STARS Well Management Template No. 21'
+  title2 'Replace Discretized Wellbore with Source/Sink *GRAV-FRIC-HLOS Well'
+  title3 'Based on STTST70'
+
+stwwm022.dat:
+  title1 'STARS Well Management Template No. 22'
+  title2 'Test/Illustrate Fully-Mixed Crossflow Option'
+  title3 'Based on STWWM020'
+
+stwwm023.dat:
+  title1 'STARS Well Management Template No. 23'
+  title2 'Test Completions Through Pinched-out, Null and Zero-Porosity Blocks'
+  title3 'Based on STTST26'
+
+stwwm024.dat:
+  title1 'STARS Well Management Template No. 24'
+  title2 'Test/Illustrate *STO_COMP and *STG_COMP'
+  title3 'Based on STTST20'
+
+stwwm025.dat:
+  title1 'STARS Well Management Template No. 25'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options'
+  title3 'Based on STTST02'
+
+stwwm026.dat:
+  title1 'STARS Well Management Template No. 26'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options with S/S *SAMODEL'
+  title3 'Based on STTST69'
+
+stwwm027.dat:
+  title1 'STARS Well Management Template No. 27'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options with FW *SAMODEL'
+  title3 'Based on STTST69'
+
+stwwm028.dat:
+  title1 'STARS Well Management Template No. 28'
+  title2 'Steam Injection with S/S Limited Entry Perforations (LEP)'
+  title3 'Based on STWWM021'
+
+stwwm029.dat:
+  title1 'STARS Well Management Template No. 29'
+  title2 'Well before type is defined, *WLISTSHUT, and'
+  title3 'Inactive layers shown as closed in RESULTS'
+
+stwwm030.dat:
+  title1 'STARS Well Management Template No. 30'
+  title2 'Semi-Analytical Wellbore Heatloss with PUMP option'
+  title3 'Based on STTST69'
+
+stwwm031.dat:
+  title1 'STARS Well Management Template No. 31'
+  title2 'Steam Injection with FlexWell Limited Entry Perforations (LEP)'
+  title3 'Based on STWWM028'
+
+stwwm032.dat:
+  title1 'STARS Well Management Template No. 32'
+  title2 'Steam Injection with FlexWell in Corner-Point Grid'
+  title3 'Based on STTST14 and MXGEO016'
+
+stwwm036.dat:
+  title1 'STARS Well Management Template #36'
+  title2 'Group/Well On-time Fraction & Group Target Apportionment'
+
+stwwm037.dat:
+  title1 'STARS Well Management Template #37'
+  title2 'Matrix/Fracture Qualifiers in Perforation References'
+  title3 'Based on STTST28'
+
+stwwm038.dat:
+  title1 'STARS Well Management Template No. 38'
+  title2 'Fluid Redistribution via Modelshut Wells'
+  title3 'Drawdown Constraints'
+
+stwwm039.dat:
+  title1 'STARS Well Management Template No. 39'
+  title2 'Fluid Redistribution in a Communicating Well'
+  title3 'Modelshut, Drawdown, Low rate'
+
+stwwm040.dat:
+  title1 'STARS Well Management Template No. 40'
+  title2 '4-Well Waterflood with Group Control'
+  title3 'Sector Pressure Maintenance'
+
+stwwm041.dat:
+  title1 'STARS Well Management Template No. 41'
+  title2 'Group Control Steam Cycling'
+  title3 'Based on VERIFY32'
+
+stwwm042.dat:
+  title1 'STARS Well Management Template No. 42'
+  title2 'Unlimited Number of Group Levels'
+
+stwwm043.dat:
+  title1 'STARS Well Management Template No. 43'
+  title2 'Compositional Water Recycling with Group Control'
+
+stwwm044.dat:
+  title1 'STARS Well Management Template No. 44'
+  title2 '2-D Cyclic Steam Injection, Testing Trigger Options'
+  title3 '*TRIGGER *ON_ELAPSED and *ON_SECTOR'
+
+stwwm045.dat:
+  title1 'STARS Well Management Template No. 45'
+  title2 '2-D Cyclic Steam Injection, Testing Trigger Options'
+  title3 '*TRIGGER *ON_ELAPSED, *ON_SECTOR and *ON_WELL'
+
+stwwm046.dat:
+  title1 'STARS Well Management Template No. 46'
+  title2 'Test/Illustrate Isothermal *PTUBE1 with WHP Constraint'
+
+stwwm047.dat:
+  title1 'STARS Well Management Template No. 47'
+  title2 'Miscible Flood with Nested Group Control and Autodrill'
+
+stwwm048.dat:
+  title1 'STARS Well Management Template No. 48'
+  title2 'Verify/Illustrate *TARGET *STEAM Feature - Base Case'
+  title3 'Based on STWWM027'
+
+stwwm050.dat:
+  title1 'STARS Well Management Template No. 50'
+  title2 'Test/Illustrate Gas Injection with *MANIFOLD, *ITUBE1'
+  title3 'and *PTUBE1 with ALQ Values'
+
+stwwm051.dat:
+  title1 'STARS Well Management Template No. 51'
+  title2 'Illustrate/Verify *MONITOR *WHP *AUTOWELL'
+  title3 'Based on STWWM021'
+
+stwwm052.dat:
+  title1 'STARS Well Management Template No. 52'
+  title2 'Group Control Steam Cycling with STF Group Target'
+  title3 'Based on VERIFY32'
+
+stwwm053.dat:
+  title1 'STARS Well Management Template No. 53'
+  title2 'Cycling Group Control with STO Group Target'
+  title3 'Based on STTST02'
+
+stwwm054.dat:
+  title1 'STARS Well Management Template No. 54'
+  title2 'Group Control with STO Group Target'
+  title3 'Based on STTST02'
+
+stwwm055.dat:
+  title1 'STARS Well Management Template No. 55'
+  title2 'Group Control with STF Group Target'
+  title3 'Based on STTST02'
+
+stwwm056.dat:
+  title1 'STARS Well Management Template No. 56'
+  title2 'STO Group Target with Guide Rates'
+  title3 'Based on STTST02'
+
+stwwm057.dat:
+  title1 'STARS Well Management Template No. 57'
+  title2 'STF Group Target with Guide Rates'
+  title3 'Based on STTST02'
+
+stwwm058.dat:
+  title1 'STARS Well Management Template No. 58'
+  title2 'Layer Lumping; Trigger Based on Avg Sector Temperature'
+  title3 'Based on STWWM020'
+
+stwwm059.dat:
+  title1 'STARS Well Management Template No. 59'
+  title2 'FlexWell with T/A, SAGD Production- Annulus Only'
+  title3 'Based on STTST69'
+
+stwwm060.dat:
+  title1 'STARS Well Management Template No. 60'
+  title2 'FlexWell SAGD Production in Tubing & Annulus'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm061.dat:
+  title1 'STARS Well Management Template No. 61'
+  title2 'FlexWell with T/A, Variable Tubulars, SAGD Production in T/A'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm062.dat:
+  title1 'STARS Well Management Template No. 62'
+  title2 'FlexWell with T/A, SAGD Production, SAM - Annulus Only'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm063.dat:
+  title1 'STARS Well Management Template No. 63'
+  title2 'Replace S/S *GRAV-FRIC-HLOS Well with FlexWell - Cyclic steam injection'
+  title3 'Based on STWWM021'
+
+stwwm064.dat:
+  title1 'STARS Well Management Template No. 64'
+  title2 'FlexWell, Multi-Phase Co-Injection, SAGD Annulus Production Only'
+  title3 'Based on STWWM026'
+
+stwwm065.dat:
+  title1 'STARS Well Management Template No. 65'
+  title2 'FlexWell, Multi-Phase Co-Inj, SAGD T/A Production, Operating Constraint'
+  title3 'Based on STWWM026'
+
+stwwm066.dat:
+  title1 'STARS Well Management Template No. 66'
+  title2 'FlexWell, Multi-Phase Co-Injection, SAGD T/A Production'
+  title3 'Based on STWWM026'
+
+stwwm067.dat:
+  title1 'STARS Well Management Template No. 67'
+  title2 'Miscible Flood with Reference Volume Replacement'
+  title3 'Based on STTST13'
+
+stwwm068.dat:
+  title1 'STARS Well Management Template No. 68'
+  title2 'FlexWell, *PACKER and *FCD-ORIF for Annulus'
+  title3 'SAGD production- annulus only'
+
+stwwm069.dat:
+  title1 'STARS Well Management Template No. 69'
+  title2 'FlexWell, *PACKER and *FCD-ORIF for Tubing'
+  title3 'SAGD production- annulus only'
+
+stwwm070.dat:
+  title1 'STARS Well Management Template No. 70'
+  title2 'Flexible Wellbore with *REPLACE'
+
+stwwm071.dat:
+  title1 'STARS Well Management Template No. 71'
+  title2 'SAGD with Flexible Wellbore and Instrumentation Tubing'
+  title3 'SAGD production - Annulus only'
+
+stwwm072.dat:
+  title1 'STARS Well Management Template No. 72'
+  title2 'Steam Cycling with Flexible Wellbore and Instrumentation Tubing'
+  title3 'Cyclic steam injection'
+
+stwwm073.dat:
+  title1 'STARS Well Management Template No. 73'
+  title2 '*DYNAGRID with FlexWell, Variable Tubulars, SAGD Production in T/A'
+  title3 'Based on STWWM061'
+
+stwwm074.dat:
+  title1 'STARS Well Management Template No. 74'
+  title2 'Verify/Illustrate *PERF_FLX with *REFLAYER'
+  title3 'Based on STTST06'
+
+stwwm075.dat:
+  title1 'STARS Well Management Template No. 75'
+  title2 'Verify/Illustrate *FCDL-PARAM *ORIF on Tubing'
+  title3 'Based on STTST69'
+
+stwwm076.dat:
+  title1 'STARS Well Management Template No. 76'
+  title2 'Verify/Illustrate *FCDL-PARAM *VENTURI in Injection cycle'
+  title3 'Based on STTST06'
+
+stwwm077.dat:
+  title1 'STARS Well Management Template No. 77'
+  title2 'Verify/Illustrate *FCDL-PARAM *VENTURI-INJ in Injection cycle'
+  title3 'Based on STTST06'
+
+stwwm078.dat:
+  title1 'STARS Well Management Template No. 78'
+  title2 'Verify/Illustrate Re-perforation of Recurrently Refined Block'
+  title3 'Based on STWWM040'
+
+stwwm079.dat:
+  title1 'STARS Well Management Template No. 79'
+  title2 'Verify/Illustrate *GL_PORT for Gas Lift Location in *PHWELLBORE'
+  title3 'Based on STTST69, Using FlexWell'
+
+stwwm080.dat:
+  title1 'STARS Well Management Template No. 80'
+  title2 'Verify/Illustrate *FLX_WELLBORE *WP Withdrawal Point'
+  title3 'Based on STTST06'
+
+stwwm081.dat:
+  title1 'STARS Well Management Template No. 81'
+  title2 'Verify/Illustrate *MONITOR *AUTOLAYER1'
+  title3 'Based on STWWM047'
+
+stwwm082.dat:
+  title1 'STARS Well Management Template No. 82'
+  title2 'Verify/Illustrate *MONITOR *SHUTLAYER1'
+  title3 'Based on VERIFY68'
+
+stwwm083.dat:
+  title1 'STARS Well Management Template No. 83'
+  title2 'Verify/Illustrate *OPERATE-HIST and *ALTER-HIST'
+  title3 'Operate Well in History-matching Mode'
+
+stwwm084.dat:
+  title1 'STARS Well Management Template No. 84'
+  title2 'FlexWell *SHUT-WELL *ON for Shut-in Production Tubing'
+  title3 'Based on STWWM059'
+
+stwwm085.dat:
+  title1 'STARS Well Management Template No. 85'
+  title2 'FlexWell *SHUT-WELL *COND-ONLY for Shut-in Production Tubing'
+  title3 'Based on STWWM059'
+
+stwwm086.dat:
+  title1 'STARS Well Management Template No. 86'
+  title2 'FlexWell *SHUT-WELL *COND-ONLY for Shut-in Injector'
+  title3 'Based on STWWM063'
+
+stwwm087.dat:
+  title1 'STARS Well Management Template No. 87'
+  title2 'Verify/Illustrate GOR Well Cutback Constraint (*OPERATE *GOR *STG)'
+
+stwwm088.dat:
+  title1 'STARS Well Management Template No. 88'
+  title2 'Verify/Illustrate Mole-Based *INCOMP for Multi-Phase Co-Injection'
+  title3 'Based on STWWM025'
+
+stwwm089.dat:
+  title1 'STARS Well Management Template No. 89'
+  title2 'Illustrate/Verify *INJ-TEMP and *QUALWL'
+  title3 'Based on STTST28'
+
+stwwm090.dat:
+  title1 'STARS Well Management Template No. 90'
+  title2 'Illustrate/Verify *SETPI *MULT & *MULTO to Modify Well Indices'
+  title3 'Based on STWWM025'
+
+stwwm091.dat:
+  title1 'STARS Well Management Template No. 91'
+  title2 'Illustrate/Verify *SETPI (*WAT,*OIL,*LIQ,*GAS) to Modify Well Indices'
+  title3 'Based on STTST08'
+
+stwwm092.dat:
+  title1 'STARS Well Management Template No. 92'
+  title2 'Verify/Illustrate *GLIFT *GLR for Gas Lift'
+  title3 'Based on STWWM079'
+
+stwwm093.dat:
+  title1 'STARS Well Management Template No. 93'
+  title2 'Verify/Illustrate *INCOMPWL:  Reset Injected-Fluid Composition'
+  title3 'Based on STWWM067'
+
+stwwm094.dat:
+  title1 'STARS Well Management Template No. 94'
+  title2 'Verify/Illustrate *GLIFT *OPT and *GLOPT, with *PTUBE1'
+  title3 'Based on MXWWN047'
+
+stwwm095.dat:
+  title1 'STARS Well Management Template #95'
+  title2 'Illustrate/Verify *OUTBOARD with GAP Linkage'
+  title3 'Based on STWWM037'
+
+stwwm096.dat:
+  title1 'STARS Well Management Template No. 96'
+  title2 'Verify/Illustrate *HEATER_CABLE in FlexWell Producer Tubing'
+  title3 'Based on STWWM021'
+
+stwwm097.dat:
+  title1 'STARS Well Management Template No. 97'
+  title2 'Verify/Illustrate *FCDTABLE for FlexWell Injector Tubing'
+  title3 'Based on STWWM069'
+
+stwwm098.dat:
+  title1 'STARS Well Management Template No. 98'
+  title2 'Verify/Illustrate *ITUBE1 and *PTUBE1 Enthalpy Tables'
+  title3 'Based on STTST68.'
+
+stwwm099.dat:
+  title1 'STARS Well Management Template No. 99'
+  title2 'Verify *ITUBE1/*PTUBE1 Enthalpy Tables with *HEAD-METHOD *GRAV-FRIC-HLOS'
+  title3 'Based on STWWM021'
+
+stwwm100.dat:
+  title1 'STARS Well Management Template No. 100'
+  title2 'Verify/Illustrate *FCDTABLE for Tubing/Annulus in Injector/Producer'
+  title3 'SAGD Injection and Production'
+
+stwwm101.dat:
+  title1 'STARS Well Management Template No. 101'
+  title2 'Verify/Illustrate *WELGEO with Miscible Flood and Gas Cycling'
+  title3 'Based on STWWM012'
+
+stwwm102.dat:
+  title1 'STARS Well Management Template No. 102'
+  title2 'Verify/Illustrate FlexWell Concentric Tubing (Inner Shorter)'
+  title3 'Based on STTST69'
+
+stwwm103.dat:
+  title1 'STARS Well Management Template No. 103'
+  title2 'Verify/Illustrate FlexWell Concentric Tubing (Outer Shorter)'
+  title3 'Based on STTST69'
+
+stwwm104.dat:
+  title1 'STARS Well Management Template No. 104'
+  title2 'Verify/Illustrate *HEATER_CABLE with *PHWELLBORE *SAMODEL'
+  title3 'Based on STWWM021'
+
+stwwm105.dat:
+  title1 'STARS Well Management Template No. 105'
+  title2 'Verify/Illustrate Group Control with *APPOR-METHOD *STFI *INGUIDE'
+  title3 'Based on STWWM055'
+
+stwwm106.dat:
+  title1 'STARS Well Management Template No. 106'
+  title2 'Test/Illustrate *STEAMTRAP *SELECT_PERF and *ALL_PERF with S/S Well'
+  title3 'SAGD wellpair'
+
+stwwm107.dat:
+  title1 'STARS Well Management Template No. 107'
+  title2 'Test/Illustrate *STEAMTRAP *SELECT_PERF and *ALL_PERF with FlexWell'
+  title3 'Based on STWWM071'
+
+stwwm108.dat:
+  title1 'STARS Well Management Template No. 108'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Both Tubings Open'
+  title3 'Based on STTST69'
+
+stwwm109.dat:
+  title1 'STARS Well Management Template No. 109'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Inner Tubing Shut-In'
+  title3 'Based on STWWM108'
+
+stwwm110.dat:
+  title1 'STARS Well Management Template No. 110'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Outer Tubing Shut-In'
+  title3 'Based on STWWM109'
+
+stwwm111.dat:
+  title1 'STARS Well Management Template No. 111'
+  title2 'Verify/Illustrate Group Control with *GCONI *GTARGET *BHO'
+  title3 'Based on STWWM054'
+
+stwwm112.dat:
+  title1 'STARS Well Management Template No. 112'
+  title2 'Verify/Illustrate Manifold Oil Injection *MANIFOLD *OILI'
+  title3 '*ITUBE1 with STF Values'
+
+stwwm113.dat:
+  title1 'STARS Well Management Template No. 113'
+  title2 'Verify/Illustrate Pressure Maintenance by Oil Injection'
+  title3 '*INGUIDE with *PRIOR-RATE *WBHP'
+
+stwwm114.dat:
+  title1 'STARS Well Management Template No. 114'
+  title2 'Verify/Illustrate Recycling with Oil Injection *GCONI *RECYCLE *OIL'
+  title3 'Based on STWWM040'
+
+stwwm115.dat:
+  title1 'STARS Well Management Template No. 115'
+  title2 'Verify/Illustrate Oil Recycling Production Target *GCONP *RECYCLE *OIL'
+  title3 'With *APPOR-METHOD *PROD - Based on STWWM114'
+
+stwwm116.dat:
+  title1 'STARS Well Management Template No. 116'
+  title2 'Test/Illustrate *GASTRAP with S/S Wellbore Model'
+  title3 'ES-SAGD process'
+
+stwwm117.dat:
+  title1 'STARS Well Management Template No. 117'
+  title2 'Test/Illustrate *GASTRAP with FlexWell'
+  title3 'SAGD production - Annulus only'
+
+stwwm118.dat:
+  title1 'STARS Well Management Template No. 118'
+  title2 'Verify/Illustrate Steam Injection Control via *OUTBOARD'
+  title3 'Based on STTST08'
+
+stwwm119.dat:
+  title1 'STARS Well Management Template No. 119'
+  title2 'Verify/Illustrate Re-definition of Well Monitoring Constraints'
+  title3 'Four-Well Waterflood with Group Control'
+
+stwwm120.dat:
+  title1 'STARS Well Management Template No. 120'
+  title2 'Compositional Gas and Water Recycling with Group Control'
+  title3 'Based on STWWM043'
+
+stwwm121.dat:
+  title1 'STARS Well Management Template No. 121'
+  title2 'Group Component Mole Percentage Monitor *GCONM *MAX *Mx'
+  title3 'Based on STWWM047'
+
+stwwm122.dat:
+  title1 'STARS Well Management Template No. 122'
+  title2 'Wellbore Instability Monitoring *RATSTAB with Hydraulic Tables'
+
+stwwm123.dat:
+  title1 'STARS Well Management Template No. 123'
+  title2 'Illustrate/Verify List-Driven *PERF/*PERFV Format'
+  title3 'for *WI, *DIR, *GEO, *RE, *SKIN, *RW.  Based on STWWM017'
+
+stwwm124.dat:
+  title1 'STARS Well Management Template No. 124'
+  title2 'Verify/Illustrate *FCDTABLE with Total Mass Flow Rate'
+  title3 'Based on STWWM100'
+
+stwwm125.dat:
+  title1 'STARS Well Management Template No. 125'
+  title2 'Verify/Illustrate *FCDL + *FCDL-PARAM *ORIF on Tubing'
+  title3 'Based on STWWM075'
+
+stwwm126.dat:
+  title1 'STARS Test Bed No. 126'
+  title2 'Illustrate/Verify *WIRANGE (Auto Thresholding of Well Indices)'
+
+stwwm127.dat
+  title1 'STARS Well Management Template No. 127'
+  title2 'Verify/Illustrate *HYRADIUS for *HEAD-METHOD'
+  title3 'Based on STWWM021'
+
+stwwm128.dat:
+  title1 'STARS Well Management Template No. 128'
+  title2 'Verify/Illustrate *TWELLBORE with *PTUBE1 *WHT for Trigger Action'
+
+stwwm129.dat:
+  title1 'STARS Well Management Template No. 129'
+  title2 'Verify/Illustrate *LAYER-CTRL'
+  title3 'Based on STTST08'
+
+stwwm130.dat:
+  title1 'STARS Well Management Template No. 130'
+  title2 'Test/Illustrate *FLX_WELLBORE option *FLX_INITIAL'
+  title3 'Based on STWWM060'
+
+stwwm131.dat:
+  title1 'STARS Well Management Template No. 131'
+  title2 'Test/Illustrate *STEAMTRAP2 *ALL_PERF for Soft Steam Trap'
+  title3 'Based on STWWM071'
+
+stwwm132.dat:
+  title1 'STARS Well Management Template No. 132'
+  title2 'Test/Illustrate *STEAMTRAP2 *ALL_PERF_ANN for Soft Steam Trap'
+  title3 'Based on STWWM131'
+
+stwwm133.dat:
+  title1 'STARS Well Management Template No. 133'
+  title2 'Verify/Illustrate *OUTSRF *WELL *WELLPI, both Flexwells and S/S Wells'
+  title3 'Based on STWWM100'
+
+stwwm134.dat:
+  title1 'STARS Well Management Template No. 134'
+  title2 'Verify/Illustrate *FW-MOBW-DENSITY *ON'
+  title3 'Based on STWWM068'
+
+stwwm135.dat:
+  title1 'STARS Well Management Template No. 135'
+  title2 'Verify/Illustrate *OPERATE *WCUTBACK *STEAM1'
+  title3 'Based on STWWM002/STTST07'
+
+stwwm136.dat:
+  title1 'STARS Well Management Template No. 136'
+  title2 'Verify/Illustrate *FLX_WELLBORE Sub-keyword *SEGREGATION'
+  title3 'Based on STTST69'
+
+stwwm137.dat:
+  title1 'STARS Well Management Template No. 137'
+  title2 'Verify/Illustrate *TWELLBORE via *PTUBE1 for *WHT Constraint'
+  title3 'Based on STWWM128'
+
+stwwm138.dat:
+  title1 'STARS Well Management Template No. 138'
+  title2 'Group Controls *GCONP and *GCONI with *CONT *REPEAT'
+  title3 'Based on STWWM012'
+
+stwwm139.dat:
+  title1 'STARS Well Management Template No. 139'
+  title2 'Verify/Illustrate Skin-Tuner Multiplier *SKIN-TUNER'
+  title3 'Base on STWWM083'
+
+stwwm140.dat:
+  title1 'STARS Well Management Template No. 140'
+  title2 'Verify/Illustrate *BHG_COMP for FlexWell and S/S'
+  title3 'Based on STWWM064'
+
+stwwm141.dat:
+  title1 'STARS Well Management Template No. 141'
+  title2 'Verify/Illustrate *VAR_WDTP for Nonuniform Wellbore Properties'
+  title3 'Based on STWWM103'
+
+stwwm142.dat:
+  title1 'STARS Well Management Template No. 142'
+  title2 'Verify/Illustrate *KRPERF with FlexWell'
+  title3 'Based on STWWM136'
+
+stwwm143.dat:
+  title1 'STARS Well Management Template No. 143'
+  title2 'Verify/Illustrate *KRPERF with S/S well, and Rel Perms in *PERF Line'
+  title3 'Based on STWWM010'
+
+stwwm144.dat:
+  title1 'STARS Well Management Template No. 144'
+  title2 'Verify/Illustrate *MONITOR *GLR'
+  title3 'Based on STWWM047'
+
+stwwm145.dat:
+  title1 'STARS Well Management Template No. 145'
+  title2 'Test/Illustrate *STP2WL-PARAM and Special History *SUBCOOL'
+  title3 'Based on STWWM131'
+
+stwwm146.dat:
+  title1 'STARS Well Management Template No. 146'
+  title2 'Verify/Illustrate *WALL_CP and *WALL_HCN Temperature Dependence'
+  title3 'Based on STWWM141'
+
+stwwm147.dat:
+  title1 'STARS Well Management Template No. 147'
+  title2 'Verify/Illustrate *HEAD-METHOD *ZERO-HEAD'
+  title3 'Based on STWWM010'
+
+stwwm149.dat:
+  title1 'STARS Well Management Template No. 149'
+  title2 'Verify/Illustrate *TRGVAR keyword'
+  title3 'Based on STWWM078'
+
+stwwm150.dat:
+  title1 'STARS Well Management Template No. 150'
+  title2 'General Injection Option with *INCOMP *MIXTURE-Z and *HINJW'
+  title3 'Based on STWWM062'
+
+stwwm151.dat:
+  title1 'STARS Well Management Template No. 151'
+  title2 'FlexWell, *FCDTABLE with *SUBCOOL Dependency'
+  title3 'SAGD Production- Annulus Only'
+
+stwwm152.dat:
+  title1 'STARS Well Management Template No. 152'
+  title2 'Verify/Illustrate *GCONI *SORSECT'
+  title3 'Based on STWWM040'
+
+stwwm153.dat:
+  TITLE1 'STARS Well Management Template No. 153'
+  TITLE2 'Verify/Illustrate *TRIGGER option *MPAS'
+  TITLE3 'Based on STWWM128'
+
+stwwm154.dat:
+  TITLE1 'STARS Well Management Template No. 154'
+  TITLE2 'Verify/Illustrate *TRGVARS'
+  TITLE3 'Based on STWWM149'
+
+stwwm155.dat:
+  TITLE1 'STARS Well Management Template No. 155'
+  TITLE2 'Verify/Illustrate *TRIGGER option *TIME_DELAY'
+  TITLE3 'Based on STWWM014'
+
+stwwm156.dat:
+  title1 'STARS Well Management Template No. 156'
+  title2 'Verify/Illustrate *FLX_WELLBORE Option *SEGREGATION *NOSLIP'
+  title3 'Based on STWWM136'
+
+stwwm157.dat:
+  TITLE1 'STARS Well Management Template No. 157'
+  TITLE2 'Illustrate *TRIGGER IF/THEN/ELSEIf/ENDIF Options'
+  TITLE3 'Based on STWWM045'
+
+stwwm158.dat:
+  title1 'STARS Well Management Template No. 158'
+  title2 'Verify/Illustrate *GCON-AQUIFER'
+  title3 'Group Control with Aquifer Influx'
+
+stwwm159.dat:
+  TITLE1 'STARS Well Management Template No. 159'
+  TITLE2 'Flexible Wellbore with *FW-COUPLING'
+  TITLE3 'Based on STWWM145'
+
+stwwm160.dat:
+  TITLE1 'STARS Well Management Template No. 160'
+  TITLE2 'Steam-Solvent Injection with *RAMPCTRL'
+  TITLE3 'Based on STWWM026'
+
+stwwm161.dat:
+  TITLE1 'STARS Well Management Template No. 161'
+  TITLE2 'Grid-Independent Well with *WBRANCH'
+  TITLE3 'Based on STGRO090'
+
+stwwm162.dat:
+  TITLE1 'STARS Well Management Template No. 162'
+  TITLE2 'Grid-Independent Well with *WBRANCH and *DYNAGRID'
+  TITLE3 'Based on STWWM161'
+
+
+     STARS template data sets in the "testbed" directory
+     ---------------------------------------------------
+
+sttst01.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+sttst02.dat:
+  title1 'STARS Test Bed No. 2'
+  title2 'Wet Combustion Tube Experiment'
+  title3 'of Smith and Perkins'
+
+sttst03.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+sttst04.dat:
+  title1 'STARS Test Bed No. 4'
+  title2 'Conventional Cartisian Grid as Corner Point (*COORD & *ZCORN)'
+
+sttst05.dat:
+  title1 'STARS Test Bed No. 5'
+  title2 'Vapex with 2D Corner-Point Grid (*DI, *DJ & *ZCORN)'
+
+sttst06.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+sttst07.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+sttst08.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'
+
+sttst09.dat:
+  title1 'STARS Test Bed No. 9'
+  title2 'Variable Depth and Layer Thickness Illustration'
+
+sttst10.dat:
+  title1 'STARS Test Bed No. 10'
+  title2 'Dry Combustion Tube Experiment'
+  title3 'Test Bed No.1 with Original and Combustion Water Separate'
+
+sttst11.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+sttst12.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+sttst13.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+sttst14.dat:
+  title1 'STARS Test Bed No. 14'
+  title2 'Dead Oil Steam Flood with Corner-Point grid (*COORD & *ZCORN)'
+
+sttst15.dat:
+  title1 'STARS Test Bed No. 15'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 run with ZH formulation'
+
+sttst16.dat:
+  title1 'STARS Test Bed No. 16'
+  title2 'Cartesian Grid as *XCORN, *YCORN and *ZCORN'
+  title3 'Also with *VOLMOD and *NETPAY'
+
+sttst17.dat:
+  title1 'STARS Test Bed No. 17'
+  title2 'Steam with Two Additives, Lab Run from Alberta Research Council'
+
+sttst18.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+sttst19.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+sttst20.dat:
+  title1 'STARS Test Bed No. 20'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'and Nine-Point Option on Cylindrical Grid'
+
+sttst21.dat:
+  title1 'STARS Test Bed No. 21'
+  title2 'Cartesian Grid as *DI, *DJ and *ZCORN'
+
+sttst22.dat:
+  title1 'STARS Test Bed No. 22'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 with Local Grid Refinement'
+
+sttst23.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+sttst24.dat:
+  title1 'STARS Test Bed No. 24'
+  title2 'Fourth SPE Comparative Solution Project, Problem 1A'
+  title3 'Test Bed No. 6 with Outer Radial Blocks as Aquifer Model'
+
+sttst25.dat:
+  title1 'STARS Test Bed No. 25'
+  title2 'Verify/Illustrate *BOTTOM Aquifer Model for Radial Grid'
+  title3 'Based on Test Bed No. 17'
+
+sttst26.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+sttst27.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+sttst28.dat:
+  title1 'STARS Test Bed No. 28'
+  title2 "Modification of Kazimi's Dual Porosity Problem"
+  title3 'Three Cases Give Same Initial In-Place'
+
+sttst29.dat:
+  title1 'STARS Test Bed No. 29'
+  title2 'Pruess Geothermal Problem (1/8 of a Five-Spot, One Component)'
+  title3 'Natural Fractures Modelled with the MINC Option'
+
+sttst30.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+sttst31.dat:
+  title1 'STARS Test Bed No. 31'
+  title2 'Natural Fractures Modelled with the VR Option'
+
+sttst32.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A'"
+
+sttst34.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+sttst43.dat:
+  title1 'STARS Test Bed No. 43'
+  title2 'Chen Data with VR Option'
+  title3 'Smaller Version of Test Bed No. 31'
+
+sttst46.dat:
+  title1 'STARS Test Bed No. 46'
+  title2 'Large Grid Example:  31x31x10 grid with 9,610 blocks'
+  title3 'Same problem as Test Bed No. 7'
+
+sttst47.dat:
+  title1 'STARS Test Bed No. 47'
+  title2 'Test Bed No. 9, with Zero-Porosity Blocks and Full Printout'
+
+sttst48.dat:
+  title1 'STARS Test Bed No. 48'
+  title2 'Test Dilation-Recompaction Option'
+  title3 'Based on STTST06'
+
+sttst49.dat:
+  title1 'STARS Test Bed No. 49'
+  title2 'Test Intermediate-Wet Rel Perm Option *INTMED1'
+
+sttst50.dat:
+  title1 'STARS Test Bed No. 50'
+  title2 'Test Oil-Wet Rel Perm Option *OILWET'
+
+sttst54.dat:
+  title1 'STARS Test Bed No. 54'
+  title2 'Model Metal Tube Wall with Zero Porosity and Radial Grid'
+  title3 'Based on STTST01'
+
+sttst55.dat:
+  title1 'STARS Test Bed No. 55'
+  title2 'Dilation and Thermal Conductivity Nine-Point Options'
+  title3 'Based on Test Bed No. 48'
+
+sttst56.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+sttst57.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+sttst58.dat:
+  title1 'STARS Test Bed No. 58'
+  title2 'Switch Between Mixed Surface/Downhole Constraints'
+  title3 'Based on STTST07'
+
+sttst59.dat:
+  title1 'STARS Test Bed No. 59'
+  title2 'Test upper and lower face transmissibility multipliers for Cartesian'
+  title3 'Grid with local refinement. Multipliers redefined in the fly.'
+
+sttst61.dat:
+  title1 'STARS Test Bed No. 61'
+  title2 'Water/Oil Vertical Equilibrium Illustration'
+  title3 'Based on Test Bed #9'
+
+sttst62.dat:
+  title1 'STARS Test Bed No. 62'
+  title2 'Water/Oil/Gas Ver. Eq. with Two Transition Zones'
+  title3 'Based on Test Bed #20'
+
+sttst65.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+sttst66.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'
+
+sttst68.dat:
+  title1 'STARS Test Bed No. 68'
+  title2 'Semi-Analytical Wellbore Heatloss with S/S Wells'
+  title3 'Based on STTST08.'
+
+sttst70.dat:
+  title1 'STARS Test Bed No. 70'
+  title2 'FlexWell with *SAMODEL Heatloss, *OPERATE *WHP, *MONITOR *WHYSTAB'
+  title3 'Based on STWWM092'
+
+sttst71.dat:
+  title1 'STARS Test Bed No. 71'
+  title2 'Dead Oil Steam Flood with *FAULT'
+
+sttst72.dat:
+  title1 'STARS Test Bed No. 72'
+  title2 'Vapex 2D Corner Point Grid'
+
+sttst73.dat:
+  title1 'STARS Test Bed No. 73'
+  title2 'Thermal Conductivity Options, Slaved Heater and'
+  title3 'Variable-Permeability Options.  Based on STTST01'
+
+sttst74.dat:
+  title1 'STARS Test Bed No. 74'
+  title2 'Test/Illustrate Elastic-Plastic Compaction-Rebound'
+
+sttst75.dat:
+  title1 'STARS Test Bed No. 75'
+  title2 'Relative permeability Hysteresis for Non-wetting Oil,'
+  title3 'Wetting Water and Gas phases Using BBM Method'
+
+sttst76.dat:
+  title1 'STARS Test Bed No. 76'
+  title2 'Hysteresis Effects of Kro, Krg and Pcog Using Carlson Method'
+  title3 'Based on STTST03'
+
+
+     STARS Verification data sets
+     ----------------------------
+
+verify01.dat:
+  title1 'Verification Run #1'
+  title2 'OB Heatloss versus AQ Heatloss'
+
+verify02.dat:
+  title1 'Verification Run #2'
+  title2 'AQ does nothing in equilibrium'
+
+verify03.dat:
+  title1 'Verification Run #3'
+  title2 'Test *AQUIFER *BOUNDARY Option'
+
+verify04.dat:
+  title1 'Verification Run #4'
+  title2 'Test *AQUIFER *BOUNDARY Option with LGR'
+
+verify05.dat:
+  title1 'Verification Run #5'
+  title2 'Test *AQUIFER *BOTTOM Option'
+
+verify06.dat:
+  title1 'Verification Run #6'
+  title2 'Test *AQUIFER *BOTTOM Option with LGR'
+
+verify07.dat:
+  title1 'Verification Run #7'
+  title2 'Test *AQUIFER *REGION Option'
+
+verify08.dat:
+  title1 'Verification Run #8'
+  title2 'Test *AQUIFER *REGION Option with LGR'
+
+verify09.dat:
+  title1 'Verification Run #9'
+  title2 'Test *AQUIFER *BOTTOM Option with Hybrid Grid'
+
+verify10.dat:
+  title1 'Verification Run #10'
+  title2 'Test *AQUIFER *BOUNDARY Option with Hybrid Grid'
+
+verify13.dat:
+  title1 'Verification Run #13'
+  title2 'Block Heatloss to Check Radial AQ Heatloss'
+
+verify14.dat:
+  title1 'Verification Run #14'
+  title2 'Block Heatloss to Check Radial AQ Heatloss'
+
+verify15.dat:
+  title1 'Verification Run #15'
+  title2 'Water/Gas Vertical Equilibrium Illustration'
+
+verify16.dat:
+  title1 'Verification Run #16'
+  title2 'FlexWell, TU < AN and Steam Cycling'
+
+verify17.dat:
+  title1 'Verification Run #17'
+  title2 'FlexWell, TU < AN and Steam Cycling and *KDIR *DOWN'
+
+verify20.dat:
+  title1 'Verification Run #20'
+  title2 'No active wells open initially'
+
+verify21.dat:
+  title1 'Verification Run #21'
+  title2 'Vertical Relative Permeablility Test'
+
+verify22.dat:
+  title1 'Verification Run #22'
+  title2 'Open and Shut Wells with Zero/Non-zero Values'
+
+verify24.dat:
+  title1 'Verification Run #24'
+  title2 'Illustrate Per-Area Convective Heat Transfer Input'
+
+verify25.dat:
+  title1 'Verification Run #25'
+  title2 'Test Handling of Space Requirement Too Large (500,000 Blocks)'
+
+verify26.dat:
+  title1 'Verification Run #26'
+  title2 'Test Output & SR2 Handling of Well Recompletion'
+  title3 'Test Diagonal Tranmissibility Multipliers'
+
+verify27.dat:
+  title1 'Verification Run #27'
+  title2 'Test/Illustrate *TFRONT Custom Column in J Direction'
+  title3 'Based on Test Bed No. 1'
+
+verify28.dat:
+  title1 'Verification Run #28'
+  title2 'Test/Illustrate *TFRONT Custom Column in I Direction'
+  title3 'Based on Test Bed No. 1'
+
+verify29.dat:
+  title1 'Verification Run #29'
+  title2 'Verify Adiabatic Heater Option'
+  title3 '2D Cylindrical Version of STTST01'
+
+verify30.dat:
+  title1 'Verification Run #30'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst06'
+
+verify31.dat:
+  title1 'Verification Run #31'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst07'
+
+verify32.dat:
+  title1 'Verification Run #32'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst08'
+
+verify33.dat:
+  title1 'Verification Run #33'
+  title2 'Test restart runs with *THTYPE, *VSTYPE and *KRTYPE Options'
+
+verify35.dat:
+  title1 'Verification Run #35'
+  title2 'Multi-component Non-linear Mixing for Liquid Density and Viscosity'
+
+verify36.dat:
+  title1 'Verification Run #36'
+  title2 'Per-Block Rock-Fluid Endpoint Scaling - T Dependence'
+
+verify37.dat:
+  title1 'Verification Run #37'
+  title2 'Per-Block Rock-Fluid Endpoint Scaling - Interpolation'
+
+verify38.dat:
+  title1 'Verification Run #38'
+  title2 'Test *ONETIME well constraint option'
+
+verify40.dat:
+  title1 'Verification Run #40'
+  title2 'Per-Block Over-Ride of VE Saturations with User Input'
+
+verify41.dat:
+  title1 'Verification Run #41'
+  title2 'Trans. Mults. in Hybrid Grids;  Trans. Mults. Inheritance'
+
+verify42.dat:
+  title1 'Verification Run #42'
+  title2 '*RANGE Syntax Variant of *REFINE'
+
+verify43.dat:
+  title1 'Verification Run #43'
+  title2 'Group Tree Definition from *GROUP/*WELL ... *ATTACHTO'
+
+verify44.dat:
+  title1 'Verification Run #44'
+  title2 'Verify *NETGROSS with *DILATION:  Base Case'
+
+verify45.dat:
+  title1 'Verification Run #45'
+  title2 'Verify *NETGROSS with *DILATION:  Net-to-Gross = 50%'
+
+verify46.dat:
+  title1 'Verification Run #46'
+  title2 'Verify *NETGROSS with *COMPACT_VAR:  Base Case'
+
+verify47.dat:
+  title1 'Verification Run #47'
+  title2 'Verify *NETGROSS with *COMPACT_VAR:  Net-to-Gross = 50%'
+  title3 'Based on VERIFY46'
+
+verify48.dat:
+  title1 'Verification Run #48'
+  title2 'Verify *NETGROSS with Elastic Compressibility'
+  title3 'and *PERMSCALE/*BLOCKAGE:  Net-to-Gross = 50%'
+
+verify49.dat:
+  title1 'Verification Run #49'
+  title2 'Verify *MFRAC_x and *DISPI/J/K_x with Dual Porosity'
+
+verify50.dat:
+  title1 'Verification Run #50'
+  title2 'Verify *MFRAC_x and *DISPI/J/K_x with LGR'
+
+verify51.dat:
+  title1 'Verification Run #51'
+  title2 'Verify *PBC and *BPP with K Value Correlations'
+
+verify52.dat:
+  title1 'Verification Run #52'
+  title2 'Verify *PBC and *BPP with K Value Tables'
+
+verify53.dat:
+  title1 'Verification Run #53'
+  title2 'Verify *BHPDEPTH and *HEADGRAD'
+
+verify54.dat:
+  title1 'Verification Run #54'
+  title2 'Verify FlexWell in Hybrid grid with Axial Refinement'
+
+verify55.dat:
+  title1 'Verification Run #55'
+  title2 'Semi-Analytical Wellbore Model'
+  title3 'Wellbore Heatloss without Wellhead Constraint'
+
+verify56.dat:
+  title1 'Verification Run #56'
+  title2 'Semi-Analytical Wellbore Model'
+  title3 'Source/Sink with Gas Lift'
+
+verify57.dat:
+  title1 'Verification Run #57'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'STTST20 with WHP Constraint'
+
+verify58.dat:
+  title1 'Verification Run #58'
+  title2 'Test/Illustrate Large Number of Components'
+  title3 'and Data Lines Up to 255 Characters Long'
+
+verify59.dat:
+  title1 'Verification Run #59'
+  title2 'Test/Illustrate 3D Asymmetric Radial Grid with Vector Plots'
+  title3 'Based on STTST06'
+
+verify60.dat:
+  title1 'Verification Run #60'
+  title2 'Verify *PINCHOUTARRAY Option'
+
+verify61.dat:
+  title1 'Verification Run #61'
+  title2 'Verify *DUALPOR With Compaction'
+
+verify62.dat:
+  title1 'Verification Run #62'
+  title2 'Verify *DUALPERM With Dilation'
+
+verify63.dat:
+  title1 'Verification Run #63'
+  title2 'Verify *MINC With Compaction'
+
+verify64.dat:
+  title1 'Verification Run #64'
+  title2 'Verify *SUBDOMAIN With Dilation'
+
+verify65.dat:
+  title1 'Verification Run #65'
+  title2 'Dynamic amalgamation with *AQUIFER option'
+
+verify66.dat:
+  title1 'Verification Run #66'
+  title2 'Dynamic refinement with *AQUIFER option'
+
+verify67.dat:
+  title1 'Verification Run #67'
+  title2 'Verify T < 0 C with NUMW = 0'
+
+verify68.dat:
+  title1 'Verification Run #68'
+  title2 'Verify *MONITOR *SHUTLAYER'
+  title3 'Based on STTST07'
+
+verify69.dat:
+  title1 'Verification Run #69'
+  title2 'Verify *INCLUDE'
+  title3 'Based on STTST01'
+
+verify70.dat:
+  title1 'Verification Run #70'
+  title2 'Test/Illustrate *CHECK-WHYSTAB'
+  title3 'Based on STTST70'
+
+verify72.dat:
+  title1 'Verification Run #72'
+  title2 'Test/Illustrate *DATUMDEPTH *REFDENSITY *GRIDBLOCK'
+  title3 'Based on STSMO052'
+
+verify73.dat:
+  title1 'Verification Run #73'
+  title2 'Test/Illustrate *DATUMDEPTH *REFDENSITY Specified Density'
+  title3 'Based on STSMO052'
+
+verify74.dat:
+  title1 'Verification Run #74'
+  title2 'Test/Illustrate *SHUTLAYER with *MONITOR *MAX *TEMP'
+  title3 'Based on STTST07'
+
+verify75.dat:
+  title1 'Verification Run #75'
+  title2 'Test/Illustrate *EACT_TAB to Reproduce STTST01'
+  title3 'Based on STTST01'
+
+verify76.dat:
+  title1 'Verification Run #76'
+  title2 'Test/Illustrate Oil-Wet Kr & Pc with *INTCOMP'
+  title3 'Based on STSMO049'
+
+verify77.dat:
+  title1 'Verification Run #77'
+  title2 'Test/Illustrate Wettability Change with *INTCOMP'
+  title3 'Based on VERIFY76 and STTST06'
+
+verify78.dat:
+  title1 'Verification Run #78'
+  title2 'Test/Illustrate *SCONNECT in Isothermal Single-Porosity System'
+  title3 'Based on STTST11'
+
+verify79.dat:
+  title1 'Verification Run #79'
+  title2 'Test/Illustrate *SCONNECT in Isothermal Naturally Fractured System'
+  title3 'Based on STGRO030'
+
+verify80.dat:
+  title1 'Verification Run #80'
+  title2 'Test/Illustrate *SCONNECT in Thermal System with *PERMTAB'
+  title3 'Based on STTST06'
+
+verify81.dat:
+  title1 'Verification Run #81'
+  title2 'Test/Illustrate *BPCWMAX & *BPCGMAX with *KRINTRP'
+  title3 'Based on STTST28'
+
+verify82.dat:
+  title1 'Verification Run #82'
+  title2 'Test/Illustrate Transmissibility Multipliers in *NINEPOINT *IK Plane'
+  title3 'Based on STTST20'
+
+verify83.dat:
+  title1 'Verification Run #83'
+  title2 'Test/Illustrate Transmissibility Multipliers in *NINEPOINT *IJ Plane'
+  title3 'Based on STTST20'
+
+verify84.dat:
+  title1 'Verification Run #84'
+  title2 'Test/Illustrate *OILWET with Pcow Endpoint Overrides'
+  title3 'Based on STSMO049'
+
+verify85.dat:
+  title1 'Verification Run #85'
+  title2 'Test/Illustrate Mechanical Dispersivity *MDSPI/J/K_x'
+  title3 'Based on VERIFY50'
+
+verify86.dat:
+  title1 'Verification Run #86'
+  title2 'Verify *TNEXT with Group Control Steam Cycling'
+  title3 'Based on STWWM041'
+
+verify87.dat:
+  title1 'Verification Run #87'
+  title2 'Verify *UPWIND *IJ with *REFINE'
+  title3 'Based on STGRO054'
+
+verify88.dat:
+  title1 'Verification Run #88'
+  title2 'Test/Illustrate Multiple *SCONNECT Applied to One Cell'
+  title3 'Based on VERIFY80'
+
+verify89.dat:
+  title1 'Verification Run #89'
+  title2 'Verify/Illustrate *MOD *ARRAY'
+  title3 'Based on STTST07'
+
+verify90.dat:
+  title1 'Verification Run #90'
+  title2 'Verify Multi-Face Combined Aquifer and Heat Loss'
+  title3 'Based on VERIFY03'
+
+verify91.dat:
+  title1 'Verification Run #91'
+  title2 'Verify New-Group Restart Operation'
+  title3 'Based on ???'
+
+verify92.dat:
+  title1 'Verification Run #92'
+  title2 'Verify Restart of *MONITOR *STODWN'
+  title3 'Based on STWWM038'
+
+verify93.dat:
+  title1 'Verification Run #93'
+  title2 'Illustrate/Verify *SETPI (*WAT,*OIL,*LIQ,*GAS) to Modify Well Indices'
+  title3 'Based on STTST08'
+
+verify94.dat:
+  title1 'Verification Run #94'
+  title2 'Verify Operation of *LININTERP with Rel Perm End-Point Overrides'
+
+verify95.dat:
+  title1 'Verification Run #95'
+  title2 'Verify Operation of *NEXTSEG in first *OPERATE'
+
+verify96.dat:
+  title1 'Verification Run #96'
+  title2 'Apply *TUNING_TOOLS to a Dual Porosity Problem'
+
+verify97.dat:
+  title1 'Verification Run #97'
+  title2 'Verify/Illustrate All *OUTBOARD *OUTLIST Items'
+  title3 'Based on STWWM118'
+
+verify98.dat:
+  title1 'Verification Run #98'
+  title2 'Verify/Illustrate *WRST *ELAPSED-HRS'
+  title3 'Based on STWWM064'
+
+verify99.dat:
+  title1 'Verification Run #99'
+  title2 'Verify Detection of Diagonal Tranmissibility Multipliers Alone'
+  title3 'Based on VERIFY26'
+
+verify100.dat:
+  title1 'Verification Run #100'
+  title2 'Test/Illustrate *JFUNC *GAS, *JF_PCLIMIT, *SIGMAG_TAB, *SRFTNG'
+  title3 'Based on STSMO082'
+
+verify101.dat:
+  title1 'Verification Run #101'
+  title2 'Test/Illustrate *JFUNC *WATER, *JF_PCLIMIT, *SRFTNW'
+  title3 'Based on STSMO082'
+
+verify102.dat:
+  title1 'Verification Run #102'
+  title2 'Verify *AQMETHOD *PRES and *AQMETHOD *FLUX'
+  title3 'Based on STTST24'
+
+28a.dat:
+  title1 'STARS Test Bed No. 28a'
+  title2 'Modification of TB 28 for testing zero porosity and null options'
+  title3 'Unrefined matrix (*DUALPOR)'
+
+28b.dat:
+  title1 'STARS Test Bed No. 28a'
+  title2 'Modification of TB 28 for testing zero porosity and null options'
+  title3 'Refined matrix (*MINC)'
+
+34a.dat:
+  title1 'STARS Test Bed No. 34a'
+  title2 'Full hybrid test (2 directions, non-uniform properties)'
+  title3 'No axial refinement'
+
+34b.dat:
+  title1 'STARS Test Bed No. 34b'
+  title2 'Full hybrid test (3 directions, non-uniform properties)'
+  title3 'Axial refinement'
+
+34c.dat:
+  title1 'STARS Test Bed No. 34c'
+  title2 'Test Hybrid in 3 Directions'
+  title3 'Isotropic, Nearly Isotropic and Anisotropic'
+
+34d.dat:
+  title1 'STARS Test Bed No. 34d'
+  title2 'Test Hybrid in 3 Directions, Two NKR and Two NJR'
+  title3 'Preparation for Partial Grids for Symmetry Elements'
+
+34e.dat:
+  title1 'STARS Test Bed No. 34e'
+  title2 'Test Hybrid in 3 Directions, Two NKR and Two NJR'
+  title3 'Partial Grids for Symmetry Elements'
+
+51a.dat:
+  title1 'STARS Test Bed No. 51'
+  title2 'STTST51 with Liq-Liq K Values'
+
+hyb.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'
+
+hyb_1ang.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'
+
+t22.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'

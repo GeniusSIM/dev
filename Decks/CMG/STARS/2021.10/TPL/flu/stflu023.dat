@@ -1,0 +1,366 @@
+
+*****************************************************************************
+** Template (stflu023.dat): Insitu Gellation Process to Improve Water Cut  **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STFLU023.DAT                                                             **
+**                                                                                  **
+** MODEL:  INSITU GELLATION MODEL BASED ON SCOTT ET AL       20X1X6 CARTESIAN GRID  **
+**         COMPARES BIOPOLYMER, SYNTHETIC POLYMER, AND GEL   FIELD UNITS            **
+**         COMPARES VISCOSITY AND RESISTANCE FACTOR EFFECTS  ADSORPTION EFFECTS     **
+**         INSITU GELLATION REACTION MODEL                                          **
+**         LAYERED RESERVOIR WITH DIFFERENT ADSORPTION AND BLOCKING LEVELS          **
+**                                                                                  **
+** USAGE:  MECHANISMS OF INSITU GELLATION TO IMPROVE WATER CUT (SI MOLE UNITS)      **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    This test problem describes insitu gellation of a stratified                  **
+**    reservoir based on the approach of Scott et al (SPEJ, Nov 1987).              **
+**                                                                                  **
+**    Sensitivity studies indicate the relative merits of biopolymer                **
+**    xanthan polymer (viscosity effects) vs synthetic PAM (resistance factor)      **
+**    factor) vs insitu gellation treatments and their crossflow dependence.        **
+**                                                                                  **
+**    The reservoir grid is a 20x1x6 crossection with one injector                  **
+**    and one producer completed through all 6 layers.                              **
+**    The top four layers have higher horizontal permeabilities and                 **
+**    a high-permeability streak is at the bottom of the reservoir to               **
+**    reduce any helpful effects of gravity.                                        **
+**                                                                                  **
+**    A simplified gel kinetics is assumed to form a microgel                       **
+**    with no redox catalyst and ignoring degradation.                              **
+**    The injection scheme has water injection over all 6 layers                    **
+**    for 450 days, followed by gel system injection for 150 days in                **
+**    the bottom 2 layers.  Water injection is continued to 4 years.                **
+**                                                                                  **
+**    Results demonstrate deep penetration of gel and blocking of                   **
+**    the high permeability bottom layers.                                          **
+**    This can be seen by the large pressure increases around the                   **
+**    injector at 600 days and the redirection of injected water                    **
+**    and the decrease in produced wor at 900 days.                                 **
+**                                                                                  **
+**    Special Features:                                                             **
+**                                                                                  **
+**    1)  Chemical reaction modelling of gellation process.                         **
+**        (assumes gel effects only plugging but not viscosity)                     **
+**                                                                                  **
+**    2)  Adsorption /retention of polymer and gel which are                        **
+**        permeability (region) dependent.                                          **
+**                                                                                  **
+**    3)  Permeability reduction of polymer/gel (rrf)                               **
+**        which is again region dependent.                                          **
+**                                                                                  **
+**    4)  Sensitivity studies can also be conducted comparing                       **
+**        the effectiveness of gel and simple polymer treatments.                   **
+**                                                                                  **
+**    5)  For simple polymer injection, a comparison of xanthan                     **
+**        (bio-) polmer and pam (synthetic) polymer mechanisms                      **
+**        can be conducted.                                                         **
+**                                                                                  **
+**    6)  This dataset uses a mole fraction version of original case (and SI units) **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #23'
+*TITLE2 'Mole-based SI Version of Test Bed No. 18'
+*TITLE3 'Insitu Gel Simulation, from Scott'
+
+**MASSBASIS    ** Turns off use mass densities, mass fractions, etc.
+
+*INUNIT *SI     ** Input units are SI but output units are field for comparison
+*OUTUNIT *FIELD *EXCEPT 11 1  ** ft3 instead of bbl
+                *EXCEPT 12 1  ** Newton/m instead of dynes/cm
+
+*OUTPRN *GRID *PRES *SW *SO *W *VISW *RFW *ADSORP
+              *MASFR *VISCCMP  ** special viscosity component (mass fraction)
+              *PPM *ADSPCMP    ** special adsorption component (ppm)
+
+*OUTSRF *GRID *PRES *SW *SO  *VISW *RFW *ADSORP
+              *MASS  *ADSORP   ** adsorption component (in mass)
+              *MASFR *VISWCOM  ** special viscosity component (mass fraction)
+              *PPM   *ADSPCMP  ** special adsorption component (ppm)
+
+*OUTPRN *WELL *NONE
+*OUTPRN *ITER *NEWTON
+*OUTSRF *WELL *MASS *COMPONENT *ALL
+
+*OUTSRF *SPECIAL *VOLFRAC 'INJTR' 'WATER' WATER
+                 *VOLFRAC 'INJTR' 'XLINKER' WATER
+                 *VOLFRAC 'INJTR' 'POLYMER' WATER
+                 *MASSFRAC 'INJTR' 'WATER' WATER
+                 *MASSFRAC 'INJTR' 'XLINKER' WATER
+                 *MASSFRAC 'INJTR' 'POLYMER' WATER
+                 *MOLEFRAC 'INJTR' 'WATER' WATER
+                 *MOLEFRAC 'INJTR' 'XLINKER' WATER
+                 *MOLEFRAC 'INJTR' 'POLYMER' WATER
+                 *VOLFRAC 'PRODN' 'WATER' WATER
+                 *VOLFRAC 'PRODN' 'XLINKER' WATER
+                 *VOLFRAC 'PRODN' 'POLYMER' WATER
+                 *VOLFRAC 'PRODN' 'PREGEL' WATER
+
+*WRST 100
+*WPRN *GRID 100
+*WPRN *ITER 1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 20 1 6     ** 2D vertical cross-section
+
+*DI *CON 45.7
+*DJ *CON 305
+*DK *KVAR 2*3.05 4*6.1
+
+** BOTTOM 2 LAYERS HAVE HIGHER POROSITY THAN TOP 4
+*POR *KVAR 2*0.25 4*0.2
+
+** BOTTOM 2 LAYERS HAVE HIGHER PERMEABILITY THAN TOP 4
+*PERMI *KVAR 2*10000 4*100
+*PERMJ *EQUALSI
+*PERMK *EQUALSI / 100
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 5 5 5 4   ** All components except oil are aqueous based
+
+
+*COMPNAME    'WATER'  'XLINKER' 'POLYMER' 'PREGEL' 'DEAD_OIL'
+**           -------   -------   -------  --------  --------
+*CMM          .018      .206        10.000   10.206     .100
+*MASSDEN      1000     1000         1000     1000      800.9
+*TCRIT        341.89     0             0        0          0
+*IDEALGAS
+                                                                 ** divide A by molecular weight water
+*SOLID_DEN 'PREGEL' 999.57564 0 0
+
+**xanthan polymer effects on viscosity (4 cp at 0.001 mass fraction)
+*AVISC         0.5       0.5        4        0.5       1
+** Nonlinear mixing rules for liquid phase viscosity
+*VSMIXCOMP 'POLYMER'
+*VSMIXENDP 0 1.8E-6                            **divide by 1.80e-3 because mass to mole fraction
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+
+** pam polymer viscosity effects (2cp at 0.0015 mass fraction)
+**  *AVISC        0.5       0.5        2        0.5       1
+** Nonlinear mixing rules for liquid phase viscosity
+**  *VSMIXCOMP 3 *VSMIXENDP 0 2.7E-6                        **divide by 1.80e-3 because mass to mole fraction
+**  *VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+
+** Simple gel kinetics model:
+**       1 xlinker + 1 xanthan --> 1 gel
+*STOREAC        0         1         1         0        0    **divide by molecular weight for changing the units
+*STOPROD        0         0         0         1        0    **kg to gmmol
+*FREQFAC .212255  ** Rate constant implies xanthan halflife of 600 days
+                  ** Factor adjusted to get equal reacted (mass/mole) in 150 days
+                  ** Factor is mw(polymer)*mw(xlinker)/mw(gel) times mass rate constant
+
+**  Reference conditions
+*PRSR 101.4
+*TEMR 48.89
+*PSURF 101.4
+*TSURF 14.52
+
+**  Default K values for water-like components.  Zero for oil.
+
+*ROCKFLUID
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*RPT 1   ** First rock type for bottom two layers
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+    0.25       0.0        0.9
+    0.5        0.1415     0.4245
+    0.78       0.3        0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  ----      -----     ------
+    0.25       1.0        0.0
+    1.0        0.0        0.9
+
+
+*RPT 2    ** Second rock type for top 4 layers
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+    0.25       0.         0.9
+    0.3        0.002      0.69
+    0.4        0.03       0.33
+    0.5        0.06       0.13
+    0.6        0.14       0.04
+    0.7        0.2        0.005
+    0.78       0.3        0.
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  ----      -----     ------
+    0.25        1         0.
+    1.          0         0.9
+
+*KRTYPE *KVAR 1 1 2 2 2 2
+
+
+**  Adsorption Data
+**  ---------------
+
+**ADSCOMP 'POLYMER' *WATER  ** Data for PAM polymer
+**ADSROCK 1  *ADMAXT 2.1785E-2  *ADRT 2.1785E-2  *RRFT 1.8        ** irreversible adsorption
+**ADSROCK 2  *ADMAXT 9.1625E-2  *ADRT 9.1625E-2  *RRFT 2.5        ** divide by molecular weight of polymer
+**ADSLANG 1.21e6 0 5.55e7  ** Langmuir concentration coefficients ** divide B by 1.8e-3 (mw water/mw polymer)
+                                                                  ** divide A by molecular weight water
+
+*ADSCOMP 'PREGEL' water   ** Data for GEL adsorption
+*ADSROCK 1
+*ADMAXT 4.4211E-2
+*ADRT 4.4211E-2
+*RRFT 40        ** irreversible adsorption
+*ADSROCK 2
+*ADMAXT 9.2106E-2
+*ADRT 9.2106E-2
+*RRFT 80        ** divide by molecular weight of PREGEL
+*ADSLANG 2.45e5 0 5.55e6 ** Langmuir concentration coefficients  ** divide B by 1.8e-3 (mw water/mw pregel)
+
+*ADSTYPE *KVAR 1 1 2 2 2 2
+
+*INITIAL
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+
+*PRES *CON 13790
+*SW *CON 0.25   ** so by difference
+*TEMP *CON 48.89
+*MFRAC_WAT 'WATER' *CON 1
+
+*NUMERICAL
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*TFORM *ZT
+*ISOTHERMAL
+
+*SDEGREE 2
+*DTMAX 35
+
+*RANGECHECK *OFF
+*NORM      *PRESS 1723  *ZAQ .4     *ZO .4     *ZNCG .4
+*CONVERGE  *PRESS 34.5  *ZAQ 1.E-8  *ZO .0001
+*RANGECHECK *ON
+** special numerical adjustments required for PAM polymer run
+** poor performance due to PAM adsorption parameters?
+** *CONVERGE  PRESS  34.5  ZAQ 1.E-5  ZO .0001
+** *MATBALTOL 1.0
+
+
+**MAXSTEPS 1
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*DATE 1901 1 1.5
+
+   *DTWELL 1
+
+   **  --------------------------------------------
+   **  450 days of water injection through 6 layers
+   **  --------------------------------------------
+
+   *WELL 1 'INJTR' *VERT  1 1
+   *WELL 2 'PRODN' *VERT 20 1
+
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 13790        ** BHP of 2000 psi
+   *GEOMETRY  k  .0011 .3687 1 0  ** rw cc ff ss
+   *PERFV *KH 'PRODN'  **  k   kh  
+                    1:2   100000
+                    3:6   2000
+
+   *INJECTOR 'INJTR'
+   **INJECTOR *MOBWEIGHT 'INJTR'
+   *INCOMP *WATER 1 0 0 0 0
+   *OPERATE *STW 976.9
+   *OPERATE *MAX *BHP 29632  ** Max BHP of 4300 psi
+   *PERFV 'INJTR'  **  k  wi
+              1:2 .7089
+              3:6 .0142
+   **         1:2 1.418   ** Try with mobweight well
+   **         3:6 .0284   **          "
+
+*TIME 450
+
+   *DTWELL 1
+
+   **  --------------------------------------------------------------
+   **  150 days of xlinker and polymer injection in bottom two layers
+   **  --------------------------------------------------------------
+
+** chemical concentrations converted to mole fraction by dividing by molecular weight ratio to water
+   *INJECTOR 'INJTR'
+   *INCOMP  *WATER .99999645  1.75e-6  1.80e-6  0  0    ** xlinker and xanthan for gel formation
+   **INCOMP *WATER .9999982   0        1.80e-6  0  0    ** Try without xlinker
+   **INCOMP *WATER 1 0 0 0 0 0                          ** Try no gel at all
+   *OPERATE *STW 976.9
+   *OPERATE *MAX *BHP 29632  ** Max BHP of 4300 psi
+   *PERFV 'INJTR'  **  k  wi
+              1:2 .7089
+   **         1:2 1.418   ** Try with mobweight well
+
+
+*TIME 600
+
+   *DTWELL 1
+
+   **  -----------------------------------------
+   **  Reinjection of water through all 6 layers
+   **  -----------------------------------------
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER 1 0 0 0 0
+   *OPERATE *STW 976.9
+   *OPERATE *MAX *BHP 29632  ** Max BHP of 4300 psi
+   *PERFV 'INJTR'  **  K  WI
+              1:2 .7089
+              3:6 .0142
+   **         1:2 1.418   ** Try with mobweight well
+   **         3:6 .0284   **          "
+
+*TIME 900
+*TIME 1500
+*STOP

@@ -1,0 +1,259 @@
+   *****************************************************************************
+   ** Template (mxgmc058.dat):  2D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC058.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      SI UNITS                **
+   **         Modified Cam Clay (MCC) model                    1X13X7 CARTESIAN GRID   **
+   **                                                                                  **
+   ** USAGE:  Distributed loads on 2D element edges                                    **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **        Illustrate how the Skempton's effect to an undrained condition            **
+   **        Skempton's effect can only be observed when a sudden load is applied to a **
+   **        surface of reservoir. This load will cause changes in pore pressure       **
+   **        and in porosity. Compressive load causes an increase in pore pressure     **
+   **        and tensile load cause a decrease in pore pressure.                       **
+   **                                                                                  **
+   **        Besides, in order to solve such a problem, GCOUPLING 3 and number of      **
+   **        coupling iterations are used.                                             **
+   **        The number of coupling iterations (NCOUPLING) can be any large positive   **
+   **        interger. The convergence of coupling is controlled by the tolerance      **
+   **        given in the data; for instance, STRESSTOL.                               **
+   **        Output total normal stresses (TSTRESI TSTRESJ TSTRESK), first and second  **
+   **        invariant stress tensor (STRESINVF STRESINVS), void ratio (VOIDRATIO).    **
+   **        Modified Cam Clay (MCC) constitutive model is used in this simualtion.    **
+   **        Some data of the model were taken from the reference                      **
+   **        (Comp. Methods. Appl.Mech. Engrg., Vol 155, pp. 73-95, 1998)              **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #058'
+*TITLE2
+   'Skempton and Mandel-Cryer Effects with Modified Cam Clay Model'
+
+*INUNIT *SI
+
+*WPRN *GRID TIME 
+*OUTPRN *GRID PRES
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+OUTSRF WELL LAYER ALL
+
+OUTSRF GRID  PRES POROS YOUNG POISSON
+             SBDZ STRESI STRESJ STRESK VDISPL STRESSH STRESMXP STRESEFF FLUXRC
+             VELOCRC STRAINI STRAINJ STRAINK STRAINSH STRNMXP VPOROSGEO VPOROSTGEO
+             STRESSM TSTRESI TSTRESJ TSTRESK STRNEPL  YLDSTATE TVERDPLGEO
+             STRESINVF STRESINVS VOIDRATIO
+
+*OUTSRF *SPECIAL 1 1 1 *STRESINVF
+*OUTSRF *SPECIAL 1 1 1 *STRESINVS
+*OUTSRF *SPECIAL 1 1 1 *STRNEPL
+*OUTSRF *SPECIAL 1 1 1 *VOIDRATIO
+*OUTSRF *SPECIAL 1 1 3 *STRESINVF
+*OUTSRF *SPECIAL 1 1 3 *STRESINVS
+*OUTSRF *SPECIAL 1 1 3 *STRNEPL
+*OUTSRF *SPECIAL 1 1 3 *VOIDRATIO
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 1 13 7
+*KDIR *DOWN
+
+*DI *CON   1.0 
+*DJ *JVAR  4*0.5  3*1.0  3*2.0  3*2.5 
+*DK *KVAR  4*0.5  3*1.0
+
+*DEPTH 1 1 1 0.25
+
+*POR *CON 0.2
+
+*PERMI *CON 1E2
+*PERMJ *EQUALSI 
+*PERMK *CON 100
+
+*CPOR 0.0   
+*PRPOR 100 
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   33.000   1.01200   169.490   1.17000 0.0130000
+    34000.000   70.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     900.0
+   *DENSITY *GAS     0.00448
+   *DENSITY *WATER   1000.
+   *CO               0.145E-5      ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0    
+   *CW               0.0
+   *REFPW            101.325       ** Reference pressure
+   *VWI              1.0
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 37
+
+**  ==============  ROCK-FLUID DATA  ======================
+
+*ROCKFLUID
+*RPT 1
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+     0.0       0.0        1.0
+     1.0       1.0        0.0
+ 
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+     0.1      1.00        0.0
+     1.0      0.00        1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*USER_INPUT
+*PRES *CON 100
+*SW   *CON   1
+*SO   *CON   0
+*PB   *CON   0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL   
+
+*DTMIN 1.E-10
+*ITERMAX 300
+
+*SDEGREE *GAUSS
+
+*NORM *PRESS 250.0
+*CONVERGE *MAXRES 0.1
+
+*NCUTS 7
+*NEWTONCYC 40
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH
+
+*NODE8
+
+*GCOUPLING 3          ** Coupling type # 3
+*ncoupling 100        ** Number of coupling iterations
+
+*STRESSTOL 1e-6       ** stress tolerence for coupling iteration
+
+*NITERGEO 150         ** maximum number for geomechanis convergence
+
+*MCCMODEL 1
+*POISSRATIO 0.3        ** Poisson's ratio
+*MCSWINDX  0.018       ** swelling index
+*MCOMINDX  0.13        ** compression index
+*FRICANGLE 26          ** friction angle
+*MCRCSL 1.0            ** ratio between tension and compression indeces
+*MCPREHD  20.0         ** Initial hardening
+*MCETHA  0.0           ** Factor in non-associated flow potential function
+
+*STRESS     8  8  0  8 
+      
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 2006 06 17
+
+   DTWELL 6.94E-6
+
+TIME 6.43E-5
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+    
+TIME 7.431E-5
+
+TIME 1.39E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 2.08E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+    
+TIME 2.78E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 3.47E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 4.17E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 4.86E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 5.56E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 6.25E-4
+
+*DLOADBC                   ** distributed load  
+*IJK  1:1   1:4   1
+      7:8    10   0.0   10  0.0
+      8:1    10   0.0   10  0.0
+
+TIME 6.94E-4
+
+STOP

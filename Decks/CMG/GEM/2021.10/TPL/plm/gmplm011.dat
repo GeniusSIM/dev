@@ -1,0 +1,336 @@
+**--------------------------------------------------------------------**
+** GMPLM011.dat:    Polymer injection with shear effects including    **
+**                  Well shear -- Shear thickening.                   **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMPLM011.DAT                           FIELD UNITS          **
+**                                                                    **
+** MODEL: CART 7x7x3 GRID                         6 COMPONENTS        **
+**        FIELD UNITS                   QUARTER 5-SPOT PATTERN        **
+**                                            ONE-INJECTOR AND        **
+**                                                ONE PRODUCER        **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Polymer injection in a moderately high viscosity oil reservoir in  **
+** a quarter of a 5-spot pattern.                                     **
+**                                                                    **
+** The oil consists of 8 components including CO2 which is soluble in **
+** the aqueous phase. The aqueous phase consists of four components   **
+** including 2 polymer components. Only one of the polymer componets  **
+** is injected.                                                       **
+**                                                                    **
+** Polymer slug and water are injected in a cyclic manner. Shear      **
+** effect on polymer viscosity is considered with shear thichening    **
+** in the form of a ref velocity velocity, the power exponent, and    **
+** maximum attainable viscosity.                                      **
+**                                                                    **
+** Well shear effects are modeled to account for aqueous phase        **
+** viscosity change in the wellbore via keyword *WELLSHEAR.           **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+***********************************************************************
+** I/O Control Section
+***********************************************************************
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'Polymer Flood'
+*TITLE2 'With Shear Effect'
+*TITLE3 'including *WELLSHEAR'
+*INUNIT *FIELD
+
+*OUTPRN *RES *ALL
+*WPRN *GRID 10
+
+*WSRF *WELL 1
+*OUTSRF *GRID *VELOCRC *VISW *WALL *SHEARW
+*OUTSRF *SPECIAL *HCPVIN
+
+*OUTSRF *SPECIAL *ADS 'POLY-1' 1 1 1 
+                 *ADS 'POLY-1' 7 7 3 
+                 *ADS 'POLY-1' 2 2 3 
+                 *ADS 'POLY-1' 2 1 1
+                 *W   'POLY-1' 1 1 1 
+                 *W   'POLY-1' 7 7 3 
+                 *W   'POLY-1' 2 2 3 
+                 *W   'POLY-1' 2 1 1
+			        *VISW 1 1 1
+                 *VISW 7 7 3
+                 *VISW 2 2 3
+                 *VISW 2 1 1
+                 *VISAQWEL 'P_INJ' 1 1 1
+                 
+*OUTSRF *WELL *LAYER *ALL ** Activate to output equivalent well aqueous phase viscosity.
+
+*WRST 0
+
+
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+*****************************************************************************
+** Reservoir description
+*****************************************************************************
+*GRID *VARI 7 7 3
+*KDIR *UP
+*DI *IVAR 
+ 7*315
+*DJ *JVAR 
+ 7*315
+*DK *ALL
+ 49*50 49*30 49*20
+*DTOP
+ 49*1925
+*POR *CON
+ 0.300
+*PERMI *KVAR
+   200.0   50.0  500.0
+*PERMJ *KVAR
+   200.0   50.0  500.0
+*PERMK *KVAR
+    19.2  200.0  200.0
+*PRPOR 14.7
+*CPOR 3.0E-6
+
+** -------------- Component Properties --------------------------------
+*MODEL   *PR
+*NC    6    6
+*TRES       160.000
+*COMPNAME
+           'C1'           'C3'           'C6'           'C10'
+           'C15'          'C20'
+*SG         2.6548243E-01  5.2203614E-01  6.6417775E-01  7.4136955E-01
+            7.6230751E-01  7.8620830E-01
+*TB        -1.6064925E+02 -4.3620636E+01  6.5995161E+01  1.6981838E+02
+            2.7281954E+02  3.4381966E+02
+*PCRIT      4.5440000E+01  4.1940000E+01  2.9730000E+01  2.0690000E+01
+            1.3610000E+01  1.1020000E+01
+*VCRIT      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00
+*TCRIT      1.9060000E+02  3.6980000E+02  5.0740000E+02  6.1770000E+02
+            7.0560000E+02  7.6670000E+02
+*AC         1.3000000E-02  1.5240000E-01  3.0070000E-01  4.8850000E-01
+            6.5000000E-01  8.5000000E-01
+*MW         1.6040000E+01  4.4100000E+01  8.6180000E+01  1.4229000E+02
+            2.0600000E+02  2.8200000E+02
+*HCFLAG     0              0              0              0
+            0              0
+*BIN
+            0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            0.0000000E+00
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VSHIF1     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*TREFVS     6.0000000E+01  6.0000000E+01  6.0000000E+01  6.0000000E+01
+            6.0000000E+01  6.0000000E+01
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            2.3324000E-02
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02
+*PCHOR      3.9843180E+01  1.2676442E+02  2.5062202E+02  4.0365452E+02
+            5.6062080E+02  7.2450720E+02
+
+*ENTHCOEF
+            0.0000000E+00  2.6589778E-01  3.4085379E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  5.5613508E-02  4.0821847E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  1.5512597E-02  3.9456214E-04 -5.1333581E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  3.0429172E-03  3.9810535E-04 -5.3243759E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.2809515E-02  3.9758428E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.6277569E-02  3.9897828E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*DENWS 61.01
+*DENW 59.696
+*REFPW 14.7
+*VISW 0.4
+*CW 3.3e-6
+
+*AQUEOUS-VISCOSITY *POLYMER
+
+*NC-AQUEOUS 1
+*COMPNAME-AQUEOUS
+'POLY-1'
+
+*COMPNAME-POLYMER
+'POLY-1'
+
+*MW-AQUEOUS
+22000.
+
+*AVISC-H2O 0.4
+
+*AVISC-AQUEOUS 10.
+*BVISC-AQUEOUS 0.0
+
+*VSMIXENDP 'POLY-1' 0 1.5e-6
+
+** Shear thickening
+**                     power   ref vel   max visc
+  *SHEARTHICK 'POLY-1'  1.5     1.0       30.0
+
+** Apply well shearing effect
+*WELLSHEAR
+
+********************************************************************************
+** Rock-fluid Property component
+********************************************************************************
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+**$        Sw       krw      krow      Pcow
+          0.2       0.0       1.0       7.0
+          0.3      0.07       0.4       4.0
+          0.4      0.15     0.169       3.0
+          0.5      0.24    0.0851       2.5
+          0.6      0.33     0.056       2.0
+          0.8      0.65     0.021       1.0
+          0.9      0.83       0.0       0.5
+          1.0       1.0       0.0       0.0
+*SLT
+**$        Sl       krg       krog      Pcog
+          0.2      0.98        0.0       0.0
+          0.3      0.94        0.0       0.0
+          0.4      0.87  1.0000E-4       0.0
+          0.5      0.72      0.001       0.0
+         0.55       0.6      0.010       0.0
+          0.6      0.41      0.021       0.0
+          0.7      0.19       0.09       0.0
+         0.75     0.125        0.2       0.0
+          0.8     0.075       0.35       0.0
+         0.88     0.025        0.7       0.0
+         0.95     0.005       0.98       0.0
+         0.98       0.0      0.997       0.0
+        0.999       0.0        1.0       0.0
+          1.0       0.0        1.0       0.0
+
+********************************************************************************
+** Initial Conditions Section
+********************************************************************************
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 2400.
+*SW   *CON     0.2
+*ZGLOBALC 'C1'  *CON     0.35
+*ZGLOBALC 'C3'  *CON     0.06
+*ZGLOBALC 'C6'  *CON     0.03
+*ZGLOBALC 'C10' *CON     0.15
+*ZGLOBALC 'C15' *CON     0.20
+*ZGLOBALC 'C20' *CON     0.21
+
+*MOLALITY-AQUEOUS 0.0
+
+********************************************************************************
+** Numerical Methods Control Section
+********************************************************************************
+*NUMERICAL
+
+*NORM *PRESS 145.
+*MAXCHANGE *PRESS 5000.
+*AIM *STAB *AND-THRESH 1 0.001
+
+
+******************************************************************************
+** Recurrent data
+******************************************************************************
+
+*RUN
+*DATE 1987 1 1.
+*DTWELL 0.1
+*DTMIN   1.0e-6
+
+*WELL  'P_INJ'  ** Polymer Injector
+*INJECTOR 'P_INJ'
+*INCOMP *AQUEOUS 0. 0. 0. 0. 0. 0. 9.1051e-5  ** 'POLY-1' injection
+*OPERATE  *MAX  *STW  4000.0   *CONT
+*OPERATE  *MAX  *BHP  10000.0  *CONT REPEAT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'P_INJ' 
+**$ UBA    ff   Status  Connection  
+    1 1 3   1.0  *OPEN    *FLOW-FROM  'SURFACE'
+    1 1 2   1.0  *OPEN    *FLOW-FROM 1
+    1 1 1   1.0  *OPEN    *FLOW-FROM 2
+
+*WELL  'W_INJ'       ** Water Injector
+*INJECTOR 'W_INJ'
+*INCOMP *WATER
+*OPERATE  *MAX  *STW  4000.0   *CONT
+*OPERATE  *MAX  *BHP  10000.0  *CONT REPEAT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'W_INJ'
+**$ UBA    ff   Status  Connection  
+    1 1 3   1.0  *OPEN    *FLOW-FROM  'SURFACE'
+    1 1 2   1.0  *OPEN    *FLOW-FROM 1
+    1 1 1   1.0  *OPEN    *FLOW-FROM 2
+
+
+*WELL  'PROD1'     ** Oil Producer
+*PRODUCER 'PROD1'
+*OPERATE  *MAX  *STO  7500   *CONT 
+*OPERATE  *MIN  *BHP  500.0  *CONT
+*GEOMETRY  *K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'PROD1'
+**$ UBA    ff   Status  Connection  
+    7 7 3   1.0  *OPEN    *FLOW-TO  'SURFACE'
+    7 7 2   1.0  *OPEN    *FLOW-TO 1
+    7 7 1   1.0  *OPEN    *FLOW-TO 2
+
+
+*SHUTIN 'W_INJ'
+
+*DATE 1988  1  1
+*DTWELL 0.1
+     *SHUTIN  'P_INJ'
+     *OPEN    'W_INJ'
+*DATE 1989  1  1
+     *OPEN    'P_INJ'
+     *SHUTIN  'W_INJ'
+*DATE 1990  1  1
+     *SHUTIN  'P_INJ'
+     *OPEN    'W_INJ'
+*DATE 1991  1  1
+     *OPEN    'P_INJ'
+     *SHUTIN  'W_INJ'
+*DATE 1992  1  1
+     *SHUTIN  'P_INJ'
+     *OPEN    'W_INJ'
+*DATE 1993  1  1
+     *OPEN    'P_INJ'
+     *SHUTIN  'W_INJ'
+*DATE 1994  1  1
+     *SHUTIN  'P_INJ'
+     *OPEN    'W_INJ'
+ *DATE 1995  1  1
+     *OPEN    'P_INJ'
+     *SHUTIN  'W_INJ'
+*DATE 1996   1  1
+     *SHUTIN  'P_INJ'
+     *OPEN    'W_INJ'
+*DATE 1997 1  1
+*STOP

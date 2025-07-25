@@ -1,0 +1,220 @@
+   ******************************************************************************
+   ** mxhrw005.dat:         Horizontal Well With Wellbore Refinement           **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXHRW005.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  9x9x6 GRIDS           HORIZONTAL WELLS           WELBORE GRID REFINEMENT **
+   **                                                          SI UNIT                 **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a cartesian 9x9x6 grids model with wellbore grid refinement for both the ** 
+   ** horizontal producer and the horizontal water injector.                           **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+     'HORIZONTAL PRODUCER AND INJECTOR'
+   *TITLE2
+     'REFINED WELLBORE WITH PRESSURE DROP'
+
+*INUNIT *FIELD              ** Field units are used for both input and output.
+*WPRN   *WELL   *time
+*WPRN   *GRID   *TIME
+*WPRN   *ITER   *none
+*OUTPRN *WELL   *ALL
+*OUTPRN *RES    *NONE
+*OUTPRN *TABLES *NONE
+*OUTPRN *GRID   *SO *SG *SW *PRES *IMEXMAP
+*WSRF   *GRID   0
+*WSRF   *WELL   1
+*OUTSRF *GRID   *SO *SG *PRES *BPP
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 9     9    6
+*KDIR *DOWN
+
+*DI *IVAR
+ 9*300.0
+*DJ *JVAR
+ 620.0 400.0 200.0 100.0 60.0 100.0 200.0 400.0 620.0
+*DK *KVAR
+ 20.0 20.0 20.0 20.0 30.0 50.0
+
+*DEPTH 1 1 1 3600.0
+
+*POR *MATRIX *CON 0.20
+*PRPOR *MATRIX 3600.0
+*CPOR  *MATRIX 4.0E-6
+
+
+*PERMI *MATRIX *KVAR
+    300.0  300.0  300.0  300.0  300.0  300.0
+*PERMJ *MATRIX *KVAR
+    300.0  300.0  300.0  300.0  300.0  300.0
+*PERMK *MATRIX *KVAR
+     30.0   30.0   30.0   30.0   30.0   30.0
+
+*MODEL *BLACKOIL            ** Solve three equations.
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*PVT                            ** PVT table for gas
+**    p      rs        bo        eg     viso    visg
+   400.000   165.000   1.01200   169.490   1.17000 0.0130000
+   800.000   335.000   1.02550   338.980   1.14000 0.0135000
+  1200.000   500.000   1.03800   510.200   1.11000 0.0140000
+  1600.000   665.000   1.05100   680.270   1.08000 0.0145000
+  2000.000   828.000   1.06300   847.460   1.06000 0.0150000
+  2400.000   985.000   1.07500  1020.400   1.03000 0.0155000
+  2800.000  1130.000   1.08700  1190.500   1.00000 0.0160000
+  3200.000  1270.000   1.09850  1351.400 0.9800000 0.0165000
+  3600.000  1390.000   1.11000  1538.500 0.9500000 0.0170000
+  4000.000  1500.000   1.12000  1694.900 0.9400002 0.0175000
+  4400.000  1600.000   1.13000  1851.900 0.9200000 0.0180000
+  4800.000  1676.000   1.14000  2040.800 0.9100000 0.0185000
+  5200.000  1750.000   1.14800  2222.200 0.9000000 0.0190000
+  5600.000  1810.000   1.15500  2381.000 0.8900000 0.0195000
+
+*DENSITY *OIL    45.0
+*DENSITY *GAS     0.0702
+*DENSITY *WATER  62.14
+*CO               1.0E-5        ** Oil compressibility
+*CVO              0.0           ** Viscosity dependence on oil compressibility
+*BWI              1.01420       ** Water formation volume factor
+*CW               3.0E-6        ** Water compressibility
+*REFPW            14.7          ** Reference pressure
+*VWI              0.96          ** Water viscosity at reference pressure
+*CVW              0.0           ** Pressure dependence on water compressibility
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+
+*RPT  1                         ** Set rock type 1 for the fracture
+*SWT
+** Sw    krw    krow
+   0.0    .0     1.0
+   1.0   1.0      .0
+
+*SLT
+** Sl    krg    krog
+   0.0    1.0       .0
+   1.0     .0      1.0
+
+*RPT 2                          ** Set rock type 2 for the matrix
+*SWT
+**   sw    krw    krow    pcow
+   0.22    0.0    1.0     6.3
+   0.30    0.07   0.4     3.6
+   0.40    0.15   0.125   2.7
+   0.50    0.24   0.0649  2.25
+   0.60    0.33   0.0048  1.8
+   0.80    0.65   0.0     0.9
+   0.90    0.83   0.0     0.45
+   1.00    1.0    0.0     0.0
+
+*SLT                            ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog
+   0.22    1.0     0.0      3.9
+   0.30    0.8125  0.0      3.5
+   0.40    0.5     0.0      3.0
+   0.50    0.42    0.0      2.5
+   0.60    0.34    0.0      2.0
+   0.70    0.24    0.02     1.5
+   0.80    0.1     0.1      1.0
+   0.90    0.022   0.33     0.5
+   0.96    0.0     0.6      0.2
+   1.0     0.0     1.0      0.0
+
+*RTYPE *MATRIX   *CON 2
+
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS  ** Use vertical equilibrium calculation.
+*PB *MATRIX *CON  0.0
+*REFPRES  3600.0
+*REFDEPTH 3600.0
+*DWOC     3700.0
+*DGOC     3590.0
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX         110.         ** Maximum time step size
+*MAXSTEPS      200          ** Maximum number of time steps
+*NORM *PRESS  1000.0        ** Normal maximum changes per time step
+*NORM *SATUR     0.20
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 1988 01 01
+*DTWELL 1.0
+                  
+
+*WELL 1  'Producer'
+
+*PRODUCER  1
+*OPERATE *MAX  *STL  9000.0
+*OPERATE *MIN  *BHP  1500.0
+*MONITOR *BACKFLOW           *STOP
+*MONITOR *GOR       20000.0  *STOP
+**MONITOR *WCUT          0.90  *STOP
+
+*PERF 1
+** if     jf     kf       wi                         
+   2:8     5      1   5.19395E+04  
+
+*WELL 2  'Injector'
+
+*INJECTOR   2    
+*INCOMP *WATER
+*OPERATE *MAX *BHP 3700.0
+*MONITOR  *BACKFLOW *STOP
+
+*PERF 2
+** if     jf     kf     wi
+   1:9      5      6      2.160E+04
+
+*TIME  100.0
+*TIME  200.0
+*TIME  300.0
+*TIME  400.0
+*TIME  500.0
+*TIME  600.0
+*TIME  700.0
+*TIME  800.0
+*TIME  900.0
+*TIME 1000.0
+*TIME 1100.0
+*TIME 1200.0
+*TIME 1300.0
+*TIME 1400.0
+*TIME 1500.0
+
+
+   *DATE 1997 12 31
+   *******************************************************************
+   ** add time cards to continue the run
+   *******************************************************************
+   *STOP

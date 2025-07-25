@@ -1,0 +1,225 @@
+**--------------------------------------------------------------------**
+** GMSMO084.DAT: Grid Orientation Effect in Miscible Displacement     **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO084.DAT                                                **
+**                                                                    **
+** MODEL: CART 28x28x1 GRID             BUTANE SLUG INJECTION         **
+**        3 COMPONENTS                  FOLLOWED BY CHASE GAS         **
+**        FIELD UNITS                   GRID ORIENTATION EFFECT       **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set is constructed from the reservoir model     **
+** used in Shrivastava 2003, "Physical Dispersion in Compositional    **
+** Reservoir Simulation", PhD Disseration, U of Calgary, p160-162.    **
+**                                                                    **
+** To explore the effect of grid orientation, runs are made with      **
+** grids aligned diagonal and parallel to the flow direction in a     **
+** homogeneous five spot pattern.                                     **
+**                                                                    **
+** 20% HCPV slug of nC4 is followed by chase gas consisting of 85% C1 **
+** and 15% nC4. The mobility ratio at the leading and trailing edges  **
+** work out to be 0.45 and 6.48 respectively.                         **
+**                                                                    **
+** This templates for illustrates use of diagonal transmissibility    **
+** multipliers in nine-point discretization.                          **
+**                                                                    **
+** See effect of increased transmissibilities in diagonal direction   **
+** via keywords *TRANSIJ+ *TRANSIJ-. Compare the results with template**
+** gmsmo082.                                                          **
+**                                                                    ** 
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*TITLE1 'Study of Grid Orientation effect'
+*TITLE2 'Parallel Grid - 9 point'
+*INUNIT  *FIELD
+
+*WSRF *WELL 1
+*OUTSRF *GRID *SO *SW *SG *SIG *PRES *ZALL
+*OUTSRF *WELL *PAVG *HCPVIN
+*OUTSRF *RES *ALL
+*OUTPRN *GRID *PRES *SO *SG *SW  *ZALL
+*OUTPRN *RES *ALL
+*WRST 0
+
+*RESULTS *ROTATION          135. **$  (DEGREES)
+*RESULTS *AXES-DIRECTIONS 1.0 1.0 1.0
+
+**-------------- Reservoir Description Section -------------
+
+*GRID *CART 28 28 1
+*KDIR *DOWN
+*DI *CON 10
+*DJ *CON 10
+*DK *CON 2
+
+*DTOP 784*1100
+
+*POR *CON 0.25
+     *MOD 
+       1:28 1    1 * 0.5
+       1    2:28 1 * 0.5
+       2:28 28   1 * 0.5
+       28   2:27 1 * 0.5
+
+*VOLMOD *CON 0.9903978    ** [190x190x2x2/(270x270x2)]
+
+*CPOR  5.0E-06
+*PRPOR 3845.
+
+*PERMI *CON 200.
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.1
+
+*NINEPOINT *IJ  
+*TRANSIJ+ *CON 10
+*TRANSIK- *CON 10
+** -------------- Fluid Component Data --------------------
+
+*MODEL   *PR
+*NC    3    3
+*TRES 160.
+*PHASEID *DEN
+*PVC3  1.2
+*COMPNAME
+            'C1'      'NC4'       'FC10'
+
+*PCRIT     4.5400E+01  3.7500E+01  2.50100E+01
+*VCRIT     9.9000E-02  2.5500E-01  5.21000E-01
+*TCRIT     1.9060E+02  4.2520E+02  6.22100E+02
+*AC        8.0000E-03  1.9300E-01  4.43774E-01
+*MW        1.6043E+01  5.8124E+01  1.34000E+02
+
+*HCFLAG    0  0  0
+
+*BIN
+    1.47485308E-02
+    4.43719046E-02 8.45222754E-03
+
+*VSHIFT
+    -1.5386050E-01 -5.7055890E-02  7.5402460E-02
+*MIXVC     1.0000000E+00
+*VISVC
+     9.9000000E-02  2.5500000E-01  5.2100000E-01
+*VISCOEFF
+     1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02  9.3324000E-03
+*OMEGA
+     4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB
+     7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR
+     4.5837143E+01  1.6606857E+02  3.8285714E+02
+
+
+*RHOW    1571.10
+*CW      3.3E-06
+*REFPW   14.6960
+*VISW    0.70
+*DERIVATIVEMETHOD *NUMERALL
+
+**------------------ ROCK FLUID ---------------------------
+
+*ROCKFLUID
+*SIGMA      0.1   1.0   0.00001
+*RPT
+
+*SWT
+** Sw         Krw       Krow     Pcwo
+ 0.2000       0.0       1.0000   45.00
+ 0.2899       0.0022    0.6769   19.03
+ 0.3778       0.0180    0.4153   10.07
+ 0.4667       0.0607    0.2178    4.90
+ 0.5556       0.1438    0.0835    1.80
+ 0.6444       0.2809    0.0123    0.50
+ 0.7000       0.4089    0.0       0.05
+ 0.7333       0.4855    0.0       0.01
+ 0.8222       0.7709    0.0       0.0
+ 0.9111       1.00      0.0       0.0
+   1.00       1.00      0.0       0.0
+
+*SLT
+** Sl         Krg       Krog     Pcog
+ 0.2000       1.000     0.0      30.000
+ 0.2889       0.560     0.0       8.000
+ 0.3500       0.390     0.0       4.000
+ 0.3778       0.350     0.0110    3.000
+ 0.4667       0.200     0.0370    0.800
+ 0.5556       0.100     0.0878    0.030
+ 0.6444       0.050     0.1715    0.010
+ 0.7333       0.030     0.2963    0.001
+ 0.8222       0.010     0.4705    0.0
+ 0.9111       0.001     0.7023    0.0
+ 0.9500       0.0       0.8800    0.0
+ 1.0000       0.0       1.0000    0.0
+
+**----------------- INITIAL CONDITION ----------------------
+*INITIAL
+*VERTICAL *OFF
+*PRES *CON  3984.3
+*SW   *CON     0.001
+*ZGLOBALC 'C1'     *CON 0.65
+*ZGLOBALC 'NC4'    *CON 0.16
+*ZGLOBALC 'FC10'   *CON 0.19
+
+**----------- NUMERICAL CONTROLS ----------------------------
+*NUMERICAL
+   *NORM  *PRESS      500.
+   *NORM  *SATUR      0.05
+   *NORM  *GMOLAR     0.015
+   *MAXCHANGE *SATUR  0.8
+   *MAXCHANGE *GMOLAR 0.8
+   *AIM *OFF
+   *DTMAX  0.1 
+   *DTMIN    1.e-6
+
+**---------- RECURRENT AND WELL DATA ------------------------
+*RUN
+*DATE  1986 1 1
+*AIMSET *CON 0
+   *DTWELL   0.01
+   *WELL 1 'P1'
+   *WELL 2 'P2'
+   *PRODUCER 1 2                             
+      *OPERATE *MIN *BHP   3984.3
+      *OPERATE *MAX *STO  1000. 
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+      *PERF *GEO 1
+      28 1 1  1.0
+      *PERF *GEO 2
+      1 28 1  1.0
+
+   *WELL 3 'I1'
+   *WELL 4 'I2'
+   *INJECTOR 3 4
+      *INCOMP *SOLVENT  0.  1.  0.
+      *OPERATE *MAX *STG 49519.89026    ** 50000.*0.9903978
+      *OPERATE *MAX *BHP 6500.     
+
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+      *PERF *GEO 3
+      1 1 1  1.0
+      *PERF *GEO 4
+      28 28 1  1.0
+
+*TIME 5.
+*TIME 10.
+*TIME 20.    ** Corresponds to 0.2HCPV, switch to chase gas
+      *INJECTOR 3 4
+      *INCOMP *SOLVENT  0.85  0.15  0.
+      *OPERATE *MAX *STG 49519.89026    ** 50000.*0.9903978
+      *OPERATE *MAX *BHP 6500.     
+ 
+*TIME 30.
+*TIME 40.
+*TIME 50.
+*TIME 60.
+*TIME 70.
+*TIME 75.
+*TIME 80.
+*TIME 90.
+*TIME 150.
+*STOP 

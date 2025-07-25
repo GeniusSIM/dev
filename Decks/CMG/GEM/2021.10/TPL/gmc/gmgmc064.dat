@@ -1,0 +1,476 @@
+
+*****************************************************************************
+** Template  (gmgmc064.dat): Normal Effective Stress vs. Perm Multiplier   **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc064.DAT                                                             **
+**                                                                                  **
+** MODEL:  INVERTED 5 SPOT WATER DRIVE  FIELD UNITS    8X8X10 CARTESIAN GRID        **
+**         3D FRACTURE NETWORK          1/4 PATTERN                                 **
+**         CAPILLARY PRESSURES AFFECT MATRIX-FRACTURE TRANSFER                      **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  DUAL PERMEABILITY MODEL WITH CAPILLARY PRESSURE EFFECTS                  **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       In this test problem, water is injected by a single horizontal well into   **
+**       reservoir with dead oil.  The reservoir is fractured in all directions     **
+**       and the dual Permeability model is used to simulate the reservoir          **
+**       behaviour. Production is from the same horizontal well.                    **
+**                                                                                  **
+**       Gas-oil and oil-water capillary pressures in both the matrix and           **
+**       fracture affect matrix-fracture transfer term.                             **
+**                                                                                  **
+**       Features:                                                                  **
+**       Horizontal well in unfractured 5ft x 5ft x 75ft blocks                     **
+**       Normal effective stress-dependent fracture permeability                    **
+**       Lookup tables are used on fracture blocks                                  **
+**                                                                                  **
+**       Model 100 ft of overburden                                                 **
+**                                                                                  **
+**       Note: DI/DJ/DKFRAC should not be made zero                                 **
+**                                                                                  **
+**       Table-lookup of stress vs permeabiliy multiplier via *GPERMNEX and         **
+**       *GPERMNEZ                                                                  **
+**----------------------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                                  **
+**----------------------------------------------------------------------------------**
+** After gmgmc013.dat
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #64'
+*TITLE2 'Table-lookup for Dual Permeability Problem'
+
+*INUNIT *FIELD 
+
+*OUTPRN *GRID *IMPL *PRES *SW *SO *SG *TEMP *PERM
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+
+*WSRF *GRID 1
+
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP  *POROS  *PERM
+               *STRESMXP *STRESMNP *STRESEFF *STRESSM *VMSTRESS
+               *STRNEPL *STRAINI *STRAINJ *STRAINK *STRAINSH *STRNMXP *STRNMNP
+               *STRESNORM  *STRAINVOL  *STRESI  *STRESJ  *STRESK *TSTRESI  *TSTRESJ  *TSTRESK
+
+*OUTSRF *WELL  *STRESI  4,4,4 MT
+               *STRESK  4,4,4 MT
+               *PERMI   4,4,4 FR
+               *PERMJ   4,4,4 FR
+               *PERMK   4,4,4 FR
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 8 8 10       
+
+** Well blocks (1:8,4,3) are 75ft long, 5ft wide, 5ft high
+*DI *CON 75
+*DJ *JVAR 3*75 5 4*75
+*DK *KVAR 5*5   ** 25 ft pay
+          5*20  ** 100 ft overburden
+
+**  The whole reservoir is fractured in all 3 directions.
+**  The element size in all directions is 10 ft.
+*DUALPERM
+*SHAPE *GK
+*TRANSFER 1
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *EQUALSI
+
+*POR MATRIX   KVAR 5*0.19
+                   5*0.10
+*POR FRACTURE CON 0.01        **  Fracture properties
+
+*PERMI *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMI *FRACTURE *CON 1     **  Fracture properties
+*PERMJ *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMJ *FRACTURE *CON 1     **  Fracture properties
+*PERMK *MATRIX   *KVAR 5*1
+                       5*1e-4
+*PERMK *FRACTURE *CON 1     **  Fracture properties
+
+*TRANSI *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSJ *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSI *FRACTURE *IJK 3:4 2 1 1.5
+*TRANSJ *FRACTURE *IJK 3:4 2 1 0.5
+
+*CPOR 3E-6
+*PRPOR 200
+*CROCKTYPE 1
+ *CCPOR *MATRIX 3.E-06
+ *CCPOR *FRACTURE 3.E-06
+ *PRPOR *MATRIX 200
+ *PRPOR *FRACTURE 200
+*CROCKTYPE 2
+ *CCPOR *MATRIX 3.E-06
+ *CCPOR *FRACTURE 3.E-06
+ *PRPOR *MATRIX 200
+ *PRPOR *FRACTURE 200
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+*END-GRID
+
+*CTPOR  54.8E-06
+*TRPOR  120
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    1    1
+*TRES        120.000
+*COMPNAME
+           'HC30'
+*SG         7.8638000E-01
+*TB         6.5183250E+02
+*PCRIT      1.1003743E+01
+*VCRIT      1.1757000E+00
+*TCRIT      7.6715000E+02
+*AC         1.0000000E+00
+*MW         4.0000000E+02
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1757000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      9.2860000E+02
+*BIN
+
+*ENTHCOEF
+            0.0000000E+00  2.6300600E-02  3.9898700E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENWS 62.7
+*CW   3.5E-06
+*REFPW 14.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL
+
+*REFDEPTH 62.5
+*REFPRES 500
+*DWOC 200
+
+*SWINIT *MATRIX   *CON 0.25   
+*SWINIT *FRACTURE *CON 0.25   
+
+*TEMPER *MATRIX   *CON 120
+*TEMPER *FRACTURE *CON 120
+
+*ZOIL 1.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+*NUMERICAL 
+
+*NORM *PRESS 145.
+*NORM *SATUR 0.01
+*MAXCHANGE *SATUR 0.8
+*MAXCHANGE *PRESS 1000.
+
+*AIM *THRESH 0.1
+*CONVERGE *MAXRES 1.E-04
+
+*PRECC 5.E-05
+*NORTH 150
+*ITERMAX 200
+
+** **  ============== GEOMECHANICS SECTION =====================
+ *GEOMECH          ** Main keyword for geomechanic option
+ *GEOM3D           ** 3D Finite elements
+ *GCFACTOR 1.0
+ *NITERGEO 200
+ *FORCETOL 0.01
+ *GEOROCK 1           ** rock type # 1 for matrix
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06 
+    *USTRESCUR       ** using current stress
+    *GPERMTS    
+    **Mean total stress   **kx/kx0   ky/ky0     kz/kz0     
+      0.0                  1.6        1.6        1.4
+      100.0                1.50       1.50       1.35
+      200.0                1.4        1.4        1.3
+      300.0                1.30       1.30       1.20
+      400.0                1.20       1.20       1.15
+      500.0                1.15       1.15       1.10
+      600.0                1.1        1.1        1.05
+      700.0                1.0        1.0        1.0
+      800.0                0.9        0.9        0.85
+      900.0                0.8        0.8        0.70
+     1000.0                0.7        0.7        0.65
+     1200.0                0.6        0.6        0.6
+ *GEOROCK 2           ** rock type # 2 for fracture
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06
+    *USTRESCUR       ** using current stress
+    *GULOGINT        ** using log interpolation
+*GPERMNEX
+** Normal effective stress(x)  Kx/Kx0
+   -100.0                      10E4
+      0.0                      10E3
+     50.0                      10E2
+    100.0                      10E1
+    200.0                      1.0
+    300.0                      0.8
+    400.0                      0.6
+    500.0                      0.5
+    600.0                      0.4
+*GPERMNEY        
+** normal effective stress (y) Ky/Ky0
+    600.0                      0.4
+    500.0                      0.5
+    400.0                      0.6
+    300.0                      0.8
+    200.0                      1.0
+    100.0                      10E1
+     50.0                      10E2
+      0.0                      10E3
+   -100.0                      10E4
+*GPERMNEZ
+** Normal effective stress(z)  kz/kz0
+   -100.0                      10E4
+      0.0                      10E3
+     50.0                      10E2
+    100.0                      10E1
+    200.0                      1.0
+    300.0                      0.9
+    400.0                      0.8
+    500.0                      0.6
+    600.0                      0.5
+    
+*GEOROCK 3           ** rock type # 3 for fracture
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06
+    *GULOGINT        ** using log intepolation
+    *GPERMNTX       
+    **Difference in normal total stress (x)  Kx/Kx0 
+                -300.0                         1E3       ** accending stress difference
+                -200.0                         5E2
+                -100.0                         1E2
+                   0.0                         1E0
+                  50.0                         1E-1
+                 100.0                         1E-2
+                 200.0                         1E-3
+                 300.0                         5E-3
+ 
+     *GPERMNTY    **ky/ky0    
+     **Difference in normal total stress (y)  Ky/Ky0      
+                -300.0                         1E3       ** accending stress difference
+                -200.0                         5E2
+                -100.0                         1E2
+                   0.0                         1E0
+                  50.0                         1E-1
+                 100.0                         1E-2
+                 200.0                         1E-3
+                 300.0                         1E-4
+ 
+     *GPERMNTZ    **kz/kz0     
+     **Difference in normal total stress (z)  Kz/Kz0 
+                 300.0                         5E-3      ** Note: decending stress difference
+                 200.0                         1E-3
+                 100.0                         1E-2
+                  50.0                         1E-1
+                   0.0                         1E0
+                -100.0                         1E2
+                -200.0                         5E2
+                -300.0                         1E3
+
+*GEOROCK 4           ** rock type # 4 for matrix
+    *ELASTMOD 3.95E5
+    *POISSRATIO 0.3
+    *COHESION 100000
+    *THEXPCOEF 54.8E-06
+    *GULOGINT        ** using log intepolation
+    *GPERMNTX_MT     
+    ** Difference in normal total stress (x)  **Kx/Kx0 
+            -300.0                              1E1       
+            -200.0                              5E0
+            -100.0                              2E0
+               0.0                              1E0
+              50.0                              1E-1
+             100.0                              2E-1
+             200.0                              5E-1
+             300.0                              1E-2
+ 
+     *GPERMNTY_MT    
+     ** Difference in normal total stress (y)  **Ky/Ky0  
+            -300.0                              1E1       
+            -200.0                              5E0
+            -100.0                              2E0
+               0.0                              1E0
+              50.0                              1E-1
+             100.0                              2E-1
+             200.0                              5E-1
+             300.0                              1E-2
+ 
+     *GPERMNTZ_MT    
+     ** Difference in normal total stress (z)  **Kz/Kz0 
+             300.0                              5E-1      
+             200.0                              1E-1
+             100.0                              5E0
+              50.0                              2E0
+               0.0                              1E0
+            -100.0                              1E0
+            -200.0                              2E0
+            -300.0                              5E0
+
+ *STRESS3D  200   200  200  0  0  0 
+
+ *GEOTYPE   *MATRIX   *IJK 1:8  1:8  1:10   4
+                           1:8  3:5  1:10   1
+ *GEOTYPE   *FRACTURE *IJK 1:8  1:8  1:10   3
+                           1:8  4   1:10    2
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*DATE 2015 1 1.5
+
+   *DTWELL 0.025
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR  'INJTR'
+   *INCOMP  *WATER
+   *OPERATE *MAX *BHP 5000
+   *OPERATE *MAX *STW 50
+   *GEOMETRY K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'INJTR'  **  i  j k  ff
+                          1:8 4 3  1.
+
+   *PRODUCER 'PRODN'
+   *OPERATE *MAX  *STL 17.81
+   *OPERATE *MIN  *BHP    50
+   *GEOMETRY K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'PRODN'  **  i  j k  ff
+                          1:8 4 3  1
+   *SHUTIN 'PRODN'
+
+*TIME 200
+   *SHUTIN 'INJTR'  
+
+*WRST TNEXT
+*TIME 300
+
+   *OPEN 'PRODN'
+
+*TIME 750
+*STOP

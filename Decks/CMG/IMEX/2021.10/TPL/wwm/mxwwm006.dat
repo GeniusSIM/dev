@@ -1,0 +1,237 @@
+   ******************************************************************************
+   ** mxwwm006.dat:           Well Management Group-Hierarchy Test             **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM006.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3       3-LEVEL GROUP CONTROLS OF 4 GROUPS ( 8 WELLS IN TOTAL )    **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This example illustrates the use of 3 level group controls to manage a reservoir ** 
+   ** with 4 producers, 2 gas injectors and 2 water injectors. The producing rates     **
+   ** and the injecting rates are allocated based on the groups' targets.              **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*FILENAME *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+*TITLE1
+'Well Management Group-Hierarchy Test 1.'
+*CASEID  'WELMAN7'
+
+*INUNIT *FIELD              ** Field units are used for both input and output.
+
+*WPRN   *WELL   *TIME
+*WPRN   *GRID   *TIME
+*WPRN   *ITER   *BRIEF
+***WPRN   *ITER   *MATRIX
+*OUTPRN *WELL   *all
+**OUTPRN *RES    *NONE
+**OUTPRN *TABLES *NONE
+*OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   1
+*OUTSRF *GRID   *SO *SG *PRES *BPP
+*OUTDIARY *WELLSTATUS
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                            ** 3 layers in the K (z) direction.
+*DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+*DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+*DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+ 50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                            ** middle and uppermost layers, respectively.
+
+*DEPTH 1 1 1 8400.0         ** Depth to center of first block, in bottom layer.
+
+*POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+                
+*CPOR   3.0E-6              ** Rock compressibility and
+*PRPOR 14.7                 ** reference pressure.
+
+*PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+   200.0   50.0  500.0      ** constant within each layer of the reservoir,
+*PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+   200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+*PERMK *KVAR                ** that the first K layer is at bottom of the
+    20.0   40.0   60.0      ** reservoir.
+
+
+*MODEL *BLACKOIL            ** Solve three equations.
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*PVT
+** p              rs      bo          eg    viso     visg
+  14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+   264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+   514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+  1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+  2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+  2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+  3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+  4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+  5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+  9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+*DENSITY *OIL    46.244
+*DENSITY *GAS     0.0647
+*DENSITY *WATER  62.238
+*CO    1.3687E-5
+*CVO   4.6000E-5
+*BWI   1.0410
+*CW    2.9886E-6
+*REFPW 14.7
+*VWI   0.31
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1
+*SWT
+** sw         krw   krow   
+ 0.1200000    0.0   1.0
+ 0.8200000    1.0   0.0     
+                            
+*SLT
+**  sl     krg        krog  
+   0.12    0.984       0.0 
+   0.15    0.98        0.0       
+   0.30    0.94        0.0       
+   0.40    0.87        1.0000E-4       
+   0.50    0.72        0.001
+   0.55    0.6         0.01
+   0.60    0.41        0.021
+   0.70    0.19        0.09
+   0.75    0.125       0.2
+   0.80    0.075       0.35
+   0.88    0.025       0.7
+   0.95    0.005       0.98
+   0.98    0.0         0.997
+   0.999   0.0         1.0
+   1.0     0.0         1.0
+
+** As there is only one set of tables, these will be used for all
+** grid blocks by default.
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *ON               ** Use vertical equilibrium calculation.
+*PB *CON    4014.7          ** buble point pressure
+*REFDEPTH   8400.           ** Give a reference depth  and
+*REFPRES    4800.           ** associated pressure.
+*DWOC       9500.           ** Depth to water-oil contact
+*DGOC       7000.           ** Depth to gas-oil conttact
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX        90.           ** Maximum time step size
+*MAXSTEPS      3000
+*NORM *PRESS  1000.0        ** Normal maximum changes per time step
+*NORM *SATUR     0.20
+*AIM  *THRESH    0.25 .25   ** Use thresh hold switching criteria
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 1985  1   1
+*DTWELL 5.0
+*AIMWELL  *WELLNN 
+
+** Set default BHP values for wells without explicit BHP constraint
+*BHPDEFAULT *PROD  1000.0
+*BHPDEFAULT *INJE 20000.0
+
+*GROUP  'Group-1'  'Group-2'  *ATTACHTO  'Field'
+*GROUP  'Group-3'  'Group-4'  *ATTACHTO  'Group-1'
+                  
+*WELL 1 'I-1'  *VERT  1  1    *ATTACHTO  'Group-3'
+*WELL 2 'I-2'  *VERT  1 10    *ATTACHTO  'Group-3'
+*WELL 3 'P-1'  *VERT  4  4    *ATTACHTO  'Group-3'
+*WELL 4 'P-2'  *VERT  4  7    *ATTACHTO  'Group-3'
+*WELL 5 'I-3'  *VERT 10  1    *ATTACHTO  'Group-4'
+*WELL 6 'P-3'  *VERT  7  4    *ATTACHTO  'Group-4'
+*WELL 7 'I-4'  *VERT 10 10    *ATTACHTO  'Group-2'
+*WELL 8 'P-4'  *VERt  7  7    *ATTACHTO  'Group-2'
+
+*INJECTOR    'I-1'  'I-3'
+*INCOMP *GAS                        ** Injecting gas.
+*OPERATE  *MAX  *STG  1.0E+6        ** Operating on a rate specification.
+
+*PERFV 'I-1'  'I-3'
+** kf     wi 
+    3    1.0E+5
+
+*INJECTOR    'I-2'  'I-4'
+*INCOMP *WATER                      ** Injecting water.
+*OPERATE  *MAX  *STW    10000.0     ** Operating on a rate specification.
+
+*PERFV  'I-2'  'I-4'
+** kf     wi 
+    1    1.0E+4
+
+*PRODUCER  'P-1' 'P-2' 'P-3' 'P-4'  ** Define the producers
+*OPERATE *MAX  *STO 10000.0         ** Initially, operate on a rate constraint.
+*MONITOR *GOR       40000.0  *STOP  ** Stop if the GOR exceeds 70000.
+*MONITOR *WCUT      0.90     *STOP  ** Stop if the water cut exceeds 0.9
+
+** Well geometry for the producer.
+**            rad    geofac  wfrac   skin
+*GEOMETRY *K  0.25    0.34    1.0    0.0 
+*PERFV *GEO 'P-1' 'P-2' 'P-3' 'P-4'
+** kf     ff                         
+    2     1.0
+
+
+*GCONP  'Field'
+                 *GTARGET  *STO  20000.0
+*GCONP  'Group-1'
+                 *GTARGET  *STO  15000.0
+*GCONP  'Group-2'
+                 *GTARGET  *STO  5000.0
+*GCONP  'Group-3'
+                 *GTARGET  *STO  10000.0
+*GCONP  'Group-4'
+                 *GTARGET  *STO  5000.0
+
+*GCONI  'Field'
+  *VREP    *GAS   0.5
+  *VREP    *WATER 0.5
+
+*APPOR-METHOD  *PROD  'Field' 'Group-1' 'Group-2' 'Group-3' 'Group-4' *IP
+*APPOR-METHOD  *GASI  'Field'  *IP
+*APPOR-METHOD  *WATI  'Field'  *IP
+
+*DATE   1986  1   1
+*DATE   1987  1   1
+*DATE   1988  1   1
+*DATE   1989  1   1
+*DATE   1990  1   1  
+*DATE   1991  1   1
+*DATE   1992  1   1
+*DATE   1993  1   1
+*DATE   1994  1   1 
+*DATE   1995  1   1
+
+*STOP                               

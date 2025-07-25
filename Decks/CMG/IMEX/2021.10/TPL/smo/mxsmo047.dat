@@ -1,0 +1,233 @@
+   ******************************************************************************
+   ** mxsmo047.dat: Trapped Oil Hysteresis Test Model                          **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO047.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  1x1x50             Trapped Oil Hysteresis Test                           **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This model Injects water and oil into every block which are initially at         **
+   ** varying water saturations                                                        **
+   **                                                                                  **
+   ** The varying initial water saturation produces a different PC scanning curve      **
+   ** in each block.                                                                   **
+   ** Production will be very sensitive to the Trapped Oil model implementation        **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   TITLE1
+   'Pc Tapped Oil Hysteresis Test'
+   INUNIT FIELD
+   OUTUNIT FIELD
+   WPRN    WELL     1
+   WPRN    GRID     10
+   WPRN    SECTOR   TIME
+
+   OUTPRN  *WELL     *ALL
+   OUTPRN  *GRID     *So    *SW    *PRES  kro krw
+   OUTSRF  *GRID     *So    *SW  *SG  *PRES  kro krw pcow SORMAX SORH
+   WSRF    *GRID    1
+   WSRF    *WELL    1
+
+   OUTSRF SPECIAL 1 1  1 SW
+   OUTSRF SPECIAL 1 1 10 SW
+   OUTSRF SPECIAL 1 1 20 SW
+   OUTSRF SPECIAL 1 1 30 SW
+   OUTSRF SPECIAL 1 1 40 SW
+   OUTSRF SPECIAL 1 1 50 SW
+
+   OUTSRF SPECIAL 1 1  1 KRO
+   OUTSRF SPECIAL 1 1 10 KRO
+   OUTSRF SPECIAL 1 1 20 KRO
+   OUTSRF SPECIAL 1 1 30 KRO
+   OUTSRF SPECIAL 1 1 40 KRO
+   OUTSRF SPECIAL 1 1 50 KRO
+
+   OUTSRF SPECIAL 1 1  1 PCOW
+   OUTSRF SPECIAL 1 1 10 PCOW
+   OUTSRF SPECIAL 1 1 20 PCOW
+   OUTSRF SPECIAL 1 1 30 PCOW
+   OUTSRF SPECIAL 1 1 40 PCOW
+   OUTSRF SPECIAL 1 1 50 PCOW
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   GRID VARI 1 1 50
+   KDIR DOWN
+   DI CON 800.0
+   DJ CON 800.0
+   DK CON 10.0
+   DTOP   1000
+   POR  CON 0.25
+   PRPOR    15.0
+   CPOR     3.0E-6
+   PERMI   CON 100.0
+   PERMJ   CON 100.0
+   PERMK   con 10.0
+
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************  
+   MODEL BLACKOIL
+   PVT BG 1  
+**     P  Rs    Bo   Bg           VISoil VISgas
+      300 0.0   1.00 1.21820E-02  1.00   0.01609
+     6200 100.  1.02 6.55100E-04  0.60   0.03263
+
+   GRAVITY  *GAS   0.852
+   DENSITY  *WATER 63.02
+   BWI             1.01420
+   CW              3.0E-6
+   REFPW           14.7
+   VWI             0.96
+   CVW             0.0
+   DENSITY OIL     60
+   CO              3.0e-6
+
+   PTYPE  CON  1
+
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   ROCKFLUID
+
+   RPT 1
+
+   SWT
+   ** sw      krw        krow            pcow             pcowi
+         0.08       0.0            1         70.0      70.0
+          0.1       0.0  0.962735361      59.2392      41.2
+         0.12  0.001728  0.925945463  52.21855334      25.5
+         0.14  0.002744  0.889636513  47.63416141      15.6
+         0.16  0.004096  0.853814968  43.45695539      10.8
+          0.2     0.008  0.783661279      36.2144       4.8
+         0.24  0.013824  0.715541753  30.28420301       1.2
+         0.28  0.021952  0.649519053  25.47934106      -1.7
+         0.32  0.032768  0.585662019  21.63146854        -4
+         0.36  0.046656  0.524046754  18.58993459      -6.4
+          0.4     0.064  0.464758002      16.2208      -8.3
+         0.44  0.085184  0.407890917  14.40585421     -10.4
+         0.48  0.110592  0.353553391  13.04163226     -12.2
+        0.518  0.140608  0.304388244  12.03843174     -14.6
+         0.56  0.175616  0.252982213  11.31932979     -17.7
+          0.6     0.216  0.207062792      10.8192     -23.3
+         0.64  0.262144  0.164316767  10.48372941     -33.4
+         0.68  0.314432        0.125  10.26843546     -50.0  **constant Pcowi value signals trapped oil saturation
+         0.72  0.373248  0.089442719  10.13768294     -50.0
+         0.76  0.438976   0.05809475  10.06370099     -50.0
+          0.8     0.512  0.031622777      10.0256     -50.0
+         0.82    0.6096  0.020539596  10.01511654     -50.0
+         0.84    0.7072   0.01118034  10.00838861     -50.0
+         0.86    0.8048            0  10.00430259     -50.0
+         0.88    0.9024            0  10.00199066     -50.0
+          0.9       1.0            0      10.0008     -50.0
+ 
+   SLT
+   **  sl     krg        krog
+      0.08    1.00        0.0
+      0.10    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0   
+
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   INITIAL
+   VERTICAL   BLOCK_CENTER 
+   REFPRES    1000
+   REFDEPTH   1000
+   DWOC       1500
+   DGOC       1000
+   PB CON     400      
+
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   NUMERICAL
+   DTMAX        31.
+   DTMIN        0.001
+   AIM           OFF      
+   CONVERGE MAXRES 0.001
+
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   RUN
+   DATE 2000  1   1 
+   AIMSET CON  1
+   DTWELL    1.0
+
+   WELL   1 'P01'  *VERT   1 1     
+   WELL   2 'I01'  *VERT   1 1     
+   WELL   3 'I02'  *VERT   1 1                                            
+**                  rad   geofac  wfrac  skin
+      GEOMETRY  *K  0.02    0.37     1.0   0 
+                       
+   PRODUCER 'P01'
+   OPERATE  MIN  BHP       1000.00  
+   PERFV     geo    'P01'       
+     **k    WI
+    1:50   1.0
+
+  INJECTOR 'I01'
+  INCOMP WATER
+  OPERATE  MAX  STW       20000.00  
+  PERFV     geo    'I01'       
+    **k    WI
+    1:50   1.0
+
+  INJECTOR 'I02'
+  INCOMP OIL
+  OPERATE  MAX  STO       20000.00 
+  PERFV     geo    'I02'       
+    **k    WI
+    1:50   1.0
+
+  *SHUTIN 'I02' 
+
+  DATE 2001 1 1
+
+  *SHUTIN 'I01'
+  *OPEN   'I02'
+
+  DATE 2002 1 1
+
+  *SHUTIN 'I02'
+  *OPEN   'I01'
+
+  DATE 2003 1 1
+  DATE 2004 1 1 
+  DATE 2005 1 1
+  DATE 2006 1 1
+  DATE 2007 1 1
+  DATE 2008 1 1
+  DATE 2009 1 1
+  DATE 2010 1 1
+
+  STOP
+

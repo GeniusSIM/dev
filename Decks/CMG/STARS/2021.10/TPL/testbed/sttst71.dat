@@ -1,0 +1,263 @@
+
+
+**                        OVERVIEW
+**                        ========
+**
+**  This data set is based on the STARS test bed No. 7. The reservoir
+**  description part is abstracted from the IMEX test data mxgeo002.
+**  The purpose of it is to test the fault option of the Grid Module
+**  for STARS.
+**
+**  The fault is located in grid blocks i = 2 to i = 6
+**                                      j = 1 to j = 10
+**                                      k = 1 to k = 3
+**
+**            +--+--+--+--+--+--+--+--+--+--+
+**        10  |              |              |
+**            +  +  +  +  +--+  +  +  +  +  +
+**         9  |           |                 |
+**            +  +  +  +  +  +  +  +  +  +  +
+**         8  |           |                 |
+**            +  +  +  +  +  +  +  +  +  +  +
+**         7  |           |                 |
+**            +  +  +  +--+  +  +  +  +  +  +
+**         6  |        |                    |
+**            +  +  +--+  +  +  +  +  +  +  +
+**         5  |     |                       |
+**            +  +  +  +  +  +  +  +  +  +  +
+**         4  |     |                       |
+**            +  +  +  +  +  +  +  +  +  +  +
+**         3  |     |                       |
+**            +  +--+  +  +  +  +  +  +  +  +
+**         2  |  |                          |
+**            +  +  +  +  +  +  +  +  +  +  +
+**     J = 1  |  |                          |
+**            +--+--+--+--+--+--+--+--+--+--+
+**         I = 1   2  3  4  5  6  7  8  9 10
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 71'
+*title2 'Dead Oil Steam Flood with *FAULT'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y x w solconc obhloss viso
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well  layer all
+outsrf grid  pres so sg temp
+outsrf special matbal well 'OIL'   ** Cumulative oil produced
+               obhloss           ** Cumulative heat loss
+               blockvar sg 3,3,1    ** Gas saturation in block (5,3,1)
+               blockvar temp 3,3,1  ** Temperature in block (5,3,1)
+               blockvar so 3,3,1    ** Oil saturation
+               blockvar pres 3,3,1  ** Pressure
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                            ** 3 layers in the K (z) direction.
+*DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+*DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+*DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+ 20.0 30.0 50.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                            ** middle and uppermost layers, respectively.
+
+*DEPTH 1 1 1 8335.0         ** Depth to center of first block, in bottom layer.
+
+*POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+
+*PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+   200.0   50.0  500.0      ** constant within each layer of the reservoir,
+*PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+   200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+*PERMK *KVAR                ** that the first K layer is at bottom of the
+    20.0   40.0   60.0      ** reservoir.
+
+** Enter fault location
+**     throw   i1:i2  j1:j2
+*FAULT   20    2      1:2
+               3      1:5
+               4      1:6
+               5      1:9
+               6:10   1:10
+
+*END-GRID
+
+*CPOR   3.0E-6              ** Rock compressibility and
+*PRPOR 14.7                 ** reference pressure.
+
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 75
+*refblock 1 1 1
+
+*temp *con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+
+*norm     press 200 satur 0.2  temp 50
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on December 18, 1978
+date 1978 12 18.5
+
+   dtwell 1
+                                               **           3
+   well 1 'INJECTOR'    vert 1 1  frac .125    **         o o o
+   well 2 'CRNR PRDCR'  vert 9 1  frac .125    **       o o o o o
+
+   injector mobweight 'INJECTOR'
+   incomp  water  1.0  0.0
+   tinjw 450
+   qual .7
+   operate max stw 300
+   operate max bhp 10000
+   perfv 'INJECTOR'
+            **  k  wi        ** Inject only in the bottom layer
+                3  106466.45 ** .007082*k*h / ln(cc*sqrt((dx**2+dy**2)/pi)/rw)
+                             ** k = 2000 md, h = 25 ft, dx = dy = 29.17 ft,
+                             ** cc = 0.249, rw = 0.3 ft
+
+   producer 'CRNR PRDCR'
+   operate max stl    1000
+   operate min bhp    170
+   operate max steam  10    ** Steam CWE in bbl/day
+   perfv 'CRNR PRDCR'
+             **  k   wi
+                 1   42586.566 **48
+                 2   21293.283 **24
+                 3   53233.208 **60
+
+time 1095
+
+time 3650
+stop

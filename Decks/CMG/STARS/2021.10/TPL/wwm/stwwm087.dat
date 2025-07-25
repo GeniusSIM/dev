@@ -1,0 +1,224 @@
+
+******************************************************************************
+** Template stwwm087.dat:      GOR Well Cutback Model                       **
+******************************************************************************
+******************************************************************************
+**                                                                          **
+** FILE:  STWWM087.DAT                                                      **
+**                                                                          **
+** MODEL:  10x10x3             WCUTBACK CONSTRAINT        FIELD UNIT        **
+**                                                                          **
+******************************************************************************
+**                                                                          **
+**   This is a 10x10x3 Cartesian-grid gas-injection problem based on the    **
+**   first SPE Comparative Solution Project (JPT, Jan., 1981).  However,    **
+**   a GOR well cutback constraint is imposed on the oil producer.          **
+**                                                                          **
+******************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 87'
+*TITLE2 'Verify/Illustrate GOR Well Cutback Constraint (*OPERATE *GOR *STG)'
+
+*INUNIT *FIELD
+
+*WPRN   *GRID   *TIME
+*OUTPRN *WELL   *WELLCOMP
+*OUTPRN *RES    *NONE
+*OUTPRN *GRID   *SO *SG *PRES
+
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   1
+*OUTSRF *GRID   *SO *SG *PRES
+
+*WRST 150
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 10   10    3
+
+*DI *CON 1000.0
+*DJ *CON 1000.0
+*DK *KVAR  50.0 30.0 20.0
+
+*DEPTH 1 1 1 8400.0         ** Depth to center of first block, in bottom layer.
+
+*POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+
+*PERMI *KVAR  200.0   50.0  500.0
+*PERMJ *KVAR  200.0   50.0  500.0
+*PERMK *KVAR   20.0   40.0   60.0
+
+*END-GRID
+
+*CPOR   3.0E-6              ** Rock compressibility and
+*PRPOR 14.7                 ** reference pressure.
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 3 3 3 1
+
+*COMPNAME 'Water' 'Oil' 'Soln_Gas'
+
+*KV1       0.E+00 0.E+00 3.55066163E+04
+*KV2       0.E+00 0.E+00 -3.98924161E-05
+*KV3       0.E+00 0.E+00 1.38087563E+01
+*KV4       0.E+00 0.E+00 -1.58398416E+03
+*KV5       0.E+00 0.E+00 -4.46782E+02
+
+*CMM       0 113.46 24.5658263615154
+
+*PCRIT     0.0E+0 0.0E+0 6.67008766E+2
+*TCRIT     0.0E+0 0.0E+0 -1.1555431E+2
+
+*SURFLASH W O G
+*PRSR     14.65
+*TEMR     160
+*PSURF    1.465E+1
+*TSURF    6.26E+1
+
+*MASSDEN   6.22379911E+1 4.35677622E+1 2.00456498E+1
+*CP        2.9886E-6 1.3687E-5 1.3687E-5
+*CT1       4.20946093E-4 9.95E-5 9.95E-5
+*CT2       0.0E+0 0.0E+0 0.0E+0
+
+*VISCTABLE
+   41          3.19637     941.27      289.803
+   59          1.140618    152.5363    46.9636
+   77          0.729468    40.2884     12.40418
+   95          0.55326     14.09338    4.33914
+   113         0.455367    5.9189      1.82234
+   131         0.388878    2.82668     0.870293
+   149         0.335707    1.484916    0.457183
+   160         0.31        1.04        0.3202004
+   178         0.272506    0.610286    0.187898
+   223         0.2055295   0.1977466   0.0608832
+   268         0.1631386   0.0788786   0.02428554
+   313         0.1327683   0.0363004   0.01117635
+   358         0.1108131   0.01854463  0.00570961
+   403         0.0943865   0.01025907  0.003158614
+   448         0.0817564   0.00604287  0.00186051
+   493         0.0718181   0.00374454  0.001152888
+   538         0.0635245   0.00241948  0.000744921
+   583         0.0584989   0.001619163  0.000498516
+   628         0.0536369   0.00111644  0.000343735
+   673         0.0495426   0.000789874  0.0002431904
+
+*VSMIXCOMP 'Soln_Gas'
+*VSMIXENDP 0 0.61
+*VSMIXFUNC 0 0.0348553 0.0731674 0.1171388 0.153516 0.1898932 0.2608796 0.334304 0.4182955 0.51034 0.61
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT ** sw       krw     krow
+    0.1200000    0.0      1.0
+    0.8200000    1.e-07   0.0
+
+*SLT ** sl    krg        krog
+      0.12    0.984       0.0
+      0.15    0.98        0.0
+      0.30    0.94        0.0
+      0.40    0.87        1.0000E-4
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE               ** Use vertical equilibrium calculation.
+*REFDEPTH   8400.                  ** Give a reference depth  and
+*REFPRES    4800.                  ** associated pressure.
+
+*PBC  'Soln_Gas' *CON   4014.7     ** buble point pressure
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*TFORM *ZT
+*ISOTHERMAL
+*DTMAX         365.         ** Maximum time step size
+*MAXSTEPS      200          ** Maximum number of time steps
+*AIM  *THRESH    0.25       ** Use thresh hold switching criteria
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1986 04 22
+
+   *DTWELL 1.0
+
+   *WELL 1  'Injector'
+
+   *INJECTOR  *UNWEIGHT 'Injector'          ** Define the type of well 1.
+   *INCOMP *GAS 0. 0. 1.                    ** Injecting gas.
+   *OPERATE  *MAX  *STG  1.0E+8             ** This is the maximum amount of gas that will
+                                            ** be injected.  If recycled + makeup gas exceeds
+                                            ** this amount then 1.0E+8 will be injected.
+   *OPERATE  *MAX  *BHP 147000.0
+   *MONITOR  *BACKFLOW *STOP                ** If backflow occurs, stop the simulation.
+
+   *PERF 'Injector'
+   ** if     jf     kf     wi
+      1      1      3      1.0E+5
+
+   *WELL 2  'Producer'
+
+   *PRODUCER 'Producer'                     ** Define the type of well 2.
+   *OPERATE *MAX  *STO 20000.0              ** Initially, operate on a rate constraint.
+   *OPERATE *MIN  *BHP  1000.0              ** If the BHP falls below 1000 psi, switch to a minimum pressure constraint.
+   *OPERATE *GOR *STG 10000.0 0.9 9000.00   ** GOR constraint with control phase STG,
+                                            ** base value = 10000.0 (SCF/STB)
+                                            ** reversing value = 9000.0 (SCF/STB)
+                                            ** rate cutback factor = 0.9
+
+   *MONITOR *MIN  *STO   100.0  *STOP       ** When the oil rate falls below 100 bbl/D stop the simulation.
+   *MONITOR *GOR       20000.0  *STOP       ** Stop if the GOR exceeds 20000.
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.229    1.0    0.0
+   *PERF *GEO 'Producer'
+   ** if     jf     kf     ff
+      10     10     1     1.0
+
+*TIME 2400.0
+
+   *TARGET GOR 'Producer'                   ** Test changing GOR base value
+      10500.0
+
+*TIME 3650.0                                ** Time of next well change.

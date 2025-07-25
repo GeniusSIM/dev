@@ -1,0 +1,242 @@
+   ******************************************************************************
+   ** mxtrc022.dat:           Tagging Polymer Injection                        **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXTRC022.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  201x1x1           POLYMER INJECTION      POLYMER BASED TRACERS           **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** It demonstrates a 1D 201x1x1 polymer injection run. Polymer is injected with     **
+   ** water as three slugs, then only water is injected. Each slug is tracked by       **
+   ** polymer based tracers.                                                           **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section
+   ********************************************************************************
+
+   *TITLE1   'IMEX Tracer Template #022'
+   *TITLE2   'Tracking polymer slugs by tracers'
+
+   *INUNIT *FIELD
+   *WPRN   *WELL 10
+   *WPRN   *GRID 10
+
+   *OUTPRN *WELL    *ALL
+   *OUTPRN *TABLES  *NONE
+   *OUTPRN *RES     *NONE
+   *OUTPRN *GRID    *NONE
+
+   *WSRF   *GRID    1
+   *OUTSRF *GRID    *SO *SW *SG *PRES *PCONC *PADSORP
+   *WSRF   *WELL 1
+   *OUTSRF *WELL    *ALL
+
+   ********************************************************************************
+   ** Reservoir Description Section
+   ********************************************************************************
+   *GRID *CART 201 1 1
+   *DI *CON 5
+   *DJ *CON 5
+   *DK *CON 5
+
+   *DEPTH 1 1 1 2000.
+
+   *POR *CON 0.300
+
+   *PRPOR    14.7
+   *CPOR     3.0E-6
+
+   *PERMI *CON 300
+   *PERMJ *CON 300
+   *PERMK *CON 300
+
+   ********************************************************************************
+   ** Component Property Section
+   ********************************************************************************
+   *MODEL *POLY
+   *PVT
+   **  p        rs      bo       eg     viso     visg
+       14.7     1.0   1.062     6.0     1.04     0.0080
+      264.7    90.5   1.15     82.692   0.975    0.0096
+      514.7   180.0   1.207   159.388   0.91     0.0112
+     1014.7   371.0   1.295   312.793   0.83     0.0140
+     2014.7   636.0   1.435   619.579   0.69     0.0189
+     2514.7   775.0   1.5     772.798   0.64     0.0208
+     3014.7   930.0   1.565   925.926   0.594    0.0228
+     4014.7  1270.0   1.695  1233.046   0.51     0.0268
+     5014.7  1600.0   1.827  1540.832   0.449    0.0309
+     9014.7  2984.0   2.36   2590.674   0.203    0.0470
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+
+   *CO     1.3687E-5
+   *CVO    4.6E-5
+   *BWI    1.04
+   *CW     3.04E-6
+   *REFPW  14.7
+   *VWI    0.31
+   *CVW    0.0
+
+   *PMIX *LINEAR
+   *PVISC     2.44
+   *PREFCONC  0.7
+
+   *PADPOR_REF 0.
+
+   *PADSORP
+   **  p_con       adsop_level
+        0.0        0.0
+        0.2        0.015
+        0.4        0.024
+        0.6        0.028
+        0.7        0.030
+
+   *PPERM
+   **  perm   max_ad   res_ad    p_pore   rrf
+       10.0    0.03      0.015     0.95     1.2
+     1000.0    0.03      0.010     1.0      1.2
+
+   ********************************************************************************
+   ** Rock-fluid Property component
+   ********************************************************************************
+   *ROCKFLUID
+   *RPT
+   *SWT
+   **  sw       krw    krow
+      0.2       0.0    1.0
+      0.3       0.07   0.4
+      0.4       0.15   0.125
+      0.5       0.24   0.0649
+      0.6       0.33   0.0048
+      0.8       0.65   0.0
+      0.9       0.83   0.0
+      1.0       1.0    0.0
+
+   *SLT
+   **   sl     krg     krog
+        0.2    0.98    0.0
+        0.3    0.94    0.0
+        0.4    0.87    1.0000E-4
+        0.5    0.72    0.001
+        0.55   0.6     0.010
+        0.6    0.41    0.021
+        0.7    0.19    0.09
+        0.75   0.125   0.2
+        0.8    0.075   0.35
+        0.88   0.025   0.7
+        0.95   0.005   0.98
+        0.98   0.0     0.997
+        0.999  0.0     1.0
+        1.0    0.0     1.0
+
+   ********************************************************************************
+   ** Initial Conditions Section
+   ********************************************************************************
+   *INITIAL
+   *USER_INPUT
+
+   *PRES *CON 3000.0
+   *PB   *CON 2500.0
+   *SO   *CON     0.7
+   *SW   *CON     0.3
+
+   ********************************************************************************
+   ** Numerical Methods Control Section
+   ********************************************************************************
+   *NUMERICAL
+   *DTMAX  0.5
+   *AIM *OFF
+
+   *TRACER
+   ********************************************************************************
+   ** Tracer Section                                                             **
+   ********************************************************************************
+   *TRCR-DEF
+      'trcr-slug1'  *P-W
+      'trcr-slug2'  *P-W
+      'trcr-slug3'  *P-W
+      'trcr-poly '  *P-W  ** tracking total polymer
+
+   *TRCR-FIMPL ON
+
+   ********************************************************************************
+   ** Well Data Section
+   ********************************************************************************
+   *RUN
+
+   *DATE  1987  11  02
+   *AIMSET   *CON  1
+   *DTWELL      0.001
+
+*WELL 1    'inj'
+   *INJECTOR  *UNWEIGHT  1
+   *INCOMP    *WATER 0.3
+   *OPERATE   *MAX       *STW    2.0
+**    *OPERATE   *MAX       *BHP    9000.0 *CONT *REPEAT
+   *GEOMETRY  *K  0.25   0.34    1.0     0.0
+   *PERF *GEO 1
+   ** if      jf     kf     ff
+       1      1      1      1.0
+
+*WELL 2    'prod'
+   *PRODUCER  2
+   *OPERATE   *MAX       *STO    1.0
+   *OPERATE   *MIN       *BHP    15.0
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY  *K  0.25   0.34    1.0     0.0
+   *PERF *GEO  2
+   ** if      jf     kf     ff
+       201      1      1      1.0
+
+*TRCR-INJCONC 'inj'
+   'trcr-slug1'  -1.0
+   'trcr-poly '  -1.0
+
+*TIME 20.
+
+   *INCOMPWL 'inj'
+      0.0 0.0
+   *TRCR-INJCONC 'inj'
+      'trcr-slug1'   0.0
+
+*TIME 30.
+
+   *INCOMPWL 'inj'
+      0.3 0.0
+   *TRCR-INJCONC 'inj'
+      'trcr-slug2'  -1.0
+
+*TIME 50.
+
+   *INCOMPWL 'inj'
+      0.0 0.0
+   *TRCR-INJCONC 'inj'
+      'trcr-slug2'   0.0
+
+*TIME 60.
+
+   *INCOMPWL 'inj'
+      0.3 0.0
+   TRCR-INJCONC 'inj'
+      'trcr-slug3'  -1.0
+
+*TIME 80.
+
+   *INCOMPWL 'inj'
+      0.0 0.0
+   TRCR-INJCONC 'inj'
+      'trcr-slug3'  0.0
+
+*TIME 130.
+*STOP

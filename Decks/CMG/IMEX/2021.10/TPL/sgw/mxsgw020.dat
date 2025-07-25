@@ -1,0 +1,532 @@
+********************************************************************************
+** mxsgw020.dat: iSegWells : Multilateral Well with Flow Control Devices      **
+********************************************************************************
+********************************************************************************
+**                                                                            **
+**                                                                            **
+** FILE:   MXSGW020.DAT                                                       **
+**                                                                            **
+** MODEL: 15x15x9   4-Lateral Well with Perpendicular Horizontal Branches     **
+**                  Refined Grid at Perforations                              **
+**                  Passive flow control                                      **
+**                                                                            **
+********************************************************************************
+**                                                                            **
+** This is a 15x15x9 cartesian grid problem with one iSegWell producer.       **
+** Fluid enters the well through four horizontal branches; these              **
+** branches are at the same depth but go in different directions from the     **
+** main vertical branch.  The reservoir grid blocks in which the well is      **
+** perforated have undergone 3 3 1 refinement.  Orifice-based flow control    **
+** devices regulate flow from the branches into the main vertical tubing      **
+** string.  A drift-flux method is used to model the pressure drops in the    **
+** vertical tubing string. Passive flow control - no monitoring.              **
+**                                                                            **
+** Provenance:\shared\welman.lib\segwell\IMEX QA\mult-fcd-orif-df.dat         **
+**                                                                            **
+********************************************************************************
+** CONTACT:  CMG, (403)531-1300;  282-6495 (fax); support@cmgl.ca  (Internet) **
+********************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1 'iSegWell'
+*TITLE2 'Horizontal Multilateral - Passive FCDs'
+*TITLE3 'Perforations in Refined Blocks'
+
+*INUNIT *FIELD              
+*WPRN   *WELL TIME
+*OUTPRN WELL ALL
+*WPRN   *GRID 0
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*OUTPRN *TABLES *NONE
+*WPRN ITER MATRIX
+*WSRF   *GRID   *TIME
+*WSRF   *WELL   *TIME
+*OUTSRF *GRID *SO *SW  *SG  *PRES *BPP FLUX
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 15  15  9                                  
+*KDIR *DOWN       
+**          1    2     3   4    5   6-10  11  12   13   14   15            
+*DI *IVAR 10000 5000 2500 1200 900 5*900 900 1200 2500 5000 10000              
+*DJ *JVAR 10000 5000 2500 1200 900 5*900 900 1200 2500 5000 10000             
+**          1   2    3    4    5    6    7    8    9     
+*DK *KVAR 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0
+
+** set up refine grid for 4 orthogonal multilaterals
+REFINE 5:7   8   5 into 3 3 1
+REFINE 9:11  8   5 into 3 3 1
+REFINE  8   5:7  5 into 3 3 1
+REFINE  8   9:11 5 into 3 3 1
+
+*DEPTH 1 1 5 9000.0          
+*POR *CON 0.15                                           
+*CPOR   1.0E-6              
+*PRPOR 6000.0               
+*PERMI *CON 100.0                                             
+*PERMJ *EQUALSI            
+*PERMK *CON 100.0
+
+*MODEL *BLACKOIL            
+
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*TRES 100
+*PVT  *ZG
+** p       rs     bo      zg    viso     visg
+  14.7       0 1.0000   0.9964  1.20    1.0147e-2
+   400     165 1.0120   0.9008  1.17    1.0961e-2
+   800     335 1.0255   0.7980  1.14    1.2541e-2
+  1200     500 1.0380   0.7036  1.11    1.5260e-2
+  1600     665 1.0510   0.6447  1.08    1.9393e-2
+  2000     828 1.0630   0.6324  1.06    2.4292e-2
+  2400     985 1.0750   0.6518  1.03    2.9069e-2
+  2800    1130 1.0870   0.6884  1.00    3.3344e-2
+  3200    1270 1.0985   0.7336   .98    3.7098e-2
+  3600    1390 1.1100   0.7834   .95    4.0422e-2
+  3800    *INT   *INT   0.8093  *INT    4.1953e-2
+  4000    1500 1.1200   0.8356   .94    4.3408e-2
+  4200    *INT   *INT   0.8622  *INT    4.4797e-2
+  4400    *INT   *INT   0.8891  *INT    4.6128e-2
+  4600    *INT   *INT   0.9161  *INT    4.7406e-2
+  4800    *INT   *INT   0.9432  *INT    4.8636e-2
+  5000    *INT   *INT   0.9703  *INT    4.9824e-2
+  5200    *INT   *INT   0.9975  *INT    5.0972e-2
+  5400    *INT   *INT   1.0247  *INT    5.2085e-2
+  5600    *INT   *INT   1.0519  *INT    5.3166e-2
+  5800    *INT   *INT   1.0791  *INT    5.4218e-2
+  6000    *INT   *INT   1.1060  *INT    5.5242e-2
+  6200    *INT   *INT   1.1335  *INT    5.6241e-2
+  6400    *INT   *INT   1.1606  *INT    5.7216e-2
+  6600    *INT   *INT   1.1875  *INT    5.8169e-2
+  9000    1510 1.1210   1.5074   .93    6.8328e-2
+
+*DENSITY *OIL    44.986
+*GRAVITY *GAS     0.92
+*DENSITY *WATER  63.021
+*CO    1.0E-6
+*BWI   1.0034
+*CW    1.0E-6
+*REFPW 3600
+*VWI   0.96
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1
+*SWT                          
+** sw   krw     krow
+0.150   0.00    1.00 
+0.200   *int    *INT
+0.250   *int    *INT
+0.300   *int    *INT
+0.350   *int    *INT
+0.400   *int    *INT
+0.500   *int    *INT
+0.600   *int    *INT
+0.650   *int    *INT
+0.700   *int    *INT
+0.750   *int    *INT
+0.800   1.00    0.00 
+
+*SLT                        
+** sl   krg    krog
+0.200   0.3   0.00
+0.250   *INT    *INT
+0.300   *INT    *INT
+0.400   *INT    *INT
+0.500   *INT    *INT
+0.600   *INT    *INT
+0.650   *INT    *INT
+0.700   *INT    *INT
+0.750   *INT    *INT
+0.800   *INT    *INT
+0.850   *INT    *INT
+0.900   *INT    *INT
+0.950   0.00   1.00 
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *DEPTH_AVE    
+*PB *CON    3600.0          
+*REFDEPTH   9000.           
+*REFPRES    6000.0           
+*DGOC       9100.0          
+*DWOC       9100.0          
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX    30.0
+*NORTH 80
+*ITERMAX 80
+*SDEGREE 2
+*AIM OFF
+NORM PBUB 1000
+CONVERGE MAXRES 0.1
+*MAXSTEPS 20
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2011 01 01
+*DTWELL 1.00
+*AIMSET CON 1
+
+*WELL 1 'Multi-lat'
+*PRODUCER  'Multi-lat'
+*PWELLBORE ISEGWELL
+*OPERATE *MAX  *STG  20e6
+*OPERATE *MIN  *BHP  1000.0
+
+*HEADITER    '*' ITERATIVE
+*BHPHEADINIT '*' COMBINED
+*WELLSITE 'Site1'
+
+*BRANCH 'Site1-Main-Trunk' *CONNECT-TO 'Site1' *AT 0.0
+*BEGIN
+    0.00       0.00          0.00         0.00
+    0.00       0.00       8550.00      8550.00
+*END
+
+*BRANCH 'Site1-North-Trunk' *CONNECT-TO 'Site1-Main-Trunk' *AT 8550.00 ** North is +x direction
+*BEGIN
+    0.00       0.00       8550.00      8550.00
+  450.00       0.00       9000.00      9186.40  ** = 450 x sqrt(2) + 8550.00
+ 3150.00       0.00       9000.00     11886.40  ** = 9186.4 + 3*900
+*END
+
+*BRANCH 'Site1-South-Trunk' *CONNECT-TO 'Site1-Main-Trunk' *AT 8550.00  ** Laterals at same depth but in different directions
+*BEGIN                                                                  ** South = -x direction
+    0.00       0.00       8550.00      8550.00
+ -450.00       0.00       9000.00      9186.40  ** = 450 x sqrt(2) + 8550.00  ** Laterals are sloped downward
+-3150.00       0.00       9000.00     11886.40  ** = 9186.4 + 3*900
+*END
+
+*BRANCH 'Site1-West-Trunk' *CONNECT-TO 'Site1-Main-Trunk' *AT 8550.00 ** West is +y direction
+*BEGIN
+    0.00       0.00       8550.00      8550.00
+    0.00     450.00       9000.00      9186.40  ** = 450 x sqrt(2) + 8550.00
+    0.00    3150.00       9000.00     11886.40  ** = 9186.4 + 3*900
+*END
+
+*BRANCH 'Site1-East-Trunk' *CONNECT-TO 'Site1-Main-Trunk' *AT 8550.00 ** East is -y direction
+*BEGIN
+   0.00        0.00       8550.00      8550.00
+   0.00     -450.00       9000.00      9186.40  ** = 450 x sqrt(2) + 8550.00
+  0.00     -3150.00       9000.00     11886.40  ** = 9186.4 + 3*900
+*END
+                    
+
+*PACKERS 'Site1-Main-Trunk'
+*BEGIN
+   100.0
+  8549.0
+*END
+
+*PACKERS 'Site1-North-Trunk'
+*BEGIN
+   8551.0
+*END
+
+*PACKERS 'Site1-South-Trunk'
+*BEGIN
+   8551.0
+*END
+
+*PACKERS 'Site1-West-Trunk'
+*BEGIN
+   8551.0
+*END
+
+*PACKERS 'Site1-East-Trunk'
+*BEGIN
+   8551.0
+*END
+
+*TE-PDMETHOD 'Tube-meth1'
+*CONST 0.0001
+
+*TE-PDMETHOD 'Tube-fcd'
+**         xnum   dinlet  dorif     doutlet   temper cpcvratio xdcoef xdmod 
+**           1    3 inch   0.4 inch 3 inch     80f     1.4      ??     1
+FCD-ORIF   1.0    0.1666   0.033    0.166    80.0     1.4     0.85    1
+
+*TSTRING   'Site1-Main-TS' 
+*START-AT 'Site1-Main-Trunk'    0.00 *OPEN 'ZERO'
+*END-AT   'Site1-Main-Trunk' 8549.50 *OPEN 'Tube-meth1'
+
+** Define the stinger tubing strings
+
+*TSTRING   'Site1-North-TS' 
+*START-AT 'Site1-North-Trunk'  8550.00 *OPEN 'Tube-fcd'
+*END-AT   'Site1-North-Trunk' 10000.00 *OPEN 'Tube-meth1'
+
+*TSTRING   'Site1-South-TS' 
+*START-AT 'Site1-South-Trunk'  8550.00 *OPEN 'Tube-fcd'
+*END-AT   'Site1-South-Trunk' 10000.00 *OPEN 'Tube-meth1'
+
+*TSTRING   'Site1-West-TS' 
+*START-AT 'Site1-West-Trunk'  8550.00 *OPEN 'Tube-fcd'
+*END-AT   'Site1-West-Trunk' 10000.00 *OPEN 'Tube-meth1'
+
+*TSTRING   'Site1-East-TS' 
+*START-AT 'Site1-East-Trunk'  8550.00 *OPEN 'Tube-fcd'
+*END-AT   'Site1-East-Trunk' 10000.00 *OPEN 'Tube-meth1'
+
+ TS-EQPMETHOD  'valve flowlim1'
+ VALVE flolim gas 3e6 0.001 wat  10e6 10
+
+ TS-EQPT 'Site1-North-TS' 
+    BEGIN
+     8550.1 VALVE 'valve flowlim1' 'valve flowlim1' -1
+    END
+
+ TS-EQSETTING 
+   BEGIN
+    VALVE 'Site1-North-TS'  8550.1 1.0
+   END
+
+*TS-PDMETHOD 'tspmeth1'
+*BEGIN
+ *TYPE    drift-flux
+ *IRADIUS 0.0833   ** 1 inch radius
+ *RROUGH  0
+ *SFCTENS 30.0
+ *FMULT 1.
+*END
+
+*TS-PDMETHOD 'tspmeth2'
+*BEGIN
+ *TYPE   HOMOGENEOUS
+ *IRADIUS 0.0833   ** 1 inch radius
+ *RROUGH  0
+ *SFCTENS 30.0
+ *FMULT 1.
+*END
+
+*WB-PDMETHOD 'wbpmeth1'
+*BEGIN 
+ *TYPE      HOMOGENEOUS
+ *IRADIUS 0.1666 ** 2 inch radius
+ *RROUGH  0
+ *SFCTENS 30.0
+ *TSARFRAC 0.25
+ *FMULT 1.
+*END
+
+*WB-PDMETHOD 'wbpmeth2'
+*BEGIN 
+ *TYPE    HOMOGENEOUS
+ *IRADIUS 0.1666 ** 2 inch radius
+ *RROUGH  0
+ *SFCTENS 30.0
+ *TSARFRAC 0.25
+ *FMULT 1.
+*END
+
+*TS-PDPOINTS 'Site1-Main-TS'
+*BEGIN
+     0.0 'tspmeth1' 'tspmeth1'
+  8549.5 'tspmeth1' 'tspmeth1'
+*END
+
+*TS-PDPOINTS 'Site1-North-TS'
+*BEGIN
+  8550.0 'tspmeth2' 'tspmeth2'
+ 10000.0 'tspmeth2' 'tspmeth2'
+*END
+
+*TS-PDPOINTS 'Site1-South-TS'
+*BEGIN
+  8550.0 'tspmeth2' 'tspmeth2'
+ 10000.0 'tspmeth2' 'tspmeth2'
+*END
+
+*TS-PDPOINTS 'Site1-West-TS'
+*BEGIN
+  8550.0 'tspmeth2' 'tspmeth2'
+ 10000.0 'tspmeth2' 'tspmeth2'
+*END
+
+*TS-PDPOINTS 'Site1-East-TS'
+*BEGIN
+  8550.0 'tspmeth2' 'tspmeth2'
+ 10000.0 'tspmeth2' 'tspmeth2'
+*END
+
+*WB-PDPOINTS 'Site1-Main-Trunk'
+*BEGIN
+     0.0      'wbpmeth1'  'wbpmeth1'
+  8550.0      'wbpmeth1'  'wbpmeth1'
+*END
+
+*WB-PDPOINTS 'Site1-North-Trunk'
+*BEGIN
+  8550.0      'wbpmeth2'  'wbpmeth2'
+ 11886.4      'wbpmeth2'  'wbpmeth2'
+*END
+
+*WB-PDPOINTS 'Site1-South-Trunk'
+*BEGIN
+  8550.0      'wbpmeth2'  'wbpmeth2'
+ 11886.4      'wbpmeth2'  'wbpmeth2'
+*END
+
+*WB-PDPOINTS 'Site1-East-Trunk'
+*BEGIN
+  8550.0      'wbpmeth2'  'wbpmeth2'
+ 11886.4      'wbpmeth2'  'wbpmeth2'
+*END
+
+*WB-PDPOINTS 'Site1-West-Trunk'
+*BEGIN
+  8550.0      'wbpmeth2'  'wbpmeth2'
+ 11886.4      'wbpmeth2'  'wbpmeth2'
+*END
+
+*WIMETHOD 'wimeth1'
+*BEGIN
+ *TYPE *SGEOA 1.0
+ *SGRADIUS 0.25
+*END
+
+*WIMETHOD 'wimeth2'
+*BEGIN
+ *TYPE *SGEOA 1.0
+ *SGRADIUS 0.250
+*END
+
+*WIPOINTS 'Site1-Main-Trunk'
+*BEGIN
+      0.0    'wimeth2'
+   8550.0    'wimeth2'
+*END
+
+*WIPOINTS 'Site1-North-Trunk'
+*BEGIN
+   8550.0    'wimeth1'
+  11886.4    'wimeth1'
+*END
+
+*WIPOINTS 'Site1-South-Trunk'
+*BEGIN
+   8550.0    'wimeth1'
+  11886.4    'wimeth1'
+*END
+
+*WIPOINTS 'Site1-West-Trunk'
+*BEGIN
+   8550.0    'wimeth1'
+  11886.4    'wimeth1'
+*END
+
+*WIPOINTS 'Site1-East-Trunk'
+*BEGIN
+   8550.0    'wimeth1'
+  11886.4    'wimeth1'
+*END
+
+*WB-PFINTVLS 'Site1-North-Trunk'
+*BEGIN
+   9186.4 11886.4
+*END
+
+*WB-PFINTVLS 'Site1-South-Trunk'
+*BEGIN
+   9186.4 11886.4
+*END
+
+*WB-PFINTVLS 'Site1-West-Trunk'
+*BEGIN
+   9186.4 11886.4
+*END
+
+*WB-PFINTVLS 'Site1-East-Trunk'
+*BEGIN
+   9186.4 11886.4
+*END
+
+*WB-BLOCKBDYS 'Site1-North-Trunk'
+*BEGIN
+     9 8 5 / 1 2 1    450.00 0.000 9000.00  9186.40     750.00 0.000 9000.00  9486.40
+     9 8 5 / 2 2 1    750.00 0.000 9000.00  9486.40    1050.00 0.000 9000.00  9786.40
+     9 8 5 / 3 2 1   1050.00 0.000 9000.00  9786.40    1350.00 0.000 9000.00 10086.40
+    10 8 5 / 1 2 1   1350.00 0.000 9000.00 10086.40    1650.00 0.000 9000.00 10386.40
+    10 8 5 / 2 2 1   1650.00 0.000 9000.00 10386.40    1950.00 0.000 9000.00 10686.40
+    10 8 5 / 3 2 1   1950.00 0.000 9000.00 10686.40    2250.00 0.000 9000.00 10986.40 
+    11 8 5 / 1 2 1   2250.00 0.000 9000.00 10986.40    2550.00 0.000 9000.00 11286.40   
+    11 8 5 / 2 2 1   2550.00 0.000 9000.00 11286.40    2850.00 0.000 9000.00 11586.40   
+    11 8 5 / 3 2 1   2850.00 0.000 9000.00 11586.40    3150.00 0.000 9000.00 11886.40  
+*END
+
+*WB-BLOCKBDYS 'Site1-South-Trunk'
+*BEGIN
+     7 8 5 / 3 2 1   -450.00 0.000 9000.00  9186.40    -750.00 0.000 9000.00  9486.40
+     7 8 5 / 2 2 1   -750.00 0.000 9000.00  9486.40   -1050.00 0.000 9000.00  9786.40
+     7 8 5 / 1 2 1  -1050.00 0.000 9000.00  9786.40   -1350.00 0.000 9000.00 10086.40
+     6 8 5 / 3 2 1  -1350.00 0.000 9000.00 10086.40   -1650.00 0.000 9000.00 10386.40
+     6 8 5 / 2 2 1  -1650.00 0.000 9000.00 10386.40   -1950.00 0.000 9000.00 10686.40
+     6 8 5 / 1 2 1  -1950.00 0.000 9000.00 10686.40   -2250.00 0.000 9000.00 10986.40 
+     5 8 5 / 3 2 1  -2250.00 0.000 9000.00 10986.40   -2550.00 0.000 9000.00 11286.40   
+     5 8 5 / 2 2 1  -2550.00 0.000 9000.00 11286.40   -2850.00 0.000 9000.00 11586.40   
+     5 8 5 / 1 2 1  -2850.00 0.000 9000.00 11586.40   -3150.00 0.000 9000.00 11886.40  
+*END
+
+*WB-BLOCKBDYS 'Site1-West-Trunk'
+*BEGIN
+     8  9 5 / 2 1 1   0.000  450.00 9000.00  9186.40    0.000  750.00 9000.00  9486.40
+     8  9 5 / 2 2 1   0.000  750.00 9000.00  9486.40    0.000 1050.00 9000.00  9786.40
+     8  9 5 / 2 3 1   0.000 1050.00 9000.00  9786.40    0.000 1350.00 9000.00 10086.40
+     8 10 5 / 2 1 1   0.000 1350.00 9000.00 10086.40    0.000 1650.00 9000.00 10386.40
+     8 10 5 / 2 2 1   0.000 1650.00 9000.00 10386.40    0.000 1950.00 9000.00 10686.40
+     8 10 5 / 2 3 1   0.000 1950.00 9000.00 10686.40    0.000 2250.00 9000.00 10986.40 
+     8 11 5 / 2 1 1   0.000 2250.00 9000.00 10986.40    0.000 2550.00 9000.00 11286.40   
+     8 11 5 / 2 2 1   0.000 2550.00 9000.00 11286.40    0.000 2850.00 9000.00 11586.40   
+     8 11 5 / 2 3 1   0.000 2850.00 9000.00 11586.40    0.000 3150.00 9000.00 11886.40  
+*END
+
+*WB-BLOCKBDYS 'Site1-East-Trunk'
+*BEGIN
+     8 7 5 / 2 3 1   0.000  -450.00 9000.00  9186.40    0.000  -750.00 9000.00  9486.40
+     8 7 5 / 2 2 1   0.000  -750.00 9000.00  9486.40    0.000 -1050.00 9000.00  9786.40
+     8 7 5 / 2 1 1   0.000 -1050.00 9000.00  9786.40    0.000 -1350.00 9000.00 10086.40
+     8 6 5 / 2 3 1   0.000 -1350.00 9000.00 10086.40    0.000 -1650.00 9000.00 10386.40
+     8 6 5 / 2 2 1   0.000 -1650.00 9000.00 10386.40    0.000 -1950.00 9000.00 10686.40
+     8 6 5 / 2 1 1   0.000 -1950.00 9000.00 10686.40    0.000 -2250.00 9000.00 10986.40 
+     8 5 5 / 2 3 1   0.000 -2250.00 9000.00 10986.40    0.000 -2550.00 9000.00 11286.40   
+     8 5 5 / 2 2 1   0.000 -2550.00 9000.00 11286.40    0.000 -2850.00 9000.00 11586.40   
+     8 5 5 / 2 1 1   0.000 -2850.00 9000.00 11586.40    0.000 -3150.00 9000.00 11886.40  
+*END
+
+*SGWASSIGN 'SGW-Site1-Main-TS' *TO  'Multi-lat'
+
+*SGINFO 1
+
+*TIME    1
+*TIME    3
+*TIME   10
+*TIME   30
+*TIME  100
+*TIME  300
+*TIME  500
+*TIME 1000
+*TIME 1500
+*TIME 2000
+*TIME 2500
+*TIME 3000
+*TIME 3650

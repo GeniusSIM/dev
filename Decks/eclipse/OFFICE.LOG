@@ -1,0 +1,17 @@
+Log File: Sat Jun 1  19:17:27  2024
+
+Info:    Program running
+Info:    PVM Running...
+Info:    License: Check out of office license feature successful
+Info:    License: office license expiry date 0/0/0
+Info:    ECLIPSE Office: Version '2010.1 May 28 2010'
+Error:   XVT Error in function xvt_print_create xvt_win_dispatch_event xvt_app_create  in file S:\2010.1_w22\gss_base\xvt\nt\source\wprnt.c at line 780.
+Info:    File C:\ecl\2010.1\resource\rvdefaults.xml was read successfully
+Info:    Selected C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.SMSPEC
+Info:    Loading Summary File C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.S0001
+Info:    Loading Summary File C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.S0002
+Info:    Loading Summary File C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.S0003
+Info:    Loading Summary File C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.S0004
+Info:    Loading Summary File C:\Users\Eleve\OneDrive\Bureau\eclipse\TRACER.S0005
+Info:    Loaded TRACER
+Info:    All the vectors are not selected.Horizontal well vectors will not be created

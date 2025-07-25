@@ -1,0 +1,15 @@
+            INTTEGRATION WITH THIRD PARTY SOFTWARE (OBU)
+            --------------------------------------------
+            
+ 
+ 
+ Templates in inttegration with third party software (obu) directory:
+ 
+ GMOBU001.DAT -- Condensate Reservoir with Gas Recycling
+                 Integration with RESOLVE
+ GMOBU001.OBREC -- Recorded communication files (signal and data) for replay with GMOBU001.DAT
+ 
+ 
+ GMOBU002.DAT -- Depletion in a complex reservoir
+                 Integration with RESOLVE
+ GMOBU002.OBREC -- Recorded communication files (signal and data) for replay with GMOBU002.DAT

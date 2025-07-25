@@ -1,0 +1,843 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    This is data set verifies and illustrates the *SIP_DATA option.
+
+**  Features:
+
+**  1) Builder is able to write, via "Save Dataset" menu option, some grid definition
+**     and property data in SIP form to a separate file (*.sip). *FILENAMES *SIPDATA-IN
+**     identifies the name of file containing the compressed data.
+
+**  2) This template uses the SIP format for the following arrays:
+**     Grid definition: *DK, *POR, *PERMI, PERMK
+
+**  3) Small result differences might exist between the datasets using text and SIP forms.
+**     The deviation is expected since array data saved in text form has less
+**     precision than SIP form.
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+FILENAMES SIPDATA-IN 'stsmo106.sip' 
+
+INTERRUPT STOP
+
+title1 'STARS Simulator Options No. 106'
+title2 'Test/Illustrate Array-Reading Option *SIP_DATA'
+title3 'Grid Data in SIP Form'
+
+*INUNIT *FIELD
+
+**OUTPRN GRID ADSORP MASFR ADSPCMP PRES SO SW VISW 
+**OUTSRF GRID ADSORP ADSPCMP PERMI PERMK PRES SO SW VISW 
+**OUTPRN WELL NONE
+**OUTSRF WELL MASS COMPONENT ALL
+***WSRF *GRID 500  *WSRF *WELL 500 
+**WRST 500
+WPRN GRID 500
+WPRN ITER 100
+**  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+
+** ***************************************************************************
+** Definition of fundamental cartesian grid
+** ***************************************************************************
+
+GRID VARI 8 17 35
+
+KDIR DOWN
+DI IVAR 
+ 8*78
+DJ JVAR 
+ 17*78.8
+
+**CELLS      1     8     1    17     1    35 =
+DK   SIP_DATA
+ 
+DTOP  
+ 1950.96 1947.24 1943.79 1940.02 1936.08 1931.62 1926.83 1922.61 1954.12
+ 1950.37 1947.1 1943.29 1939.18 1934.76 1929.92 1925.85 1957.37 1954.29
+ 1950.3 1946.51 1942.43 1938.09 1933.42 1929.64 1960.92 1957.6 1953.61
+ 1949.83 1945.8 1941.56 1937.06 1933.47 1964.31 1960.99 1957.42 1953.26
+ 1949.27 1945.13 1940.78 1937.34 1967.77 1964.46 1960.9 1956.77 1952.84
+ 1948.53 1944.58 1941.24 1971.29 1967.99 1964.46 1960.69 1956.48 1952.26
+ 1948.46 1945.16 1974.85 1971.57 1968.08 1964.35 1960.18 1956.04 1952.34
+ 1949.09 1979.07 1975.2 1971.76 1968.07 1964.2 1959.88 1956.24 1953.04
+ 1982.7 1979.5 1976.06 1972.37 1968.46 1964.05 1960.16 1957 1986.38
+ 1983.22 1979.85 1976.22 1971.84 1968.01 1964.36 1961.19 1990.1 1986.96
+ 1983.67 1980.11 1975.79 1971.98 1968.3 1965.14 1993.78 1990.75 1987.53
+ 1984.06 1979.79 1975.99 1972.27 1969.09 1996.57 1993.73 1990.73 1987.48
+ 1983.76 1980.07 1976.27 1973.03 2000.2 1997.45 1994.55 1991.43 1987.93
+ 1984.26 1980.24 1976.94 2003.86 2001.2 1998.41 1995.41 1992.03 1988.45
+ 1984.56 1980.89 2007.44 2004.86 2002.2 1999.35 1996.13 1992.68 1988.88
+ 1984.85
+
+PVCUTOFF 0
+** ** NULL BLOCKS
+** ** -----------
+**
+** ** Blocks with zero porosity are treated as null.  In what follows,
+** ** on the right is the 8X17 Set (0 for null, 1 for non-null) for
+** ** one layer;  on the left is the data that gives the same map.
+**
+**                             **  ------------------ I ----------------------
+**                             **                              1 2 3 4 5 6 7 8 
+** *NULL CON 1
+**    *MOD 1:7   1 1:35 = 0    **                              0 0 0 0 0 0 0 1  **  1  |
+**         1:5   2 1:35 = 0    **                              0 0 0 0 0 1 1 1  **  2  |
+**         1:3   3 1:35 = 0    **                              0 0 0 1 1 1 1 1  **  3  |
+**         1:1   4 1:35 = 0    **                              0 1 1 1 1 1 1 1  **  4  |
+**         1:1   5 1:35 = 1    **                              1 1 1 1 1 1 1 1  **  5  |
+**         1:1   6 1:35 = 1    **                              1 1 1 1 1 1 1 1  **  6  |
+**         1:1   7 1:35 = 1    **                              1 1 1 1 1 1 1 1  **  7  |
+**         1:1   8 1:35 = 1    **                              1 1 1 1 1 1 1 1  **  8  |
+**         1:1   9 1:35 = 1    **                              1 1 1 1 1 1 1 1  **  9  |
+**         1:1  10 1:35 = 1    **                              1 1 1 1 1 1 1 1  ** 10  |
+**         1:1  11 1:35 = 1    **                              1 1 1 1 1 1 1 1  ** 11
+**         1:1  12 1:35 = 1    **                              1 1 1 1 1 1 1 1  ** 12  J
+**         1:1  13 1:35 = 1    **                              1 1 1 1 1 1 1 1  ** 13
+**         1:1  14 1:35 = 0    **                              0 1 1 1 1 1 1 1  ** 14  |
+**         1:3  15 1:35 = 0    **                              0 0 0 1 1 1 1 1  ** 15  |
+**         1:5  16 1:35 = 0    **                              0 0 0 0 0 1 1 1  ** 16  |
+**         1:7  17 1:35 = 0    **                              0 0 0 0 0 0 0 1  ** 17  |
+** Block Geometry Modifiers
+** ------------------------
+**
+** Blocks with zero porosity are treated as null.  In what follows,
+** on the right is the 8X17 Set (0 for null, 1 for non-null) for
+** one layer;  on the left is the data that gives the same map.
+**
+**     KEY   V   IDIR  JDIR  KDIR
+** J-DIR EAST BORDER
+
+VAMOD 2  0.5  1 0.5 0.5
+** J-DIR WEST BORDER
+VAMOD 3  0.5  1 0.5 0.5
+** Sw+NW  CORNERS
+VAMOD 4  0.5  0.786 0.5 0.5
+**
+** SE+NE CORNERS L
+VAMOD 5  0.437  1 0.5 0.437
+** (7,2)     "
+VAMOD 6  0.889  1 1 0.889
+** (6,2)     "
+VAMOD 7  0.358  0.645 1 0.358
+** (5,3)     "
+VAMOD 8  0.781  1 1 0.781
+** (4,3)     "
+VAMOD 9  0.219  0.5 0.874 0.219
+** (3,4)     "
+VAMOD 11  0.879  0.929 1 0.879
+** (2,4)     "
+VAMOD 13  0.111  0.357 0.624 0.111
+** (2,5)     "
+VAMOD 12  0.96  1 0.624 0.96
+** (4,4)     "
+VAMOD 10  0.996  1 1 0.996
+VATYPE CON            1
+*MOD
+1:7 1 1:35 = 0
+1:5 2 1:35 = 0
+1:3 3 1:35 = 0
+1 4 1:35 = 0
+1 5 1:35 = 1
+1 6 1:35 = 1
+1 7 1:35 = 1
+1 8 1:35 = 1
+1 9 1:35 = 1
+1 10 1:35 = 1
+1 11 1:35 = 1
+1 12 1:35 = 1
+1 13 1:35 = 1
+1 14 1:35 = 0
+1:3 15 1:35 = 0
+1:5 16 1:35 = 0
+1:7 17 1:35 = 0
+8 1 1:35 = 5
+8 17 1:35 = 5
+8 2:16 1:35 = 2
+1 6:12 1:35 = 3
+8 1 1:35 = 5
+7 2 1:35 = 6
+6 2 1:35 = 7
+5 3 1:35 = 8
+4 3 1:35 = 9
+4 4 1:35 = 10
+3 4 1:35 = 11
+2 5 1:35 = 12
+2 4 1:35 = 13
+1 5 1:35 = 4
+1 13 1:35 = 4
+8 17 1:35 = 5
+7 16 1:35 = 6
+6 16 1:35 = 7
+5 15 1:35 = 8
+4 15 1:35 = 9
+4 14 1:35 = 10
+3 14 1:35 = 11
+2 13 1:35 = 12
+2 14 1:35 = 13
+1 13 1:35 = 4
+**  0 = null block, 1 = active block
+
+NULL CON            1
+
+POR SIP_DATA
+PERMI SIP_DATA 
+PERMJ  EQUALSI
+PERMK SIP_DATA 
+
+**  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*END-GRID
+ROCKTYPE 1
+CPOR 1.e-4
+PRPOR 14.7
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+** All components except oil are aqueous based
+** Model and number of components
+MODEL 4 4 4 3
+COMPNAME 'WATER' 'POLYMER' 'SURF' 'OIL' 
+CMM
+18. 100000. 548 100.0 
+PCRIT
+3200 0 0 0 
+TCRIT
+705.5 0 0 0 
+**P-low, P-high, T-low, T-high
+KVTABLIM 14.7 1047 60 300 
+** Gas-liquid K Value tables
+KVTABLE 'WATER'
+**                    
+            0         0
+            0         0
+** Gas-liquid K Value tables
+KVTABLE 'POLYMER'
+**                    
+            0         0
+            0         0
+** Gas-liquid K Value tables
+KVTABLE 'SURF'
+**                    
+            0         0
+            0         0
+** Define liquid-liquid K values (for lower phase microemulsions)              
+LIQLIQKV
+KVTABLIM 14.7 1047 60 300 
+KVKEYCOMP 'SURF' RATIOW 0 0.03 1.0 0.0 
+** the following values of ratiow :
+** Liquid-liquid K Value tables
+KVTABLE 'OIL'
+KEYCOMP
+**                    
+            0         0
+            0         0  **  0.0 0.01 0.02 0.03
+KEYCOMP
+**                    
+        0.010     0.010
+        0.010     0.010
+KEYCOMP
+**                    
+        0.020     0.020
+        0.020     0.020
+KEYCOMP
+**                    
+        0.030     0.030
+        0.030     0.030
+**            Critical properties used for gas density (not necessary here)
+SOLID_DEN 'POLYMER' 62.970 0 0 
+SOLID_DEN 'SURF' 62.970 0 0 
+**            polymer molecular weight is assumed
+**            oil     molecular weight is assumed  
+**----------------------------------------------------------------------------- 
+**Density (kg/cm3)
+MASSDEN
+62.970 62.970 62.970 58.20 
+**-----------------------------------------------------------------------------   
+**            water density is .488  (UTCHEM)* 62.4/.433 
+**            poly  density is .488  (UTCHEM)* 62.4/.433  
+**            surf  density is .488  (UTCHEM)* 62.4/.433
+**            oil   density is .3734 (UTCHEM)* 62.4/.433 
+**Compressibility    
+CP
+3e-6 3e-6 3e-6 1.0e-5 
+**Thermal expansion
+CT1
+0e-6 0e-6 0e-6 -5.883e-4 
+**  Xanthan polymer effects on viscosity (20 cp at 0.075 mass fraction)
+**  Surfactant choosen to get 10 cp at 0.03 mass frac.
+**Assigned liq. viscosity
+AVISC
+0.600 70. .60 3.2 
+**             polymer and surfactant viscosities can be investigated further                          
+** Nonlinear mixing rules for liquid phase viscosity
+VSMIXCOMP 'POLYMER'
+**Between 0 & 1500 ppm
+VSMIXENDP 0 0.00150 
+**For Xanthan (comp. 2)
+VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1 
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+PRSR 600
+TEMR 207
+PSURF 14.7
+TSURF 70
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+ROCKFLUID
+RPT 1
+**  Interpolation between 2 sets:  high versus low IFT/ Cap No. situations.
+INTCOMP 'OIL' WATER
+IFTTABLE
+** UTCHEM assumes ift is function of solubilization ratio
+** STARS gives ift as a function of solubilized oil (from K values)
+**       oil mass frac      IFT
+**       -------------    --------   
+**  Composition of component/phase  Interfacial tension
+                               0.00              20.0000
+                               0.01              0.68060
+                               0.02              0.10000  **added for smoother interpolation!
+                               0.03              0.05080  **cutoff here to ensure correct ift
+** Linear interpolation of X(oil)
+INTLIN
+**             0.06          0.00340
+**             0.08          0.00227
+**             0.10          0.00217
+**             0.20          0.00178 
+**             0.30          0.00147
+**             0.40          0.00120
+**             0.50          0.00095
+**             0.60          0.00070
+**             0.70          0.00046
+**             0.80          0.00023
+**             0.90          0.00005
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+KRINTRP 1
+**DTRAPW -3.9 *DTRAPN -4.5  ** Critical cap num for detrapping to begin 
+DTRAPW -4.4
+** Critical cap num for detrapping to begin
+DTRAPN -5.0
+**        Sw       krw      krow      Pcow
+SWT
+         0.19  0.000000   1.00000      5.91
+         0.20  0.000159   0.95162      5.40
+         0.22  0.001149   0.85959      4.91
+         0.24  0.002881   0.77370      4.45
+         0.26  0.005279   0.66373      4.02
+         0.28  0.008299   0.61947      3.62
+         0.30  0.011909   0.55070      3.24
+         0.32  0.016087   0.48723      2.89
+         0.34  0.020813   0.42882      2.56
+         0.36  0.026073   0.37529      2.26
+         0.38  0.031852   0.32640      1.98
+         0.40  0.038139   0.28196      1.73
+         0.42  0.044925   0.24174      1.50
+         0.44  0.052200   0.20555      1.28
+         0.46  0.059956   0.17316      1.09
+         0.48  0.068186   0.14436      0.92
+         0.50  0.076883   0.11895      0.77
+         0.52  0.086041   0.09671      0.63
+         0.54  0.095654   0.07743      0.51
+         0.56  0.105716   0.06090      0.40
+         0.58  0.116224   0.04691      0.31
+         0.60  0.127172   0.03524      0.24
+         0.62  0.138555   0.02569      0.17
+         0.66  0.162613   0.01208       0.1
+         0.70  0.188367   0.00440       0.0
+         0.74  0.215791   0.00095       0.0
+         0.76  0.230120   0.00028       0.0
+         0.80  0.260000   0.00000       0.0
+**        Sl       krg      krog
+SLT
+         0.29    0.4200     0.000
+         0.32   0.36898   0.00179
+         0.34   0.33737   0.00496
+         0.36   0.30762   0.00972
+         0.38   0.27967   0.01607
+         0.40   0.25347   0.02400
+         0.42   0.22896   0.03353
+         0.46   0.18478   0.05733
+         0.48   0.16500   0.07161
+         0.50   0.14668   0.08748
+         0.52   0.12978   0.10494
+         0.54   0.11422   0.12398
+         0.56   0.09996   0.14461
+         0.60   0.07510   0.19064
+         0.62   0.06439   0.21603
+         0.64   0.05475   0.24301
+         0.66   0.04612   0.27157
+         0.70   0.03168   0.33347
+         0.74   0.02063   0.40171
+         0.76   0.01622   0.43821
+         0.80   0.00939   0.51597
+         0.82   0.00684   0.55723
+         0.86   0.00322   0.64451
+         0.90   0.00117   0.73815
+         0.92   0.00060   0.78734
+         0.94   0.00025   0.83813
+         0.96   0.00008   0.89050
+         0.98   0.00001   0.94446
+         1.00   0.00000   1.00000
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+KRINTRP 2
+**DTRAPW -1.3 *DTRAPN -2.3  ** Critical cap num for complete detrapping   
+DTRAPW -1.8
+** Critical cap num for complete detrapping
+DTRAPN -2.8
+**        Sw       krw      krow
+SWT
+          0.0       0.0        1.
+          0.1       0.1       0.9
+          0.2       0.2       0.8
+          0.3       0.3       0.7
+          0.4       0.4       0.6
+          0.5       0.5       0.5
+          0.6       0.6       0.4
+          0.7       0.7       0.3
+          0.8       0.8       0.2
+          0.9       0.9       0.1
+          1.0       1.0       0.0
+**        Sl       krg      krog
+SLT
+         0.29    0.4200     0.000
+         0.32   0.36898   0.00179
+         0.34   0.33737   0.00496
+         0.36   0.30762   0.00972
+         0.38   0.27967   0.01607
+         0.40   0.25347   0.02400
+         0.42   0.22896   0.03353
+         0.46   0.18478   0.05733
+         0.48   0.16500   0.07161
+         0.50   0.14668   0.08748
+         0.52   0.12978   0.10494
+         0.54   0.11422   0.12398
+         0.56   0.09996   0.14461
+         0.60   0.07510   0.19064
+         0.62   0.06439   0.21603
+         0.64   0.05475   0.24301
+         0.66   0.04612   0.27157
+         0.70   0.03168   0.33347
+         0.74   0.02063   0.40171
+         0.76   0.01622   0.43821
+         0.80   0.00939   0.51597
+         0.82   0.00684   0.55723
+         0.86   0.00322   0.64451
+         0.90   0.00117   0.73815
+         0.92   0.00060   0.78734
+         0.94   0.00025   0.83813
+         0.96   0.00008   0.89050
+         0.98   0.00001   0.94446
+         1.00   0.00000   1.00000
+**WCRV 2 OCRV 2
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+INITIAL
+VERTICAL DEPTH_AVE NOEQUIL
+
+REFPRES 424.
+
+REFBLOCK 8 1 1
+SW CON         0.65
+DWOC 2255.61
+TEMP CON          207
+MFRAC_WAT 'WATER' CON            1
+MFRAC_OIL 'OIL' CON            1
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+NUMERICAL
+ITERMAX 100
+DTMAX 90
+TFORM ZT
+ISOTHERMAL
+NORM PRESS 150 TEMP 50 ZO 0.2 ZNCG 0.2 ZAQ 0.2
+**NORM      *PRESS 1  *ZO .1    *TEMP 50  *ZNCG .1   *ZAQ .1
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*DATE 1976 1 1.5
+DTWELL 0.05
+OUTPRN GRID PRES SO SW 
+OUTSRF GRID PRES SO SW 
+      **  --------------------------------------------
+      **  11000  DAYS OF WATER INJECTION (30 YEARS) THROUGH X LAYERS
+      **  --------------------------------------------
+      **  --------------------------------------------
+**
+WELL  'PROD1'  VERT  8  1  FRAC  0.1667
+**
+WELL  'PROD2'  VERT  8  17  FRAC  0.1667
+**
+WELL  'PROD3'  VERT  1  13  FRAC  0.3333
+**
+WELL  'PROD4'  VERT  1  5  FRAC  0.3333
+**
+WELL  'INJ'  VERT  8  9  FRAC  0.5
+PRODUCER 'PROD1'
+OPERATE  MAX  STL  7000.0  CONT REPEAT
+OPERATE  MIN  BHP  180.0  CONT REPEAT
+                 **      K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.229  1.0  0.0  
+      PERF       GEO  'PROD1'
+** UBA              ff          Status  Connection  
+    8 1 1          1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 1 2          1.0  OPEN    FLOW-TO  1
+    8 1 3          1.0  OPEN    FLOW-TO  2
+    8 1 4          1.0  OPEN    FLOW-TO  3
+    8 1 5          1.0  OPEN    FLOW-TO  4
+    8 1 6          1.0  OPEN    FLOW-TO  5
+    8 1 7          1.0  OPEN    FLOW-TO  6
+    8 1 8          1.0  OPEN    FLOW-TO  7
+    8 1 9          1.0  OPEN    FLOW-TO  8
+    8 1 10         1.0  OPEN    FLOW-TO  9
+    8 1 11         1.0  OPEN    FLOW-TO  10
+    8 1 12         1.0  OPEN    FLOW-TO  11
+    8 1 13         1.0  OPEN    FLOW-TO  12
+    8 1 14         1.0  OPEN    FLOW-TO  13
+    8 1 15         1.0  OPEN    FLOW-TO  14
+    8 1 16         1.0  OPEN    FLOW-TO  15
+    8 1 17         1.0  OPEN    FLOW-TO  16
+    8 1 18         1.0  OPEN    FLOW-TO  17
+    8 1 19         1.0  OPEN    FLOW-TO  18
+    8 1 20         1.0  OPEN    FLOW-TO  19
+    8 1 21         1.0  OPEN    FLOW-TO  20
+    8 1 22         1.0  OPEN    FLOW-TO  21
+    8 1 23         1.0  OPEN    FLOW-TO  22
+    8 1 24         1.0  OPEN    FLOW-TO  23
+    8 1 25         1.0  OPEN    FLOW-TO  24
+    8 1 26         1.0  OPEN    FLOW-TO  25
+    8 1 27         1.0  OPEN    FLOW-TO  26
+    8 1 28         1.0  OPEN    FLOW-TO  27
+    8 1 29         1.0  OPEN    FLOW-TO  28
+    8 1 30         1.0  OPEN    FLOW-TO  29
+    8 1 31         1.0  OPEN    FLOW-TO  30
+    8 1 32         1.0  OPEN    FLOW-TO  31
+    8 1 33         1.0  OPEN    FLOW-TO  32
+    8 1 34         1.0  OPEN    FLOW-TO  33
+    8 1 35         1.0  OPEN    FLOW-TO  34
+PRODUCER 'PROD2'
+OPERATE  MAX  STL  7000.0  CONT REPEAT
+OPERATE  MIN  BHP  180.0  CONT REPEAT
+                    **    K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.229  1.0  0.0  
+      PERF       GEO  'PROD2'
+** UBA               ff          Status  Connection  
+    8 17 1          1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    8 17 2          1.0  OPEN    FLOW-TO  1
+    8 17 3          1.0  OPEN    FLOW-TO  2
+    8 17 4          1.0  OPEN    FLOW-TO  3
+    8 17 5          1.0  OPEN    FLOW-TO  4
+    8 17 6          1.0  OPEN    FLOW-TO  5
+    8 17 7          1.0  OPEN    FLOW-TO  6
+    8 17 8          1.0  OPEN    FLOW-TO  7
+    8 17 9          1.0  OPEN    FLOW-TO  8
+    8 17 10         1.0  OPEN    FLOW-TO  9
+    8 17 11         1.0  OPEN    FLOW-TO  10
+    8 17 12         1.0  OPEN    FLOW-TO  11
+    8 17 13         1.0  OPEN    FLOW-TO  12
+    8 17 14         1.0  OPEN    FLOW-TO  13
+    8 17 15         1.0  OPEN    FLOW-TO  14
+    8 17 16         1.0  OPEN    FLOW-TO  15
+    8 17 17         1.0  OPEN    FLOW-TO  16
+    8 17 18         1.0  OPEN    FLOW-TO  17
+    8 17 19         1.0  OPEN    FLOW-TO  18
+    8 17 20         1.0  OPEN    FLOW-TO  19
+    8 17 21         1.0  OPEN    FLOW-TO  20
+    8 17 22         1.0  OPEN    FLOW-TO  21
+    8 17 23         1.0  OPEN    FLOW-TO  22
+    8 17 24         1.0  OPEN    FLOW-TO  23
+    8 17 25         1.0  OPEN    FLOW-TO  24
+    8 17 26         1.0  OPEN    FLOW-TO  25
+    8 17 27         1.0  OPEN    FLOW-TO  26
+    8 17 28         1.0  OPEN    FLOW-TO  27
+    8 17 29         1.0  OPEN    FLOW-TO  28
+    8 17 30         1.0  OPEN    FLOW-TO  29
+    8 17 31         1.0  OPEN    FLOW-TO  30
+    8 17 32         1.0  OPEN    FLOW-TO  31
+    8 17 33         1.0  OPEN    FLOW-TO  32
+    8 17 34         1.0  OPEN    FLOW-TO  33
+    8 17 35         1.0  OPEN    FLOW-TO  34
+PRODUCER 'PROD3'
+OPERATE  MAX  STL  7000.0  CONT REPEAT
+OPERATE  MIN  BHP  180.0  CONT REPEAT
+                   **     K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.229  1.0  0.0  
+      PERF       GEO  'PROD3'
+** UBA               ff          Status  Connection  
+    1 13 1          1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    1 13 2          1.0  OPEN    FLOW-TO  1
+    1 13 3          1.0  OPEN    FLOW-TO  2
+    1 13 4          1.0  OPEN    FLOW-TO  3
+    1 13 5          1.0  OPEN    FLOW-TO  4
+    1 13 6          1.0  OPEN    FLOW-TO  5
+    1 13 7          1.0  OPEN    FLOW-TO  6
+    1 13 8          1.0  OPEN    FLOW-TO  7
+    1 13 9          1.0  OPEN    FLOW-TO  8
+    1 13 10         1.0  OPEN    FLOW-TO  9
+    1 13 11         1.0  OPEN    FLOW-TO  10
+    1 13 12         1.0  OPEN    FLOW-TO  11
+    1 13 13         1.0  OPEN    FLOW-TO  12
+    1 13 14         1.0  OPEN    FLOW-TO  13
+    1 13 15         1.0  OPEN    FLOW-TO  14
+    1 13 16         1.0  OPEN    FLOW-TO  15
+    1 13 17         1.0  OPEN    FLOW-TO  16
+    1 13 18         1.0  OPEN    FLOW-TO  17
+    1 13 19         1.0  OPEN    FLOW-TO  18
+    1 13 20         1.0  OPEN    FLOW-TO  19
+    1 13 21         1.0  OPEN    FLOW-TO  20
+    1 13 22         1.0  OPEN    FLOW-TO  21
+    1 13 23         1.0  OPEN    FLOW-TO  22
+    1 13 24         1.0  OPEN    FLOW-TO  23
+    1 13 25         1.0  OPEN    FLOW-TO  24
+    1 13 26         1.0  OPEN    FLOW-TO  25
+    1 13 27         1.0  OPEN    FLOW-TO  26
+    1 13 28         1.0  OPEN    FLOW-TO  27
+    1 13 29         1.0  OPEN    FLOW-TO  28
+    1 13 30         1.0  OPEN    FLOW-TO  29
+    1 13 31         1.0  OPEN    FLOW-TO  30
+    1 13 32         1.0  OPEN    FLOW-TO  31
+    1 13 33         1.0  OPEN    FLOW-TO  32
+    1 13 34         1.0  OPEN    FLOW-TO  33
+    1 13 35         1.0  OPEN    FLOW-TO  34
+PRODUCER 'PROD4'
+OPERATE  MAX  STL  7000.0  CONT REPEAT
+OPERATE  MIN  BHP  180.0  CONT REPEAT
+                  **      K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.229  1.0  0.0  
+      PERF       GEO  'PROD4'
+** UBA              ff          Status  Connection  
+    1 5 1          1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    1 5 2          1.0  OPEN    FLOW-TO  1
+    1 5 3          1.0  OPEN    FLOW-TO  2
+    1 5 4          1.0  OPEN    FLOW-TO  3
+    1 5 5          1.0  OPEN    FLOW-TO  4
+    1 5 6          1.0  OPEN    FLOW-TO  5
+    1 5 7          1.0  OPEN    FLOW-TO  6
+    1 5 8          1.0  OPEN    FLOW-TO  7
+    1 5 9          1.0  OPEN    FLOW-TO  8
+    1 5 10         1.0  OPEN    FLOW-TO  9
+    1 5 11         1.0  OPEN    FLOW-TO  10
+    1 5 12         1.0  OPEN    FLOW-TO  11
+    1 5 13         1.0  OPEN    FLOW-TO  12
+    1 5 14         1.0  OPEN    FLOW-TO  13
+    1 5 15         1.0  OPEN    FLOW-TO  14
+    1 5 16         1.0  OPEN    FLOW-TO  15
+    1 5 17         1.0  OPEN    FLOW-TO  16
+    1 5 18         1.0  OPEN    FLOW-TO  17
+    1 5 19         1.0  OPEN    FLOW-TO  18
+    1 5 20         1.0  OPEN    FLOW-TO  19
+    1 5 21         1.0  OPEN    FLOW-TO  20
+    1 5 22         1.0  OPEN    FLOW-TO  21
+    1 5 23         1.0  OPEN    FLOW-TO  22
+    1 5 24         1.0  OPEN    FLOW-TO  23
+    1 5 25         1.0  OPEN    FLOW-TO  24
+    1 5 26         1.0  OPEN    FLOW-TO  25
+    1 5 27         1.0  OPEN    FLOW-TO  26
+    1 5 28         1.0  OPEN    FLOW-TO  27
+    1 5 29         1.0  OPEN    FLOW-TO  28
+    1 5 30         1.0  OPEN    FLOW-TO  29
+    1 5 31         1.0  OPEN    FLOW-TO  30
+    1 5 32         1.0  OPEN    FLOW-TO  31
+    1 5 33         1.0  OPEN    FLOW-TO  32
+    1 5 34         1.0  OPEN    FLOW-TO  33
+    1 5 35         1.0  OPEN    FLOW-TO  34
+   **   INCOMP *WATER .96854 0        0.03146 0.0000    ** Surfactant slug
+   **   INCOMP *WATER .99925 0.00075  0       0.0000    ** Polymer slug                        
+   **   INCOMP *WATER .96779 0.000750 0.03146 0.0000    ** Polymer Surfactant slug
+                                                             ** INJECT WATER BASELINE
+                                                        ** INJECT ONLY WATER
+INJECTOR MOBWEIGHT EXPLICIT 'INJ'
+INCOMP  WATER  1.0  0.0  0.0  0.0
+TINJW  207.0
+QUAL  0.0
+OPERATE  MAX  STW  6500.0  CONT REPEAT
+OPERATE  MAX  BHP  1000.0  CONT REPEAT
+                    **    K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.235  1.0  0.0  
+      PERF       GEO  'INJ'
+** UBA              ff          Status  Connection  
+    8 9 1          1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    8 9 2          1.0  OPEN    FLOW-FROM  1
+    8 9 3          1.0  OPEN    FLOW-FROM  2
+    8 9 4          1.0  OPEN    FLOW-FROM  3
+    8 9 5          1.0  OPEN    FLOW-FROM  4
+    8 9 6          1.0  OPEN    FLOW-FROM  5
+    8 9 7          1.0  OPEN    FLOW-FROM  6
+    8 9 8          1.0  OPEN    FLOW-FROM  7
+    8 9 9          1.0  OPEN    FLOW-FROM  8
+    8 9 10         1.0  OPEN    FLOW-FROM  9
+    8 9 11         1.0  OPEN    FLOW-FROM  10
+    8 9 12         1.0  OPEN    FLOW-FROM  11
+    8 9 13         1.0  OPEN    FLOW-FROM  12
+    8 9 14         1.0  OPEN    FLOW-FROM  13
+    8 9 15         1.0  OPEN    FLOW-FROM  14
+    8 9 16         1.0  OPEN    FLOW-FROM  15
+    8 9 17         1.0  OPEN    FLOW-FROM  16
+    8 9 18         1.0  OPEN    FLOW-FROM  17
+    8 9 19         1.0  OPEN    FLOW-FROM  18
+    8 9 20         1.0  OPEN    FLOW-FROM  19
+    8 9 21         1.0  OPEN    FLOW-FROM  20
+    8 9 22         1.0  OPEN    FLOW-FROM  21
+    8 9 23         1.0  OPEN    FLOW-FROM  22
+    8 9 24         1.0  OPEN    FLOW-FROM  23
+    8 9 25         1.0  OPEN    FLOW-FROM  24
+    8 9 26         1.0  OPEN    FLOW-FROM  25
+    8 9 27         1.0  OPEN    FLOW-FROM  26
+    8 9 28         1.0  OPEN    FLOW-FROM  27
+    8 9 29         1.0  OPEN    FLOW-FROM  28
+    8 9 30         1.0  OPEN    FLOW-FROM  29
+    8 9 31         1.0  OPEN    FLOW-FROM  30
+    8 9 32         1.0  OPEN    FLOW-FROM  31
+    8 9 33         1.0  OPEN    FLOW-FROM  32
+    8 9 34         1.0  OPEN    FLOW-FROM  33
+    8 9 35         1.0  OPEN    FLOW-FROM  34
+   
+*TIME 365
+**INJECT POLYMER SURFACTANT SLUG
+DTWELL 0.05
+   **INCOMP WATER 1.0000 0.0000 0.0000 0.0000           ** INJECT ONLY WATER
+   **   INCOMP *WATER .96854 0        0.03146 0.0000    ** Surfactant slug
+   **   INCOMP *WATER .99925 0.00075  0       0.0000    ** Polymer slug                        
+                                                        ** Polymer Surfactant slug
+INJECTOR MOBWEIGHT EXPLICIT 'INJ'
+INCOMP  WATER  0.96779  0.00075  0.03146  0.0
+TINJW  207.0
+QUAL  0.0
+OPERATE  MAX  STW  6500.0  CONT REPEAT
+OPERATE  MAX  BHP  1000.0  CONT REPEAT
+                   **    K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.235  1.0  0.0  
+      PERF       GEO  'INJ'
+** UBA              ff          Status  Connection  
+    8 9 1          1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    8 9 2          1.0  OPEN    FLOW-FROM  1
+    8 9 3          1.0  OPEN    FLOW-FROM  2
+    8 9 4          1.0  OPEN    FLOW-FROM  3
+    8 9 5          1.0  OPEN    FLOW-FROM  4
+    8 9 6          1.0  OPEN    FLOW-FROM  5
+    8 9 7          1.0  OPEN    FLOW-FROM  6
+    8 9 8          1.0  OPEN    FLOW-FROM  7
+    8 9 9          1.0  OPEN    FLOW-FROM  8
+    8 9 10         1.0  OPEN    FLOW-FROM  9
+    8 9 11         1.0  OPEN    FLOW-FROM  10
+    8 9 12         1.0  OPEN    FLOW-FROM  11
+    8 9 13         1.0  OPEN    FLOW-FROM  12
+    8 9 14         1.0  OPEN    FLOW-FROM  13
+    8 9 15         1.0  OPEN    FLOW-FROM  14
+    8 9 16         1.0  OPEN    FLOW-FROM  15
+    8 9 17         1.0  OPEN    FLOW-FROM  16
+    8 9 18         1.0  OPEN    FLOW-FROM  17
+    8 9 19         1.0  OPEN    FLOW-FROM  18
+    8 9 20         1.0  OPEN    FLOW-FROM  19
+    8 9 21         1.0  OPEN    FLOW-FROM  20
+    8 9 22         1.0  OPEN    FLOW-FROM  21
+    8 9 23         1.0  OPEN    FLOW-FROM  22
+    8 9 24         1.0  OPEN    FLOW-FROM  23
+    8 9 25         1.0  OPEN    FLOW-FROM  24
+    8 9 26         1.0  OPEN    FLOW-FROM  25
+    8 9 27         1.0  OPEN    FLOW-FROM  26
+    8 9 28         1.0  OPEN    FLOW-FROM  27
+    8 9 29         1.0  OPEN    FLOW-FROM  28
+    8 9 30         1.0  OPEN    FLOW-FROM  29
+    8 9 31         1.0  OPEN    FLOW-FROM  30
+    8 9 32         1.0  OPEN    FLOW-FROM  31
+    8 9 33         1.0  OPEN    FLOW-FROM  32
+    8 9 34         1.0  OPEN    FLOW-FROM  33
+    8 9 35         1.0  OPEN    FLOW-FROM  34
+   
+*TIME 730
+**INJECT POLYMER DRIVE
+DTWELL 0.05
+   **INCOMP WATER 1.0000 0.0000 0.0000 0.0000           ** INJECT ONLY WATER
+   **   INCOMP *WATER .96854 0        0.03146 0.0000    ** Surfactant slug
+   **   INCOMP *WATER .96779 0.000750 0.03146 0.0000    ** Polymer Surfactant slug
+                                                        ** Polymer slug                        
+INJECTOR MOBWEIGHT EXPLICIT 'INJ'
+INCOMP  WATER  0.99925  0.00075  0.0  0.0
+TINJW  207.0
+QUAL  0.0
+OPERATE  MAX  STW  6500.0  CONT REPEAT
+OPERATE  MAX  BHP  1000.0  CONT REPEAT
+                   **    K        ff 
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.235  1.0  0.0  
+      PERF       GEO  'INJ'
+** UBA              ff          Status  Connection  
+    8 9 1          1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    8 9 2          1.0  OPEN    FLOW-FROM  1
+    8 9 3          1.0  OPEN    FLOW-FROM  2
+    8 9 4          1.0  OPEN    FLOW-FROM  3
+    8 9 5          1.0  OPEN    FLOW-FROM  4
+    8 9 6          1.0  OPEN    FLOW-FROM  5
+    8 9 7          1.0  OPEN    FLOW-FROM  6
+    8 9 8          1.0  OPEN    FLOW-FROM  7
+    8 9 9          1.0  OPEN    FLOW-FROM  8
+    8 9 10         1.0  OPEN    FLOW-FROM  9
+    8 9 11         1.0  OPEN    FLOW-FROM  10
+    8 9 12         1.0  OPEN    FLOW-FROM  11
+    8 9 13         1.0  OPEN    FLOW-FROM  12
+    8 9 14         1.0  OPEN    FLOW-FROM  13
+    8 9 15         1.0  OPEN    FLOW-FROM  14
+    8 9 16         1.0  OPEN    FLOW-FROM  15
+    8 9 17         1.0  OPEN    FLOW-FROM  16
+    8 9 18         1.0  OPEN    FLOW-FROM  17
+    8 9 19         1.0  OPEN    FLOW-FROM  18
+    8 9 20         1.0  OPEN    FLOW-FROM  19
+    8 9 21         1.0  OPEN    FLOW-FROM  20
+    8 9 22         1.0  OPEN    FLOW-FROM  21
+    8 9 23         1.0  OPEN    FLOW-FROM  22
+    8 9 24         1.0  OPEN    FLOW-FROM  23
+    8 9 25         1.0  OPEN    FLOW-FROM  24
+    8 9 26         1.0  OPEN    FLOW-FROM  25
+    8 9 27         1.0  OPEN    FLOW-FROM  26
+    8 9 28         1.0  OPEN    FLOW-FROM  27
+    8 9 29         1.0  OPEN    FLOW-FROM  28
+    8 9 30         1.0  OPEN    FLOW-FROM  29
+    8 9 31         1.0  OPEN    FLOW-FROM  30
+    8 9 32         1.0  OPEN    FLOW-FROM  31
+    8 9 33         1.0  OPEN    FLOW-FROM  32
+    8 9 34         1.0  OPEN    FLOW-FROM  33
+    8 9 35         1.0  OPEN    FLOW-FROM  34
+OUTPRN GRID PRES SO SW 
+OUTSRF GRID PRES SO SW 
+   
+*TIME 900 
+
+STOP
+
+*TIME 2555
+*TIME 2920
+*TIME 3285
+*TIME 3650  ** 10 YEARS
+*TIME 4015
+*TIME 4380
+*TIME 4745
+*TIME 5110
+*TIME 5465  ** 15 YEARS

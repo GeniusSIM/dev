@@ -1,0 +1,323 @@
+** ***************************************************************************
+** Template (stgeo098.dat)                                                  **
+** ***************************************************************************
+** ************************************************************************************
+**                                                                                   **
+** FILE :  STGEO098.DAT                                                              **
+**                                                                                   **
+** MODEL:  GEOMECHANICS POST PROCESSING                     FIELD UNITS              **
+** ELASTIC MODEL                   Reservoir region    21X21X11 CARTESIAN GRID       **
+**                                 Geomechanics region 6x6x4    CARTESIAN GRID       **
+**                                                                                   **
+** USAGE:  ILLUSTRATES GEOMECHANICS IN STARS WITH                                    **
+**         A DUAL GRID SYSTEM                                                        **
+**                                                                                   **        
+**         USING KRIGING METHOD TO RE-ASSIGN INITIAL STRESSES ON AMALGAMATING GRIDS  **
+**                                                                                   **
+** ************************************************************************************
+** Based on stgeo065.dat
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #98'
+*title2 'Test *GKRIGING for Initial Stress Assignment'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 10
+*OUTPRN *GRID *VPOROS *SBDZ *PRES *SO *SG *SW
+
+*PRNTORIEN 2 0
+
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*WSRF *GRIDDEFORM  *TIME              ** keyword for output grid deformation
+*WSRF *GRID *TIME
+OUTSRF GRID POISSON PRES SG SO STRESEFF STRESI STRESJ STRESK STRESSH SW 
+            VDISPL VPOROS YOUNG VPOROSGEO *TSUBSIDGEO BULKVOL
+** YOUNG   : Young's modulus
+** POISSON : Poisson's ratio
+** VDISPL  : Displacement vector
+
+*OUTSRF *SPECIAL *BLOCKVAR *PRES 11,11,1
+                 *BLOCKVAR *VPOROS 11,11,1
+                 *BLOCKVAR *VPOROSGEO 11,11,1
+                 *AVGVAR   *PRES
+                 *AVGVAR   *VPOROS
+                 *AVGVAR   *VPOROSGEO
+
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+GRID CART 21 21 11
+
+DI CON 60
+DJ CON 60
+DK CON 20
+
+KDIR DOWN
+
+*DEPTH 1 1 1 4000
+
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+
+*POR  *CON 0.30
+
+*PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      5.0   100.0  20.0  20.0  20.0  100.0 20.0  20.0  100.0  20.0  20.0 
+*PERMJ *KVAR                
+      5.0   100.0  20.0  20.0  20.0  100.0 20.0  20.0  100.0  20.0  20.0 
+*PERMK *KVAR                ** that the first K layer is at bottom of the reservoir
+      0.05   1.0  0.2  0.2  0.2  1.0  0.2  0.2  1.0  0.2  0.2    
+
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*END-GRID
+
+ROCKTYPE 1
+
+*PRPOR 3000
+*CPOR  4.150E-5
+
+*ROCKCP 28.8
+*THCONR 38.4
+*THCONW 38.4
+*THCONO 38.4
+*THCONG 38.4
+*HLOSSPROP     *OVERBUR  35.0  30.0
+               *UNDERBUR 35.0  30.0
+**$ Model and number of components
+
+
+
+MODEL 3 3 3 1
+
+COMPNAME 'Water' 'Dead_Oil' 'Soln_Gas'
+
+CMM         0        400      1.65129 
+
+MASSDEN     0      53.9597    1.50259 
+CP          0        1e-5       5e-5 
+CT1         0         0          0 
+
+PCRIT       0         0       667.009 
+TCRIT       0         0      -115.554 
+
+KV1         0         0       35707.6 
+KV2         0         0    -0.000336251 
+KV3         0         0       24.1542 
+KV4         0         0      -1583.98 
+KV5         0         0      -446.782 
+
+PRSR 14.7
+TEMR 60
+PSURF 14.7
+TSURF 60
+SURFLASH W O G 
+
+VISCTABLE
+**$  temp 'Water' 'Dead_Oil'  'Soln_Gas'
+       41  0       10.0677       10.0677  ** Live oil visc (P=3000) = 10.0677
+       60  0           1.5           1.5  ** Live oil visc (P=3000) = 1.5
+       78  0      0.403994      0.403994  ** Live oil visc (P=3000) = 0.403994
+      123  0     0.0414307     0.0414307  ** Live oil visc (P=3000) = 0.0414307
+      168  0    0.00871568    0.00871568  ** Live oil visc (P=3000) = 0.00871568
+      213  0    0.00266042    0.00266042  ** Live oil visc (P=3000) = 0.00266042
+      258  0    0.00102035    0.00102035  ** Live oil visc (P=3000) = 0.00102035
+      303  0   0.000456704   0.000456704  ** Live oil visc (P=3000) = 0.000456704
+      348  0   0.000228534   0.000228534  ** Live oil visc (P=3000) = 0.000228534
+      393  0   0.000124418   0.000124418  ** Live oil visc (P=3000) = 0.000124418
+      438  0  7.23564e-005  7.23564e-005  ** Live oil visc (P=3000) = 7.23564e-005
+      483  0  4.43723e-005  4.43723e-005  ** Live oil visc (P=3000) = 4.43723e-005
+      528  0  2.84235e-005  2.84235e-005  ** Live oil visc (P=3000) = 2.84235e-005
+      573  0  1.88831e-005  1.88831e-005  ** Live oil visc (P=3000) = 1.88831e-005
+      618  0  1.29391e-005  1.29391e-005  ** Live oil visc (P=3000) = 1.29391e-005
+      663  0    9.105e-006    9.105e-006  ** Live oil visc (P=3000) = 9.105e-006
+      708  0  6.55664e-006  6.55664e-006  ** Live oil visc (P=3000) = 6.55664e-006
+      753  0  4.81806e-006  4.81806e-006  ** Live oil visc (P=3000) = 4.81806e-006
+
+
+
+** ================ ROCK-FLUID PROPERTIES ==============
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow        Pwc
+0.2     0.0000   0.5102      6.4
+0.25    0.0039   0.4133      5.6
+0.3     0.0156   0.3266      4.9
+0.35    0.0352   0.25        4.2
+0.40    0.0625   0.1837      3.6
+0.45    0.0977   0.1276      3.0
+0.5     0.1406   0.0816      2.5
+0.55    0.1914   0.0459      2.0
+0.6     0.25     0.0204      1.6
+0.65    0.3164   0.0051      1.2
+0.7     0.3906   0.0         0.9
+0.8     0.5625   0.0         0.4
+0.9     0.7656   0.0         0.1
+1.0000  0.7656   0.0000      0.0
+
+*SLT
+** Sl    Krg     Krog        Pgc
+0.20    0.6303   0.0000      3.2
+0.25    0.5511   0.0         2.8
+0.3     0.4772   0.0         2.5
+0.35    0.4086   0.0026      2.1
+0.4     0.3454   0.0104      1.8
+0.45    0.2874   0.0234      1.5
+0.5     0.2348   0.0416      1.3
+0.55    0.1875   0.0651      1.0
+0.6     0.1455   0.0937      0.8
+0.65    0.1089   0.1275      0.6
+0.7     0.0775   0.1666      0.5
+0.75    0.0514   0.2108      0.3
+0.8     0.0307   0.2709      0.2
+0.85    0.0153   0.3149      0.1
+0.9     0.0052   0.3748      0.0
+0.95    0.0004   0.4398      0.0
+0.97    0.0      0.4673      0.0
+1.0000  0.0      0.5102      0.0
+
+*KRWRO  0.5
+
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*vertical depth_ave
+
+INITREGION 1
+
+*refpres 3010
+*refdepth 4010
+
+*TEMP *CON 60
+
+*DWOC   5000
+*DGOC   3900
+
+**$ Property: Oil Mole Fraction(Dead_Oil)  Max: 0.350236  Min: 0.350236
+MFRAC_OIL 'Dead_Oil' CON     0.350236
+
+**$ Property: Oil Mole Fraction(Soln_Gas)  Max: 0.649764  Min: 0.649764
+MFRAC_OIL 'Soln_Gas' CON     0.649764
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  365
+
+*NORM *PRESS   150.0        ** Normal maximum changes per time step
+*NORM *SATUR     0.10
+*converge *totres 1e-4
+
+tform zt
+*isothermal
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH                   ** geomechanics main keyword
+*GEOM3D                    ** 3D FE
+*GEOGRID *GCART 21  21  11
+GDI GCON 60
+GDJ GCON 60
+GDK GCON 20
+
+*GEODEPTH 1 1 1 4000
+
+*GCOUPLING 0               ** One-way coupling, like *GEOPOSTPRO
+
+*GAMALI  6 *GVAR  1:1  20:5  
+*GAMALJ  6 *GVAR  1:1  20:5  
+*GAMALK  4 *GVAR  1:1  10:3
+
+
+*ELASTMOD 5.0e4            ** Young's modulus
+*POISSRATIO .35            ** Poisson's ratio
+*COHESION 1e8              ** Cohesion : LARGE VALUE FOR ELASTIC MODEL
+*STRESS3D 
+*IJK  1  1   1   
+    1000    1000   500   0.0   0.0   0.0
+*IJK  6  1   1   
+    1500    900   400   0.0   0.0   0.0
+*IJK  1   6   1   
+    1000    1000   500   0.0   0.0   0.0
+*IJK  6   6   1   
+    2000    1500   600   0.0   0.0   0.0
+
+*IJK  1  1   4   
+    1300    1300   700   0.0   0.0   0.0
+*IJK  6  1   4   
+    1300    1200   400   0.0   0.0   0.0
+*IJK  1   6   4   
+    1800    1800   500   0.0   0.0   0.0
+*IJK  6    6    4   
+    2000    2000   1000   0.0   0.0   0.0  
+
+*GKRIGING   *ALL 
+
+
+*RUN
+
+
+** ===================RECURRENT DATA ================
+
+*DATE 2004 09 16
+
+   *DTWELL 0.05
+                  
+**$
+WELL  'prod1'       **vert    21  21
+PRODUCER 'prod1'
+OPERATE  MAX  STO  750.  CONT REPEAT
+OPERATE  MIN  BHP  500.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.30   1.0  0.
+PERF  GEO  'prod1'
+**$ UBA       ff  Status  Connection  
+    11 11 1   0.2  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    11 11 2   0.2  OPEN    FLOW-TO  1
+    11 11 3   0.2  OPEN    FLOW-TO  2
+    11 11 4   0.2  OPEN    FLOW-TO  3
+    11 11 5   0.2  OPEN    FLOW-TO  4
+    11 11 6   0.2  OPEN    FLOW-TO  5
+    11 11 7   0.2  OPEN    FLOW-TO  6
+    11 11 8   0.2  OPEN    FLOW-TO  7
+    11 11 9   0.2  OPEN    FLOW-TO  8
+    11 11 10  0.2  OPEN    FLOW-TO  9
+    11 11 11  0.2  OPEN    FLOW-TO  10
+                     
+
+*TIME 1
+*TIME 5
+*TIME 10
+*TIME 20
+*TIME 30
+*TIME 40
+*TIME 50
+*TIME 60
+*TIME 70
+*TIME 75
+*STOP

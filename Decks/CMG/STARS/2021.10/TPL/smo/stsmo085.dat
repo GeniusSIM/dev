@@ -1,0 +1,256 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Show the effect of correction factor *AQEN_CONTROL on
+**            aquifer heat influx result.
+
+**  RESULTS:  Compare temperature profiles with and without *AQEN_CONTROL for
+**            the boundary blocks adjacent to aquifer. Without *AQEN_CONTROL,
+**            temperature at some of the blocks will rise abnormally.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 85'
+*TITLE2 'Verify/Illustrate *AQEN_CONTROL'
+
+INUNIT SI
+
+WSRF WELL 1
+OUTSRF WELL LAYER NONE
+OUTSRF SPECIAL AQFRTOT  WATER RATE 
+               AQFRTOT  HEAT RATE 
+*OUTSRF *SPECIAL BLOCKVAR TEMP 12 7  15 
+
+WSRF GRID TIME
+OUTSRF GRID PRES SW SO TEMP AQWATCUM AQWATRATE AQHEATCUM AQHEATRATE
+
+WSRF SECTOR TIME
+
+WPRN GRID TIME
+OUTPRN GRID NONE
+*AQSTAT *ON
+
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+
+
+** ========= GRID AND RESERVOIR PROPERTIES ============
+
+GRID CORNER 15 15 15
+DI IVAR      100             100             100             100
+             100             100             100             100             100
+             100             100             100             100             100
+             100
+DJ JVAR      100             100             100             100
+             100             100             100             100             100
+             100             100             100             100             100
+             100
+ZCORN
+ 900*3000.0000 1800*3010.0000 1800*3020.0000 1800*3030.0000 1800*3040.0000
+ 1800*3050.0000 1800*3060.0000 1800*3070.0000 1800*3080.0000 1800*3090.0000
+ 1800*3100.0000 1800*3110.0000 1800*3120.0000 1800*3130.0000 1800*3140.0000
+ 900*3150.0000
+
+PERMI KVAR 
+ 10 150 10 150 10 10*500
+PERMJ EQUALSI
+PERMK EQUALSI * 0.1
+
+NULL CON            1
+ 
+*MOD
+  13:15 1:2 1:15   = 0
+  14:15 3:5 1:15   = 0
+  13:15 6:7 1:15   = 0
+  12:15 8:8 1:15   = 0
+  13:15 9:11 1:15  = 0
+  15:15 12:14 1:15 = 0
+  
+POR KVAR 
+    0.005 0.09 0.005 0.09 0.005 10*0.17
+
+AQUIFER    REGION  12:12  1:2  1:15 IDIR
+           REGION  13:13  3:5  1:15 IDIR
+           REGION  12:12  6:7  1:15 IDIR
+           REGION  11:11  8:8  1:15 IDIR
+           REGION  12:12  9:11 1:15 IDIR
+           REGION  14:14 12:14 1:15 IDIR
+   *AQPROP
+   **$thickness   porosity     permeability radius       angle
+       100          0.15         100        -99999      -99999      
+   *AQLEAK  ON
+   *AQMETHOD  *CARTER-TRACY
+   *AQGEOM RECTANG INFINITE
+   *AQVISC 0.3
+   *HFPROP 2060000 1.496e5 
+
+END-GRID
+
+ROCKTYPE 1
+
+ROCKCP 2060000 0
+THCONR 1.496e5
+THCONS 4.5e5
+THCONW 5.35e4
+THCONO 1.15e4
+THCONG 3000
+THCONMIX COMPLEX
+THTYPE CON            1
+
+
+
+** ============ FLUID PROPERTIES ==================
+
+MODEL 2 2 1 1
+
+COMPNAME    'H2O'   'CH4'
+**          -----   --------
+CMM           0     0.016043 
+PCRIT         0         4600 
+TCRIT         0       -82.55 
+KV1           0 
+KV2           0 
+KV3           0 
+KV4           0 
+KV5           0 
+
+MOLDEN        0 
+CP            0 
+CT1           0 
+CT2           0 
+CPT           0 
+
+AVG           0         0 
+BVG           0         0 
+AVISC         0 
+BVISC         0
+
+
+
+** =========== ROCK FLUID PROPERTIES ===============
+
+ROCKFLUID
+
+RPT 1 STONE1 WATWET
+**$        Sw         krw       krow
+SWT
+          0.1           0          1
+      0.15625   0.0021838    0.92832
+       0.2125   0.0044992   0.768841
+      0.26875  0.00715064   0.634237
+        0.325   0.0105056   0.521405
+      0.38125   0.0151003   0.427425
+       0.4375   0.0216616   0.349567
+      0.49375   0.0311276   0.285292
+         0.55   0.0446669   0.232258
+      0.60625   0.0636969   0.188319
+       0.6625   0.0899007   0.151538
+      0.71875    0.125244   0.120183
+        0.775    0.171993   0.092744
+      0.83125    0.232724  0.0679315
+       0.8875    0.310347  0.0446931
+      0.94375    0.408113   0.022226
+            1    0.529632          0
+**$        Sl        krg         krog      Pcog
+SLT
+          0.1   0.437412            0      1500
+          0.3   0.246044  0.000120427        77
+          0.6  0.0615111    0.0294012        15
+          0.9          0      0.49327         5
+            1          0            1         0
+BSWR CON   0.235
+BSGR KVAR  7*0.3 8*0
+
+
+
+** =========== INITIAL CONDITIONS ===================
+
+INITIAL
+
+VERTICAL OFF
+
+INITREGION 1
+
+PRES KVAR 
+ 35000 35100 35200 35300 35400 35500 35600 35700 35800 35900 36000
+ 36100 36200 36300 36400
+
+TEMP KVAR 
+ 90 90.3 90.6 90.9 91.2 91.5 91.8 92.1 92.4 92.7 93 93.3 93.6 93.9
+ 94.2
+
+SW KVAR 
+ 7*0.41 8*1
+
+SG KVAR 
+ 7*0.59 8*0
+
+MFRAC_WAT 'H2O' CON            1
+MFRAC_GAS 'H2O' CON            0
+MFRAC_GAS 'CH4' CON            1
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+NUMERICAL
+
+AQEN_CONTROL 0.5
+
+RUN
+
+
+
+** ===================== Recurrent Data ==============
+
+DATE 1901 1 1
+
+  DTWELL 1e-008
+
+  WELL  'Well-1'
+  PRODUCER 'Well-1'
+  OPERATE  MAX  STG  0.0  CONT
+  GEOMETRY  K  0.086  0.249  1.0  0.0
+  PERF  GEOA  'Well-1'
+   4 7 4  1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+   4 7 5  1.0  OPEN    FLOW-TO  1
+   4 7 6  1.0  OPEN    FLOW-TO  2
+   4 7 7  1.0  OPEN    FLOW-TO  3
+   4 7 8  1.0  OPEN    FLOW-TO  4
+
+  HEATR KVAR -1E+010 13*0 1E+010
+  UHTR KVAR  -1E+009 13*0 1E+009
+  TMPSET KVAR 90 13*12 94.2
+  AUTOCOOLER ON 1:15 1:15 1:1
+  AUTOHEATER ON 1:15 1:15 15:15 
+
+DATE 1906 1  1.00000
+DATE 1911 1  1.00000
+DATE 1916 1  1.00000
+DATE 1921 1  1.00000
+DATE 1926 1  1.00000
+
+   WRST TNEXT
+
+DATE 1931 1  1.00000
+
+   ALTER 'Well-1'
+    500000.
+    
+   AQEN_CONTROL 1.0
+
+DATE 1936 1  1.00000
+DATE 1941 1  1.00000
+DATE 1961 1  1.00000

@@ -1,0 +1,348 @@
+
+***************************************************************************** 
+** Template (stflu006.dat): Caustic-Polymer Slugs in a Laboratory Core     **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  ** 
+** FILE :  STFLU006.DAT                                                             **
+**                                                                                  **
+** MODEL:  INJECTION OF CAUSTIC AND POLYMER SLUGS            19X1X1 CARTESIAN GRID  **  
+**         CAUSTIC LOWERS IFT AND RELEASES RESIDUAL OIL      LAB UNITS              **   
+**         GRADED POLYMER SLUGS FOR MOBILITY CONTROL         ADSORPTION EFFECTS     **
+**         INTERPOLATION OF RELATIVE PERMEABILITY                                   **
+**                                                                                  **
+** USAGE:  CAUSTIC-POLYMER MOBILIZATION OF WATERFLOOD RESIDUAL OIL IN A CORE        **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    A caustic-polymer flood on a laboratory scale is simulated.                   **
+**  This illustrates the synergistic effect of a combined process                   **
+**  (Burk, SPEJ Res. Eng., Feb 1987, p 9.) without the additional                   **
+**  effects of macroscopic sweep efficiency.                                        **
+**                                                                                  **
+**  Special Features:                                                               **
+**                                                                                  **
+**  1)  Effect of caustic (NA/OH) ion exchange (equilibrium adsorption)             **
+**      on caustic propagation - Bunge and Radke (SPEJ, Dec 1982).                  **
+**                                                                                  **
+**  2)  Effect of caustic concentration on w/o interfacial tension;  for            **
+**      explanation of observed IFT minimum see Wasan, SPEJ, Aug 1983.              **
+**                                                                                  **
+**  3)  Effect of nonreversible polymer trapping on polymer propagation.            **
+**      Polymer blockage also contributes to mobility alteration.                   **
+**                                                                                  **
+**  4)  Polymer effects on aqueous phase viscosity modelled by nonlinear            **
+**      component viscosity mixing rule.                                            **
+**                                                                                  **
+**  5)  Injection sequence uses viscosity spike and graded viscosity drive          **
+**      to minimize viscous fingering of water drive into polymer bank              **
+**      (Claridge, SPEJ, Oct 1978).                                                 **
+**                                                                                  **
+**  6)  Capillary number interpolation of relative permeability sets                **
+**      describes residual oil mobilization.  Synergism is a result                 **
+**      of polymer modification to viscous forces and caustic effects               **
+**      on interfacial tension.                                                     **
+**                                                                                  ** 
+**  7)  The role of numerical dispersion in mimicing physical dispersion            **
+**      levels can be probed by doubling the number of grid blocks                  **
+**      (increased recovery from finer grid or lower dispersion levels)             **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 12'
+*TITLE2 'Caustic-Polymer Lab Run'
+
+*INUNIT  *LAB *EXCEPT 1 0  ** days instead of hrs
+              *EXCEPT 2 2  ** deg F instead of deg C
+
+*OUTUNIT *LAB *EXCEPT 1 0  ** days instead of hrs
+              *EXCEPT 2 2  ** deg F instead of deg C
+
+*OUTPRN *GRID PRES SW SO W VISW KRO KRW IFT CAPN
+              PH    ADSPCMP  ** special adsorption component (in ph)
+              MASS  ADSORP   ** adsorption component (in mass)
+              PPM   VISCCMP  ** special adsorption component (in ppm)
+
+*OUTSRF *GRID PRES SW SO IFT CAPN VELCAPN OILPOT
+              PH    ADSPCMP  ** special adsorption component (in ph)
+              MASS  ADSORP   ** adsorption component (in mass)
+              PPM   VISWCOM  ** special adsorption component (in ppm)
+
+*OUTPRN *WELL *WELLCOMP
+*OUTPRN *ITER *NEWTON
+
+*OUTSRF *WELL *MASS *COMPONENT *ALL
+
+*WRST 100
+*WPRN *GRID 100
+*WPRN *ITER 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 19 1 1  ** One-dimensional grid
+
+*DI *CON 0.4
+*DJ *CON 2.216
+*DK *CON 2.216
+
+*POR *CON 0.164
+
+*PERMI *CON 150
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+
+*PRPOR 101.1
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 4 4 4 3   ** Three aqueous and one oleic components
+
+*COMPNAME  'WATER'  'POLYMER'    'NAOH'   'DEAD OIL'
+**          -----    --------   --------   --------
+*CMM        0.018       10        0.04      0.456
+*MOLDEN   0.055555     1e-4     0.027397   0.002022   ** 1000 kg/m3
+*PCRIT       2000      2000       2000       2000
+*TCRIT       300       300        300        300
+*AVISC      0.826       20        0.826      18.3
+
+*RANGECHECK *OFF
+*SOLID_DEN 'POLYMER' 2.7397    0 0  ** Mass density is 0.27397*10
+*RANGECHECK *ON
+*SOLID_DEN 'NAOH'    0.0109588 0 0  ** Mass density is 0.27397*0.04
+
+*VSMIXCOMP 'POLYMER'
+*VSMIXENDP 0 4E-6      ** nonlinear mixing of polymer viscosity
+*VSMIXFUNC 0 .075 .16 .25 .35 .45 .56 .67 .78 .89 1
+
+**  Zero K values for aqueous components
+*KVTABLIM 101.3 202.6  60 160
+*KVTABLE 'WATER'
+    0    0
+    0    0
+*KVTABLE 'POLYMER'
+    0    0
+    0    0
+*KVTABLE 'NAOH'
+    0    0
+    0    0
+
+** Reference conditions
+*PRSR 101.1
+*TEMR 60
+*PSURF 101.1
+*TSURF 60
+
+*ROCKFLUID
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**     Interpolation between 2 sets: high versus low IFT situations.
+**  Capillary number interpolation option is based on aqueous NAOH
+**  IFT specified at 2 temperatures and 6 NAOH concentrations.
+**  Note that IFT goes through a minimum.
+
+*INTCOMP 'NAOH' WATER
+*INTLOG
+
+*IFTTABLE    ** aq mole frac      IFT
+                    0.0            13
+                    0.00003        0.3
+                    0.00006        0.07
+                    0.00015        0.005
+                    0.0003         0.1
+                    0.003          8
+
+**  Set #1:  High IFT, corresponding to no NAOH
+**  -------------------------------------------
+
+*KRINTRP 1
+
+*DTRAPW -4.5  ** critical capillary number for detrapping to begin
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.235     0.          1.
+    0.25      0.00025     0.729
+    0.3       0.002       0.512
+    0.35      0.00675     0.343
+    0.4       0.016       0.216
+    0.45      0.03125     0.125
+    0.5       0.054       0.064
+    0.55      0.08575     0.027
+    0.6       0.128       0.008
+    0.65      0.18225     0.001
+    0.7       0.25        0.
+    0.75      0.33        0.
+    0.8       0.415       0.
+    0.85      0.515       0.
+    0.9       0.635       0.
+    1.        1.          0.
+
+*SLT  *NOSWC   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29      0.7         0.
+    0.6       0.37121     0.362
+    0.95      0.          1.
+
+
+**  Set #2:  Low IFT, corresponding to high NAOH concentration
+**  ----------------------------------------------------------
+
+*KRINTRP 2 *COPY 1 1    ** copy from first set, then overwrite
+
+*DTRAPW -3  ** critical capillary number for full NAOH effect
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.235     0.          1.
+    0.25      0.00025     0.98
+    0.3       0.002       0.91
+    0.35      0.00675     0.85
+    0.4       0.016       0.78
+    0.45      0.0355      0.715
+    0.5       0.054       0.65
+    0.55      0.08575     0.58
+    0.6       0.128       0.52
+    0.65      0.18225     0.45
+    0.7       0.25        0.38
+    0.75      0.33        0.32
+    0.8       0.415       0.255
+    0.85      0.515       0.198
+    0.9       0.635       0.125
+    1.        1.          0.
+
+*slt  *noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29      0.7         0.
+    0.6       0.37121     0.362
+    1.00      0.          1.
+
+
+**  Adsorption Data
+**  ---------------
+
+*ADSCOMP 'POLYMER' WATER     **Data for irreversible aqueous polymer adsorption
+*ADMAXT 5.42E-8
+*ADRT 5.42E-8
+*RRFT 1.2
+*ADSLANG 0.261 0 5.E6        ** Langmuir concentration coefficients
+
+*ADSCOMP 'NAOH' WATER        ** Data for reversible aqueous NaOH adsorption
+*ADMAXT 6.8E-5               ** no mobility effect
+*ADSLANG 0.68 0 10000        ** Langmuir concentration coefficients
+
+*INITIAL
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*PRES *CON 101.3
+*SW *CON .64    ** So by difference
+*TEMP *CON 60
+*mfrac_wat 'WATER' *con 1
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL                ** All these can be defaulted.  The definitions
+                          ** here match the previous data.
+
+*TFORM *ZT
+*ISOTHERMAL
+
+*NEWTONCYC 10
+*DTMAX .025
+
+*RANGECHECK *OFF
+*NORM      *PRESS 100    *ZAQ .4     *ZO .4     *ZNCG .4
+*CONVERGE  *PRESS 0.1    *ZAQ 1.E-8  *ZO .0001
+*RANGECHECK *ON
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL .0025   ** One pore volume is 0.25 day
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.3
+   *GEOMETRY *J .11 .3687 1 0  ** rw,cc,ff,ss
+   *PERF *GEO 'PRODN'   **  i j k
+                    19 1 1 1.0
+
+   *INJECTOR 'INJTR'
+      *INCOMP *WATER .9959963 3.7E-6 .005 0   ** Polymer-caustic slug injected (15 cp)
+   ** *INCOMP *WATER .995996  4.0E-6 .005 0   ** Another slug to try
+   ** *INCOMP *WATER .9999963 3.7E-6 .000 0   **         "
+   ** INCOMP  *WATER .995     0      .005 0   **         "
+   *OPERATE *STW 24.6   
+   *PERF 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+
+TIME .0625
+
+   DTWELL .0025  
+   INJECTOR 'INJTR'
+   INCOMP WATER .999996  4E-6    0 0  ** POLYMER SPIKE INJECTED (20 CP)
+   OPERATE STW 24.6
+
+TIME .125
+
+   DTWELL .0025  
+   INJECTOR 'INJTR'
+   INCOMP WATER .9999968 3.2E-6  0 0  ** DECREASING POLYMER SLUG INJECTED (10 CP)
+   OPERATE STW 24.6
+
+TIME .1875
+
+   DTWELL .0025  
+   INJECTOR 'INJTR'
+   INCOMP WATER .9999975 2.56E-6 0 0  ** DECREASING POLYMER SLUG INJECTED (5 CP)
+   OPERATE STW 24.6
+
+TIME .25
+
+   DTWELL .0025  
+   INJECTOR 'INJTR'
+   INCOMP WATER 1        0       0 0  ** PURE WATER DRIVE
+   OPERATE STW 24.6
+
+*TIME .5
+*TIME .75
+*STOP

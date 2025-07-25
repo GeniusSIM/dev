@@ -1,0 +1,241 @@
+   *****************************************************************************
+   ** Template (mxgmc007.dat):  3D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC007.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                        SI UNIT               **
+   **         ELASTIC MODEL                                      5x3x4 CARTESIAN GRID  **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **    The new keyword *GEODOMAIN is introduced in the geomechanics section.         **
+   **    Only sub regions defined by the keyword *GEODOMAIN are computed by            **
+   **    the geomechanics module. Outside the regions, emperical models of             **
+   **    porosity implemented in the reservoir simulator (if applicable)               **
+   **    are applied.                                                                  **
+   **                                                                                  **
+   **    *SOLVERG *AIMSOL  :  Applied AIMSOL in the geomechanics module.               **
+   **                                                                                  **
+   **    *NOCOUPERM:  Disables all the deformation-dependent permeability data, which  **
+   **                 is keyword *GPERMLC added before and after *NOCOUPERM.  The      **
+   **                 result is the same as having no GPERMLC data.                    **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #007'
+*TITLE2
+   'Geomechanics Domains and AIMSOL Matrix Solution'
+
+*INUNIT  SI 
+
+*WPRN *GRID TIME
+*OUTPRN *GRID PRES
+*OUTPRN *WELL *ALL
+
+OUTSRF GRID PRES STRESI VDISPL
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 5 3 4
+
+*DI *CON 0.07184
+*DJ *CON 0.07184
+*DK *CON 0.04064
+
+*VAMOD  2  0.5        0.5   1.0   0.5
+*VAMOD  3  0.625      0.5   1.0   0.625
+*VAMOD  4  0.5        1.0   0.0   0.5      0.0  1.0   0.0
+*VAMOD  5  0.5        0.0   0.0   0.5      1.0  1.0   0.0
+*VAMOD  6  1.25       1.0   1.0   1.25
+
+*VATYPE *ALL   3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+*POR *CON 0.3063
+
+*PERMI *CON 200000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*DEPTH 1 1 1 0.14224
+
+*CPOR 4.4E-7
+*PRPOR 101.325
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   33.000   1.01200   169.490   1.17000 0.0130000
+    34000.000   70.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     900.0
+   *DENSITY *GAS     0.00448
+   *DENSITY *WATER   1000.
+   *CO               0.145E-5      ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0    
+   *CW               0.0
+   *REFPW            101.325       ** Reference pressure
+   *VWI              1.0
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 37
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.130      0.0        1.0
+    0.191      0.0051     0.999
+    0.250      0.0102     0.769
+    0.294      0.0168     0.7241
+    0.357      0.0275     0.6206
+    0.414      0.0424     0.504
+    0.490      0.0665     0.3714
+    0.577      0.097      0.3029
+    0.630      0.1148     0.1555
+    0.673      0.1259     0.0956
+    0.719      0.1381     0.0576
+    0.789      0.1636     0.0
+    1.0        1.0        0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog    
+**  -----     ------    ------   
+    0.200     0.17      0.0      
+    0.395     0.112     0.0294   
+    0.433     0.1022    0.0461   
+    0.515     0.0855    0.0883   
+    0.569     0.0761    0.1172   
+    0.614     0.0654    0.1433   
+    0.663     0.05      0.1764   
+    0.719     0.0372    0.217    
+    0.750     0.0285    0.2255   
+    0.805     0.0195    0.2919   
+    0.850     0.0121    0.3373   
+    0.899     0.0026    0.5169   
+    1.0       0.0       1.0      
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 482.6
+
+*SW *CON 1.0
+*SO *CON 0.0
+*PB *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMIN 1.E-7
+*NORM     *PRESS 100
+*CONVERGE *PRESS 1.0
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH              ** geomechanics main keyword
+
+*PRINTGEO 5           ** output option
+
+*GCOUPLING 1
+
+*SOLVERG *AIMSOL      ** USING AIMSOL
+** Note: The yielding stress has a high value to avoid plastics occuring.
+** Young modulus   Poisson's ratio   Yielding stress
+*ELASTMOD 5.5e6
+*POISSRATIO .3
+*COHESION 10000
+
+*GPERMLC  100       ** Using Li and Chalaturnyk model
+
+** Initial effective stress in the reservoir
+** H stress : horizontal stress on a plane
+** V stress : Vertical stress on a plane
+** N stress : Normal stress to a plane
+**      H stress  V stress  Shear stress  N stress
+*STRESS 1000       1000        0           1000
+
+*GEODOMAIN *IJK
+1:3  1:2  1:4
+
+*NOCOUPERM
+
+*GPERMLC  200       ** Using Li and Chalaturnyk model
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 1901 01 01.  
+
+   DTWELL 0.0001
+
+   WELL  1 'inj1'
+   INJECTOR MOBWEIGHT 'inj1'
+   INCOMP WATER
+   OPERATE MAX STW  0.008 CONT REPEAT
+   PERF WI   'inj1'
+      1 1 1  0.0001
+      1 1 2  0.0001
+
+
+   WELL  2 'prod1'
+   PRODUCER 'prod1'
+   OPERATE MIN BHP  482.6 CONT REPEAT
+   GEOMETRY K 0.0016 0.307 0.125 0.
+   PERF GEO   'prod1'
+      5 1 1  1.
+      5 1 2  1.
+      5 1 3  1.
+      5 1 4  1.
+
+
+TIME 0.00693287
+
+TIME 0.02082176
+
+TIME 0.0694444
+
+STOP

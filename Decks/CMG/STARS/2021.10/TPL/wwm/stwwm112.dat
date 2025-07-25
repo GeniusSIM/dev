@@ -1,0 +1,391 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**    Test and illustrate the use of *PTUBE1 and *ITUBE1 together with *MANIFOLD
+**    and its associated keywords.  Production hydraulics table uses ALQ values.
+
+
+
+**  ===================  INPUT/OUTPUT CONTROL  ======================
+**  =================================================================
+
+RESULTS SIMULATOR STARS
+
+INTERRUPT STOP
+
+TITLE1 'STARS Well Management Template No. 112'
+TITLE2 'Verify/Illustrate Manifold Oil Injection *MANIFOLD *OILI'
+TITLE3 '*ITUBE1 with STF Values'
+
+INUNIT FIELD
+
+WPRN ITER TIME
+WPRN GRID TIME
+OUTPRN GRID PRES SG SO SW
+OUTPRN WELL ALL
+
+OUTSRF GRID PRES SG SO SW
+
+WRST 20
+
+
+
+** ============================  GRID DATA  =========================
+** ==================================================================
+
+GRID VARI 9 5 3
+
+KDIR UP
+
+DI IVAR  9*1000
+DJ JVAR  5*1000
+DK KVAR 50 30 20
+
+DTOP 45*8325
+PVCUTOFF 0
+
+NULL CON  1
+
+POR CON   0.3
+
+PERMI KVAR  200 50 500
+PERMJ KVAR  200 50 500
+PERMK KVAR  20 40 60
+
+PINCHOUTARRAY CON 1
+
+END-GRID
+
+ROCKTYPE 1
+PRPOR 14.7
+CPOR 3.0E-6
+
+
+
+** ===================  COMPONENT PROPERTIES  =====================
+** ================================================================
+
+MODEL 3 3 3 1
+
+COMPNAME 'Water' 'Dead_Oil' 'Soln_Gas'
+
+CMM         0      113.464    24.5658
+PCRIT       0         0       667.009
+TCRIT       0         0      -115.554
+
+KV1         0         0       54224.5
+KV2         0         0      6.593e-5
+KV3         0         0       16.8153
+KV4         0         0      -1583.98
+KV5         0         0      -446.782
+
+MASSDEN  62.238    43.5702     18.143
+CP       3.0e-6    1.37e-5    1.37e-5
+CT1   0.0010884 0.00181046 0.00181046
+
+PRSR 14.6488
+TEMR 100
+PSURF 14.6488
+TSURF 62.33
+
+VISCTABLE
+**$        T    'Water' 'Dead_Oil' 'Soln_Gas'
+           41   0.691391   3.35366    1.19765  ** Live oil visc (P=2514) = 2.06702
+           59   0.516638   2.19439   0.783658  ** Live oil visc (P=2514) = 1.35251
+           77   0.405652   1.52997   0.546381  ** Live oil visc (P=2514) = 0.942993
+          100       0.31      1.04   0.371403  ** Live oil visc (P=2514) = 0.641
+          118   0.260081  0.806407   0.287983  ** Live oil visc (P=2514) = 0.497026
+          190   0.148435  0.384065   0.137156  ** Live oil visc (P=2514) = 0.236717
+          262  0.0985905  0.248565  0.0887671  ** Live oil visc (P=2514) = 0.153202
+          334  0.0751493  0.189744   0.067761  ** Live oil visc (P=2514) = 0.116948
+          406  0.0610093  0.159219  0.0568601  ** Live oil visc (P=2514) = 0.0981341
+          478  0.0511919  0.141457  0.0505168  ** Live oil visc (P=2514) = 0.0871863
+          550  0.0432084  0.130277  0.0465243  ** Live oil visc (P=2514) = 0.0802958
+          622   0.037836   0.12283  0.0438648  ** Live oil visc (P=2514) = 0.0757057
+          694  0.0333562  0.117652  0.0420156  ** Live oil visc (P=2514) = 0.0725142
+          766  0.0297895  0.113929   0.040686  ** Live oil visc (P=2514) = 0.0702195
+          838  0.0268357  0.111178  0.0397038  ** Live oil visc (P=2514) = 0.0685244
+          910  0.0243494  0.109101  0.0389619  ** Live oil visc (P=2514) = 0.0672439
+          982  0.0222276  0.107502  0.0383908  ** Live oil visc (P=2514) = 0.0662583
+         1054  0.0203957  0.106251  0.0379441  ** Live oil visc (P=2514) = 0.0654873
+         1126  0.0187981  0.105259  0.0375897  ** Live oil visc (P=2514) = 0.0648757
+
+VSMIXCOMP 'Soln_Gas'
+VSMIXENDP 0 0.47 
+VSMIXFUNC 0 0.0320758 0.0638116 0.104637 0.142573 0.175509 0.208444 0.262928 0.328535 0.39452 0.47 
+
+
+
+** ========================  ROCK-FLUID DATA  ===================
+** ==============================================================
+
+ROCKFLUID
+
+RPT 1
+
+SWT
+**$         Sw       krw      krow
+**   ---------    ------    ------
+     0.1200000       0.0       1.0
+     0.8200000       1.0       0.0
+SLT
+**$        Sl        krg       krog
+**   --------    -------    -------
+         0.12      0.984        0.0
+         0.15       0.98        0.0
+         0.30       0.94        0.0
+         0.40       0.87     0.0001
+         0.50       0.72      0.001
+         0.55        0.6       0.01
+         0.60       0.41      0.021
+         0.70       0.19       0.09
+         0.75      0.125        0.2
+         0.80      0.075       0.35
+         0.88      0.025        0.7
+         0.95      0.005       0.98
+         0.98        0.0      0.997
+        0.999        0.0        1.0
+          1.0        0.0        1.0
+
+
+
+** ======================  INITIAL CONDITIONS  ====================
+** ================================================================
+
+INITIAL
+
+VERTICAL DEPTH_AVE
+
+REFPRES 4800.
+REFDEPTH 8400.
+
+DWOC 9500.
+DGOC 7000.
+
+**$ Property: Oil Mole Fraction(Dead_Oil)  Max: 0.530007  Min: 0.530007
+MFRAC_OIL 'Dead_Oil' CON     0.530007
+**$ Property: Oil Mole Fraction(Soln_Gas)  Max: 0.469993  Min: 0.469993
+MFRAC_OIL 'Soln_Gas' CON     0.469993
+
+
+
+** ======================  NUMERICAL CONTROL  ======================
+** =================================================================
+
+NUMERICAL
+
+TFORM ZT
+ISOTHERMAL
+
+
+
+RUN
+
+** ======================  RECURRENT DATA  ==========================
+** ==================================================================
+
+DATE 1986 4 22
+
+DTWELL 1
+
+GROUP 'Inj-Group' ATTACHTO 'Field'     ** Define the gathering centres.
+GROUP 'Gather-1' 'Gather-2' ATTACHTO 'Field'
+
+ *PTUBE1   1                   ** Hydraulics table for producing wells and
+  *DEPTH                       ** for production manifold-to-surface
+   8400.0                      ** pressure drop.  Note that two ALQ values
+  *GOR  ** g = 1      2        ** (0.0 and 1.0) are specified.
+              500.  1270.
+  *WCUT ** w = 1      2
+              0.0    0.5
+  *OIL  ** o = 1      2      3      4
+              0.0   4000.  8000.  16000.
+  *ALQ  ** a = 1      2
+              0.0    1.0
+  *WHP  ** whp(1)   whp(2)   whp(3)
+            200.0    900.0   1600.0
+  *BHP
+** g  w  o  a bhp(1) bhp(2) bhp(3)
+   1  1  1  1 1176.1 1873.7 2573.7
+   2  1  1  1 1135.5 1876.6 2576.6
+   3  1  1  1 1133.6 1884.2 2584.2
+   4  1  1  1 1160.1 1912.5 2612.5
+   1  1  2  1 1646.7 2344.7 3044.7
+   2  1  2  1 1618.0 2351.2 3051.2
+   3  1  2  1 1630.9 2368.4 3068.4
+   4  1  2  1 1696.4 2433.4 3133.4
+   1  2  1  1  997.7 1670.9 2370.9
+   2  2  1  1  682.7 1674.6 2374.6
+   3  2  1  1  463.1 1684.5 2384.5
+   4  2  1  1  425.7 1721.3 2421.3
+   1  2  2  1 1447.7 2124.7 2824.7
+   2  2  2  1 1189.0 2132.3 2832.3
+   3  2  2  1 1022.0 2152.8 2852.8
+   4  2  2  1 1080.0 2231.0 2931.0
+   1  1  1  2 3176.1 3873.7 4573.7
+   2  1  1  2 3135.5 3876.6 4576.6
+   3  1  1  2 3133.6 3884.2 4584.2
+   4  1  1  2 3160.1 3912.5 4612.5
+   1  1  2  2 3646.7 4344.7 5044.7
+   2  1  2  2 3618.0 4351.2 5051.2
+   3  1  2  2 3630.9 4368.4 5068.4
+   4  1  2  2 3696.4 4433.4 5133.4
+   1  2  1  2 2997.7 3670.9 4370.9
+   2  2  1  2 2682.7 3674.6 4374.6
+   3  2  1  2 2463.1 3684.5 4384.5
+   4  2  1  2 2425.7 3721.3 4421.3
+   1  2  2  2 3447.7 4124.7 4824.7
+   2  2  2  2 3189.0 4132.3 4832.3
+   3  2  2  2 3022.0 4152.8 4852.8
+   4  2  2  2 3080.0 4231.0 4931.0
+
+
+ *ITUBE1  2
+  *DEPTH
+   600.0
+  *STF	 **Applicable to single phase injectors as well
+           0.0E+00  0.1E+05  0.2E+05  0.5E+05  0.8E+05  1.0E+05
+  *WHP
+            14.7  1000.0  3000.0  5000.0  9000.0  10000.0
+  *BHP
+** g bhp(1)  bhp(2)  bhp(3)  bhp(4)  bhp(5)  bhp(6)
+   1  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   2  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   3  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   4  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   5  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+   6  114.0  1100.0  3100.0  5100.0  9100.0 10100.0
+
+
+WELL  'Injector 1' ATTACHTO 'Inj-Group'
+INJECTOR MOBWEIGHT EXPLICIT 'Injector 1'
+PHWELLBORE table 600 2  **Gas injector using table for THP calculations
+INCOMP  OIL  0.  1.  0.
+PINJW 10000.
+OPERATE  MAX  STO  1e+004  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Injector 1'
+    3 3 3  1.  OPEN    FLOW-FROM  'SURFACE'
+
+WELL  'Injector 2' ATTACHTO 'Inj-Group'
+INJECTOR MOBWEIGHT EXPLICIT 'Injector 2'
+PHWELLBORE table 600 2 
+INCOMP  OIL  0.  1.  0.
+PINJW 10000.
+OPERATE  MAX  STO  1e+004  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Injector 2'
+    7 3 3  1.  OPEN    FLOW-FROM  'SURFACE'
+
+WELL  'Producer 1' ATTACHTO 'Gather-1'
+PRODUCER 'Producer 1'
+PHWELLBORE TABLE 6300. 1
+OPERATE  MAX  STO  2000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 1'
+    1 1 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 2' ATTACHTO 'Gather-1'
+PRODUCER 'Producer 2'
+PHWELLBORE TABLE 6500. 1
+OPERATE  MAX  STO  2000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 2'
+    1 5 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 3' ATTACHTO 'Gather-1'
+PRODUCER 'Producer 3'
+PHWELLBORE TABLE 6400. 1
+OPERATE  MAX  STO  1000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 3'
+    5 1 1  0.5  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 4' ATTACHTO 'Gather-1'
+PRODUCER 'Producer 4'
+PHWELLBORE TABLE 6300. 1
+OPERATE  MAX  STO  1000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 4'
+    5 5 1  0.5  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 5' ATTACHTO 'Gather-2'
+PRODUCER 'Producer 5'
+PHWELLBORE TABLE 6400. 1
+OPERATE  MAX  STO  3000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 5'
+    9 1 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 6' ATTACHTO 'Gather-2'
+PRODUCER 'Producer 6'
+PHWELLBORE TABLE 6200. 1
+OPERATE  MAX  STO  2000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 6'
+    9 5 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 3a' ATTACHTO 'Gather-2'
+PRODUCER 'Producer 3a'
+PHWELLBORE TABLE 6400. 1
+OPERATE  MAX  STO  1000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 3a'
+    5 1 1  0.5  OPEN    FLOW-TO  'SURFACE'
+
+WELL  'Producer 4a' ATTACHTO 'Gather-2'
+PRODUCER 'Producer 4a'
+PHWELLBORE TABLE 6400. 1
+OPERATE  MAX  STO  1000.  CONT
+OPERATE  MIN  BHP  200.  CONT
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer 4a'
+    5 5 1  0.5  OPEN    FLOW-TO  'SURFACE'
+
+   ** Define production and injection targets for gathering centres.
+
+   *MANIFOLD *PROD 'Gather-1' 'Gather-2' *ON      ** Define Manifolds - production and
+   *MANIFOLD *OILI 'Inj-Group' *ON                ** oil injection
+                                              
+   *PCON-MANIFOLD *PROD 'Gather-1' 'Gather-2' *ON   ** Set pressure translation for manifold
+   *PCON-MANIFOLD *OILI 'Inj-Group'           *ON   ** pressure targets.
+
+   *GPTABLE *PROD 'Gather-1' 'Gather-2'    ** Set hydraulics table numbers for calculation of
+      1                                    ** drop between manifold and surface
+   *GPTABLE *OILI 'Inj-Group'    
+      2
+
+   *GPHYDDEP *PROD 'Gather-1' 'Gather-2'   ** Set depths for use with production manifold
+      2000.                                ** hydraulics table
+
+   *GPHYDDEP *OILI 'Inj-Group'             ** Set depth for use with injection manifold
+      200.                                 ** hydraulics table
+
+   *GCONP 'Gather-1' 'Gather-2'
+      *GTARGET *CPP 1400. *CONT            ** Set production compressor pressure target           
+
+   *GCONI 'Inj-Group'
+      *MAX *OMP 4000.0                 ** compressor pressure for oil injection
+
+   *GROUPALQ PROD 'Gather-1' 'Gather-2'   ** Set ALQ value for production manifolds
+                   0.5
+
+   *WELLALQ  'Producer *'
+          0.5                             ** Set ALQ values for production wells
+
+DATE 1988 4 22
+DATE 1990 4 22
+DATE 1992 4 22
+DATE 1994 4 22
+DATE 1996 4 22
+*STOP

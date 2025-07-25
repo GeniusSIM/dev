@@ -1,0 +1,203 @@
+   ******************************************************************************
+   ** mxwwm017.dat: Ansotropic Well Index Test & Multiple PVT Input            **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM017.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  31x31x1     Anisotropic Well Index and Multi-region PVT TEST             **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Multi-PVT Region & Well Index Test'
+   *INUNIT *FIELD              
+   *WPRN   *WELL   1
+   *WPRN   *GRID   10
+   *OUTPRN *WELL   *ALL
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *ALL
+
+   ** Subsidence Printout Enabled
+
+   *OUTPRN *GRID   *SO *SG *PRES *BPP  *SBDZ
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP  *SBDZ
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 31 31 1  
+   *KDIR *DOWN                            
+   *DI *CON 1500.0      
+   *DJ *CON 750.0  
+   *DK *CON 100.0                                                         
+   *NETGROSS *CON 0.5                                                        
+   *DTOP 961*8400.0         
+   *POR *CON 0.3                  
+   *CPOR   3.0E-6           
+   *PRPOR 14.7                  
+   *PERMI *CON             
+      200.0      
+   *PERMJ *CON               
+      200.0      
+   *PERMK *CON             
+       20.0 
+     
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   *MODEL *BLACKOIL
+  
+   ** Use Flexible PVT Input. All properties PVT region dependent
+   ** and independent of input position.  Multiple regions can be
+   ** entered on a single keyword. Backward compatable. PVT tables
+   ** need not come before other variables.
+   ** Multiple CO allowed, CVO and all water properties are now 
+   ** PVT region dependent
+
+   *DENSITY *GAS     0.0647     ** first  PVT region
+   *DENSITY *GAS     0.0647     ** Second PVT region 
+
+   *DENSITY *WATER  62.238      ** first  PVT region
+
+   *DENSITY *OIL    46.244      ** first  PVT region
+
+   *CW    2.9886E-6 2.9886E-6   ** first  and second PVT regions 
+
+   *PVT 1
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244      ** second  PVT region
+
+   *VWI   0.31                  ** first  PVT region
+
+   *BWI   1.0410    1.0410      ** first  and second PVT regions
+
+   *PVT 2
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *WATER  62.238      ** second  PVT region
+
+   *CO    1.3687E-5 1.3687E-5   ** first  and second PVT regions
+
+   *CVO   4.6000E-5             ** Both PVT regions
+
+   *REFPW 14.7                  ** first  PVT region
+   *REFPW 14.7                  ** second  PVT region
+
+   *VWI   0.31                  ** second  PVT region
+
+   *CVW   0.0   0.0             ** first and second PVT regions
+
+   *PTYPE IVAR 16*1 15*2
+
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+
+   *ROCKFLUID  
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+     0.12    1.0         0.0 
+     1.0     0.0         1.0
+   
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+
+   *INITIAL
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    4014.7  
+
+   ** Allow multiple regions to be entered on a single keyword
+   ** Missing values in the *INTIAL section are defaulted to the value
+   ** of the last region entered.
+     
+   *REFDEPTH   8400.  8400.       ** first  and second PVT regions   
+   *REFPRES    4800.              ** first PVT region
+   *REFPRES    4800.              ** second PVT region
+   *DWOC       9500.  9500.       ** first  and second PVT regions   
+   *DGOC       7000.              ** Both PVT regions 
+                                  ** (default to last region enterd)   
+
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *NUMERICAL
+   *DTMAX       30.0        
+   *MAXSTEPS    100          
+   *NORM *PRESS 1000.0       
+   *NORM *SATUR 0.20
+   *AIM  *STAB *AND_THRESH
+   
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   *RUN
+   *DATE 2000 01 01
+   *DTWELL 1.0
+   *WELL 1 'Producer'
+   *PRODUCER 'Producer'                       
+   *OPERATE *MAX  *STO 20000.0         
+   *OPERATE *MIN  *BHP  1000.0         
+
+   ** GEOA indicates well index calculated using Peaceman's
+   ** anisotropic method (geofac on *GEO is ignored)
+                                      
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *I  0.25    0.37    1.0    0.0 
+   *PERF *GEOA 'Producer'
+   ** if     jf     kf     ff                         
+      16     16     1     1.0 
+
+   ** LAYERIJK overrides the I direction well direction
+   ** for layer in 16,16,1 with a K direction index.
+
+   *LAYERIJK  'Producer' 
+      16     16     1     *K
+
+   *TIME 30.0
+   *TIME 3650.0                       
+   *STOP                              

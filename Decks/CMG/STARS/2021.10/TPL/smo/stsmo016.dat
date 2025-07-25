@@ -1,0 +1,398 @@
+
+
+
+*COMMENT '#-'
+
+#-                        OVERVIEW
+#-                        ========
+
+#-    This data set tests and illustrates the rock-fluid set selection
+#-    options *KRTYPE and *KRTYPE_VERT.
+
+#-  Features:
+
+#-  1) Use *KRTYPE_VERT is assign different rock-fluid data to the vertical
+#-     direction.
+
+#-  2) Cycle between injection and production rock-fluid data sets in
+#-     recurrent data via *KRTYPE and *KRTYPE_VERT.
+
+#-  3) Write both rock-fluid sets to restart after they have changed
+#-     in recurrent data.
+
+#-  4) Write out both vertical and horizontal relative permeabilities to
+#-     text and SR2 files via subkeywords *KRW, *KRO and *KRG.
+
+#-  5) Test restarting from a time when both rock-fluid sets have been
+#-     changed from the initial values by recurrent data, for example,
+#-     10 days (end injection, before *KRTYPE or *KRTYPE_VERT),
+#-     730 days (end production, after *KRTYPE and *KRTYPE_VERT), and
+#-     747 days (end soak).  These restarts can be run from the command
+#-     line with the same data file but different output file.  For example,
+#-     for restarting from 10 days:
+
+#-     "stars.exe -f stsmo016.dat -r stsmo016 -log -restime 10 -o stsmo016_1
+
+
+
+#-  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 16'
+*title2 'Test/Illustrate *KRTYPE and *KRTYPE_VERT'
+*title3 'Based on STTST06'
+
+*inunit *field   #- output same as input
+
+*outprn *grid pres sw so sg temp y x krw kro krg
+*outprn *well *all
+*wrst
+*wprn *grid *time
+*wprn *iter *time
+
+outsrf special blockvar pres 2,1,2
+               blockvar so 2,1,2
+               blockvar sg 2,1,2
+               blockvar temp 2,1,2
+               blockvar cchloss 1,1,4
+               blockvar cchloss 7,1,4
+               matbal well 'OIL'    #- cumulative oil production
+               matbal well 'Water'  #- cumulative water production
+               cchloss              #- cumulative heat loss/gain
+outsrf grid  pres so sg temp krw kro krg
+
+
+
+#-  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 13 1 4 *rw 0     #- Zero inner radius matches previous treatment
+
+#-  Radial blocks:  small near well;  outer block is large
+*di *ivar  3 10*10 40 120
+
+*dj *con 360  #-  Full circle
+
+*dk *kvar 25 25 20 10
+
+*por *con 0.3
+*permi *kvar 2000 1000 500 2000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+#-  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   #- Components are water and dead oil.  Most water
+               #- properties are defaulted (=0).  Dead oil K values
+               #- are zero, and no gas properties are needed.
+
+*compname       'Water'    'OIL'
+#-               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        #- These four properties
+     *tcrit      705.4       0        #- are for the gas phase.
+     *avg        1.13e-5     0        #- The dead oil component does
+     *bvg        1.075       0        #- not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+#-      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         700     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+#-  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+
+#- Rock-Fluid Set #1 (Horizontal, Production)
+#- ------------------------------------------
+
+*rpt 1
+*swt   #-  Water-oil relative permeabilities
+
+#-   Sw        Krw        Krow
+#-  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   #-  Liquid-gas relative permeabilities
+
+#-   Sl        Krg         Krog
+#-  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+#- Rock-Fluid Set #2 (Horizontal, Injection)
+#- -----------------------------------------
+
+*rpt 2  copy 1
+*swr .38
+*krwiro .3
+*krocw .2
+*krgcw .1
+
+
+#- Rock-Fluid Set #3 (Vertical, Production)
+#- ----------------------------------------
+
+*rpt 3  copy 1
+*sorw .24
+*krwiro .35
+*krocw .25
+*krgcw .3
+
+
+#- Rock-Fluid Set #4 (Vertical, Injection)
+#- ---------------------------------------
+
+*rpt 4  copy 3
+*swr .38
+
+#- Vertical equilibrium uses injection set
+*krtype      *con 2
+*krtype_vert *con 4
+
+
+
+
+
+#-  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+#- Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 75
+*refblock 1 1 4
+
+*temp *con 125
+
+
+
+#-  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   #- All these can be defaulted.  The definitions
+             #- here match the previous data.
+
+*sdegree gauss
+*dtmax 90
+
+*norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+
+*run
+
+
+
+#-  ==============  RECURRENT DATA  ======================
+
+
+#-    The injection and production phases of the single cycling well
+#-  will be treated as two distinct wells which are in the same
+#-  location but are never active at the same time.  In the well data
+#-  below, both wells are defined immediately, but the producer is
+#-  shut in, to be activated for the drawdown.
+
+
+date 1973 9 25.5
+
+   dtwell 0.5 #-.02
+
+   #- INJECTOR:  Constant pressure steam injection type
+
+   well 1 'Injector 1' vert 1 1
+   injector mobweight 'Injector 1'
+   incomp water  1.0  0.0
+   tinjw 450
+   qual .7
+   operate     bhp 1000     #- Starting BHP is 1000 psi
+   operate max stw 1000     #- Maximum water rate is 1000 BPD
+   perfv 'Injector 1'
+            #-  k   wi   WI = 0.007082 *k * h / ln(0.5 * re / rw)
+                4   78075.37 #- 88
+                3   39037.68 #- 44
+                2   97594.21 #-110
+                1  195188.43 #-220
+
+   #- PRODUCER:  Constant liquid rate type
+
+   well 2 'Producer 1' vert 1 1
+   producer 'Producer 1'
+   operate     stl 1000    #- Starting liquid rate is 1000 BPD
+   operate min bhp 17      #- Minumum BHP of 1 atm
+   geometry k  .3 .5 1 0
+   perfv geo 'Producer 1'
+                #-  k
+                    4   1.0
+                    3   1.0
+                    2   1.0
+                    1   1.0
+
+
+   #- Cycle No. 1  -  Injection
+
+   shutin 'Producer 1'  #- Shut in producer
+
+   outsrf grid remove so
+
+time 10
+
+   dtwell 7
+
+   #- Cycle No. 1  -  Soak
+
+   shutin 'Injector 1'  #- Shut in injector
+
+   outsrf grid remove pres
+
+time 17
+
+   dtwell 1
+
+   #- Cycle No. 1  -  Production
+
+   open 'Producer 1'  #- Turn on producer
+
+   outsrf grid pres
+
+   krtype      *con 1
+   krtype_vert *con 3
+
+time 365
+
+   dtwell .1 #-.01
+
+   #- Cycle No. 2  -  Injection
+
+   shutin 'Producer 1'  #- Shut in producer
+   open 'Injector 1'    #- Turn on injector
+
+   outsrf grid none
+
+   krtype      *con 2
+   krtype_vert *con 4
+
+time 375
+
+   dtwell 7
+
+   #- Cycle No. 2  -  Soak
+
+   shutin 'Injector 1'  #- Shut in injector
+
+time 382
+
+   dtwell .5
+
+   #- Cycle No. 2  -  Production
+
+   open 'Producer 1'   #- Turn on producer
+
+   krtype      *con 1
+   krtype_vert *con 3
+
+time 730
+
+   dtwell .1 #-.002
+
+   #- Cycle No. 3  -  Injection
+
+   shutin 'Producer 1'   #- Shut in producer
+   open 'Injector 1'     #- Turn on injector
+
+   outsrf grid sg temp
+
+   krtype      *con 2
+   krtype_vert *con 4
+
+time 740
+
+   dtwell 7
+
+   #- Cycle No. 3  -  Soak
+
+   shutin 'Injector 1'   #- Shut in injector
+
+   outsrf grid none
+
+time 747
+
+   dtwell 1
+
+   #- Cycle No. 3  -  Production
+
+   open 'Producer 1'   #- Turn on producer
+
+   outsrf grid so
+
+   krtype      *con 1
+   krtype_vert *con 3
+
+time 1095
+stop

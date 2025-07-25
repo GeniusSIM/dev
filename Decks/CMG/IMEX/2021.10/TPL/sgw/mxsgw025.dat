@@ -1,0 +1,316 @@
+   ******************************************************************************
+   ** mxsgw025.dat:        iSegWells PUMP3 Method with Performance Curves      **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSGW025.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  3x3x3 SPE 1 GAS INJECTION         PUMP3 WITH PERFORMANCE CURVES          **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This example illustrates the use of *PUMP3 method for multi-stage electrical     **
+   ** centrigugal pumps. The manufacturer reference pump performance curves are        **
+   ** entered as table and corrected for viscous fluids using with the Hydraulic       **
+   ** Institue Model.                                                                  **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1 'iSegWells'
+   *TITLE2 'PUMP3 Method with Performance Curves'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   1
+   *WPRN   *GRID   *TIME
+   *WPRN   *ITER   *BRIEF
+
+   *OUTPRN *WELL  *ALL  **LAYER **BRIEF
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+   *OUTSRF *WELL *DOWNHOLE
+   *OUTSRF *WELL *LAYER *ALL *DOWNHOLE
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                               ** 3 layers in the K (z) direction.
+   *DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+   *DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+   *DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+    50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                               ** middle and uppermost layers, respectively.   
+
+   *DEPTH 1 1 1 8400.0         ** Depth to center of first block, in bottom layer.
+
+   *POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.   
+
+   *PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0      ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                ** that the first K layer is at bottom of the
+       20.0   40.0   60.0      ** reservoir.
+
+
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+
+
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+** Note : The above PVT data violates the total hydrocarbon compressibility check. To correct,
+** you could either change rs value at p=5014.7 from 1618 to 1600 or to change the last bo entry 
+** from 2.357 to 2.352.  Other possibilities could be equally appllied. The above corrections 
+** were tested and they have insignificant effects. 
+
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   1000. **0.31
+   *CVW   0.0   
+   
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0   
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       8344. **8300. **8320.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact            
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        10.         ** Maximum time step size
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.20
+   *AIM  *THRESH    0.25 .25   ** Use thresh hold switching criteria
+   *MAXSTEPS 500
+
+*RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+
+*WELL 1  'Producer'
+   *PRODUCER  1                        ** Define the type of well 2.
+   *PWELLBORE *ISEGWELL
+   *OPERATE *MAX  *STO 10000.0 CONT REPEAT         ** Initially, operate on a rate constraint.
+   *OPERATE *MIN  *BHP  1000.0 CONT REPEAT         ** If the BHP falls below 1000 psi, switch to a minimum pressure constraint.
+
+*WELL 2  'Injector'
+   *INJECTOR  *UNWEIGHT  2
+   *IWELLBORE *ISEGWELL
+   *INCOMP *WATER
+   *OPERATE *MAX  *STW 5000.0 CONT REPEAT         ** Initially, operate on a rate constraint.
+   *OPERATE *MAX  *BHP  20000.0 CONT REPEAT         ** If the BHP falls below 1000 psi, switch to a minimum pressure constraint.
+
+*WELLSITE 'Site2'
+
+*BRANCH 'Site2-Main' *CONNECT-TO 'Site2' *AT 0.0
+*BEGIN
+    950.00       950.00         0.00         0.00
+    950.00       950.00      8425.00      8425.00
+*END
+
+*PACKERS 'Site2-Main'
+*BEGIN
+  100.
+  8340.
+*END
+
+*TE-PDMETHOD 'TBE-meth1'
+   *CONST 2.0
+
+*TSTRING 'PROD-Tube1'
+   *START-AT 'Site2-Main'    0.0 *OPEN 'ZERO'
+   *END-AT   'Site2-Main' 8320.  *OPEN 'TBE-meth1'
+
+*TS-PDMETHOD 'tspmeth1'
+*BEGIN
+   *TYPE *PGRAD 0.10 **0.20 **0.5
+*END
+
+*TS-PDPOINTS 'PROD-Tube1'
+*BEGIN
+     0.00 'tspmeth1' 'tspmeth1'
+*END
+
+*TSTRING 'PROD-Tube2'
+   *START-AT 'Site2-Main'    0.0 *OPEN 'ZERO'
+   *END-AT   'Site2-Main' 8375.  *OPEN 'TBE-meth1'
+
+*TS-PDPOINTS 'PROD-Tube2'
+*BEGIN
+   0. 'tspmeth1' 'tspmeth1'
+*END
+
+*WB-PFINTVLS 'Site2-Main'
+*BEGIN
+   8330. 8340.
+   8380. 8420.
+*END
+
+*WB-BLOCKBDYS 'Site2-Main'
+*BEGIN
+   10 10 3  950.000 950.000 8325.00 8325.00 950.000 950.000 8345.00 8345.00
+   10 10 1  950.000 950.000 8375.00 8375.00 950.000 950.000 8425.00 8425.00
+*END
+
+*WB-PDMETHOD 'wbpmeth1'
+*BEGIN 
+   *TYPE *PGRAD 0.5
+   *FMULT 1.02
+*END
+
+*WB-PDPOINTS 'Site2-Main'
+*BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+*END
+
+*WIMETHOD 'wimeth1'
+*BEGIN
+   *TYPE *SGEOA 1.0
+   *SGRADIUS 0.25
+*END
+
+*WIPOINTS 'Site2-Main'
+*BEGIN
+      0.00    'wimeth1'
+*END
+
+*PUMP-CURVE  'Centrilift-538P100'
+*BEGIN
+   *SETTINGS   1  60
+   *QLBEP      9000.0
+   *QLHPE
+**       QL         Head       Power      Eff
+**(bbl/day)         (ft)        (hp)
+   0.0   66.291000   2.400000 0.000000
+ 500.0   64.954430   2.594569 0.091674
+1000.0   63.645196   2.735714 0.173927
+1500.0   62.367431   2.840053 0.247854
+2000.0   61.123821   2.921304 0.314229
+2500.0   59.915605   2.990505 0.373759
+3000.0   58.742580   3.056233 0.427082
+3500.0   57.603095   3.124815 0.474767
+4000.0   56.494053   3.200552 0.517320
+4500.0   55.410913   3.285932 0.555174
+5000.0   54.347688   3.381852 0.588699
+5500.0   53.296944   3.487830 0.618193
+6000.0   52.249805   3.602226 0.643890
+6500.0   51.195945   3.722461 0.665955
+7000.0   50.123596   3.845229 0.684485
+7500.0   49.019543   3.966718 0.699509
+8000.0   47.869125   4.082829 0.710990
+8500.0   46.656236   4.189390 0.718822
+9000.0   45.363324   4.282374 0.722832
+9500.0   43.971393   4.358120 0.722779
+10000.0  42.460000   4.413546 0.718355
+10500.0  40.807256   4.446368 0.709183
+11000.0  38.989828   4.455319 0.694819
+11500.0  36.982937   4.440363 0.674753
+12000.0  34.760357   4.402917 0.648405
+12500.0  32.294418   4.346065 0.615128
+13000.0  29.556004   4.274776 0.574208
+13500.0  26.514554   4.196123 0.524864
+14000.0  23.138061   4.119499 0.466245
+*END
+
+*TS-EQPMETHOD  'dp-pump1'
+   *PUMP  *PUMP3  'Centrilift-538P100'
+
+*TS-EQPT 'PROD-Tube2'
+*BEGIN
+   8000.0  *PUMP  'dp-pump1'  'dp-pump1'  +1
+*END
+
+*TS-EQSETTING
+*BEGIN
+   *PUMP  'PROD-Tube2'  8000.0  60  50 *LOW *HOMOGENEOUS *VCHIM
+*END
+
+*SGWASSIGN 'SGW-PROD-Tube1' *TO 'Producer'
+*SGWASSIGN 'SGW-PROD-Tube2' *TO 'Injector'
+
+*SGINFO 1
+
+*TIME 300.0
+
+*STOP

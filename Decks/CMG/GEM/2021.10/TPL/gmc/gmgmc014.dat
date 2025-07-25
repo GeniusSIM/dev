@@ -1,0 +1,256 @@
+RESULTS SIMULATOR GEM
+
+*******************************************************************************
+** Template (gmgmc014.dat):  Cyclic Water Injection and 3D Cylindrical Grid  **
+*******************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc014.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE-WELL CYLCIC                              FIELD UNITS              **
+**         WATER INJECTION                                 13X18X5 RADIAL GRID      **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN GEM                      **
+**                                                                                  **
+**  This example includes:                                                          **
+**                                                                                  **
+**    3D radial grids                                                               **
+**    Cap model                                                                     **
+**    Two way coupling between GEM and geomechanics module                          **
+**                                                                                  **
+**************************************************************************************
+** After stgeo031.DAT
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1 'GEM Geomechanics Template #14'
+*TITLE2 '3D Radial Grids'
+*TITLE3 'Cap Model'
+
+*INUNIT *FIELD   
+
+*OUTPRN *GRID *IMPL *PRES *SW *SO *SG *VISO *VISG
+
+*WSRF *GRID 5
+
+*OUTSRF *GRID  *PRES *SO *SG *TEMP *POROS *YOUNG
+               *VERDSPLGEO *STRESI *STRESJ *STRESK *VDISPL *STRESSH *STRESMXP *STRESEFF
+               *STRNEPL *YLDSTATE
+
+*OUTSRF *WELL *PAVG 
+              *PRES       2,1,4
+              *STRNEPL    2,1,4
+              *STRESEFF   2,1,4
+              *POROS      2,1,4
+
+              *PRES       2,1,5
+              *STRNEPL    2,1,5
+              *STRESEFF   2,1,5
+              *POROS      2,1,5
+              
+WRST TIME
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 13 18 5 *RW 0.3 
+
+**  Radial blocks:  small near well;  outer block is large
+*DI *IVAR  3 10*10 40 120
+*DJ *CON 20   **  Full circle
+*DK *KVAR 20 25 10 10 5
+*KDIR *DOWN
+
+*POR KVAR
+   0.1  0.1  0.2 0.3  0.25
+
+*PERMI *KVAR     100  100 100 2000 1000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  / 2
+
+*CPOR 7.5E-6
+*PRPOR 75
+*END-GRID
+*CTPOR 54.8E-06
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    2    2
+*TRES       120.000
+*COMPNAME
+           'C1'           'FC45'
+*SG         3.0000000E-01  9.4000000E-01
+*TB        -2.5861000E+02  1.0271300E+03
+*PCRIT      4.5400000E+01  7.1400000E+00
+*VCRIT      9.9000000E-02  1.9550000E+00
+*TCRIT      1.9060000E+02  9.5780000E+02
+*AC         8.0000000E-03  1.3295310E+00
+*MW         1.6043000E+01  5.3900000E+02
+*HCFLAG     0              0
+*BIN
+            1.3287519E-01
+*VSHIFT     0.0000000E+00  0.0000000E+00
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.3030000E+00  7.3780000E-03  1.7904413E+00
+            4.8507880E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      7.7000000E+01  1.0904000E+03
+
+*ENTHCOEF
+           -5.5811400E+00  5.6483400E-01 -2.8297300E-04  4.1739900E-07
+           -1.5255760E-10  1.9588570E-14
+            0.0000000E+00 -9.3523300E-03  3.9617000E-04 -5.5103520E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+*DENWS 62.5
+*DENW  62.5
+*VISW  0.40
+*REFPW 14.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+*INITIAL
+ *VERTICAL *DEPTH_AVE *WATER_OIL
+ *REFPRES 100
+ *REFDEPTH 100
+ *DWOC 200
+ *ZOIL 0.025 0.975
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL 
+
+*NORM  *PRESS 145.
+*NORM *SATUR  0.10
+*NORM *GMOLAR 0.10
+
+*MAXCHANGE *PRESS 1000.
+
+*CONVERGE *PRESS 1.E-05
+*CONVERGE *MAXRES 1.E-04
+
+*PRECC 1.E-06
+*NORTH 80
+
+*DTMIN 1.E-06
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH
+*GEOM3D
+*GCFACTOR 1
+*NITERGEO 500
+*FORCETOL 1.0e-2
+*DISPLACTOL 1.0e-3
+
+** Elasto-plastic Cap model
+   *GCAPMODEL 1
+   *ELASTMOD 3.94E4   ** PSI
+   *POISSRATIO 0.3
+   *COHESION 14.5     ** PSI
+   *FRICANGLE 30.0 
+   *THEXPCOEF 18.28E-06   **1/K
+   *GCAPR 2              ** Aspect ratio
+   *GCAPD 3E-4           ** Parameter D (1/PSI)
+   *GCAPW 0.0001         ** Parameter W
+   *GCAPLOC 1500.0       ** Initial hardening parameter
+   *GCAPTEN -100         ** Tension cut-off (PSI)
+   *GCINCRMT 5           ** Number of strain divisions for convergence
+
+** Initial stresses: sigmaxx  sigmayy  sigmazz  sigmaxy  sigmayz  sigmaxz
+*STRESS3D              1400.0  1400.0  1400.0    0.0     0.0      0.0
+
+**  ==============  RECURRENT DATA  ======================
+*RUN
+
+*DATE 1973 9 25.5
+   *DTWELL 0.001
+   *AIMSET *CON 3
+   *WELL 1 'Injector 1' *VERT 1 1
+   *INJECTOR  'Injector 1'
+   *INCOMP *WATER
+   *OPERATE *MAX  *BHP 1000     ** Starting BHP is 1000 psi
+   *OPERATE *MAX  *STW 1000     ** Maximum water rate is 1000 BPD
+   *GEOMETRY *K  0.3 0.5 1.0 0.0
+   *PERFV *GEOA 'Injector 1'
+            **  k  ff 
+                3   1.
+                4   1.
+
+   *WELL 2 'Producer 1' *VERT 1 1
+   *PRODUCER 'Producer 1'
+   *OPERATE *MAX *STL 1000    ** Starting liquid rate is 1000 BPD
+   *OPERATE *MIN *BHP 17      ** Minumum BHP of 1 atm
+   *GEOMETRY *K  0.3 0.5 1.0 0.0
+   *PERFV *GEOA 'Producer 1'
+                **  k
+                    3   1.0
+                    4   1.0
+                    5   1.0
+
+   *SHUTIN 'Producer 1'  ** Shut in producer
+
+*TIME 60
+
+   *SHUTIN 'Injector 1'  ** Shut in injector
+
+*TIME 80
+
+   *OPEN 'Producer 1'  ** Turn on producer
+   *WRST *TNEXT
+*TIME 365
+
+   *SHUTIN 'Producer 1'
+   *OPEN   'Injector 1'
+*TIME 730
+*STOP
+

@@ -1,0 +1,205 @@
+   ******************************************************************************
+   ** mxsmo006.dat:            Gas Relative Permeability Hysteresis Model      **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO006.DAT                                                             **
+   ** MODEL:  100x1x1                                       THREE-PHASE                **      
+   **         GAS RELATIVE PERMEABILITY HYSTERESIS                                     ** 
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This data set is based on gas-cap shrinkage problem presented by Killough, J.E., **
+   ** "Reservoir Simulation With History-Dependent Saturation Functions",page 37,SPEJ, **
+   ** February,1976.                                                                   **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ** I/O Control Section                                                        
+
+   *TITLE1
+   'Krg Hysteresis Test Case.'
+   *TITLE2
+   '(See Killough, J.E., SPEJ, p37, 1976.)'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   10
+   *WPRN   *GRID   10
+   *WPRN   *ITER   *NONE
+
+   *OUTPRN *WELL   *ALL
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *DATUMPRES
+
+   *WSRF   *GRID   5
+   *WSRF   *WELL   1
+   *OUTSRF *GRID   *SG
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 100  1    1     ** 1-d 100 blocks.   
+
+   *DI *CON 100.0              ** I direction block dimensions constant at 100 ft.
+   *DJ *CON 100.0              ** J direction block dimensions constant at 100 ft.
+   *DK *CON 100.0              ** K direction block dimensions constant at 100 ft.
+
+   *DEPTH 1 1 1 1000.0         ** Depth to center of first block.
+   *DIP -1.0 0.0               ** Dipping down at 1 degree
+
+   *POR *CON 0.25              ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.   
+
+   *PERMI *CON 2000.0          ** Each of the I, J, and K permeabilities are
+                               ** constant.
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI   
+
+   
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT  *BG
+   ** p        rs      bo     Bg      viso   visg
+     500.0   175.0   1.15   0.0057    1.75   0.015
+     600.0   195.0   1.16   0.0045    1.64   0.015
+     700.0   215.0   1.17   0.00385   1.54   0.015
+     800.0   235.0   1.18   0.0034    1.47   0.015
+     900.0   255.0   1.185  0.003     1.39   0.015
+    1000.0   275.0   1.19   0.00265   1.37   0.015
+    1100.0   290.0   1.2    0.00238   1.25   0.015
+    1200.0   312.0   1.21   0.00211   1.2    0.015
+    1300.0   330.0   1.215  0.0019    1.15   0.015
+    1400.0   349.0   1.22   0.00175   1.12   0.015
+    1500.0   368.0   1.225  0.0016    1.09   0.015
+    1600.0   385.0   1.23   0.0015    1.08   0.015
+    1700.0   403.0   1.235  0.0014    1.07   0.015
+    1800.0   420.0   1.243  0.00137   1.065  0.015
+    1900.0   438.0   1.25   0.00123   1.058  0.015
+    2000.0   456.0   1.257  0.00117   1.049  0.015
+    2100.0   473.0   1.263  0.00112   1.04   0.015
+    2200.0   490.0   1.268  0.00107   1.033  0.015
+    2400.0   527.0   1.276  0.00095   1.02   0.015
+    2500.0   545.0   1.281  0.0009    1.01   0.015   
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw     krw     krow     pcow
+     0.22    0.0     0.85     14.7
+     0.25    0.001   0.73     13.73
+     0.30    0.003   0.57     12.14
+     0.35    0.01    0.44     10.55
+     0.40    0.018   0.33      8.95
+     0.45    0.035   0.24      7.25
+     0.50    0.04    0.16      5.75
+     0.55    0.057   0.095     4.15
+     0.60    0.088   0.045     2.56
+     0.65    0.145   0.007     1.6
+     0.66    0.16    0.0       0.64
+     0.68    0.19    0.0       0.0
+                            
+   *SGT
+   **  sg     krg     krog     pcog
+      0.2    0.0      0.85     0.0
+      0.25   0.025    0.33     0.36
+      0.3    0.072    0.22     0.4
+      0.35   0.132    0.14     0.45
+      0.4    0.202    0.075    0.55
+      0.45   0.283    0.05     0.63
+      0.5    0.372    0.035    0.78
+      0.55   0.469    0.025    0.85
+      0.65   0.683    0.014    1.25
+      0.7    0.8      0.0087   1.8
+      0.75   0.923    0.0033   17.0
+      0.78   1.0      0.0      150.0   
+
+   *HYSKRG   0.49                 ** Enable Krg hysteresis
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER     ** Use vertical equilibrium calculation.
+   *PB *CON       0.0          ** buble point pressure set to saturated reservoir
+   *REFDEPTH   1000.           ** Give a reference depth  and
+   *REFPRES    1000.           ** associated pressure.
+   *DWOC       1165.           ** Depth to water-oil contact
+   *DGOC       1050.           ** Depth to gas-oil conttact
+   *DATUMDEPTH 1100.           ** Datum depth for pressure printout.
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX         365.         ** Maximum time step size
+   *MAXSTEPS      100          ** Maximum number of time steps
+   *NORM *PRESS   500.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.2
+   *AIM  *THRESH    0.25 .25   ** Use thresh hold switching criteria   
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1991 01 01
+   *DTWELL 1.0
+                  
+   *WELL 1  'Gas-Prod'
+   *PRODUCER  1                        ** Define the type of well 1.
+   *OPERATE *MAX  *STG 100000.0        ** Initially, operate on a rate constraint.
+   *OPERATE *MIN  *BHP    100.0        ** If the BHP falls below 100 psi, switch
+                                       ** to a minimum pressure constraint.
+   *PERF 1 
+   ** if     jf     kf     wi 
+      1      1      1    1.0E+5   
+
+   *WELL 2  'Oil-Prod'
+   *PRODUCER  2                        ** Define the type of well 2.
+   *OPERATE *MAX  *STO   100.0         ** Initially, operate on a rate constraint.
+   *OPERATE *MIN  *BHP   100.0         ** If the BHP falls below 100 psi, switch
+                                       ** to a minimum pressure constraint.
+   *PERF 2 
+   ** if     jf     kf     wi 
+      50     1      1    1.0E+5
+
+   *WELL 3 'Injector'
+   *INJECTOR  3                        ** Define the type of well 3.
+   *INCOMP *WATER                      ** Injecting water.
+   *OPERATE  *MAX  *BHP  1500.0        ** Operating on a BHP specification.
+
+   *PERF 3 
+   ** if     jf     kf     wi 
+      100    1      1    1.0E+5
+
+   *DATE 1993 12 31                    ** Time of next well change.
+   *STOP                               ** Stop the simulation.

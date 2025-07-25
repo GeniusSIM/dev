@@ -1,0 +1,172 @@
+          1  1
+EOREC:     0 stwwm118.pipephase.sgnl
+
+*WCURRCN 1:3 *ON
+
+** Redefine injector operation
+*INJ-TEMP 1
+   450
+*QUALWL 1
+   0.7
+*TARGET *STW 1
+    160.0
+
+*AIMSET *CON 1
+
+*TIME 1
+EOREC:     0 stwwm118.pipephase.data
+
+          2  1
+EOREC:     1 stwwm118.pipephase.sgnl
+
+*TARGET *STW 1
+   300.
+
+*TIME 5
+EOREC:     1 stwwm118.pipephase.data
+
+          3  1
+EOREC:     2 stwwm118.pipephase.sgnl
+
+*INJ-TEMP 1
+   460
+
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+
+*KRTYPE *CON 1
+
+*TIME 21
+EOREC:     2 stwwm118.pipephase.data
+
+          4  1
+EOREC:     3 stwwm118.pipephase.sgnl
+
+*INJ-TEMP 1
+   440
+
+*TIME 85
+EOREC:     3 stwwm118.pipephase.data
+
+          5  1
+EOREC:     4 stwwm118.pipephase.sgnl
+
+** Redefine injector operation for steam quality
+*INJ-TEMP 1
+   430
+*QUALWL 1
+   0.75
+*TARGET *BHP 1
+   500.
+*TARGET *STW 1
+   300.
+
+*WSRF *GRID 0
+*WPRN *GRID 0
+*WPRN *ITER 0
+
+*KRTYPE_VERT *CON 1
+
+*TIME 341
+EOREC:     4 stwwm118.pipephase.data
+
+          6  1
+EOREC:     5 stwwm118.pipephase.sgnl
+
+*TARGET *STW 1
+   320.
+*INJ-TEMP 1
+   425
+
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+*WRST *TIME
+
+*VSTYPE *CON 1
+
+*TIME 841
+EOREC:     5 stwwm118.pipephase.data
+
+          7  1
+EOREC:     6 stwwm118.pipephase.sgnl
+
+*TARGET *STW 1
+   360.
+*INJ-TEMP 1
+   410
+
+*TIME 1341
+EOREC:     6 stwwm118.pipephase.data
+
+          8  1
+EOREC:     7 stwwm118.pipephase.sgnl
+
+*TARGET *STW 1
+   400.
+*INJ-TEMP 1
+   390
+
+*WSRF *GRID 0
+*WPRN *GRID 0
+*WPRN *ITER 0
+
+*THTYPE *CON 1
+
+*TIME 1841
+EOREC:     7 stwwm118.pipephase.data
+
+          9  1
+EOREC:     8 stwwm118.pipephase.sgnl
+
+** Redefine injector operation for steam quality
+*INJ-TEMP 1
+   380
+*QUALWL 1
+   0.55
+*TARGET *STW 1
+   320.
+
+*TIME 2341
+EOREC:     8 stwwm118.pipephase.data
+
+         10  1
+EOREC:     9 stwwm118.pipephase.sgnl
+
+*INJ-TEMP 1
+   370
+
+*WSRF *GRID *TNEXT
+*WPRN *GRID *TNEXT
+*WPRN *ITER *TNEXT
+
+*NUMTYPE *CON 1
+
+*TIME 2841
+EOREC:     9 stwwm118.pipephase.data
+
+         11  1
+EOREC:    10 stwwm118.pipephase.sgnl
+
+*INJ-TEMP 1
+   350
+
+*TIME 3341
+EOREC:    10 stwwm118.pipephase.data
+
+         12  1
+EOREC:    11 stwwm118.pipephase.sgnl
+
+*TARGET *STW 1
+   160.
+*INJ-TEMP 1
+   330
+
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER *TIME
+
+*TIME 3841
+EOREC:    11 stwwm118.pipephase.data
+

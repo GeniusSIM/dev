@@ -1,0 +1,93 @@
+** This example demonstrates how to obtain special variables. 
+** The best way to obtain a special history name is to copy it from the 
+** .dat file following the keyword OUTSRF SPECIAL  
+**
+** stt01c.rwd
+**
+
+FILE 'sttst01.sr3' 
+  
+TABLE-FOR  
+  column-for SPECIAL  'TEMP 1,1,2'
+  column-for SPECIAL  'TEMP 1,1,6'
+  column-for SPECIAL  'TEMP 1,1,10'
+  column-for SPECIAL  'SW 1,1,6'
+  column-for SPECIAL  'SOLCONC1 COKE 1,1,6'
+  column-for SPECIAL  'Y OXYGEN 1,1,6'
+  column-for SPECIAL  'KRO 1,1,6'
+  column-for SPECIAL  'TEMP Average'
+  column-for SPECIAL  'SOLCONC1 COKE Maximum'
+  column-for SPECIAL  'MOLES of WATER net reacted'
+  column-for SPECIAL  'MOLES of HEVY OIL net reacted'
+  column-for SPECIAL  'ENERGY net reacted'
+  column-for SPECIAL  'ENERGY Gain/Loss by Heaters'
+  column-for SPECIAL  'POSITION 400 deg, 1 1 12:1'
+  column-for SPECIAL  'POSITION 800 deg, 1 1 12:1'
+TABLE-END   
+
+** ........................... Description ...................................
+**
+** LEGEND: 
+**	[]	anything in square brackets means --> optional
+**	int	integer number greater than 0
+**	str	string, usually represents a name or a type
+**	*	used before every keyword (not using * before each keyword will
+**		not affect how the command file works)
+**      ~	can specify multiple selections
+**	( | )	one or the other choice in the bracket is appropriate(not both)
+**	'name'	string = str
+**	name	value = integer = int 
+**
+** ............................................................................
+**
+** FILES
+** ------
+** Action	used to specify the simulation results file or field history 
+**		from which the information for a column will be obtained
+**
+** Syntax	*FILES ([*SR3] | *FHF) ('file-name' | file_int)
+**			    
+** Notes	FILE 'sttst01.sr3'
+**	       .by default the file to be opened is defined as SR3
+**	       .opening file 'sttst01.sr3' for data retrieval	
+**
+**
+** COLUMN-FOR
+** -----------
+** Action	used to specify the information for a column or a group of 
+**		columns
+**
+** Syntax	*COLUMN-FOR [*PARAMETERS str~]
+**			    [[*WELLS or *GROUPS or *SECTORS or *SPECIALS] str~]
+**			    [*PRECISION int][*WIDTH int][*MULTIPLY mult-factor]
+**			    [*UNITS str]
+** Notes	more comments below (SPECIALS: Notes)
+**
+** SPECIALS
+** ---------
+** Action	used to specify the special-history-names for which information 
+**		will be printed in tables and columns
+**
+** Syntax	*SPECIALS ('special-history-name' | *ALL)
+**			    
+** Notes 	COLUMN-FOR SPECIAL  'special-history-name'
+**
+**             .combining COLUMN-FOR with SPECIAL allows to quickly specify
+**	 	the options for the particular column
+**	       .each column in the output file will contain values related
+**		to a specific special-history-name
+**	       .HINT: the above script good be shortened by doing the following
+**		
+**		COLUMN-FOR SPECIAL 'spec-hist #1' 'spec-hist #2' .....and so on
+**
+**
+** TABLE-FOR
+** TABLE-END
+** ----------
+** Action	used to specify the information for a table or group of tables
+**
+** Syntax	*TABLE-FOR [(*WELLS str~ | *PARAMETERS str~)]
+**		*TABLE-END
+**
+**
+** ............................................................................

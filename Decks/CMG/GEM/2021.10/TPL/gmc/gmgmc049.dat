@@ -1,0 +1,318 @@
+*****************************************************************************
+** Template (gmgmc049.dat):  Coupling Geomechanics Module to GEM           **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc049.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                     FIELD UNITS              **
+**         Mohr-Coulomb model                  RESERVOIR  11x11x5 CARTESIAN GRID    **
+**                                             GEOGRID    13x13x5 CARTESIAN GRID    **
+**                                                                                  **
+**                                                                                  **
+** Purposes:                                                                        **
+**         Use of GEOGRID in a dual perm model with LGR in the reservoir grid       **
+**                                                                                  **
+**                                                                                  **
+**************************************************************************************
+** After stgeo059
+
+*TITLE1 'GEM Geomechanics Template #49'
+*TITLE2 'Illustrate use of *GEOGRID with *REFINE and *DUALPERM'
+
+*INUNIT *FIELD
+
+*WSRF *WELL 1
+*WSRF *GRID *TIME
+*OUTSRF *RES *ALL
+
+*WSRF *GRIDDEFORM  2      ** keyword to output grid deformation
+*WSRF *GRID 10
+*OUTSRF *GRID  *SO *SG *SW *POROS *PRES *YOUNG *POISSON *VDISPL *STRESSH 
+               *STRESI *STRESJ *STRESK *STRESEFF *VPOROSGEO *VERDSPLGEO *SUBSIDGEO
+ 
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+
+*GRID *CART 11 11 5
+
+*KDIR *DOWN
+
+*DI *CON 100 
+*DJ *CON 100 
+
+*DK *CON 60
+
+*DTOP
+ 121*9850
+
+** Define natural fracture type grid
+*DUALPERM
+*SHAPE *GK
+
+*DJFRAC *CON  50
+*DIFRAC *CON  50
+*DKFRAC *CON   0
+
+** Define local grid refinement
+*REFINE 6 6 1:5 INTO 3 3 1
+
+*POR *MATRIX   *CON         0.06
+*POR *FRACTURE *CON       4E-005
+
+*PERMI *MATRIX *CON       0.0002
+*PERMJ *MATRIX *CON       0.0002
+*PERMK *MATRIX *CON       0.0002
+
+*PERMI *FRACTURE *CON 2e-5
+*PERMJ *FRACTURE *CON 2e-5
+*PERMK *FRACTURE *CON 2e-5
+
+*CROCKTYPE 1
+  *CCPOR  *MATRIX    1.E-06
+  *CPRPOR *MATRIX    500.
+  *CCPOR  *FRACTURE  1.E-06
+  *CPRPOR *FRACTURE  500.
+  **ROCK HEAT CAPACITY [BTU/(LB F)]
+  *CP-ROCK 0.25
+  **THERMAL CONDUCTIVITY OF ROCK AND FLUIDS [BTU/(HR LB F)]
+  *THCONR0 2.0
+
+*CROCKTYPE 2
+  *CCPOR  *MATRIX    1.E-06
+  *CPRPOR *MATRIX    500.
+  *CCPOR  *FRACTURE  1.E-06
+  *CPRPOR *FRACTURE  500.
+  **ROCK HEAT CAPACITY [BTU/(LB F)]
+  *CP-ROCK 0.25
+  **THERMAL CONDUCTIVITY OF ROCK AND FLUIDS [BTU/(HR LB F)]
+  *THCONR0 2.0
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+*HEAT-LOSS *BOTTOM-TOP-BOUNDARY
+*HLPROP 165.0 0.25 2.0
+
+*END-GRID
+*CTPOR  54.8E-06
+*TRPOR  120.
+
+**  ==============  COMPONENT PROPERTIES  ======================
+*MODEL *PR
+*NC 1 1
+*COMPNAME 'CH4' 
+*HCFLAG         1 
+*MW             16.043 
+*AC             0.008 
+*PCRIT          45.4 
+*VCRIT          0.099 
+*TCRIT          190.6 
+*PCHOR           77 
+*SG              0.3 
+*TB             -258.61 
+*HEATING_VALUES 844.29
+*ENTHCOEF
+-5.5810E+00  5.6480E-01 -2.8300E-04  4.1740E-07 -1.5260E-10  1.9590E-14
+
+*TRES 120. 
+*THERMAL *ON
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    0.95       0.91        0.0         0.03
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.05       0.95         0.0        11
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    0.95       0.0          0.95        0.1
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*USER_INPUT
+
+*PRES *MATRIX   *CON 500
+*PRES *FRACTURE *CON 500
+
+*SW *MATRIX   *CON 0.25 
+*SW *FRACTURE *CON 0.25
+
+*TEMPER *MATRIX   *CON 120
+*TEMPER *FRACTURE *CON 120
+
+*ZGLOBALC 'CH4' MATRIX CON            1
+*ZGLOBALC 'CH4' FRACTURE CON          1
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+*DTMAX 31.
+*DTMIN 1.E-06
+*NORM      *PRESS   145.  
+*NORM      *SATUR   0.15
+*NORM      *GMOLAR  0.15
+*NORM      *TEMP    10
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+*GEOM3D
+*GCOUPLING 0
+*GPTOLMUL 0.5 
+
+** Independent Geomechanics grid
+*GEOGRID *GCART 13 13 5 ** Cartesian grid
+*GDI *GIVAR 5*100 1*33.5 1*33 1*33.5 5*100  ** Size of grid
+*GDJ *GJVAR 5*100 1*33.5 1*33 1*33.5 5*100  ** Size of grid
+*GDK *GCON 60                               ** Size of grid
+
+*GEODEPTH *GTOP 1 1 1   9850
+
+*GEOROCK 1           ** rock type # 1 for matrix
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+   *THEXPCOEF 54.8E-06 
+   *GPERMLC 50.0
+*GEOROCK 2           ** rock type # 2 for fracture
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+   ** B-B model     E0        Kni     FRS     Khf    Kccf   Krcf
+   *GPERMBB         6.5e-5     3e6     -50    100.    80.    5 
+   *THEXPCOEF 54.8E-06
+
+*geotype *matrix   *ijk 1:13  1:13  1:5   1
+*geotype *fracture *ijk 1:13  1:13  1:5   2
+
+STRESS3D      4000    4000     6000    0.0 0.0 0.0
+STRESSGRAD3D -0.49345 -0.49345 -0.9869 0.0 0.0 0.0
+
+**RCONBT *ALL                   ** CONSTRAINT ON THE BOTTOM OF RESERVOIR
+**RCONLF *ALL                   ** CONSTRAINT ON THE LEFT OF RESERVOIR
+**RCONRT *ALL                   ** CONSTRAINT ON THE RIGHT OF RESERVOIR
+**RCONBK *ALL                   ** CONSTRAINT ON THE BACK OF RESERVOIR
+**RCONFT *ALL                   ** CONSTRAINT ON THE FRONT OF RESERVOIR
+
+*GOUTSRF *GGRID *ALL
+
+
+
+RUN
+
+** ==================== Recurrent Data Section ==================
+
+*DATE 2011 1 1
+
+   *DTWELL 0.1 
+
+   *WELL     'P1'
+   *PRODUCER 'P1'
+   *OPERATE  *MIN  *BHP  200.  *CONT *REPEAT
+   **$          rad  geofac  wfrac  skin
+   *GEOMETRY  I  0.25  0.37  1.  0.
+   *PERF  GEOA  'P1'
+      **$ UBA        ff  Status  Connection  
+      6 6 1 / 2 2 1  1.  *OPEN  FLOW-TO  'SURFACE'
+      6 6 2 / 2 2 1  1.  *OPEN  FLOW-TO  1
+      6 6 3 / 2 2 1  1.  *OPEN  FLOW-TO  2
+      6 6 4 / 2 2 1  1.  *OPEN  FLOW-TO  3
+      6 6 5 / 2 2 1  1.  *OPEN  FLOW-TO  4
+*DATE 2011 1 31
+*DATE 2011 2 28
+*WRST *TNEXT
+*DATE 2011 3 31
+*DATE 2015 3 31
+
+STOP

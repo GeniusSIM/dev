@@ -1,0 +1,260 @@
+**--------------------------------------------------------------------**
+** GMWWM081.DAT:  Fluid Redistribution via Modelshut Wells            **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMWWM081.DAT                                               **
+**                                                                    **
+** MODEL:  21x1x15       CROSS-FLOW THROUGH MODELSHUT WELLS           **
+**         FIELD UNITS   STONE'S FIRST MODEL FOR Kro                  **
+**         *KDIR *DOWN   TRANSMISSIBILITY MODIFIERS                   **
+**         MODELSHUT     DRAWDOWNS                                    **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This is a vertical cross-section problem consisting of two         **
+** disconnected reservoirs with two wells, Connector-I and            **
+** Connector-P, the only means of communication between the different **
+** reservoirs. Persistent backflow occurs.                            **
+**                                                                    **
+** Initially the two regions are in vertical flow equilibrium.        **
+** The deepest reservoir receives injected water from the main        **
+** water injector (well 4);  the two connecting wells (well 2, 3)     **
+** are completed in both of the regions. The shallowest reservoir     **
+** produces through well 1 with a constant bottom-hole pressure.      **
+** There is no production directly from the deepest region.  Fluid    **
+** flows from the deepest region through the wellbores of well 2      **
+** and 3 to the shallowest one, and then to the surface through the   **
+** producing well 1. Approximate symmetric solutions are expected.    **
+**                                                                    **
+** Three types of drawdown constraints (DWN/DWA/DWB) are tested:      **
+**        DWN -- drawdown at reference layer                          **
+**              (disallowed when perforated in null/pinched block)    **
+**        DWA -- maximum drawdown in all open layers                  **
+**        DWB -- PI-weighted average drawdown                         **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES
+*TITLE1 'Fluid Redistribution via Modelshut Wells'
+*TITLE2 'Three Drawdown Constraints'
+*TITLE3 'Water Injector Cross-Flow'
+
+*INUNIT    *FIELD
+
+*OUTPRN *WELL *PSPLIT
+*OUTPRN *WELL *ALL
+*OUTPRN *GRID *IMPL *SO *SG *SW *PRES
+*OUTPRN *RES *ALL
+*WPRN    *WELL 1
+*WPRN    *GRID 1
+
+*OUTSRF *WELL *PSPLIT
+*OUTSRF *GRID *SW *SO *SG *PRES *VELOCRC *STRMLN 
+*WSRF   *GRID 1
+*WSRF   *WELL 1
+
+**--------------------------------------------------------------------**
+** Reservoir description Section                                      **
+**--------------------------------------------------------------------**
+
+*GRID *CART    21    1   15   ** This is an x-z cross sectional problem
+*KDIR *DOWN
+
+*DI *CON 95.0
+*DJ *CON 600.0
+*DK *CON 24.0
+
+*DEPTH *TOP 1    1   1  9000.   ** Depth to top center of first
+                                ** block in shallowest layer
+
+*POR *CON 0.15
+
+*PRPOR 3600.0                   ** Rock compressibility and
+*CPOR  4.0E-6                   ** reference pressure
+
+
+*PERMI *CON 600.
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.20
+
+*TRANSK *IJK
+  1:21  1  1:15  1.0
+
+*NULL *IJK
+  1:21  1  9   0
+
+**--------------------------------------------------------------------**
+** Component Properties Section                                       **
+**--------------------------------------------------------------------**
+
+*MODEL *PR
+
+*NC 6 6
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69       18.       17.
+*VCRIT 0.099800  0.200500  0.369800  0.629700       0.7       0.8
+*TCRIT    190.6     369.8     507.4     617.7      720.     850.
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*BIN         0.
+           2*0.
+           3*0.
+           0.10     0.008      2*0.
+           0.10     0.008      3*0.
+*TRES 222.
+
+*DENW 63.02
+*CW      3.0E-06
+*REFPW   14.7
+*VISW    0.96
+
+**--------------------------------------------------------------------**
+** Rock-fluid Property Section                                        **
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*RPT
+
+  *KROIL *STONE1  ** Use Stone's 1st Model to compute oil relative
+                  ** permeability when three phases are present.
+
+*SWT              ** Water-oil relative permeability table.
+**   sw    krw    krow    pcow
+   0.22    0.0    1.0     7.0
+   0.30    0.07   0.4     4.0
+   0.40    0.15   0.125   3.0
+   0.50    0.24   0.0649  2.5
+   0.60    0.33   0.0048  2.0
+   0.80    0.65   0.0     1.0
+   0.90    0.83   0.0     0.5
+   1.00    1.0    0.0     0.0
+
+*SLT              ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog
+   0.22    1.0     0.0      3.9
+   0.30    0.8125  0.0      3.5
+   0.40    0.5     0.0      3.0
+   0.50    0.42    0.0      2.5
+   0.60    0.34    0.0      2.0
+   0.70    0.24    0.02     1.5
+   0.80    0.1     0.1      1.0
+   0.90    0.022   0.33     0.5
+   0.96    0.0     0.6      0.2
+   1.0     0.0     1.0      0.0
+
+**--------------------------------------------------------------------**
+** Initial Conditions Section                                         **
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+*REFPRES  3600.0                ** Set reference pressure
+*REFDEPTH 9108.0                ** at the reference depth.
+*DWOC     9408.0                ** Set water-oil contact  (9370.)
+*DGOC     8108.0                ** Set gas-oil contact    (9070.)
+
+** Initial oil composition :
+*ZOIL 0.50   0.07    0.03     0.20    0.15     0.05
+
+** Initial gas composition :
+*ZGAS 0.9304 0.04638 0.006924 0.01473 0.001512 0.0000314
+
+**--------------------------------------------------------------------**
+** Numerical Control Section                                          **
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+
+*NORM  *GMOLAR 0.02
+*NORM  *SATUR  0.05
+
+**--------------------------------------------------------------------**
+** Well Data Section                                                  **
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE 1994 01 01
+
+*DTMAX    30.0
+*DTWELL   0.01
+
+*WELL 1 'Producer 1'  
+*WELL 2 'Connector-I'
+*WELL 3 'Connector-P'
+*WELL 4 'Injector 4' 
+
+
+*PRODUCER 1
+*OPERATE *MIN *BHP 3600. 
+
+
+*INJECTOR 2                 ** Connecting injector -- backflows
+*INCOMP *WATER
+**INCOMP   *SOLVENT    1. 0. 0. 0. 0. 0. 
+*OPERATE *MAX *STW  0.5    ** Constraint ignored for modelshut wells
+
+
+
+*PRODUCER 3                 ** Connecting producer -- backflows
+*OPERATE *MAX *STO  0.5    ** Constraint ignored for modelshut wells
+
+
+
+*INJECTOR 4          ** Main water injector
+*INCOMP *WATER
+*OPERATE *MAX *STW 1000.00
+
+
+**             rad      geofac   wfrac  skin
+*GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+*PERF *GEO 1 ** Main producer
+11 1 5  1.0
+
+*PERF *GEO 2 **Connector-I
+5 1  8  1.0
+5 1 10  1.0
+
+*PERF *GEO 3 **Connector-P
+17 1  8  1.0
+17 1 10  1.0
+
+*PERF *GEO 4 **Main Water injector
+11 1 11  4.0
+11 1 12  1.0
+11 1 13  1.0
+
+
+**HEAD-METHOD 2 3 *FLOW-GRAV      **DO NOT WORK WITH *GRAVITY, CURRENTLY
+
+
+*MODELSHUT 2 3 *ON                 ** Wells acquire the modelshut-able status and
+                                   ** will be shut above the formation whenever 
+                                   ** a shutin action is taken.
+
+
+*XFLOW-MODEL 2 3 *FULLY-MIXED      ** XFLOW-MODEL will be temporarily switched to 
+                                   ** FULLY-MIXED - if it has been defined differently;
+                                   ** and *WELLINIT/*ITER takes effect.
+
+
+*SHUTIN 2 3
+
+
+
+
+*DATE 1996 01 01                   ** Specify new operating constraint:
+ *TARGET *DWA 'Injector 4'         ** 3 types of drawdowns: DWN/DWA/DWB
+     12.0
+
+
+
+
+*DATE 2006 01 01
+*STOP

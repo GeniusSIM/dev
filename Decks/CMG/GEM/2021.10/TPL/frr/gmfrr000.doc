@@ -1,0 +1,44 @@
+           FRACTURED RESERVOIRS
+           --------------------
+
+
+
+Templates in the Fractured Reservoir (FRR) directory:
+
+GMFRR001.DAT -- Single Fractured Block Model
+GMFRR002.DAT -- Gas Recycling in a Fractured Reservoir
+GMFRR003.DAT -- Gas Recycling in a Fractured Reservoir (Refined Grids)
+GMFRR004.DAT -- Dual Porosity Model with Subdomain
+GMFRR005.DAT -- Fractured Gas Reservoir with MINC
+GMFRR006.DAT -- Fractured Gas Reservoir with DUALPOR
+GMFRR007.DAT -- Subdomain-Dual Permeability (SD-DK) Method
+
+GMFRR008.DAT -- Use of *BLOCKGROUP for Hydraulic Fracture Input simplification.
+GMFRR009.DAT -- Use of *PLNRFRAC_TEMPLATE and PLNRFRAC for Hydraulic Fracture 
+                Input Simplification.
+                
+GMFRR010.DAT -- Default interblock matrix-fracture connections when fracture 
+                block is null and collocated matrix block is non-null in a
+                dual permeability model.
+
+GMFRR011.DAT -- Use of *NOINTERMF for over-riding of default interblock 
+                matrix-fracture connections when fracture block is null 
+                and collocated matrix block is non-null in a dual-
+                permeability model.
+                
+GMFRR012.DAT -- Test Direct MOD and *ALLNFZ Keywords.
+GMFRR013.DAT -- Use of *PERF_TIP in facture conductivity.
+GMFRR014.DAT -- Use of *SBLOCKGROUP and *SBG.
+GMFRR015.DAT -- Use of Shape factor option *KAV-2
+GMFRR016.DAT -- Use of *DYNAGRID in a Dual Porosity Model
+GMFRR017.DAT -- Direct input of block shape factor (*SIGMAMF) and tranfer permeability (*KAVMF) arrays
+GMFRR018.DAT -- Dual Permeability Modelling with Re-infiltration
+GMFRR019.DAT -- Test Recurrent CTYPE via *PLNRFRAC
+GMFRR020.DAT -- Bi-directional Distribution of Permeability in HF
+GMFRR021.DAT -- Assignment of grid-block property through PDD data.
+GMFRR022.DAT -- Hydraulic Fractures Across Inactive Blocks
+GMFRR023.DAT -- PLANAR Fractures in pre-existing Local Grid Refinement
+
+Cross references to templates in other directories:
+
+GMSMO001.DAT -- Gas Phase Diffusion in a Fractured Reservoir

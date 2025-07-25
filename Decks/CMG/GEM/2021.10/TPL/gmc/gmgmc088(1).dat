@@ -1,0 +1,278 @@
+*****************************************************************************
+** GMGMC088.DAT: Skempton and Mandel-Cryer Effects                         **
+*****************************************************************************
+*****************************************************************************
+**                                                                         **
+** FILE :  GMGMC088.DAT                                                    **
+**                                                                         **
+** MODEL:  SINGLE WELL                             FIELD UNITS             **
+**         Linear elastic model                    5X5X10 CARTESIAN GRID   **
+**                                                 GEOGRID                 **
+**                                                                         **
+** USAGE: Point loads on nodal element                                     **
+**                                                                         **
+** Purpose:                                                                **
+**        Illustrate how the Skempton's effect to an undrained condition   **
+**        Illustrate Mandel-Cryer's effect to a drained condition          **
+**        Skempton's effect can only be observed when a sudden load is     **
+**        applied to a surface of reservoir. This load will cause changes  **
+**        in pore pressure and in porosity. Compressive load causes an     **
+**        increase in pore pressure.                                       **
+**                                                                         **
+**        Besides, in order to solve such a problem, GCOUPLING 3 and high  **
+**        number of coupling iterations are used.                          **
+**                                                                         **
+*****************************************************************************
+** after stgeo100
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+*RESULTS *SIMULATOR *GEM
+
+
+*TITLE1 'GEM Geomechanics Template #088'
+*TITLE2 'Skempton and Mandel-Cryer Effects'
+*TITLE3 'Triaxial Test with GEOGRID'
+
+*INUNIT *FIELD
+
+*WRST 0
+*WSRF *WELL 1
+*OUTPRN *GRID *IMPL *POROS *PRES *SG *SO *SW *VPOROSGEO
+
+*OUTSRF *GRID *POROS *PRES *SG *SO *SW *PRMNDIR *PRMXDIR *STRAINVOL *STRESEFF *STRESSM *VDISPL *VPOROSGEO
+              *STRAINI *STRAINJ *STRAINK *STRESI *STRESJ *STRESK *TSTRESI *TSTRESJ *TSTRESK
+
+*OUTPRN *WELL *ALL
+*OUTPRN *RES *ALL
+
+*OUTSRF *SPECIAL *PRES  3  3  6
+                 *POROS 3  3  6
+                 *PRES  3  3  1
+                 *POROS 3  3  1
+                 *PRES  25 25 28
+**  Distance units: ft
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION          0.0000  **  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+** ***************************************************************************
+** Definition of fundamental cartesian grid
+** ***************************************************************************
+*GRID *CART 5 5 10
+
+*DI *CON 100
+*DJ *CON 100
+*DK *CON 100
+
+*KDIR *DOWN
+*DTOP
+25*0
+
+*PERMI *CON 1.000
+*PERMJ *EQUALSI * 1
+*PERMK *EQUALSI * 100
+
+*POR *CON 0.25
+
+
+
+*CPOR  5.1E-06
+*PRPOR 14.7
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+*MODEL   *PR
+*NC    1    1
+*TRES        64.000
+*COMPNAME
+           'HC30'
+*SG         7.8638000E-01
+*TB         6.5183250E+02
+*PCRIT      1.1003743E+01
+*VCRIT      1.1757000E+00
+*TCRIT      7.6715000E+02
+*AC         1.0000000E+00
+*MW         4.0000000E+02
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1757000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      9.2860000E+02
+*BIN
+
+*ENTHCOEF
+            0.0000000E+00  2.6300600E-02  3.9898700E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENWS 62.7
+*CW   6.E-06
+*REFPW 14.7
+*TRACE-COMP 1
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+*ROCKFLUID
+*SWT
+** Sw        krw        krow         Pcow
+0.279        0          1            0
+0.317890571  0.0295312  0.697483663  0
+0.368055634  0.0401953  0.451779827  0
+0.420321596  0.0525     0.30608613   0
+0.472558188  0.0664453  0.200932831  0
+0.524050753  0.0820313  0.122802969  0
+0.576256018  0.0992578  0.060892763  0
+0.62925      0.118125   0.0236831    0
+0.681688     0.138633   0.0108919    0
+0.734125     0.160781   0.00364466   0
+0.786562     0.18457    0.000560888  0
+0.839        0.21       0            0
+
+*SLT
+**Sl          krg         krog         Pcog
+0.279        0.8          0            2.291009019
+0.307835052  0.682795699  0.0108919    1.69
+0.369072165  0.483870968  0.0236831    1.427048538
+0.422886598  0.35483871   0.0432609    1.38779363
+0.474845361  0.274193548  0.0707757    1.356523549
+0.528659794  0.212365591  0.10731      1.330635368
+0.580618557  0.158602151  0.153893     1.308609279
+0.63257732   0.115591398  0.21151      1.289483747
+0.685463918  0.077956989  0.28111      1.272612673
+0.738350515  0.048387097  0.36361      1.25754115
+0.789381443  0.024193548  0.459902     1.24393758
+0.842688     0.0103517    0.570851     1.231553506
+0.895125     0.0037565    0.697303     1.220197805
+0.947562     0.000664063  0.840083     1.209720028
+1            0            1            1.2
+
+*HYSKRG 0.286
+
+**  ==============  INITIAL CONDITIONS  ======================
+*INITIAL
+
+*VERTICAL *BLOCK_CENTER *WATER_OIL
+
+*REFPRES    460.
+*REFDEPTH   1000
+*DWOC       0
+*SWOC       0.999999
+*ZGLOBALC 'HC30' *CON  1.
+
+** ================ NUMERICAL CONTROL ===================
+*NUMERICAL
+*DTMIN 1.E-15
+*NORM *PRESS 1000
+*MAXCHANGE *PRESS 5000.
+*NORTH 80
+*ITERMAX 100
+*CONVERGE *HC 1.E-05
+*CONVERGE *WATER 1.E-05
+*CONVERGE *PRESS 1E-8
+*CONVERGE *MAXRES 1.E-12
+*PRECC 1E-9
+*PCONVALL
+*COMBINATIVE *ILU
+
+**  ==============  GEOMECHANICS MODEL  ======================
+*GEOMECH
+*GEOM3D
+*GCOUPLING 3
+*NCOUPLING 100
+*NOCOUPERM
+*GPTOLMUL 0.5
+*GCFACTOR 4
+*GEOGRID *GCART  5 5 10
+
+*GEOROCK 1
+   *MOHRCOUL
+   *POISSRATIO 0.3
+   *ELASTMOD   2.031E6
+   *BIOTSCOEF  0.68
+   *COHESION   1E6   ** Large value for elasticity
+
+*GEOROCK 2
+   *MOHRCOUL
+   *POISSRATIO 0.2
+   *ELASTMOD   1.16E6
+   *BIOTSCOEF  0.88
+   *COHESION   1E6   ** Large value for elasticity
+
+
+** Geomech domain
+*GDI  *GCON 100
+*GDJ  *GCON 100
+*GDK  *GCON 100
+
+*GOUTSRF *GGRID *PRES *STRAINVOL *SAFACTOR
+
+*GEODEPTH  *GTOP 1 1 1   0
+** constrain the host grid in full (*ALL) or part (*IJK)
+*RCONBT *ALL ** On the bottom
+*RCONLF *ALL ** On the left
+*RCONRT *ALL ** On the right
+*RCONBK *ALL ** On the back
+*RCONFT *ALL ** On the front
+
+*GEOTYPE   *IJK
+**         i      j       k    rocktype
+           1:5    1:5   1:10      2
+
+** Initial effective stress in the reservoir
+** H stress : horizontal stress on a plane
+** V stress : Vertical stress on a plane
+** N stress : Normal stress to a plane
+**           Sxx        Syy        Szz       Sxy     Syz     Sxz
+**STRESS3D    935    935     2977      0      0         0     **psi, stress value of reference block
+*STRESSGRAD3D -0.24 -0.24 -0.56 0.0 0.0 0.0   **psi/ft
+
+** ===================RECURRENT DATA ================
+*RUN
+
+*DATE 2020 09 02
+*DTWELL 0.005
+
+*TIME 0.100000
+*TIME 0.100010
+*DLOADBC3D
+*IJK 1:5 1:5 1 **top
+** node1 node2 node3 node4   load
+    1      2     3     4     1000.0 **1 tonf/m2 = 13.88 psi **Constant vertical stress 1000*13.88 = 13880 psi
+*TIME  0.1000101
+*TIME  0.1000102
+*TIME  0.1000103
+*TIME  0.1000104
+*TIME  0.1000105
+*TIME  0.1000106
+*TIME  0.1000107
+*TIME  0.1000108
+*TIME  0.1000109
+*TIME  0.100011
+
+
+*TIME  0.100012
+*TIME  0.100013
+*TIME  0.100014
+*TIME  0.100015
+*TIME  0.100016
+*TIME  0.100017
+*TIME  0.100018
+*TIME  0.100019
+*TIME  0.100020
+*TIME  0.100021
+*TIME  0.100022
+*TIME  0.100023
+*TIME  0.100024
+*TIME  0.100025
+*TIME  0.100026
+*TIME  0.100027
+*TIME  0.100028
+*TIME  0.100029
+*TIME  0.100030
+*TIME  1.000000
+*STOP

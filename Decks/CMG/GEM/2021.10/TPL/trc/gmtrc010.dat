@@ -1,0 +1,382 @@
+   ******************************************************************************
+   ** gmtrc010.dat:  Monitoring Solvent Injection through Tracers              **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   GMTRC010.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  9x5x3          TWO GATHERING CENTRES GAS INJECTION            FIELD UNIT **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 9x5x3 cartesian grid gas injection problem with two gathering centres  **
+   ** in a repeated 5-spot configuation that includes 6 producers and 2 injectors. Use **
+   ** Inector tracer definition are availbele for the 2 gas injectors, along with one  **
+   ** regional tracer and one inactive tracer.                                         **
+   **                                                                                  **
+   ** The injector tracers monitor the movement of injected solvent while the regional **
+   ** tracer monitors movement of the heavy component through grid blocks.             **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+   *RESULTS *SIMULATOR *GEM
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1  'Monitoring Solvent Injection through'
+   *TITLE2  'Tracers'
+  
+   *INUNIT *FIELD
+                 
+   *OUTPRN *WELL *ALL
+   *OUTPRN *RES  *NONE
+   *OUTPRN *GRID *SO *SG *SW *PRES *TRCR-CONC 'bottom-o' *TRCR-CONC 'dummy' *TRCR-CONC  'trcr-inj'
+   *OUTSRF *GRID *TRCR-CONC 'bottom-o' *TRCR-CONC 'dummy' *TRCR-CONC  'trcr-inj'
+
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1
+   *WRST *TNEXT
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART  9   5    3       ** 10 blocks in each the I (x), 5 blocks J (y),
+                                 ** 3 layers in the K (z) direction.
+   *DI *CON 1000.0               ** I direction block dimensions constant at 1000 ft.
+   *DJ *CON 1000.0               ** J direction block dimensions constant at 1000 ft.
+   *DK *KVAR                     ** K direction block dimensions (layer thicknesses)
+    50.0 30.0 20.0               ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                                 ** middle and uppermost layers, respectively.
+
+   *DEPTH 1 1 1 8400.0           ** Depth to center of first block, in bottom layer.
+
+   *POR *CON 0.3                 ** Porosity is constant throughout the reservoir.mxgath2.rst
+
+   *CPOR   3.0E-6                ** Rock compressibility and
+   *PRPOR 14.7                   ** reference pressure.
+
+   *PERMI *KVAR                  ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0        ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                  ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0        ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                  ** that the first K layer is at bottom of the
+       20.0   40.0   60.0        ** reservoir.
+
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *MODEL   *PR
+   *NC    4    4
+   *TRES       100.000
+   *PVC3  1.2000000E+00
+   *COMPNAME
+           'C1'           'C2'           'C3'           'FC35'
+   *SG      3.0000000E-01  3.5600000E-01  5.0700000E-01  9.2000000E-01
+   *TB     -2.5861000E+02 -1.2757000E+02 -4.3690000E+01  9.0833000E+02
+   *PCRIT   4.5400000E+01  4.8200000E+01  4.1900000E+01  8.9100000E+00
+   *VCRIT   9.9000000E-02  1.4800000E-01  2.0300000E-01  1.5890000E+00
+   *TCRIT   1.9060000E+02  3.0540000E+02  3.6980000E+02  9.0590000E+02
+   *AC      8.0000000E-03  9.8000000E-02  1.5200000E-01  1.1786420E+00
+   *MW      1.6043000E+01  3.0070000E+01  4.4097000E+01  4.4500000E+02
+   *HCFLAG  0              0              0              0
+   *BIN
+         2.6890022E-03
+         8.5370405E-03  1.6620489E-03
+         1.1668844E-01  8.7485776E-02  6.6882706E-02
+   *VSHIFT -1.5386050E-01 -1.0210346E-01 -7.3300940E-02  7.7033540E-02
+   *VISCOR *HZYT
+   *MIXVC   1.0000000E+00
+   *VISVC   9.9000000E-02  1.4800000E-01  2.0300000E-01  2.0300000E+00
+   *VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+         9.3324000E-03
+   *OMEGA   4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+   *OMEGB   7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+   *PCHOR   7.7000000E+01  1.0800000E+02  1.5030000E+02  9.9030000E+02
+   *ENTHCOEF
+        -5.5811400E+00  5.6483400E-01 -2.8297300E-04  4.1739900E-07
+        -1.5255760E-10  1.9588570E-14
+        -7.6005000E-01  2.7308800E-01 -4.2956000E-05  3.1281500E-07
+        -1.3898900E-10  2.0070230E-14
+        -1.2230100E+00  1.7973300E-01  6.6458000E-05  2.5099800E-07
+        -1.2474610E-10  1.8935090E-14
+         0.0000000E+00 -1.4631650E-02  3.9919450E-04 -5.6319130E-08
+         0.0000000E+00  0.0000000E+00
+
+   *DENWS  62.238
+   *CW    2.9886E-6
+   *REFPW 14.7
+
+   *NTRCR 3
+   *TRCRNAME 'bottom-o' 'dummy' 'trcr-inj'
+   *TRCR-ASSOC
+     ** Associate component     Associated Tracer
+       'FC35'                   'bottom-o'    
+       'H2O'                    'dummy'
+       'C1'                     'trcr-inj'
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw           krw   krow
+      0.12         0.0   1.0
+      0.82         1.0   0.0
+      1.00         1.0   0.0
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0
+      0.30    0.9400002   0.0
+      0.40    0.87        1.0000E-4
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS **  vertical equilibrium initialization 
+   *REFDEPTH   8400.           ** Give a reference depth and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       9500.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil contact   
+   *ZOIL 0.30 0.22 0.12 0.36
+   *ZGAS 0.20 0.22 0.12 0.36
+
+   *TRGLOBALC 'bottom-o'  *IJK  1:9  1:5  1    1.0
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR    0.20
+   *NORM *GMOLAR   0.05
+   *CONVERGE *MAXRES 1.E-04
+   *AIM *STAB *AND-THRESH 1 0.001
+   *DTMAX 61
+ 
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *RUN
+
+   *DATE 1986 04 22
+   *ACT-DEFAULT *CONT *REPEAT 
+
+   *DTWELL 1.0
+
+   *GROUP 'Gather-1' 'Gather-2' *ATTACHTO 'Field'
+  
+   *WELL 1  'Producer 1' *ATTACHTO 'Gather-1'
+
+   *PRODUCER  1
+   *OPERATE *MAX  *STO 10000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 1
+   ** if     jf     kf     ff                         
+      1      1      1     1.0   
+
+   *WELL 2  'Producer 2' *ATTACHTO 'Gather-1'   
+
+   *PRODUCER  2
+   *OPERATE *MAX  *STO 10000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff                         
+      1      5      1     1.0
+
+   *WELL 3  'Injector 1' *ATTACHTO 'Gather-1'
+
+   *INJECTOR  'Injector 1'
+   *INCOMP *SOLVENT 1.0 0.0 0.0 0.0
+   *OPERATE  *MAX  *STG  1.0E+8
+   *OPERATE  *MAX  *BHP  1.0E+8
+   *MONITOR  *BACKFLOW *STOP
+
+   *PERF 'Injector 1'
+   ** if     jf     kf     wi 
+      3      3      3      1.0E+5
+
+   *WELL 4  'Producer 3' *ATTACHTO 'Gather-1'   
+
+   *PRODUCER  4
+   *OPERATE *MAX  *STO  5000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 4
+   ** if     jf     kf     ff                         
+      5      1      1     0.5
+
+   *WELL 5  'Producer 4' *ATTACHTO 'Gather-1'
+
+   *PRODUCER  5
+   *OPERATE *MAX  *STO  5000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+   
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 5
+   ** if     jf     kf     ff                         
+      5      5      1     0.5   
+
+   *WELL 6  'Injector 2' *ATTACHTO 'Gather-2'   
+
+   *INJECTOR  'Injector 2'
+   *INCOMP *SOLVENT 1.0 0.0 0.0 0.0
+   *OPERATE  *MAX  *STG  1.0E+8
+   *OPERATE  *MAX  *BHP  1.0E+8
+   *MONITOR  *BACKFLOW *STOP
+
+   *PERF 'Injector 2'
+   ** if     jf     kf     wi 
+      7      3      3      1.0E+5
+
+   *WELL 7  'Producer 5' *ATTACHTO 'Gather-2'   
+
+   *PRODUCER  'Producer 5'
+   *OPERATE *MAX  *STO 10000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 'Producer 5'
+   ** if     jf     kf     ff                         
+       9      1     1     1.0   
+
+   *WELL 8  'Producer 6' *ATTACHTO 'Gather-2'
+
+   *PRODUCER  'Producer 6'
+   *OPERATE *MAX  *STO 10000.0
+   *OPERATE *MIN  *BHP  1000.0
+   *MONITOR *MIN  *STO  1000.0  *STOP
+
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+   
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 'Producer 6'
+   ** if     jf     kf     ff
+       9      5     1     1.0   
+
+   *WELL 9  'Producer 3a' *ATTACHTO 'Gather-2'
+
+   *PRODUCER  'Producer 3a'
+   *OPERATE *MAX  *STO  5000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 'Producer 3a'
+   ** if     jf     kf     ff
+      5      1      1     0.5
+
+   *WELL 10  'Producer 4a' *ATTACHTO 'Gather-2'   
+
+   *PRODUCER  'Producer 4a'
+   *OPERATE *MAX  *STO  5000.0
+   *OPERATE *MIN  *BHP  1000.0
+
+   *MONITOR *MIN  *STO   500.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 'Producer 4a'
+   ** if     jf     kf     ff
+      5      5      1     0.5
+
+   ** Define production and injection targets for gathering centres.
+                        
+   *GCONP 'Gather-1' 'Gather-2'
+      *GTARGET *STO  18750.0
+
+   *GCONI 'Gather-1' 'Gather-2'
+      *VREP  *GAS  0.9   **Voidage replacement ratio is 0.9
+
+   *APPOR-METHOD  *PROD  'Gather-1' 'Gather-2'  *IP
+   *APPOR-METHOD  *GASI  'Gather-1' 'Gather-2'  *IP
+
+   *TRCR-INJCONC  'Injector 1'   
+     'trcr-inj' 1.0              
+
+   *TRCR-INJCONC  'Injector 2'   
+     'trcr-inj' 1.0              
+
+   *TIME 500.0
+
+   *TIME 1000.0
+ 
+   *TIME 1500.0
+
+   *TIME 2000.0
+
+   *TIME 2500.0
+
+   *TIME 3000.0
+
+   *TIME 3500.0
+
+   *TIME 3650.0
+   *STOP

@@ -1,0 +1,351 @@
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 51'
+*title2 'STTST51 with Liq-Liq K Values'
+
+*inunit field except  1 1  ** hrs instead of days
+              except 11 1  ** ft3 instead of bbl
+
+*outprn *grid all
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well component all
+
+outsrf grid all
+
+outsrf special blockvar temp 2,1,1
+               blockvar temp 6,1,1
+               blockvar temp 4,2,1
+               blockvar sw 6,1,1
+               blockvar solconc 6,1,1 'COKE'
+               blockvar y 6,1,1 'OXYGEN'
+               blockvar kro 6,1,1
+               avgvar temp
+               maxvar solconc 'COKE'
+               matbal reaction 'COMB W1'
+               matbal reaction 'OXYGEN'
+               matbal reaction energy
+               cchloss  ** net cum heat from heaters
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*grid *cart 6 6 5
+*kdir *down
+
+*di *con 12.963624
+*dj *con 12.963624
+*dk *kvar 10 20 3*25
+
+*por *con 0.3
+*permi *kvar 2000 500 3*1000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 9 8 6 2   ** Number of noncondensible gases is numy-numx = 2
+                 ** Number of solid components is ncomp-numy = 1
+                 ** Number of water components is numw = 2
+
+*compname 'ORIG WAT' 'COMB W1'  'HEVY O1'  'HEVY O2'  'LITE O1'  'LITE O2'  'INRT GAS'  'OXYGEN' 'COKE'
+**         --------   -------    --------   --------   --------   --------   --------   -------- ------
+*cmm          18         18        675        675       156.7      156.7       40.8       32       13
+*pcrit       3155       3155       120        120       305.7      305.7       500        730
+*tcrit       705.7      705.7     1138       1138       651.7      651.7      -232       -181
+
+*avg       8.822e-6   8.822e-6   3.926e-6   3.926e-6   2.166e-6   2.166e-6   2.1267e-4  2.196e-4
+*bvg         1.116      1.116     1.102      1.102      0.943      0.943      0.702      0.721
+*avisc      .00752     .00752    4.02e-4    4.02e-4    4.02e-4    4.02e-4
+*bvisc     2492.75    2492.75     6121.6     6121.6     6121.6     6121.6
+
+*cpg1         0          0       -8.14      -8.14       -1.89      -1.89      7.44       6.713
+*cpg2         0          0       0.549      0.549      0.1275     0.1275     -0.0018    -4.883e-7
+*cpg3         0          0       -1.68e-4   -1.68e-4   -3.9e-5    -3.9e-5     1.975e-6   1.287e-6
+*cpg4         0          0       1.98e-8    1.98e-8     4.6e-9     4.6e-9    -4.78e-10  -4.36e-10
+*hvr          0          0        12198      12198       1917       1917
+*ev           0          0        0.38       0.38        0.38       0.38
+
+*molden     3.466      3.466      0.0914     0.0914     0.3195     0.3195    ** LBMOLE/FT3
+*cp          3e-6       3e-6       5e-6       5e-6       5e-6       5e-6
+*ct1        1.2e-4     1.2e-4    1.496e-4   1.496e-4   2.839e-4   2.839e-4
+**                                61.69      61.69       50.07      50.07       LB/FT3
+**                                11.6       11.6        44.8       44.8        API
+
+*solid_den 'COKE' 57.2 0 0
+*solid_cp  'COKE' 4.06 0
+
+
+** Note:  Inert gas is 80% CO2 and 20% CO, so Mw = 40.8
+
+** Cracking:  heavy oil -> light oil + coke (50/50 by mass)
+
+*storeac      0          0          1          0          0          0          0          0        0
+*stoprod      0          0          0          0        2.154        0          0          0      25.96
+*freqfac 4.167e5
+*eact 27000
+*renth 40000
+
+
+** Light oil burning:  light oil + o2 -> water + inert gas + energy
+
+*storeac      0          0          0          0          1          0          0        14.06      0
+*stoprod      0        6.58         0          0          0          0        11.96        0        0
+*freqfac 3.020e10
+*eact 59450
+*renth 2.9075e6
+
+
+** Heavy oil burning:  heavy oil + o2 -> water + inert gas + energy
+
+*storeac      0          0          1          0          0          0          0        60.55      0
+*stoprod      0        28.34        0          0          0          0        51.53        0        0
+*freqfac 3.020e10
+*eact 59450
+*renth 1.2525e7
+
+
+** Coke oil burning:  coke oil + o2 -> water + inert gas + energy
+
+*storeac      0          0          0          0          0          0          0        1.18       1
+*stoprod      0        0.55         0          0          0          0          1          0        0
+*freqfac 416.7
+*eact 25200
+*renth 2.25e5
+
+
+*kvtablim 1915 2015 77 927
+*kvtable 'HEVY O1'    ** K value table for HEVY O1
+   2.51e-9   2.39e-9
+   2.23e-8   2.12e-8
+   1.54e-7   1.46e-7
+   8.50e-7   8.08e-7
+   3.91e-6   3.72e-6   **   K value tables for pressures
+   2.63e-5   2.50e-5   **   1915 psi & 2015 psi
+   8.42e-5   8.00e-5   **   and temperatures from
+   2.42e-4   2.30e-4   **   77 F to 927 F be 50 deg intervals
+   4.10e-4   3.90e-4
+   5.89e-4   5.60e-4
+   8.84e-4   8.40e-4
+   0.00166   0.00158
+   0.00284   0.0027
+   0.00389   0.0037
+   0.00558   0.0053
+   0.00768   0.0073
+   0.0105    0.01
+   0.0179    0.017
+
+*kvtable 'HEVY O2'    ** K value table for HEVY O2
+   2.51e-9   2.39e-9
+   2.23e-8   2.12e-8
+   1.54e-7   1.46e-7
+   8.50e-7   8.08e-7
+   3.91e-6   3.72e-6   **   K value tables for pressures
+   2.63e-5   2.50e-5   **   1915 psi & 2015 psi
+   8.42e-5   8.00e-5   **   and temperatures from
+   2.42e-4   2.30e-4   **   77 F to 927 F be 50 deg intervals
+   4.10e-4   3.90e-4
+   5.89e-4   5.60e-4
+   8.84e-4   8.40e-4
+   0.00166   0.00158
+   0.00284   0.0027
+   0.00389   0.0037
+   0.00558   0.0053
+   0.00768   0.0073
+   0.0105    0.01
+   0.0179    0.017
+
+*kvtable 'LITE O1'    ** K value table for LITE O1
+   1.54e-4   1.46e-4
+   4.80e-4   4.56e-4
+   0.00128   0.00122
+   0.00304   0.00289
+   0.00648   0.00616
+   0.0126    0.012
+   0.0179    0.017
+   0.0231    0.022
+   0.0295    0.028
+   0.0347    0.033
+   0.04      0.038
+   0.0452    0.043
+   0.0505    0.048
+   0.0568    0.054
+   0.0631    0.06
+   0.0694    0.066
+   0.0768    0.073
+   0.0884    0.084
+
+*kvtable 'LITE O2'    ** K value table for LITE O2
+   1.54e-4   1.46e-4
+   4.80e-4   4.56e-4
+   0.00128   0.00122
+   0.00304   0.00289
+   0.00648   0.00616
+   0.0126    0.012
+   0.0179    0.017
+   0.0231    0.022
+   0.0295    0.028
+   0.0347    0.033
+   0.04      0.038
+   0.0452    0.043
+   0.0505    0.048
+   0.0568    0.054
+   0.0631    0.06
+   0.0694    0.066
+   0.0768    0.073
+   0.0884    0.084
+
+liqliqkv
+
+*kvtablim 1915 2015 77 927
+*kvtable 'COMB W1'
+   1e-6   3e-6
+   1e-5   3e-5
+
+*kvtable 'LITE O2'
+   2e-6   4e-6
+   2e-5   4e-5
+
+**  Reference conditions
+*prsr 14.7
+*temr 77
+*psurf 14.65
+*tsurf 62
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+    0.1        0.0        0.9
+    0.25       0.004      0.6
+    0.44       0.024      0.28
+    0.56       0.072      0.144
+    0.672      0.168      0.048
+    0.752      0.256      0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    -------
+    0.21       0.784      0.0
+    0.32       0.448      0.01
+    0.4        0.288      0.024
+    0.472      0.184      0.052
+    0.58       0.086      0.152
+    0.68       0.024      0.272
+    0.832      0.006      0.448
+    0.872      0.0        0.9
+
+**  Override critical saturations on table
+*swr 0.25
+*sorw 0.25
+*sgr 0.12
+*sorg 0.2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*pres *con 2014.7     ** high initial pressure
+
+*sw *con 0.178
+*so *con 0.654        ** initial gas saturation is 0.168
+
+*temp *con 100.
+
+** Gas in tube is air (79% N2 & 21% O2)
+*mfrac_gas 'INRT GAS' *con 0.79
+*mfrac_gas 'OXYGEN'   *con 0.21
+
+*mfrac_oil 'HEVY O1' *con 0.256
+*mfrac_oil 'LITE O1' *con 0.744
+
+*mfrac_wat 'ORIG WAT' *con 1
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*maxsteps 1
+
+*norm     press 15   satur .1    temp 40  y .1    x .1
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on August 13, 1987
+date 1987 8 13.5
+
+   dtwell .1
+
+   well 1 'INJECTOR'    vert  1 1  frac .125
+   well 2 'CRNR PRDCR'  vert  6 1  frac .125
+   well 3 'EDGE PRDCR'  vert  6 6  frac .25
+
+   injector mobweight 'INJECTOR'
+   incomp gas 6*0 .79 .21  ** air injection
+   tinjw 70
+   pinjw 10000
+   operate stg .554
+   perfv 'INJECTOR'
+            **  k  wi       ** Inject only in the bottom layer
+                3 455100.56 ** 120 .007082*k*h / ln(cc*sqrt((dx**2+dy**2)/pi)/rw)
+                            ** k = 2000 md, h = 25 ft, dx = dy = 29.17 ft,
+                            ** cc = 0.249, rw = 0.3 ft
+
+   producer 'CRNR PRDCR' 'EDGE PRDCR'  ** Both producers have these attributes
+   operate bhp 2000
+   monitor temp 600 stop
+   perfv 'CRNR PRDCR' 'EDGE PRDCR'
+                   1   182040.22  ** 48
+                   2    91020.11  ** 24
+                   3   227550.28  ** 60
+
+   heatr ijk 1 1 1  200      ** Use external heaters to raise the temperature
+
+time 1095

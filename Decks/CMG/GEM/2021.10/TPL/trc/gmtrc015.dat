@@ -1,0 +1,244 @@
+**--------------------------------------------------------------------**
+** GMTRC015.DAT:  Water Flooding in a 2D Model with 3 Well Tracers    **
+**                Fluid with flux boundary reduced run                **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMTRC015.DAT                                               **
+**                                                                    **
+** MODEL:  20x30x1 GRID   5 COMPONENTS   2D     WATER-FLOODING        **
+**         SI UNITS       3 INJECTORS           3 WELL-TRACERS        **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template simulates water flooding in a 2D model with high     **
+** permeability channels.                                             **
+**                                                                    **
+** Well tracers are associated with the injected water to track the   **
+** front and breakthrough of injected water.                          **
+**                                                                    **
+** Input tracer molecular weight allows the output of tracer mass     **
+** rate for each well.                                                **
+**                                                                    **
+** Flux type flux boundary reduced run                                **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1  'Water Flooding in a 2D model'
+*TITLE2  'with 3 well tracers'
+*TITLE3  'Flux boundary reduced run'
+
+*INUNIT *SI
+
+*WRST  0
+*WSRF *WELL 1
+
+*OUTPRN *WELL *BRIEF
+*OUTPRN *GRID *IMPL *SO *SW *SG *PRES
+*OUTPRN *RES *NONE
+
+*OUTSRF *GRID *SO *SW *SG *PRES 
+              *TRCR-RMOL 'TRC-INJ1' *TRCR-RMOL 'TRC-INJ2' *TRCR-RMOL 'TRC-INJ3'
+              *TRCR-CONC 'TRC-INJ2' *TRCR-CONC 'TRC-INJ3' *TRCR-CONC 'TRC-INJ1'
+              *TRCR-MASS 'TRC-INJ2' *TRCR-MASS 'TRC-INJ3' *TRCR-MASS 'TRC-INJ1'
+
+*OUTSRF *SPECIAL *TRCR-RMOL 'TRC-INJ1' 9 9 1
+                 *TRCR-CONC 'TRC-INJ2' 10 10 1 *TRCR-CONC 'TRC-INJ1' 9 9 1
+                 *TRCR-MASS 'TRC-INJ2' 10 10 1 *TRCR-MASS 'TRC-INJ1' 9 9 1
+                 *PAVG 
+*************************RESERVOIR DATA*********************************************
+*GRID  *CART  30  30  1
+*DI  *IVAR  4.99851345  28*9.9970269  4.99851345
+*DJ  *JVAR  4.99851345  28*9.9970269  4.99851345
+*DK  *CON   10.0
+*DEPTH  *TOP 1 1 1  10000.0
+*POR  *CON  0.1
+
+*PERMI *CON  10.0
+*MOD 1:30 1:1 1:1 = 100
+     30:30 1:30 1:1 = 25
+
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  *  0.10
+
+*CPOR   0.0
+*PRPOR  100000.0
+
+*FLXB-NAMES
+'FLXB1' 1
+
+*FLXB-DEF *IJK
+15:30  1:15  1  1
+
+*FLXB-TYPE *FLUX
+
+*FLXB-IN 'gmtrc014'
+
+*************************FLUID MODEL************************************************
+*MODEL   *PR
+*NC    7    7
+*TRES         100.000
+*PVC3  1.2000000E+00
+*COMPNAME
+'C1+N2   ' 'C2+CO2  ' 'C3+C4   ' 'C5      ' 'C6-C12  '
+'C13-C21 ' 'C22+    '
+*PCRIT     4.5310000E+01  5.2850000E+01  3.9810000E+01  3.3350000E+01
+           2.7270000E+01  1.7630000E+01  1.0340000E+01
+*VCRIT     9.9000000E-02  1.3400000E-01  2.2500000E-01  3.0500000E-01
+           4.6300000E-01  8.2000000E-01  1.4160000E+00
+*TCRIT     1.9010000E+02  3.0510000E+02  3.9130000E+02  4.6540000E+02
+           5.9450000E+02  7.3970000E+02  8.8620000E+02
+*AC        8.2000000E-03  1.3000000E-01  1.6660000E-01  2.4010000E-01
+           3.7080000E-01  6.1510000E-01  1.0501000E+00
+*MW        1.6136000E+01  3.3585000E+01  4.9870000E+01  7.2151000E+01
+           1.2316000E+02  2.2588000E+02  5.1565000E+02
+*HCFLAG    0  0  0  0  0  0  0
+*BIN
+     1.5255105E-03
+     1.1136134E-02  4.4610319E-03
+     2.0759899E-02  1.1176279E-02  1.5405611E-03
+     3.8471653E-02  2.5120786E-02  8.6208655E-03  2.8973803E-03
+     7.0402774E-02  5.2453134E-02  2.7280742E-02  1.6097511E-02  5.4220416E-03
+     1.0800439E-01  8.6397063E-02  5.4019684E-02  3.8117875E-02  2.0494690E-02
+     4.9546518E-03
+*VSHIFT
+     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+     0.0000000E+00  0.0000000E+00
+*MIXVC     1.0000000E+00
+*VISVC
+     9.9000000E-02  1.3400000E-01  2.2500000E-01  3.0500000E-01  4.6300000E-01
+     8.2000000E-01  1.4160000E+00
+*VISCOEFF
+     1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02  9.3324000E-03
+*OMEGA
+     4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+     4.5723553E-01  4.5723553E-01
+*OMEGB
+     7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+     7.7796074E-02  7.7796074E-02
+*PCHOR
+     4.6102857E+01  9.5957143E+01  1.4248571E+02  2.0614571E+02  3.5188571E+02
+     6.4537143E+02  1.4732857E+03
+
+
+*PHASEID  *OIL
+*CW       4.8027E-07
+*REFPW    1.0E+05
+*VISW     0.3235
+*DENW     1005.0
+
+*DERIVATIVE_METHOD *NUMERALL
+
+*NTRCR 3
+*TRCRNAME
+'TRC-INJ1'  'TRC-INJ2'  'TRC-INJ3'
+
+*TRCR-ASSOC
+** Associate Component      Associated tracers
+  'H2O'                    'TRC-INJ1' 'TRC-INJ2' 'TRC-INJ3'
+
+*MW-TRCR
+18.0 18.0 18.0
+
+************************ROCK-FLUID DATA*********************************************
+*ROCKFLUID
+*KRGAS *KRO
+
+*RPT 1 
+*KROIL *STONE2 *SWSG
+*SWT
+0.0001     0.0       1.0       0.0  
+0.9999     1.0       0.0       0.0 
+ 
+*SLT
+0.0001     1.0       0.0       0.0
+1.0        0.0       1.0       0.0
+************************INITIAL-CONDITIONS******************************************
+*INITIAL
+*SEPARATOR  100000.0  100.0
+
+*USER_INPUT
+*PRES     *CON   100000.0
+*SW       *CON   0.0  
+*ZGLOBAL  *CON   0.324   0.098   0.108   0.034   0.2488  0.1332   0.0540
+************************NUMERICAL METHODS CONTROL***********************************
+*NUMERICAL
+
+*NORM      *PRESS  1000.0
+*NORM      *SATUR  0.1
+*NORM      *GMOLAR 0.1
+*NORTH 100
+*ITERMAX 200
+
+*CONV-RESONLY  *ON
+*CONVERGE *MAXRES *TIGHTER
+************************WELL DATA & RECURRENT DATA**********************************
+RUN
+*DATE 1998 1 1
+
+*AIMSET *CON  2
+ 
+*DTMIN   0.01
+*DTMAX  2.5
+*DTWELL 0.1 
+        *AIMWELL *WELLNN 
+        *WELL 1 'PROD1'
+        *WELL 2 'INJ1' 
+        *WELL 3 'INJ2'
+        *WELL 4 'INJ3'
+
+        *PRODUCER 1
+           *OPERATE *MAX *STL     16.81
+        *INJECTOR 2 
+           *INCOMP  *WATER
+           *OPERATE *MAX *STW     16.81
+           *OPERATE *MAX *BHP    1.5E+05
+        *INJECTOR 3 
+           *INCOMP  *WATER
+           *OPERATE *MAX *STW     16.81
+           *OPERATE *MAX *BHP    1.5E+05
+        *INJECTOR 4 
+           *INCOMP  *WATER
+           *OPERATE *MAX *STW     16.81
+           *OPERATE *MAX *BHP    1.5E+05
+
+        *GEOMETRY *K 1.0 0.56 0.25 0.0 
+        *PERF *GEO 1 
+                   30  1  1  1.0 
+        *PERF *GEO 2 
+                    1 30  1  1.0
+        *PERF *GEO 3 
+                    1  1  1  1.0 
+        *PERF *GEO 4 
+                    30 30  1  1.0
+
+
+*TRCR-INJCONC 'INJ1'
+'TRC-INJ1' 1.0
+
+*TRCR-INJCONC 'INJ2'
+'TRC-INJ2' 1.0
+
+*TRCR-INJCONC 'INJ3'
+'TRC-INJ3' 1.0
+
+*TIME  100
+*TIME  500
+
+*TIME 1000
+*TIME 1500
+*TIME 2000
+*TIME 2500
+*TIME 3000
+*TIME 3500
+*TIME 4000
+*TIME 4500
+
+*TIME 5000
+
+*STOP
+
+

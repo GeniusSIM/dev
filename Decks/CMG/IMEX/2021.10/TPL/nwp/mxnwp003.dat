@@ -1,0 +1,186 @@
+   ************************************************************************************
+   ** mxnwp003.dat:              Gas Well Water Coning (Gaswater option)             **
+   ************************************************************************************
+   ************************************************************************************************
+   **                                                                                            **
+   ** FILE:   (a demo template)              MXNWP003.DAT                                        **
+   **                                                                                            **
+   ** MODEL:  RAD 11x1x12    1 GAS WELL SPACING     GAS WELL WITH BOTTOM AQUIFER     FIELD UNIT  **
+   **                                                                                            ** 
+   ** USAGE:  OPTIMUM GAS RATE VS WATER CONING                                                   **
+   **                                                                                            **
+   ************************************************************************************************
+   **                                                                                            **
+   ** THIS  TEMPLATE  IS  SIMILAR  TO  TEMPLATE No. 1  BUT  FOR  A  GAS  RESERVOIR               **    
+   **                                                                                            **
+   ************************************************************************************************
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+       *FILENAMES *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+
+   ** I/O CONTROL SECTION-----------------------------------------------------------------
+
+       *TITLE1  'GAS WELL WATER CONING, MXNWP003'
+       *TITLE2  'GAS WELL WATER CONING'
+       *TITLE3  'CRITICAL GAS RATE STUDY'
+       *CASEID  'MXNWP003'
+
+       *INUNIT  *FIELD
+
+       *WRST          *TIME                                          
+       *WPRN    *WELL *TIME                      
+       *OUTPRN  *WELL *LAYER                        
+       *OUTPRN  *GRID *SG     *SW      *PRES    
+       *WSRF    *WELL *TIME                       
+       *WSRF    *GRID *TIME                        
+       *OUTSRF  *GRID *SG     *SW      *PRES  
+       *OUTDIARY      *BRIEF  *PRESAQ  *HEADER  20                            
+
+
+   **---GRID DESCRIPTION SECTION--------------------------------------------------------
+
+       *GRID    *RADIAL 11 1 12  
+       *KDIR    *DOWN
+       *DEPTH    1 1 1  3500.0   
+
+       *DI      *IVAR               
+                   2.0  3.0  6.0  12.0  25.0  50.0  100.0  200.0  350.0  700.0  1500.0 
+        
+       *DJ      *CON 360.0
+
+       *DK      *KVAR                       
+                     5.0  2.0  4.0  7.0  3.0  8.0  5.0  7.0  5.0  7.0  4.0  50.0
+
+       *POR     *KVAR
+                 0.10 0.05 0.12 0.15 0.10 0.08 0.16 0.22 0.12 0.14 0.17 0.15    
+
+       *PRPOR    3600.0   
+       *CPOR     4.0E-6  
+
+       *PERMI   *KVAR   
+                 75.0 10.0 50.0 90.0 123.0 40.0 86.0 150.0 50.0 65.0 90.0 50.0
+
+       *PERMJ   *EQUALSI
+
+       *PERMK   *EQUALSI * 0.35
+                               
+       *AQUIFER *BOTTOM    
+       **        THICK  PORO  PERM   RADIUS  ANGLE  
+       *AQPROP   300.0  0.25  300.0  10000     0           
+
+
+   **---PVT DESCRIPTION SECTION--------------------------------------------------------
+
+       *MODEL  *GASWATER     
+
+       *PVTG 
+         **   P       EG     VISG
+            400.0   169.49  0.0130
+            800.0   338.98  0.0135
+           1200.0   510.20  0.0140
+           1600.0   680.27  0.0145
+           2000.0   847.46  0.0150
+           2500.0  1020.40  0.0155
+
+       *DENSITY *GAS     0.0702
+       *DENSITY *WATER   62.14
+       *BWI              1.01420      
+       *CW               3.0E-6       
+       *REFPW             14.7          
+       *VWI               0.96         
+       *CVW               0.0          
+
+
+   **---ROCK-FLUID PROPERTY SECTION-------------------------------------------
+
+       *ROCKFLUID
+
+       *RPT
+       *SWT              
+         **  SW   KRW    
+           0.25  0.000   
+           0.40  0.190 
+           0.50  0.312 
+           0.60  0.451 
+           0.70  0.595 
+           0.80  0.760 
+           0.90  0.900 
+           0.95  0.950 
+           1.00  1.000 
+
+       *SLT     
+         **  SL   KRG  
+           0.25  1.000   
+           0.30  0.881  
+           0.40  0.601    
+           0.50  0.420     
+           0.60  0.288     
+           0.70  0.193    
+           0.80  0.100   
+           0.90  0.030   
+           0.96  0.000     
+           1.00  0.000     
+
+   **---INITIALIZATION SECTION-------------------------------------------------------
+
+       *INITIAL
+       *VERTICAL *BLOCK_CENTER  *WATER_GAS
+       *REFPRES  1500.0                   
+       *REFDEPTH 3500.0                  
+       *DWGC     3555.0   
+
+   **---NUMERICAL CONTROL SECTION----------------------------------------------------
+
+       *NUMERICAL
+       *DTMAX  61.0
+       *NCUTS  10
+
+
+   **---RECURRENT (WELL AND PRODUCTION/INJECTION DATE) SECTION-----------------------
+
+       *RUN
+       *DATE 1995 01 01
+       *DTWELL   0.5 
+
+       *WELL 1  'PRODUCER'  *VERT   1  1
+
+       *PRODUCER 1
+       *OPERATE *MAX  *STG 20.0E+6            
+       *OPERATE *MIN  *BHP  300.0   *STOP  
+       *MONITOR *MIN  *STG 0.5E+6   *STOP
+       **             RAD  GEOFAC  WFRAC  SKIN
+       *GEOMETRY *K  0.25   0.500   1.00   0.0
+       *PERFV    *GEO 1
+        **       kf   ff                         
+                1:5   1.0
+
+       *AIMWELL *WELLN
+
+
+       ***********PRODUCTION RATE
+
+       *ALTER   1                                
+               3.0E+6     
+
+       **DATE 1995 01 31
+       **STOP
+
+       *OUTPRN *WELL *BRIEF                        
+       *OUTPRN *GRID *SG *SW *PRES *IMEXMAP   
+
+       *DATE 1995 12 31
+       *DATE 1996 12 31
+       *DATE 1997 12 31
+       *DATE 1998 12 31
+       *DATE 1999 12 31  
+       *DATE 2000 12 31  
+       *DATE 2001 12 31
+
+   ***********************************************************************************
+   **MET CUTOFF W/G RATIO (500 STB/MMCF).  TRY OTHER RATE TO COMPARE RECOVERY FACTOR.
+   ***********************************************************************************
+       *STOP

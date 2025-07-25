@@ -1,0 +1,246 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**  MULTI-LAYER VARIBLE-DEPTH AND VARIABLE-THICKNESS EXAMPLE.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Fluid Model Template #62'
+*title2 'Multi-Component Oil and Soln Gas with Enthalpy Departure'
+*title3 'Based on STTST26'
+
+*inunit field    **  Output units same is input
+
+*outprn *grid pres sw so sg temp y x solconc obhloss viso visg
+*outprn *well *all
+outprn iter newton
+*wprn *grid 1
+*wprn *iter 1
+
+outsrf grid  pres sw so sg temp
+outsrf well  component all  downhole
+outsrf special avgvar pres
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *vari 22 1 5
+
+*di *ivar 384.8 3*192.41 17*96.21 144.32
+*dj *con 96.21
+*dk *ivar 35.7 35.2 34.8 34.5 34.6 34.2 33.7 32.9 32.2 31.3
+          30.7 7*30.1 29.8 29.1 28.6 28
+*dtop 3865 3859 3854 3849 3845 3844 3841 3839 3837 3834 3831
+      3826 3823 3820 3817 3815 3814 3813 3812 3811 3812 3813
+
+*por *con 0.19264
+*permi *kvar 3*872 2*697.6   
+*permj *equalsi   
+*permk *equalsi / 10
+*end-grid
+*cpor 6.123e-5
+*prpor 1000
+*rockcp 35.6
+*thconr 36
+*thconw 36
+*thcono 36
+*thcong 36
+*hlossprop overbur 35.6 36 underbur 35.6 36
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 4 4 4   **  Standard water properties plus three oils
+
+*compname     'Water'   'Hevy Oil'  'Lite Oil'  'Soln Gas'
+**            --------  ----------  ----------  ----------
+
+*cmm            18        378.93      152.23      16.043
+*pcrit        3217.1      149.65      267.54      361.96
+*tcrit        705.47     1107.81      738.68     -116.59
+*acen         0.3480     1.042         0.4902      0.0115
+
+*molden          0        0.1515      0.3485       2.746
+*cp              0        1.5e-5      1.5e-5      1.5e-5
+*ct1             0       5.93e-4     3.11e-4     0.00123
+
+*avg          1.169e-5   4.04e-6     4.04e-6      6.22e-5
+*bvg           1.075      1.1027      1.1027      0.8197
+*avisc           0       3.4238e-6   0.010807     0.0138
+*bvisc           0       10733.6       2459        205.9
+
+*cpg1            0        189.15     28.93349     9.17179
+*cpg2            0         0      -9.93255E-03  -9.44330E-03
+*cpg3            0         0       1.73755E-04   2.03661E-05
+*cpg4            0         0      -1.31270E-07  -9.79740E-09
+*cpg5            0         0       3.05694E-11   1.56039E-12
+
+
+*PVT_DEPARTURE *ON
+
+**  Reference conditions
+*prsr 14.65
+*temr 77
+*psurf 14.65
+*tsurf 62
+*xnacl 0.015
+
+*kvtablim 50 1450 90 690   ** Low/high p & T
+
+*kvtable 'Hevy Oil'    ** Hev_Oil  (nonvapourizable at low T)
+
+8*0
+8*0
+8*0
+8*0
+8*0
+0.0007   0.0002   0.0002   0.0001    0.0001   0.0001   0.0001   0.0001
+0.006    0.002    0.0014   0.0012    0.0011   0.001    0.001    0.001
+
+*kvtable 'Lite Oil'    ** Lit_Oil  (more vapourizable liquid part)
+
+0.0017   0.0005   0.0004   0.0004    0.0004   0.0004   0.0005   0.0005
+0.0247   0.0063   0.0044   0.0038    0.0036   0.0035   0.0035   0.0035
+0.1609   0.0381   0.0249   0.0201    0.0177   0.0165   0.0158   0.0158
+0.6295   0.1425   0.0893   0.0693    0.0592   0.0532   0.0495   0.0495
+1.7392   0.3864   0.2363   0.1792    0.1495   0.1316   0.1199   0.1199
+3.6816   0.8238   0.4988   0.3733    0.3072   0.2667   0.2397   0.2397
+6.3836   1.4416   0.8744   0.6515    0.5325   0.4588   0.4089   0.4089
+
+*kvtable 'Soln Gas'    ** Soln_Gas  (soluble hydrocarbon gas - CH4)
+
+ 95.853  19.9007  11.4608   8.2140   6.4946   5.4297   4.7052   4.7052
+124.741  25.6380  14.6273  10.3914   8.1470   6.7584   5.8130   5.8130
+144.301  29.4742  16.7317  11.8309   9.2360   7.6293   6.5365   6.5365
+154.848  31.4554  17.8091  12.5629   9.7860   8.0672   6.8984   6.8984
+158.334  31.7949  17.9853  12.6776   9.8683   8.1295   6.9474   6.9474
+157.186  30.7469  17.3906  12.2659   9.5532   7.8737   6.7318   6.7318
+150.630  28.7399  16.1894  11.4273   8.9123   7.3561   6.2979   6.2979
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      ------     ------      ------
+    0.230       0.0         1.0        2.05
+    0.275      0.0075      0.840       1.4
+    0.343      0.022       0.625       0.8
+    0.376      0.037       0.545       0.61
+    0.444      0.080       0.362       0.4
+    0.484      0.117       0.268       0.36
+    0.511      0.143       0.216       0.34
+    0.557      0.220       0.131       0.31
+    0.586      0.262       0.082       0.29
+    0.611      0.316       0.059       0.27
+    0.647      0.382       0.034       0.25
+    0.685      0.453       0.013       0.22
+    0.697      0.475       0.0068      0.21
+    0.711      0.500        0.0        0.2
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg         Krog
+**  -----     -------      ------
+    0.519      0.400        0.0
+    0.586      0.318       0.0051
+    0.615      0.284       0.0097
+    0.649      0.249       0.018
+    0.685      0.206       0.030
+    0.720      0.169       0.049
+    0.748      0.140       0.069
+    0.788      0.111       0.105
+    0.815      0.090       0.141
+    0.841      0.072       0.172
+    0.863      0.056       0.207
+    0.885      0.041       0.243
+    0.905      0.030       0.295
+    0.929      0.018       0.366
+    0.943      0.012       0.445
+    0.954      0.0087      0.517
+    0.973      0.0038      0.670
+    0.988     0.00012      0.830
+     1.0        0.0         1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*vertical *depth_ave
+
+*refpres 717
+*refdepth 4026.48
+
+dwoc 3980
+dgoc 3850
+
+*temp *con 94
+
+*mfrac_oil 'Hevy Oil' *con 0.65175
+*mfrac_oil 'Lite Oil' *con 0.2947
+*mfrac_oil 'Soln Gas' *con 0.05355
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+**maxsteps 1
+
+*norm      press 100  satur .3   temp 50  y .3   x .3
+
+
+*run
+
+
+**  ==============  RECURRENT DTAA  ======================
+
+
+time 0
+
+   dtwell 1
+
+   well 1 'INJECTOR 1'  vert 10 1  frac .5
+   well 2 'PRODUCER 2'  vert 14 1  frac .5
+   well 3 'INJECTOR 3'  vert 18 1  frac .5
+
+   injector 'INJECTOR 1' 'INJECTOR 3'
+   tinjw 518
+   qual .675
+   incomp  water  1.0  0.0  0.0  0.0
+   operate     stw 350 
+   operate max bhp 1750
+   perfv 'INJECTOR 1' 'INJECTOR 3'
+           ** k  wi
+              1 7.94
+
+   producer 'PRODUCER 2'
+   operate     bhp    50
+   operate max stl    500
+   operate max steam  200 shutin
+   geometry k  .4 .2488 1 0  ** rw cc ff ss
+   perfv kh 'PRODUCER 2'
+               ** k  kh  
+                  1  5129.04
+
+time 682
+stop

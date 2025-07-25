@@ -1,0 +1,267 @@
+
+*****************************************************************************
+** Template (stgeo055.dat):               DUAL GRID DEFORMATION            **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  stgeo055.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+**         RESERVOIR REGION                                 11X11X10 CARTESIAN GRID **
+**         GEOMECHANICS REGION                              48x48x26 CARTESIAN GRID **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL-THERMAL OPTION IN STARS            **
+**                                                                                  **
+**   The purpose of this problem is to demostrate how the dual grids are used.      **
+**   Features:                                                                      **
+**     Translation is applied to geomechanical grids so that reservoir region is    **
+**       located at the middle of the entire field.                                 **
+**     The reservoir region is soft whereas its surrounding rock is hard.           **
+**     There is no flow calculation in the surrounding region of the reservoir.     **
+**     Local refined grids are used in the reservoir.                               **
+**                                                                                  **
+**   This problem is based on the problem 1 in SPE 79709 by Dean et al.             **
+**                                                                                  **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #55'
+*title2 'Dean Problem #1, Reservoir Embedded in Geomechanics Region'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 10
+*OUTPRN *GRID *VPOROS *SBDZ *PRES *SO *SG *SW
+
+*PRNTORIEN 2 0
+
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*WSRF *GRIDDEFORM  1              ** keyword for output grid deformation
+*WSRF *GRID 10
+
+*OUTSRF *GRID *VPOROS *PRES *YOUNG *POISSON *VDISPL *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *VPOROSGEO
+** YOUNG   : Young's modulus
+** POISSON : Poisson's ratio
+** VDISP   : Displacement vector
+
+*OUTSRF *SPECIAL *BLOCKVAR *PRES 6,6,1
+                 *BLOCKVAR *VPOROS 6,6,1
+                 *BLOCKVAR *VPOROSGEO 6,6,1
+                 *BLOCKVAR *SBDZ 6,6,1
+                 *BLOCKVAR *STRESMNP 6,6,1
+                 *BLOCKVAR *STRESMXP 6,6,1
+                 *AVGVAR *PRES
+                 *AVGVAR *VPOROS
+                 *AVGVAR *VPOROSGEO
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+GRID CART 11 11 10
+
+DI CON 200
+DJ CON 200
+DK CON 20
+
+KDIR DOWN
+
+REFINE  6:6  6:6 1:10   into  9  9  1
+*DEPTH 1 1 1 6000
+
+*POR  *CON 0.20
+
+*PERMI *CON 50.0
+*PERMJ *EQUALSI * 1.00
+*PERMK *CON 5.0
+
+*END-GRID
+
+*PRPOR 300
+*CPOR  1.8570E-6   **CPOR  7.4e-5
+
+*ROCKCP 28.8
+*THCONR 38.4
+*THCONW 38.4
+*THCONO 38.4
+*THCONG 38.4
+*HLOSSPROP     *OVERBUR  35.0  30.0
+               *UNDERBUR 35.0  30.0
+
+
+
+**============= FLUID DEFINITIONS =============
+
+MODEL 1 1 1 0  ** 1 component
+
+COMPNAME        'OIL'
+**               -----
+     CMM          400.0000    ** molecular weights
+     PCRIT        0.0         ** Critical pressure of gas
+     TCRIT        0.0         ** Critical temperature of gas
+     KV1          0.00        ** 1st coefficient for K value
+     KV2          0.00        ** 2nd coefficient for K value
+     KV3          0.00        ** 3rd coefficient for K value
+     KV4          0.00        ** 4th coefficient for K value
+     KV5          0.00        ** 5th coefficient for K value
+     MASSDEN      62.4        ** partial molar liquid density at prsr and tem
+     CP           4.5E-7      ** liquid compressibility 1/psi
+     CT1          4.000E-4    ** 1st coefficient of thermal expansion
+
+*KVTABLIM   200   1700  300   650
+
+VISCTABLE
+**                    dead
+**                    Oil
+**      Temp        Viscosity
+**                   cp
+**     =====   ===========
+
+        60.0        1.0
+
+** REFERENCE CONDITIONS
+*PRSR 14.7
+*TEMR 60.0
+*PSURF 14.7
+*TSURF 60.0
+
+
+
+** ================ ROCK-FLUID PROPERTIES ==============
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow
+0.0     0.0000   1.0
+1.0000  1.0000   0.0000
+
+*SLT
+** Sl    Krg     Krog
+0.00    0.5000   0.0000
+1.0000  0.0000   1.0
+
+**ROCK 1
+**KRTEMTAB  *SWR   *SORW   *SGR   *SORG   *KRWRO  *KROCW  *KRGCW
+**     123   .230    .185    .04    .047     .400    .800   0.500
+**     500   .386    .167    .04    .040     .500    .800   0.500
+
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*vertical depth_ave
+
+*refpres 3000
+*refdepth 6000
+
+*TEMP *CON 60
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+
+*RANGECHECK *OFF
+*NORM      *PRESS 100
+*RANGECHECK *ON
+
+tform zt
+*isothermal
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH           ** geomechanics main keyword
+*GEOM3D
+
+*GCOUPLING 2
+*CALIB_POR
+*GCFACTOR 1.0
+*GPTOLMUL 0.1
+
+GEOGRID GCART  48 48 26
+*GDI  *GIVAR   4*100  40*55   4*100
+*GDJ  *GJVAR   4*100  40*55   4*100
+*GDK  *GKVAR   5*500  400  15*20   2*40  3*100
+
+*GTRANSLI -400.0        ** Translation along the I direction
+*GTRANSLJ -400.0        ** Translation along the J direction
+
+*GEODEPTH  GTOP 1 1 1   3000
+
+** Note: The yielding stress has a high value to avoid plastics occuring.
+** Young modulus   Poisson's ratio   Yielding stress
+
+
+*GEOROCK 1
+*ELASTMOD 1.0e4            ** Young's modulus
+*POISSRATIO .30            ** Poisson's ratio
+*COHESION 100000000       ** Yield stress
+
+*GEOROCK 2
+*ELASTMOD 1.0e6            ** Young's modulus
+*POISSRATIO .30            ** Poisson's ratio
+*COHESION 100000000       ** Yield stress
+
+*GEOTYPE   ijk
+**         i      j       k    rocktype
+           1:48    1:48   1:26      2     
+           5:44    5:44   11:21     1 
+
+*STRESS3D 4000 4000 6000 0.0 0.0 0.0
+*STRESSGRAD3D -0.49345 -0.49345 -0.9869 0.0 0.0 0.0
+
+*GOUTSRF  GGRID *YOUNG *POISSON *VDISPL *STRESI *STRESJ *STRESK
+
+
+*RUN
+
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 0.05
+
+   *WELL 1 'prod1'    **vert    6  6
+
+   *producer 'prod1'
+   *operate *max *STO 15000
+   *operate *min *bhp 100
+   *geometry *k  0.25 0.249 1.0 0.0
+   *perf *geo 'prod1'
+       6  6  1  / 5 5 1  1.0
+       6  6  2  / 5 5 1  1.0
+       6  6  3  / 5 5 1  1.0
+       6  6  4  / 5 5 1  1.0
+       6  6  5  / 5 5 1  1.0
+       6  6  6  / 5 5 1  1.0
+       6  6  7  / 5 5 1  1.0
+       6  6  8  / 5 5 1  1.0
+       6  6  9  / 5 5 1  1.0
+       6  6  10 / 5 5 1  1.0
+
+*time 300
+
+  *stop
+
+*time 500

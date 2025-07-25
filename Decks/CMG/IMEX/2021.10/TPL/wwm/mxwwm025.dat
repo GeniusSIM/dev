@@ -1,0 +1,223 @@
+   ******************************************************************************
+   ** mxwwm025.dat:      Well Management MINBHF Monitor Test                   **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM025.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3       Well Management MINBHF Monitor Test                        **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** GCONM MINBHF:  Minimum BHF Monitor Test                                          **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*FILENAME *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+*TITLE1
+'Well Management MINBHF Monitor Test.'
+
+*INUNIT *FIELD          
+
+*WPRN   *WELL   1
+*WPRN   *GRID   *TIME
+*WPRN   *ITER   *BRIEF
+
+*OUTPRN *WELL   *ALL
+*OUTPRN *GRID   *SO *SG *PRES *BPP 
+
+*WSRF   *GRID   1
+*WSRF   *WELL   1
+*OUTSRF *GRID   *SO *SG *PRES *BPP
+*OUTDIARY *WELLSTATUS
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+
+*GRID *CART 10   10    3 
+
+*KDIR *DOWN                            
+*DI *CON 1000.0            
+*DJ *CON 1000.0           
+*DK *KVAR                  
+ 20.0 30.0 50.0            
+                           
+*DTOP 100*8400.0      
+*POR *CON 0.3            
+                
+*CPOR   3.0E-6            
+*PRPOR 4800.00               
+
+*PERMI *KVAR               
+   3*400.0    
+*PERMJ *KVAR              
+   3*400.0      
+*PERMK *KVAR               
+   3*40.0    
+
+*MODEL *BLACKOIL           
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*PVT
+** p              rs      bo          eg    viso     visg
+  14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+   264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+   514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+  1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+  2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+  2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+  3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+  4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+  5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+  9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+*DENSITY *OIL    46.244
+*DENSITY *GAS     0.0647
+*DENSITY *WATER  62.238
+*CO    1.3687E-5
+*CVO   4.6000E-5
+*BWI   1.0410
+*CW    2.9886E-6
+*REFPW 4800.0
+*VWI   0.31
+*CVW   0.0
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1
+*SWT
+** sw         krw   krow   
+ 0.1200000    0.0   1.0
+ 0.8200000    1.0   0.0     
+                            
+*SLT
+**  sl     krg        krog  
+   0.12    0.984       0.0 
+   0.15    0.98        0.0       
+   0.30    0.94        0.0       
+   0.40    0.87        1.0000E-4       
+   0.50    0.72        0.001
+   0.55    0.6         0.01
+   0.60    0.41        0.021
+   0.70    0.19        0.09
+   0.75    0.125       0.2
+   0.80    0.075       0.35
+   0.88    0.025       0.7
+   0.95    0.005       0.98
+   0.98    0.0         0.997
+   0.999   0.0         1.0
+   1.0     0.0         1.0
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL   *BLOCK_CENTER *WATER_OIL_GAS            
+*PB *CON    4014.7        
+*REFDEPTH   8400.          
+*REFPRES    4800.          
+*DWOC       9500.          
+*DGOC       7000.          
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX        90.       
+*NORM *PRESS  1000.0       
+*NORM *SATUR  0.20
+*CONVERGE *MAXRES 0.001
+*PRECC 1e-6
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2000  1   1
+*DTWELL  5.0
+*AIMWELL *WELLNN 
+
+*GROUP  'Group-1'  *ATTACHTO  'Field'
+                  
+*WELL 1 'I-1'  *VERT  1  1    *ATTACHTO  'Group-1'
+*WELL 2 'I-2'  *VERT  1 10    *ATTACHTO  'Group-1'
+*WELL 3 'P-1'  *VERT  4  4    *ATTACHTO  'Group-1'
+*WELL 4 'P-2'  *VERT  4  7    *ATTACHTO  'Group-1'
+*WELL 5 'I-3'  *VERT 10  1    *ATTACHTO  'Group-1'
+*WELL 6 'P-3'  *VERT  7  4    *ATTACHTO  'Group-1'
+*WELL 7 'I-4'  *VERT 10 10    *ATTACHTO  'Group-1'
+*WELL 8 'P-4'  *VERt  7  7    *ATTACHTO  'Group-1'
+
+*INJECTOR    'I-1'  'I-3'
+*INCOMP *GAS                       
+*OPERATE  *MAX  *STG  1.0E+9      
+*OPERATE  *MAX  *BHP  20000
+
+*PERFV 'I-1'  'I-3'
+** kf     wi 
+    1    1.0E+6
+
+*INJECTOR    'I-2'  'I-4'
+*INCOMP *WATER                    
+*OPERATE  *MAX  *STW    10000.0   
+*OPERATE  *MAX  *BHP    20000
+
+*PERFV  'I-2'  'I-4'
+** kf     wi 
+    3    1.0E+4
+
+*SHUTIN  'I-2'  'I-4'
+
+*PRODUCER  'P-1' 'P-2' 'P-3' 'P-4'  
+*OPERATE *MAX  *STO 10000.0         
+*OPERATE *MIN  *BHP  1000.0         
+
+** Well geometry for the producer.
+**            rad    geofac  wfrac   skin
+*GEOMETRY *K  0.25    0.20    1.0    0.0 
+*PERFV *GEOA 'P-1' 'P-2' 'P-3' 'P-4'
+** kf     ff                         
+    2     1.0
+
+*GCONP 'Field' *GTARGET  *STO  20000.0
+
+*GCONI  'Field'  *VREP  *GAS  0.5
+
+*APPOR-METHOD  *PROD  'Field'  *IP
+*APPOR-METHOD  *GASI  'Field'  *IP
+
+*DATE   2001  1   1
+*DATE   2002  1   1
+*DATE   2003  1   1
+*DATE   2004  1   1
+*DATE   2005  1   1  
+*DATE   2006  1   1
+*DATE   2007  1   1
+*DATE   2008  1   1
+
+** When Wells come off of rate and on to BHP control
+** BHF begins to drop.  At this point introduce a BHF monitor
+
+*GCONM 'Field' *MINBHF 100000.0 *STOP
+
+*DATE   2009  1   1 
+*DATE   2010  1   1
+*DATE   2011  1   1
+*DATE   2012  1   1
+*DATE   2013  1   1
+*DATE   2014  1   1
+*DATE   2015  1   1
+
+*STOP                               

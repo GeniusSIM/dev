@@ -1,0 +1,48 @@
+GOCAD Well 0.01
+HEADER{
+name:W-12
+color:red
+}
+
+WREF 1448   1715   1896
+DPLN 0
+#*WELL *DEPTH  *TVDSS  *XDELTA *YDELTA   
+TVSS_PATH  1920.0  -1920  0.0     0.0
+TVSS_PATH  1925.0  -1925  0.00    0.00
+TVSS_PATH  1926.0  -1926  0.00    0.00
+TVSS_PATH  1927.0  -1927  0.00    0.00
+TVSS_PATH  1928.0  -1928  0.00    0.00
+TVSS_PATH  1930.0  -1930  0.00    0.00
+MRKR marker 1 2 meters
+NORM  0 0 1
+ZONE zone 4 7 1
+END
+
+GOCAD Well 0.01
+HDR name:W-14
+WREF 2090   1787   1896
+DPLN 0
+TVSS_PATH  1930.0  -1930  0.0     0.0
+TVSS_PATH  1933.0  -1933  0.0     0.0   
+TVSS_PATH  1936.0  -1936  0.0     0.0   
+TVSS_PATH  1939.0  -1939  0.0     0.0   
+MRKR marker 1 2 meters
+NORM  0 0 1
+ZONE zone 4 7 1
+END
+
+GOCAD Well 0.01
+HDR *name:W-13
+WREF 724.8 1242  1896
+DPLN 0
+TVSS_PATH  1913.0  -1913  0.0     0.0
+TVSS_PATH  1915.0  -1915  0.0     0.0   
+TVSS_PATH  1916.0  -1916  0.0     0.0   
+MRKR marker 1 2 meters
+NORM  0 0 1
+ZONE zone 4 7 1
+END
+
+
+
+

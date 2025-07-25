@@ -1,0 +1,274 @@
+*RESULTS *SIMULATOR *GEM
+
+*****************************************************************************
+** Template (gmgmc054.dat):  CARTESIAN GRID DEFORMATION                    **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  GMGMC054.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+**         ELASTO-PLASTIC MODEL                           11X11X10 CARTESIAN GRID   **
+**                                                                                  **
+** USAGE:  USE OF CUTTING PLANE ALGORITHM FOR PLASTIC STRESS RETURN.                **
+**                                                                                  **
+**   The purpose of this problem is to:                                             **
+**     - demostrate use of  cutting plane algorithm (CPA) for plastic stress return **
+**   The CPA approach is used along with Drucker-Prager model                       **
+**                                                                                  **
+**************************************************************************************
+** after stgeo068.dat
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1 'GEM Geomechanics Template #54'
+*TITLE2 '3D Elasto-Plastic Druck-Prager'
+*TITLE3 'Cutting Plane Algorithm'
+
+*INUNIT  *FIELD
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*WPRN *GRID *TIME 
+*OUTPRN *GRID *IMPL *POROS *PRES *SO *SG *SW 
+*WPRN *ITER *BRIEF
+
+*OUTSRF *GRID *POROS *PRES *SO *SG *SW *YOUNG *POISSON *VDISPL 
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *PRMXDIR *PRMNDIR
+              *YLDSTATE *STRAINVOL
+*OUTSRF *SPECIAL *PAVG
+                 *PRES      6,6,1
+                 *STRESEFF  6,6,1
+                 *STRNEPL   6,6,1
+                 *STRAINVOL 6,6,1
+                 *POROS     6,6,1
+
+                 *PRES      1,1,1
+                 *STRESEFF  1,1,1
+                 *STRNEPL   1,1,1
+                 *STRAINVOL 1,1,1
+                 *POROS     1,1,1
+
+                 *PRES      11,1,1
+                 *STRESEFF  11,1,1
+                 *STRNEPL   11,1,1
+                 *STRAINVOL 11,1,1
+                 *POROS     11,1,1
+
+                 *PRES      1,11,1
+                 *STRESEFF  1,11,1
+                 *STRNEPL   1,11,1
+                 *STRAINVOL 1,11,1
+                 *POROS     1,11,1
+
+                 *PRES      11,11,1
+                 *STRESEFF  11,11,1
+                 *STRNEPL   11,11,1
+                 *STRAINVOL 11,11,1
+                 *POROS     11,11,1
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 11 11 10
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+   *MOD  1:11   1:11   1:5  = 0.0001
+   
+*PERMI *CON 15000.
+ *MOD  1:11    1:11   1:5   = 1.0e-6
+*PERMJ *EQUALSI * 1.
+*PERMK *EQUALSI * 1.
+
+*CPOR  1.8570E-6
+*PRPOR 3000
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL   *PR
+*NC    3    3
+*TRES        98.000
+*COMPNAME
+           'N2 toC2'      'C3 toC6'      'C7+'
+*SG         3.7928828E-01  6.0907296E-01  8.7840000E-01
+*TB        -1.5268795E+02  8.7777971E+01  6.0313700E+02
+*PCRIT      4.6869005E+01  4.3304910E+01  2.3034095E+01
+*VCRIT      1.1164927E-01  2.7365675E-01  8.7440000E-01
+*TCRIT      2.4273732E+02  4.4311506E+02  7.8153500E+02
+*AC         5.0405471E-02  2.1230953E-01  6.5669700E-01
+*MW         2.3001315E+01  6.4722032E+01  2.0121879E+02
+*HCFLAG     0              0              0
+*BIN
+            1.3257354E-02
+            6.6914825E-02  2.2103952E-02
+*VSHIFT     0.0000000E+00  0.0000000E+00 -2.2688164E-02
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1233366E-01  2.7555373E-01  8.7440000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      8.5230044E+01  2.0255970E+02  6.1070000E+02
+*ENTHCOEF
+           -3.2738190E+00  4.2790506E-01 -1.7061029E-04  3.2598996E-07
+           -1.2600434E-10  1.6784286E-14
+            1.1065928E+01  4.5341983E-02  2.8508839E-04  2.2258360E-08
+           -3.3969246E-11  5.6137115E-15
+            0.0000000E+00 -4.3022200E-02  4.1297400E-04 -6.2546600E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*VISW 1.0
+*CW 3.5E-06
+*REFPW 3000
+*DENWS 62.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+*RPT
+
+*SWT   
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL
+*REFPRES  3035.
+*REFDEPTH 5000.
+*DWOC 6000.
+*ZOIL 0.2047  0.2494  0.5459
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.
+*NORM *PRESS 145.
+*NORM *SATUR  0.15 
+*NORM *GMOLAR 0.015 
+*MAXCHANGE *PRESS 1000
+*MAXCHANGE *SATUR  0.8
+*MAXCHANGE *GMOLAR 0.8
+
+*AIM *THRESH 0.1
+
+*NORTH 100
+*ITERMAX 200
+*PRECC 1.E-07
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+
+*GEOMECH              ** Main keyword for using geomechanics module              
+*GEOM3D               ** Using 3D finite elements
+*SOLVERG *AIMSOL
+
+*STRESS_RETURN  *GCPA ** Cutting Plane Algorithm
+
+*NITERGEO 500         ** Max number of iterations for convergence
+
+*ELASTMOD 1.5e4       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.30      ** Poisson's ratio
+*FRICANGLE 30.0       ** Friction angle (degrees)
+*COHESION 14.5        ** Cohesion (PSI)
+*THEXPCOEF   54.8E-06 ** linear thermal expansion coefficient for solid rock
+*STRESS3D 0 0 0 0 0 0
+*DRUCKER
+
+** ===================RECURRENT DATA ================
+
+*RUN
+
+*DATE 1961 01 01
+
+   *DTWELL 0.05
+   *WELL 1 'prod1'  
+   *PRODUCER 'prod1'
+   *OPERATE *MAX *STO 15000
+   *OPERATE *MIN *BHP 100
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'prod1'
+       6  6  6:10  1.0
+   
+   *WELL 2 'inj1'
+   *INJECTOR 'inj1'
+   *INCOMP *WATER
+   *OPERATE *MAX *BHP 5000
+   *OPERATE *MAX *STW 1000
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'inj1'
+       6  6  6:9  1.0
+   *SHUTIN 'inj1'
+
+*TIME 1000
+
+   *SHUTIN 'prod1'
+   
+*TIME 1050
+
+   *OPEN 'inj1'
+   
+   *WRST *TNEXT 
+
+*TIME 1700
+
+   *SHUTIN 'inj1'
+   
+*TIME 1730
+
+   *OPEN   'prod1'
+   
+*TIME 2500
+
+*STOP

@@ -1,0 +1,593 @@
+**--------------------------------------------------------------------**
+** gmsmo065.dat: Use of *AQUIFER *RESBND  test 1                      **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMSMO065.DAT                                               **
+**                                                                    **
+** MODEL:  38x40x8   Primary production in presence of an aquifer     **
+**         SI UNITS                                   7 Components    **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This example illustrates the use of *AQUIFER *RESBND to make       **
+** aquifer connections even though the blocks on the grid boundaries  **
+** are null.                                                          **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1
+'AQUIFER RESBND Model'
+
+*INUNIT   *SI  
+
+*WPRN    *WELL     1
+*WPRN    *GRID     5
+
+*OUTPRN  *WELL     *ALL  
+*OUTPRN  *GRID     *PRES  *SW  *SO  *SG  
+
+*WSRF    *WELL     1
+*WSRF    *GRID     5
+
+*OUTSRF *GRID    *PRES  *SW  *SO  *SG 
+*OUTSRF *RES     *ALL
+
+*GRID  *VARI  38  40  8
+*KDIR  *DOWN 
+
+**
+*DI    *CON   500
+*DJ    *CON   250
+*DK    *CON   5
+
+
+*DTOP
+1520*1500.0
+
+** Make all boundary blocks null to test resbnd option
+*NULL  *CON  1
+       *MOD  1   1:40 1:8 = 0
+            38   1:40 1:8 = 0
+           1:38    1 1:8 = 0
+           1:38   40 1:8 = 0
+
+*POR   *CON 0.2
+
+
+*CPOR   5E-7    
+*PRPOR  15610   
+
+*PVCUTOFF  100  
+*PERMI *CON   1550.
+*PERMJ *EQUALSI   
+*PERMK *EQUALSI * 0.50
+
+
+*AQUIFER  *RESBND
+         
+*AQPROP
+10.0   0.17   500.0   8000.0   0.5
+*AQLEAK  *ON
+
+**------------------ Fluid Model --------------------------------------------------
+*MODEL *PR
+*NC 7 7
+*COMPNAME 'CO2' 'N2 toCH4' 'C2HtoIC4' 'NC4toC11' 'C12toC19' 'C20toC29' 'C30+' 
+*HCFLAG
+0 0 0 0 0 0 0 
+*VISCOR HZYT
+*MIXVC 0.9043
+*VISCOEFF 1.4512000E-01 3.6910000E-08 1.6825902E-07 -6.6483000E-03 1.0765000E-02 
+*MW
+4.4010000E+01 1.6245401E+01 3.8249472E+01 1.0869683E+02 2.0651487E+02 3.2097460E+02 4.4991048E+02 
+*AC
+0.225 0.00690313 0.125075 0.48118 0.49493 0.948738 0.948776 
+*PCRIT
+7.2800000E+01 4.5730346E+01 4.4418396E+01 3.1944916E+01 2.4029000E+01 9.6400107E+00 1.3095572E+01 
+*VCRIT
+9.4000000E-02 9.8836710E-02 1.7933069E-01 4.2641554E-01 7.7756916E-01 1.1658595E+00 1.2504773E+00 
+*TCRIT
+3.0420000E+02 1.9540714E+02 3.2237358E+02 5.8780054E+02 6.5949416E+02 8.9667839E+02 1.1656805E+03 
+*PCHOR
+78 76.3913 131.45 314.673 559.385 796.226 996.6 
+*SG
+0.818 0.305606 0.437452 0.744146 0.835528 0.883504 1.1 
+*TB
+-78.45 -159.049 -40.0601 128.083 268.009 383.366 586.288 
+*OMEGA
+0.457236 0.457236 0.457236 0.457236 0.457236 0.457236 0.457236 
+*OMEGB
+0.0777961 0.0777961 0.0777961 0.0777961 0.0777961 0.0777961 0.0777961 
+*VSHIFT
+-0.0817 -0.15343 -0.106605 0.0562093 0.141623 0.122856 0.176897 
+*VISVC
+9.4000000E-02 9.8840666E-02 1.8128199E-01 5.2147000E-01 3.6192000E-01 1.1513369E+00 1.1938706E+00 
+*BIN
+1.3799217E-04 
+5.0000000E-02 5.4014822E-03 
+3.2384811E-01 3.1831713E-02 1.1362967E-02 
+8.5345704E-02 6.1798139E-02 3.2044019E-02 5.4920503E-03 
+0.0000000E+00 8.6587883E-02 5.1349755E-02 1.5272712E-02 2.5025318E-03 
+4.8228981E-02 9.1207091E-02 5.5091770E-02 1.7443830E-02 3.4406286E-03 7.5032986E-05 
+
+*TRES 46 
+
+*CW 4.588e-007
+*DENWS 1002.675
+*DENW  1011.9
+*REFPW  15610
+*VISW 0.32
+
+** ---------------------------- Rock Fluid ---------------------------------------------------------
+
+*ROCKFLUID
+
+*RPT  1  
+
+*SWT  
+
+   0.3000 0.0000 0.8000   20.39      
+   0.3100 0.0000 0.7545   18.97     
+   0.4000 0.0000 0.5726   13.30     
+   0.5000 0.0007 0.3469   8.770     
+   0.6000 0.0117 0.0652   5.650     
+   0.7000 0.2000 0.0000   3.680     
+   0.8000 0.5333 0.0000   2.400     
+   0.9000 0.7667 0.0000   1.560     
+   1.0000 1.0000 0.0000   0.000     
+
+*SGT  
+
+    0.0000 0.0000 0.8000  0.0000
+    0.1000 0.0053 0.3191  0.0000
+    0.2000 0.0420 0.1778  0.0000
+    0.3000 0.1450 0.0652  0.0000
+    0.4000 0.4800 0.0000  0.0000 
+    0.5500 0.6000 0.0000  0.0000
+    0.7000 0.6500 0.0000  0.0000
+
+*RTYPE   *CON   1
+
+** --------------------   Initialization ------------------------------
+*INITIAL
+   *VERTICAL  *DEPTH_AVE  *WATER_OIL_GAS  *NOEQUIL
+   *ZOIL
+   0.0002 0.2957 0.0794 0.3082 0.1734 0.0822 0.0609
+
+   *REFDEPTH    1594.0   
+   *REFPRES     15609.0  
+
+
+   *DWOC         1600.0  
+   *DGOC         1400.0  
+                 
+*DATUMDEPTH  1575.0   *INITIAL
+*GASZONE     *NOOIL
+
+** ---------------- Numerical Methods Control --------------------------
+*NUMERICAL
+   *DTMAX   62.
+
+** ----------------- Recurrent Data -----------------------------------
+*RUN
+    *DATE 1994  06  15
+    *DTWELL  1.0
+
+*WELL   1   'w301'   *VERT   16   10   
+*WELL   2   'w302'   *VERT   17   10   
+*WELL   3   'w303'   *VERT   18    9   
+*WELL   4   'w304'   *VERT   15   10   
+*WELL   5   'w305'   *VERT   18    7   
+*WELL   6   'w306'   *VERT   21    6   
+*WELL   7   'w307'   *VERT   22    7   
+*WELL   8   'w308'   *VERT   22    5   
+*WELL   9   'w309'   *VERT   20    5   
+*WELL   10  'w310'   *VERT   18    5   
+
+*WELL   11  'w201'   *VERT   14   26   
+*WELL   12  'w202'   *VERT   16   25   
+*WELL   13  'w203'   *VERT   14   28   
+*WELL   14  'w204'   *VERT   15   26   
+*WELL   15  'w205'   *VERT   13   26   
+*WELL   16  'w206'   *VERT   20   25   
+*WELL   17  'w207'   *VERT   17   25   
+*WELL   18  'w208'   *VERT   18   23   
+*WELL   19  'w209'   *VERT   17   22   
+*WELL   20  'w210'   *VERT   16   21   
+*WELL   21  'w211'   *VERT   17   23   
+*WELL   22  'w212'   *VERT   17   24   
+
+*WELL   23  'w401'   *VERT   22   24   
+*WELL   24  'w402'   *VERT   23   24   
+*WELL   25  'w403'   *VERT   24   24   
+*WELL   26  'w404'   *VERT   24   22   
+*WELL   27  'w405'   *VERT   22   27   
+*WELL   28  'w406'   *VERT   23   26   
+*WELL   29  'w407'   *VERT   23   29   
+*WELL   30  'w408'   *VERT   24   29   
+*WELL   31  'w409'   *VERT   27   26   
+*WELL   32  'w410'   *VERT   27   27   
+*WELL   33  'w411'   *VERT   31   21   
+*WELL   34  'w412'   *VERT   26   14   
+
+**------------------------- GROUP GROUP-3 ----------------------------
+*PRODUCER   1
+
+*OPERATE   *MAX   *STO   187.8   
+*OPERATE   *MAX   *DWN    1300.0     
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  1
+   5:5     1.10
+
+**----------------------------------------------------------------
+*PRODUCER   2
+
+*OPERATE   *MAX   *STO   211.5     
+*OPERATE   *MAX   *DWN     400.0    
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  2
+   7:7     1.37
+
+**----------------------------------------------------------------
+*PRODUCER   3
+
+*OPERATE   *MAX   *STO   181.9    
+*OPERATE   *MAX   *DWN     300.0   
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  3
+   7:7     1.02
+
+**----------------------------------------------------------------
+*PRODUCER   4
+
+*OPERATE   *MAX   *STO       2.0    
+*OPERATE   *MAX   *DWN     300.0    
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  4
+   6:6     2.18
+
+**----------------------------------------------------------------
+*PRODUCER   5
+
+*OPERATE   *MAX   *STO    71.7   
+*OPERATE   *MAX   *DWN     300.0 
+*OPERATE   *MIN   *BHP    2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  5
+   5:5     1.46
+
+**----------------------------------------------------------------
+*PRODUCER   6
+
+*OPERATE   *MAX   *STO   158.1 
+*OPERATE   *MAX   *DWN     400.0  
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  6
+   6:6     1.11
+
+**----------------------------------------------------------------
+*PRODUCER   7
+
+*OPERATE   *MAX   *STO    75.0   
+*OPERATE   *MAX   *DWN    1000.0 
+*OPERATE   *MIN   *BHP    2000. 
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  7
+   8:8     1.10
+
+**----------------------------------------------------------------
+*PRODUCER   8
+
+*OPERATE   *MAX   *STO    97.9  
+*OPERATE   *MAX   *DWN    1400.0 
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  8
+   7:7     1.16
+
+**----------------------------------------------------------------
+*PRODUCER   9
+ 
+*OPERATE   *MAX   *STO     188.3   
+*OPERATE   *MAX   *DWN     300.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  9
+   8:8     1.02
+
+**----------------------------------------------------------------
+*PRODUCER   10
+
+*OPERATE   *MAX   *STO    207.0 
+*OPERATE   *MAX   *DWN    400.0   
+*OPERATE   *MIN   *BHP    2000.   
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  10
+   6:6     1.02
+
+**---------------------- GROUP GROUP-2 ------------------------------
+*PRODUCER   11
+
+*OPERATE   *MAX   *STO   132.8   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN     600.0   ** *CONT   *REPEAT  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  11
+   7:7     1.75
+
+**----------------------------------------------------------------
+*PRODUCER   12
+                                             
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN     500.0   
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  12
+   8:8     1.03
+
+**----------------------------------------------------------------
+*PRODUCER   13
+
+*OPERATE   *MAX   *STO    70.4   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN    2000.0  
+ 
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  13
+   6:6     1.34
+
+**----------------------------------------------------------------
+*PRODUCER   14
+
+*OPERATE   *MAX   *STO   187.1   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN     400.0 
+  
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  14
+   8:8     1.11
+
+**----------------------------------------------------------------
+*PRODUCER   15
+
+*OPERATE   *MAX   *STO       2.0   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN     500.0   
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  15
+   8:8     1.14
+
+**----------------------------------------------------------------
+*PRODUCER   16
+
+*OPERATE   *MAX   *STO    152.1   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN    400.0  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  16
+   7:7     1.22
+
+**----------------------------------------------------------------
+*PRODUCER   17
+
+*OPERATE   *MAX   *STO    275.3   
+*OPERATE   *MIN   *BHP    2000.
+*OPERATE   *MAX   *DWN    500.0  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  17
+   7:7     1.10
+
+**----------------------------------------------------------------
+*PRODUCER   18
+
+*OPERATE   *MAX   *STO     94.0   
+*OPERATE   *MAX   *DWN     500.0   
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  18
+   8:8     1.05
+
+**----------------------------------------------------------------
+*PRODUCER   19
+
+*OPERATE   *MAX   *STO    50.0   
+*OPERATE   *MAX   *DWN     200.0   
+*OPERATE   *MIN   *BHP    2000.    
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  19
+   8:8     1.12
+
+**----------------------------------------------------------------
+*PRODUCER   20
+
+*OPERATE   *MAX   *STO     90.0   
+*OPERATE   *MAX   *DWN     200.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  20
+   7:7     1.05
+
+**----------------------------------------------------------------
+*PRODUCER   21
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  21
+   6:6     1.15
+
+**----------------------------------------------------------------
+*PRODUCER   22
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.      
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  22
+   7:7     1.47
+
+**---------------------- GROUP GROUP-5 ---------------------
+*PRODUCER   23
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  23
+   6:7     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   24
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  24
+   7:8     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   25
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  25
+   6:7     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   26
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  26
+   5:6     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   27
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  27
+   5:6     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   28
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  28
+   7:8     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   29
+
+*OPERATE   *MAX   *STO   200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP    2000.
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  29
+   6:7     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   30
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  30
+   7:8     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   31
+ 
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  31
+   7:8     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   32
+ 
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  32
+   6:7     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   33
+
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  33
+   5:6     1.08
+
+**----------------------------------------------------------------
+*PRODUCER   34
+ 
+*OPERATE   *MAX   *STO     200.0   
+*OPERATE   *MAX   *DWN     400.0   
+*OPERATE   *MIN   *BHP     2000.  
+
+*GEOMETRY  *K    0.11125   0.37   1.0   0.0
+*PERFV     *GEO  34
+   6:7     1.08
+
+*DATE   1996   06   30  
+
+*STOP

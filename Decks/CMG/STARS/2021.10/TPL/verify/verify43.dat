@@ -1,0 +1,272 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Verify and illustrate the usage of the *ATTACHTO with *WELL,
+**            as well as group tree definition.
+
+**  USAGE:    Check that specified oil rates for well and groups are the same
+**            as those documented in the recurrent data.
+
+**  ORIGIN:   From TB #7, but with simple 10 x 10 grid and group definitions.
+**            The well and group definitions are based on the STARS Manual
+**            *GROUP example which itself came from IMEX manual.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #43'
+*title2 'Group Tree Definition from *GROUP/*WELL ... *ATTACHTO'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y x w solconc obhloss viso
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well  layer all
+outsrf grid  pres so sg temp
+
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*grid *cart 10 10 1
+
+*di *con 200
+*dj *con 200
+*dk *con 50
+
+*por *con 0.3
+*permi *con 5000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 500
+*refblock 1 1 1
+
+*temp *con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*norm     press 200 satur 0.2  temp 50
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on December 18, 1978
+date 1978 12 18.5
+
+   dtwell 10
+
+   *GROUP 'GNAME-1' 'GNAME-2' 'GNAME-3' *ATTACHTO 'FIELD'
+   *GROUP 'GNAME-4' 'GNAME-5'           *ATTACHTO 'GNAME-1'
+   *GROUP 'GNAME-6' 'GNAME-7'           *ATTACHTO 'GNAME-2'
+   *WELL  1 'W-1' *VERT 1 1             *ATTACHTO 'GNAME-3'
+   *WELL  2 'W-2' *VERT 2 1             *ATTACHTO 'GNAME-3'
+   *WELL  3 'W-3' *VERT 3 1             *ATTACHTO 'GNAME-3'
+   *WELL  4 'W4'  *VERT 5 1             *ATTACHTO 'GNAME-4'
+   *WELL  5 'W5'  *VERT 6 1             *ATTACHTO 'GNAME-4'
+   *WELL  6 'W6'  *VERT 5 4             *ATTACHTO 'GNAME-5'
+   *WELL  7 'W7'  *VERT 6 4             *ATTACHTO 'GNAME-5'
+   *WELL  8 'W8'  *VERT 1 6             *ATTACHTO 'GNAME-6'
+   *WELL  9 'W9'  *VERT 2 6             *ATTACHTO 'GNAME-6'
+   *WELL 10 'W10' *VERT 8 9             *ATTACHTO 'GNAME-7'
+   *WELL 11 'W11' *VERT 9 9             *ATTACHTO 'GNAME-7'
+
+   producer 'W-1' 'W-2' 'W-3' 'W4' 'W5' 'W6' 'W7' 'W8' 'W9' 'W10' 'W11'
+   operate max sto 20
+   operate min bhp 17
+
+   perfv geo 'W-1' 'W-2' 'W-3' 'W4' 'W5' 'W6' 'W7' 'W8' 'W9' 'W10' 'W11'
+                  **  k
+                      1    1.0
+
+   alter 'W-1' 'W-2' 'W-3'    ** GNAME-3 total is 33 -------------------------------
+         10. 11. 12. **                                                   |
+                     **                                                   |-->  FIELD total is 199
+   alter 'W4' 'W5'        ** GNAME-4 total is 31 ---                           |
+         15. 16.     **                       |-->  GNAME-1 total is 70 --|
+                     **                       |                           |
+   alter 'W6' 'W7'        ** GNAME-5 total is 39 ---                           |
+         19. 20.     **                                                   |
+                     **                                                   |
+   alter 'W8' 'W9'        ** GNAME-6 total is 45  ---                          |
+         22. 23.     **                        |--> GNAME-2 total is 96 --|
+                     **                        |
+   alter 'W10' 'W11'       ** GNAME-7 total is 51  ---
+         25. 26.
+
+time 365
+
+   dtwell 10
+
+   *GROUP 'GNAME-8' *ATTACHTO 'GNAME-2'
+
+   *WELL 12 'W12' *VERT 1 2             *ATTACHTO 'GNAME-4'
+   *WELL 13 'W13' *VERT 4 4             *ATTACHTO 'GNAME-5'
+   *WELL 14 'W14' *VERT 3 6             *ATTACHTO 'GNAME-6'
+   *WELL 15 'W15' *VERT 7 9             *ATTACHTO 'GNAME-7'
+   *WELL 16 'W16' *VERT 9 8             *ATTACHTO 'GNAME-7'
+   *WELL 17 'W17' *VERT 9 1             *ATTACHTO 'GNAME-8'
+   *WELL 18 'W18' *VERT 9 2             *ATTACHTO 'GNAME-8'
+   *WELL 19 'W19' *VERT 9 3             *ATTACHTO 'GNAME-8'
+
+   producer 'W12' 'W13' 'W14' 'W15' 'W16' 'W17' 'W18' 'W19'
+   operate max sto 20
+   operate min bhp 17
+
+   perfv geo 'W12' 'W13' 'W14' 'W15' 'W16' 'W17' 'W18' 'W19'
+                   **  k
+                       1   1.0
+
+   alter 'W-1' 'W-2' 'W-3'        ** GNAME-3 total is 33 --------------------------------
+         10. 11. 12.     **                                                    |
+                         **                                                    |-->  FIELD total is 487
+   alter 'W4' 'W5' 'W12'       ** GNAME-4 total is 62 ---                            |
+         15. 16. 31.     **                       |-->  GNAME-1 total is 133 --|
+                         **                       |                            |
+   alter 'W6' 'W7' 'W13'       ** GNAME-5 total is 71 ---                            |
+         19. 20. 32.     **                                                    |
+                         **                                                    |
+   alter 'W8' 'W9' 'W14'       ** GNAME-6 total is 78  ---                           |
+         22. 23. 33.     **                        |--> GNAME-2 total is 321 --|
+                         **                        |
+   alter 'W10' 'W11' 'W15' 'W16'   ** GNAME-7 total is 120 ---
+         25. 26. 34. 35. **                        |
+                         **                        |
+   alter 'W17' 'W18' 'W19'       ** GNAME-8 total is 123 ---
+         40. 41. 42.
+
+time 730

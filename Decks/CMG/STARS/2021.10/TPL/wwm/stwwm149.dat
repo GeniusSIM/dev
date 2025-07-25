@@ -1,0 +1,382 @@
+
+***********************************************************************************
+** Template stwwm149.dat:  Application of trigger variables option (*TRGVAR)     **
+***********************************************************************************
+**                                                                               **
+**   This data set demonstrates the use of *TRGVAR keyword as part of trigger    **
+**   conditions. Based on stwwm078.dat.                                          **
+***********************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 149'
+*TITLE2 'Verify/Illustrate *TRGVAR keyword'
+*TITLE3 'Based on STWWM078'
+
+*INUNIT  *SI
+
+*WRST    *TIME
+
+*WPRN    *GRID *TIME
+*OUTPRN  *WELL *ALL
+*OUTPRN  *GRID *SG     *SO     *SW  *PRES
+
+*WSRF    *WELL 1
+*WSRF    *GRID *TIME
+*WSRF    *SECTOR 1
+
+*OUTSRF  *GRID *SG     *SO     *SW  *PRES
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *VARI 13 14 6
+*KDIR *DOWN
+
+*DI *IVAR  120  70  30  70  145  70  30  70  145  70  30  70  120
+*DJ *JVAR   60  50  30  30   50  80  30  60   60  50  30  50   60  100
+*DK *KVAR   10  12  14  10   13   8
+
+*NULL *IJK
+              1:1   1:14  1:4   0
+              2:2   1:14  1:2   0
+              3:3   1:14  1:1   0
+              9:10  1:14  6:6   0
+             11:11  1:14  5:6   0
+             12:13  1:14  4:6   0
+              1:13  1:1   1:2   0
+              1:13 14:14  1:3   0
+              4:6   2:2   1:1   0
+              4:4   3:3   1:1   0
+             13:13 12:12  1:1   0
+             12:13 13:13  1:1   0
+              3:4   2:2   2:2   0
+              3:3   3:3   2:2   0
+             13:13 12:12  2:2   0
+             12:13 13:13  2:2   0
+              2:2   1:1   3:4   0
+             12:13 13:13  3:4   0
+
+*DTOP
+             3175 3165 3155 3140 3120 3100 3113 3125 3142 3156   3168 3180 3200
+             3182 3160 3130 3127 3125 3120 3132 3144 3156 3168   3180 3192 3205
+             3190 3140 3085 3105 3125 3140 3148 3156 3165 3171   3180 3190 3210
+             3200 3120 3040 3080 3118 3155 3165 3170 3179 3188   3196 3206 3213
+             3210 3105 3025 3050 3125 3170 3175 3180 3188 3196   3203 3210 3217
+             3215 3115 3025 3075 3120 3185 3187 3192 3197 3207   3211 3216 3222
+             3220 3120 3052 3100 3145 3195 3195 3200 3205 3215   3216 3222 3227
+             3225 3156 3088 3130 3165 3207 3208 3210 3216 3220   3228 3226 3231
+             3230 3175 3120 3150 3185 3220 3221 3223 3226 3229   3240 3234 3236
+             3230 3196 3150 3175 3200 3232 3233 3234 3240 3246   3248 3241 3242
+             3235 3208 3185 3205 3225 3245 3245 3245 3245 3245   3245 3245 3245
+             3240 3228 3215 3230 3245 3265 3262 3260 3257 3254   3251 3249 3246
+             3245 3243 3240 3250 3260 3278 3273 3269 3265 3260   3256 3252 3248
+             3250 3255 3262 3272 3284 3290 3287 3283 3279 3270   3265 3260 3250
+
+*POR *KVAR    0.15   0.17   0.25   0.10   0.15   0.10
+   *MOD
+              1:1   1:14  1:4  = 0
+              2:2   1:14  1:2  = 0
+              3:3   1:14  1:1  = 0
+              9:10  1:14  6:6  = 0
+             11:11  1:14  5:6  = 0
+             12:13  1:14  4:6  = 0
+              1:13  1:1   1:2  = 0
+              1:13 14:14  1:3  = 0
+              4:6   2:2   1:1  = 0
+              4:4   3:3   1:1  = 0
+             13:13 12:12  1:1  = 0
+             12:13 13:13  1:1  = 0
+              3:4   2:2   2:2  = 0
+              3:3   3:3   2:2  = 0
+             13:13 12:12  2:2  = 0
+             12:13 13:13  2:2  = 0
+              2:2   1:1   3:4  = 0
+             12:13 13:13  3:4  = 0
+
+
+*PERMI *KVAR  100.0  300.0  1000.0  50.0  200.0  20.0
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.15
+
+*END-GRID
+
+*PRPOR  1379.0
+*CPOR   6.0E-7
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL     3 3 3 1
+
+*COMPNAME 'Water'    'Dead_Oil' 'Soln_Gas'
+
+*KV1       0.E+00     0.E+00    4.90967079E+05
+*KV2       0.E+00     0.E+00    4.1753156E-05
+*KV3       0.E+00     0.E+00    1.17625585E+01
+*KV4       0.E+00     0.E+00   -8.799912E+02
+*KV5       0.E+00     0.E+00   -2.6599E+02
+
+*CMM       0          0.18      3.15252E-02
+
+*PCRIT     0.0E+0     0.0E+0    4.59886336E+3
+*TCRIT     0.0E+0     0.0E+0   -8.19746165E+1
+
+*SURFLASH W O G
+*PRSR     101
+*TEMR     35
+*PSURF    1.01E+2
+*TSURF    1.7E+1
+
+*MASSDEN   0  7.50325675E+2 5.79970829E+2
+*CP        0      1.136E-6      1.136E-6
+*CT1       0  9.95E-4       9.95E-4
+*CT2       0.0E+0 0.0E+0 0.0E+0
+
+*VISCTABLE
+          5           2.72428     74.1347     13.6463
+          15          2.036806    12.01382    2.211436
+          25          1.599495    3.173126    0.584091
+          35          1.29        1.11        0.2043226
+          45          1.072469    0.466175    0.0858108
+          70          0.729204    0.087228    0.01605643
+          95          0.536983    0.024915    0.00458621
+          120         0.418194    0.00915551  0.001685295
+          145         0.3406076   0.00397743  0.000732144
+          170         0.29227     0.00194696  0.000358386
+          195         0.255843    0.00104219  0.0001918406
+          220         0.226928    0.00059803  0.0001100818
+          245         0.2038545   0.00036278  0.0000667773
+          270         0.1840585   0.00023030  0.0000423922
+          295         0.166106    0.00015185  0.0000279507
+          320         0.1531137   0.00010338  0.00001902902
+          345         0.140849    0.00007234  0.00001331584
+          370         0.130576    0.00005184  0.0000095424
+
+*VSMIXCOMP 'Soln_Gas'
+*VSMIXENDP 0.06 0.64
+*VSMIXFUNC 0.06 0.114169 0.1455445 0.2044324 0.244082 0.2827276 0.306598 0.380838 0.4591 0.551514 0.64
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+**    SW     KRW    KROW    PCOW
+            0.200  0.0000  1.0000  195.84
+            0.229  0.0001  0.7407   95.20
+            0.255  0.0003  0.6829   60.00
+            0.308  0.0012  0.5722   22.00
+            0.334  0.0023  0.5194   18.80
+            0.412  0.0102  0.3715   12.60
+            0.464  0.0219  0.1526    8.43
+            0.557  0.0416  0.0822    4.40
+            0.606  0.0721  0.0000    1.32
+            0.647  0.1448  0.0000    0.00
+            0.700  0.1780  0.0000    0.00
+            0.800  0.2604  0.0000    0.00
+            1.000  1.0000  0.0000    0.00
+
+*SLT
+**    SL     KRG    KROG    PCOG
+            0.200  1.0000  0.0000 3891.60
+            0.316  0.6784  0.0000  579.60
+            0.435  0.6215  0.0000  372.40
+            0.562  0.5456  0.0000  242.50
+            0.614  0.3939  0.0020   60.80
+            0.702  0.1399  0.0280   37.21
+            0.812  0.0515  0.1721   13.65
+            0.875  0.0297  0.3395   10.45
+            0.906  0.0226  0.4395    9.00
+            0.937  0.0173  0.5500    7.51
+            0.969  0.0131  0.6702    5.90
+            1.000  0.0000  1.0000    0.00
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+*REFDEPTH   3170.0
+*REFPRES   34000.0
+*DWOC       3250.0
+
+*PBC 'Soln_Gas' *CON 30000.
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*TFORM *ZT
+*ISOTHERMAL
+*CONVERGE *TOTRES 1.E-04
+*DTMAX 60.0
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1995 01 01
+
+   *DTWELL 0.1
+
+   *GROUP   'WFGROUP1'  *ATTACHTO     'WFUNIT1'
+   *WELL  1 'OIL1'      *VERT  3   3  *ATTACHTO 'WFGROUP1'
+   *WELL  2 'OIL2'                    *ATTACHTO 'WFGROUP1'
+   *WELL  3 'OIL3'      *VERT  3  11  *ATTACHTO 'WFGROUP1'
+   *WELL  4 'WTRINJ4'   *VERT  8  13  *ATTACHTO 'WFGROUP1'
+
+   *PRODUCER 'OIL1'
+   *OPERATE  *MAX *STL     200.0
+   *OPERATE  *MIN *BHP     500.0  *CONT  *REPEAT
+   *MONITOR  *MIN *STO      10.0  *SHUTIN
+   *MONITOR  *WCUT          0.95  *SHUTIN
+   **             rad  geofac wfrac skin
+   *GEOMETRY *K   0.089  0.229   1.0   0.0
+   *PERFV    *GEO 'OIL1'
+   ** KF    FF
+              3:6    1.0
+
+   *PRODUCER 'OIL2'
+   *OPERATE  *MAX *STL     200.0
+   *OPERATE  *MIN *BHP     500.0  *CONT  *REPEAT
+   *MONITOR  *MIN *STO      10.0  *SHUTIN
+   *MONITOR  *WCUT          0.95  *SHUTIN
+   **             rad  geofac wfrac skin
+   *GEOMETRY *K   0.089  0.229   1.0   0.0
+   *PERF    *GEO 'OIL2'
+   ** KF    FF
+        11 3  2:4    1.0
+
+   *PRODUCER 'OIL3'
+   *OPERATE  *MAX *STL     200.0
+   *OPERATE  *MIN *BHP     500.0  *CONT  *REPEAT
+   *MONITOR  *MIN *STO      10.0  *SHUTIN
+   *MONITOR  *WCUT          0.95  *SHUTIN
+   **             rad  geofac wfrac skin
+   *GEOMETRY *K   0.089  0.229   1.0   0.0
+   *PERFV    *GEO 'OIL3'
+   ** KF    FF
+              2:6   1.0
+
+   *INJECTOR 'WTRINJ4'
+   *TINJW 35.
+   *INCOMP   *WATER 1. 0. 0.
+   *OPERATE  *MAX *STW    2500.0
+   *OPERATE  *MAX *BHP   80000.0  *CONT  *REPEAT
+   **             rad  geofac wfrac skin
+   *GEOMETRY *K   0.089  0.229   1.0   0.0
+   *PERFV    *GEO 'WTRINJ4'
+   ** KF    FF
+              1:6    1.0
+
+   *****************************************************************
+   **BLOWDOWN FOR A YEAR UNTIL DEPLETING TO AROUND B.P.
+   *****************************************************************
+
+   *ALTER 'OIL1' 'OIL2' 'OIL3' 'WTRINJ4'
+           30.0   30.0   30.0   0.0
+
+
+*DATE 1995 01 02
+
+   *OUTPRN *GRID *SG *SO *SW *PRES
+
+   *REFINE  11 3 2:4  *INTO 3 3 1
+   *PERF    *GEO 'OIL2'
+   ** KF    FF
+        11 3 2 /  2 2 1    1.0
+        11 3 3 /  2 2 1    1.0
+        11 3 4 /  2 2 1    1.0
+
+*DATE 1995 12 31
+
+   *****************************************************************
+   ** Pressure maintenance through group control
+   *****************************************************************
+
+   *ALTER 'OIL1' 'OIL2' 'OIL3' 'WTRINJ4'
+           30.0   30.0   30.0   1000.0
+
+
+*********************************************************************
+** Use (1) to test water injection voidage repacement              **
+**     (2) to test production voidage replacement                  **
+**     (3) to test water injection recycling                       **
+**     (4) to test pressure maintenance by water injection         **
+** Comment out lines labeled differently -- (4) being tested       **
+*********************************************************************
+
+   **GCONI  'WFGROUP1'  *VREP   *WATER  1.00     ** (1) injection voidage replacement
+
+
+   **GCONP  'WFGROUP1'  *VREP  1.0               ** (2.1) production voidage replacement
+   **GCONI  'WFGROUP1'  *GTARGET  *BHW  110.0    ** (2.2)
+
+
+   **GCONI  'WFGROUP1'  *RECYCLE  *WATER  1.00   ** (3) injection water recycle
+
+
+   **GCONI 'WFGROUP1' *PMAINT *WATER            ** (4.0) Sector pressure maintenance by water injection
+             **PMSECT  'Entire  Field'          ** (4.1) defaulted to 'Entire  Field'
+             **PMTARG  31000.                   ** (4.2) defaulted to current sector pressure
+
+   **APPOR-METHOD *WATI 'WFGROUP1'  *IP
+
+** The desired set point is the reservoir average pressure of 31000 psi (on the basis of povo sector)
+** Pressure in the range of 29900-31000 set vrep to 1.0
+** If pressure falls below 29900 attempt to force it up by injecting more
+** voidage than is produced
+** If pressure rises above 31100 attempt to force it down by injecting less
+** voidage than is produced
+
+GCONI  'WFGROUP1'  *VREP   *WATER  1.00     ** (1) injection voidage replacement
+
+trgvar 'trgvar1'   on_sector 'Entire  Field' pave
+trgvar 'trgvar2'   'abs(trgvar1-31000.d0)'
+trgvar 'trgvar3'   'trgvar1-30900.d0'
+trgvar 'trgvar4'   'trgvar1-31100.d0'
+
+** Construct a controller
+
+*trgvar 'trgvar5'   '1. + min(power(abs(30900.-trgvar1),2.0)/31000.,1.35)'
+*trgvar 'trgvar6'   '1. - min(power(abs(trgvar1-31100.),2.0)/31000.,0.65)' 
+
+
+trigger 'p_maint'   'trgvar2' > 100 apply_times 10000
+
+  trigger 'p_maint_up0'   'trgvar3' < 0.d0 apply_times 1
+     *GCONI  'WFGROUP1'   vrep     water  'VARSUB:trgvar5'
+  end_trigger
+
+  trigger 'p_maint_down0'   'trgvar4' > 0.d0 apply_times 1
+     *GCONI  'WFGROUP1'   vrep     water  'VARSUB:trgvar6'
+  end_trigger
+
+end_trigger
+
+*trigger 'p_maint_hold'   'trgvar2' < 200 apply_times 10000
+   *GCONI  'WFGROUP1'   vrep     water  1.0
+*end_trigger
+
+dtmax 30.
+
+*DATE 1998 12 31

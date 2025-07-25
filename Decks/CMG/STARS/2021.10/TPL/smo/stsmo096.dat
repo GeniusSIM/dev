@@ -1,0 +1,296 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    Verify and illustrate the interpolation option *INTERP_SCAL.
+**    This template includes:
+
+**    1) double interpolation between sets and between rock types,
+**    2) temperature effect on saturation endpoints,
+**    3) water/oil capillary as imbibition curve for interpolation.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ===================
+
+RESULTS SIMULATOR STARS 
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 96'
+*TITLE2 'Verify/Illustrate *INTERP_SCAL for Double Interpolation'
+
+INUNIT *SI
+
+WPRN *GRID 10
+WPRN *SECTOR 10
+WPRN *ITER 1
+
+OUTPRN *RES *NONE
+
+WSRF *WELL 1
+WSRF *GRID 1
+WSRF *SECTOR 1
+OUTSRF grid all
+
+OUTSRF SPECIAL BLOCKVAR SW 1,1,1 
+OUTSRF SPECIAL BLOCKVAR KRW 1,1,1 
+OUTSRF SPECIAL BLOCKVAR KRO 1,1,1
+outsrf special blockvar pcow 1,1,1
+OUTSRF SPECIAL BLOCKVAR W 1,1,1  'NaCI'
+OUTSRF SPECIAL BLOCKVAR W 1,1,1  'SURFAC'
+OUTSRF SPECIAL BLOCKVAR temp 1,1,1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  ==========
+
+*GRID *VARI  342 1 1
+*KDIR *DOWN
+
+*DI *IVAR  342*0.0005
+*DJ *JVAR  0.035								
+*DK *ALL   342*0.035							
+
+*DTOP  342*0.0
+
+*NULL *CON  1                                 
+*POR *CON  0.2
+
+*PERMI *ALL   1*50000	340*135		1*50000		
+*PERMJ *EQUALSI
+*PERMK *CON   135
+
+*END-GRID
+
+*ROCKTYPE 1
+
+*PRPOR 7.0E+02
+*CPOR 2E-10
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 4 4 4 3
+
+*COMPNAME 'H2O' 'NaCI' 'SURFAC' 'OIL'   	
+
+*CMM       0.01802     0.01802	   0.01802     0.2256		     
+*PCRIT     220.48E+02  220.48E+02  220.48E+02  220.48E+02	    
+*TCRIT     374.15      374.15      374.15      374.15
+
+
+** gas-liquid K-values via correlation
+
+*KV1       0.0    0.0   0.0   0.0
+*KV2       0.0    0.0	0.0   0.0
+*KV3       0.0    0.0   0.0   0.0
+*KV4       1.0    1.0   1.0   0.0					        
+*KV5       0.0    0.0   0.0   0.0		
+
+** reference conditions
+
+*PRSR 70.0E+02								             			
+*TEMR 20.0                                                  		
+*PSURF 1.01E+02                                               		
+*TSURF 20.0								                    	
+
+*MASSDEN  1000.0       1000.0       1000.0         812.54
+*CP       45.89E-08    45.89E-08    45.89E-08      45.89E-08
+*CT1      6.17067E-10  6.17067E-10  6.17067E-10    7.176E-10	
+*CT2      0.0          0.0          0.0            0.0 
+
+
+** liquid-viscosities
+
+*VISCTABLE
+5       1.00   1.00  1.00  31.00
+95      1.00   1.00  1.00  31.00
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ==================
+
+*ROCKFLUID											
+
+
+** Interpolation by 'SURFAC' in water is applied between RPT 1 and RPT 2
+
+RPT 1 STONE1
+
+  *RPT_INTRP  
+  *COMP 'SURFAC' water
+  *LOWER_BOUND 0.0 
+  *UPPER_BOUND 0.001
+  *upperb_rpt 2
+
+
+  *intcomp 'NaCI' water
+
+  **Kr and Pcow interpolation SET 1: zero salinity
+  
+  *krintrp 1
+  
+    *dtrapw	0.00
+ 
+    *SWT
+    0.200     0.0        1.000       1.00
+    0.210     1.16E-02   0.918       0.854
+    0.230     7.65E-02   0.748       0.576
+    0.240     0.125      0.659       0.443
+    0.245     0.153      0.614       0.379
+    0.250     0.184      0.568       0.316
+    0.255     0.216      0.521       0.255
+    0.260     0.251      0.474       0.195
+    0.265     0.288      0.425       0.138
+    0.270     0.327      0.375       8.18E-02
+    0.275     0.368      0.323       2.84E-02
+    0.280     0.411      0.269      -2.25E-02
+    0.285     0.456      0.213      -7.02E-02
+    0.290     0.503      0.153      -0.114
+    0.295     0.552      8.68E-02   -0.153
+    0.297     0.578      4.93E-02   -0.169
+    0.300     0.603      0.000      -0.181
+
+    *SLT
+    0.2  1.0  0.0  0.0
+    1.0  0.0  1.0  0.0
+
+    *KRTEMTAB *SWR swcrit soirw *SORW
+    20 0.2  0.2  0.7  0.75
+    50 0.15 0.15 0.65 0.65
+
+  **Kr and Pcow interpolation SET 2: 0.1 Salinity
+  
+  *krintrp  2
+  
+    *dtrapw	0.1
+    
+    *SWT                                                     				
+    0.20  0.0     1.0     1.0
+    0.25  0.003	  0.987   0.912
+    0.30  0.0125  0.974   0.823
+    0.35  0.0281  0.959   0.729
+    0.40  0.05    0.944   0.635
+    0.46  0.0845  0.924   0.519
+    0.50  0.1125  0.910   0.439
+    0.56  0.162   0.887   0.316
+    0.60  0.2     0.870   0.231
+    0.66  0.2645  0.843   0.099
+    0.70  0.3125  0.822   0.007
+    0.75  0.3781  0.792  -0.114
+    0.80  0.45    0.758  -0.242
+    0.85  0.5281  0.715  -0.380
+    0.90  0.6125  0.660  -0.533
+    0.95  0.7031  0.574  -0.713
+    1.00  0.8     0.0    -1.0
+
+    *SLT
+    0.20	1.0	0.0	0.0
+    1.00	0.0	1.0	0.0
+    
+    *KRTEMTAB *SWR swcrit soirw *SORW
+    20 0.3  0.3  0.0 0.05
+    50 0.25 0.25 0.1 0.1
+
+
+RPT 2 STONE1
+
+  *intcomp 'NaCI' water
+
+**Rock type 2 also has interpolation between SETs
+
+  *krintrp 1 *copy 1 1
+  
+    *dtrapw	0.00
+
+    *KRTEMTAB *SWR swcrit soirw *SORW
+    20 0.1  0.1  0.50 0.55
+    50 0.05 0.05 0.45 0.45
+
+  *krintrp  2 copy 1 2
+  
+    *dtrapw	0.08
+    
+    swcon 0.0
+    swcrit 0.0
+    soirw 0.0
+    sorw 0.05
+    krwiro 1.0
+
+*INTERP_SCAL
+*CP_IMBIB *OIL-WAT
+   
+  
+krtype con 1
+
+
+**  ==============  INITIAL CONDITIONS  =====================
+
+*INITIAL                                              
+*VERTICAL *OFF										
+
+INITREGION 1
+
+*SW   ALL 342*0.22 **342*0.2
+*SO   ALL 342*0.78 **342*0.8
+
+*PRES *CON  70.0E+02								
+*TEMP *CON  20 **35.0									
+MFRAC_WAT 'H2O' CON      0.98
+MFRAC_WAT 'NaCI' CON     0.02
+MFRAC_OIL 'OIL' CON      1.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+**  All defaults
+
+
+**  ==============  RECURRENT DATA  =========================
+
+*RUN
+
+*DATE  2015  01  01
+   *DTWELL  3E-04
+
+   WELL  'Injector'
+   INJECTOR MOBWEIGHT IMPLICIT 'Injector'
+   INCOMP  WATER  0.98  0.02 0.0  0.0
+   TINJW 20 **35
+   qual 0
+   OPERATE  MAX  STW  0.000144  CONT REPEAT
+   OPERATE  MAX  BHP  50000.0  STOP
+   MONITOR  MIN  STW  0.0001  SHUTIN
+   GEOMETRY  K  0.0004  0.34  1.0  0.0
+   PERF       GEO  'Injector'
+   1 1 1         1.0  OPEN    FLOW-FROM  'SURFACE'
+
+   WELL  'Producer'
+   PRODUCER 'Producer'
+   OPERATE  MAX  STL  0.000144  CONT REPEAT
+   OPERATE  MIN  BHP  7000.0  CONT
+   GEOMETRY  K  0.0004  0.34  1.0  0.0
+   PERF       GEO  'Producer'
+   342 1 1         1.0  OPEN    FLOW-TO  'SURFACE'
+
+
+*TIME	0.02
+
+   WELL  'Injector'
+   INJECTOR MOBWEIGHT IMPLICIT 'Injector'
+   INCOMP  WATER  0.9793  0.02 0.0007  0.0
+   TINJW 20
+   qual 0
+   OPERATE  MAX  STW  0.000144  CONT REPEAT
+   OPERATE  MAX  BHP  50000.0  STOP
+   MONITOR  MIN  STW  0.0001  SHUTIN
+   GEOMETRY  K  0.0004  0.34  1.0  0.0
+   PERF       GEO  'Injector'
+   1 1 1         1.0  OPEN    FLOW-FROM  'SURFACE'
+
+
+*TIME	2.0 
+
+*STOP
+

@@ -1,0 +1,174 @@
+**--------------------------------------------------------------------**
+** GMSMO015.DAT: Velocity Dependent Relative Permeabilities           **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO015.DAT                                                **
+**                                                                    **
+** MODEL: CART 18x1x8 Radial            Velocity Dependent Rel Perms  **
+**        6 COMPONENTS                  Interpolation model           **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Relative permeability calculations are dependent on phase velocity **
+** and interfacial tension. This option is for gas condensate systems **
+** where the reduction in relative permeability due to condensate     **
+** dropout is mitigated by low interfacial tension and/or the high    **
+** fluid velocities in the near well region.  In this data set, the   **
+** the relative permeabilities are calculated by interpolating between**
+** the base and straight line miscible curves via a scaling function. **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1  'Velocity Dependent Rel Perms'
+*TITLE2  'Interpolation Model'
+
+*INUNIT *FIELD
+
+*WPRN *WELL   *TIME
+*WPRN *GRID   *TIME
+*WPRN *ITER   *BRIEF
+*OUTPRN *RES  *ALL
+*OUTPRN *WELL *ALL
+*OUTPRN *GRID *IMPL *PRES *SO *SG *SW *Z 'CO2' *Z 'CO2' *SIG *DENO *DENG
+*WSRF *WELL   1
+*WSRF *GRID   1
+*OUTSRF *RES  *ALL
+*OUTSRF *GRID *PRES *SO *SG
+*WRST   0
+
+**--------------------------------------------------RESERVOIR DATA------
+*GRID  RADIAL 18 1 8 *RW 0.325
+*KDIR  DOWN
+*DI    IVAR    0.911   1.3665   2.0498   3.0746   4.6119   6.9179  10.3769  15.5653
+              23.3479 35.0219  52.5329  78.7993 118.1989 177.2984 265.9476 398.9213
+             598.382 722.676
+*DJ    CON    36.0
+*DK    KVAR   10.0 10.0 30.0 50.0 100.0 50.0 150.0 370.0
+*DTOP         18*10050.0
+*POR   KVAR    0.3 0.25 0.214 0.22 0.209 0.219 0.127 0.12
+*PERMI KVAR   90.0 75.0 50.0 28.0 12.0 17.0 2.6 1.5
+*PERMJ EQUALSI
+*PERMK EQUALSI * 0.1
+*CPOR  MATRIX   1.45E-07
+*PRPOR MATRIX   4100.
+
+**--------------------------------------------------FLUID COMPONENT DATA
+*MODEL        *PR
+*NC           6  6
+*COMPNAME     'CO2'       'C1'        'C2-C3'     'C4-C6'     'C9'        'C22'
+*HCFLAG       0           0           0           0           0           0
+*VISCOR       *HZYT
+*VISCOEFF     0.1023      0.023364    0.058533    -0.040758   0.0093324
+*MIXVC          1.0
+*TRES         335.0
+*PCRIT       72.800000   45.400000   45.700000   34.900000   26.000000   14.900000
+*TCRIT       304.20000   190.60000   330.50000   453.80000   606.00000   869.70000
+*AC          0.225000    0.008000    0.119000    0.226000    0.359000    0.788000
+*VCRIT       0.094000    0.099000    0.169640    0.298600    0.490400    1.058900
+*MW          44.01000    16.04300    36.00000    72.00000   128.00000   310.00000
+*PCHOR       49.00000    71.00000   130.00000   230.00000   327.00000   761.00000
+*VISVC       0.094000    0.099000    0.169640    0.298600    0.490400    1.058900
+*VSHIFT      0.000000    0.000000    0.000000    0.000000    0.000000    0.000000
+*OMEGA       .457235530  .457235530  .457235530  .457235530  .457235530  .457235530
+*OMEGB       .077796074  .077796074  .077796074  .077796074  .077796074  .077796074
+*PVC3         0
+*BIN   0.0
+       0.0         0.0
+       0.0         0.0         0.0
+       0.0         0.0         0.0         0.0
+       0.0         0.0         0.0         0.0         0.0
+*PHASEID *GAS
+*DERIVATIVEMETHOD *NUMERALL
+
+**--------------------------------------------------ROCK FLUID----------
+*ROCKFLUID
+*RPT 1  *DRAINAGE
+*KROIL *STONE2 *SWSG
+
+*SWT
+0.200000000  0.000000000  0.250000000  0.0
+0.300000000  0.002200000  0.200000000  0.0
+0.350000000  0.018000000  0.170000000  0.0
+0.400000000  0.060700000  0.150000000  0.0
+0.450000000  0.143800000  0.130000000  0.0
+0.500000000  0.280900000  0.110000000  0.0
+0.601246106  0.484496124  0.077519380  0.0
+0.700934579  0.705426357  0.034883721  0.0
+0.800000000  1.000000000  0.000000000  0.0
+
+*SGT
+0.000000000  0.000000000  0.250000000  0.0
+0.350000000  0.000000000  0.250000000  0.0
+0.375000000  0.000000000  0.250000000  0.0
+0.400000000  0.002700000  0.120000000  0.0
+0.450000000  0.050000000  0.033000000  0.0
+0.500000000  0.200000000  0.007300000  0.0
+0.550000000  0.450000000  0.000500000  0.0
+0.600000000  0.530000000  0.000000000  0.0
+
+*VELDEPRP *MODEL2 *GAS        15.97E+00 2.5E-06  4.0E+00
+                  *CONDENSATE 4.732E+00 4.0E-06 20.00E+00
+
+*KRGAS *KRG
+
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+*USER_INPUT
+*NREGIONS 1
+*SW   *CON 0.2
+*PRES *CON 4100
+*ZGLOBALC 'CO2'   *CON 0.1618
+*ZGLOBALC 'C1'    *CON 0.7098
+*ZGLOBALC 'C2-C3' *CON 0.0790
+*ZGLOBALC 'C4-C6' *CON 0.0260
+*ZGLOBALC 'C9'    *CON 0.0200
+*ZGLOBALC 'C22'   *CON 0.0034
+
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+
+**--------------------------------------------------WELL DATA-----------
+RUN
+
+*DATE 2001 01 01
+
+*DTMIN 0.00001
+*DTWELL 0.01
+*DTMAX 10.
+
+*WELL  1  'INJ'
+*INJECTOR 'INJ'
+*INCOMP SOLVENT  0.1618 0.7098 0.079 0.026 0.02 0.0034
+*OPERATE MAX BHP  4100. CONT
+*GEOMETRY K 0.325 0.50 0.10 0.0
+*PERF GEO 'INJ'
+    18  1  1 1.
+    18  1  2 1.
+    18  1  3 1.
+    18  1  4 1.
+    18  1  5 1.
+    18  1  6 1.
+    18  1  7 1.
+    18  1  8 1.
+
+*WELL  2  'PROD'
+*PRODUCER 'PROD'
+*OPERATE MAX STG  4.4E+06 CONT
+*OPERATE MIN BHP  100. CONT
+*GEOMETRY K 0.325 0.50 0.10 0.0
+*PERF GEO 'PROD'
+    1  1  1 1.
+    1  1  2 1.
+    1  1  3 1.
+    1  1  4 1.
+    1  1  5 1.
+    1  1  6 1.
+    1  1  7 1.
+    1  1  8 1.
+
+*TIME 150
+*STOP

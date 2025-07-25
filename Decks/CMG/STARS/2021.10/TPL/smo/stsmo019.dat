@@ -1,0 +1,442 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    This data set tests and illustrates array-reading option *BINARY_DATA.
+
+**    Note:  This data set was created for illustration and verification purposes
+**           only.  Consequently, the data contained here is quite artificial and
+**           should not be used for engineering purposes.
+
+**  Features:
+
+**  1) This data set is merely STSMO018 loaded into Builder and then written in
+**     binary form via "File/Save As.../Array Saving Method/Binary File Format
+**     (*.cmgbin)".
+
+**  2) Component data is copied from combustion tube STTST01 in order to test
+**     all the component-dependent grid array-reading options.  Molecular diffision
+**     is added for the same reason.
+
+**  3) The very non-uniform initial conditions are copied via Builder from the
+**     results of another run which is this data with uniform initial conditions
+**     (commented out).  If data is copied from another SR2 and saved in binary
+**     form, then full 8-byte precision is retained through-out.
+
+**  4) The results of this run should be very close to those of STSMO018.  A little
+**     deviation is expected since grid array data saved in text form has less
+**     precision than the binary form.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS 200600
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 19'
+*TITLE2 'Test/Illustrate Array-Reading Option *BINARY_DATA'
+*TITLE3 'Based on STSMO018'
+
+INUNIT FIELD
+
+WPRN ITER 1
+WPRN GRID TIME
+WPRN SECTOR TIME
+
+WSRF GRID TIME
+WSRF WELL 1
+WSRF SECTOR TIME
+
+WRST 3
+
+OUTPRN WELL ALL
+OUTPRN GRID PRES SW SO SG TEMP Y X SOLCONC
+**OUTPRN *RES  *ALL
+OUTPRN ITER NEWTON
+OUTSRF GRID PRES SG SO SOLCONC SW TEMP VISO VPOROS X Y 
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 1.0 1.0
+**$ ***************************************************************************
+**$ Definition of fundamental corner point grid
+**$ ***************************************************************************
+GRID CORNER 33 25 14
+COORD  BINARY_DATA
+ZCORN  BINARY_DATA
+
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL BINARY_DATA
+
+**$ Property: Porosity  Max: 0.313822  Min: 0.262168
+POR BINARY_DATA 
+**$ Property: Permeability I (md)   Max: 4000  Min: 1000
+PERMI KVAR 
+ 1000 2000 2*3000 2*3500 2*4000 2*3500 2*3000 2000 1000
+PERMJ EQUALSI
+PERMK EQUALSI * 0.25
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+END-GRID
+ROCKTYPE 1
+
+
+
+** ===========  Other Reservoir Properties ================
+
+PRPOR 1226.
+CPOR 6e-5
+CTPOR .000282
+THCONR 106
+THCONW 8.6
+THCONO 1.8
+THCONG 0.64
+THCONMIX SIMPLE
+HLOSSPROP OVERBUR 30 20
+         UNDERBUR 30 20
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 6 5 3   ** Number of noncondensible gases is numy-numx = 2
+               ** Number of solid components is ncomp-numy = 1
+
+*compname 'WATER'  'HEVY OIL' 'LITE OIL' 'INRT GAS' 'OXYGEN'     'COKE'
+**         -----    --------   --------   --------   ------     --------
+*cmm        18        675       156.7       40.8       32          13
+*pcrit     3155       120       305.7       500        730
+*tcrit     705.7     1138       651.7      -232       -181
+
+*kv1        0          0       1.9248e5
+*kv4        0          0       -6794.21
+*kv5        0          0       -294.31
+
+*avg     8.822e-6   3.926e-6   2.166e-6   2.1267e-4  2.1960e-4
+*bvg       1.116     1.102      0.943      0.702      0.721
+*avisc      0       4.02e-4    4.02e-4
+*bvisc      0        6121.6     6121.6
+
+*cpg1       0       -8.14       -1.89      7.44       6.713
+*cpg2       0       0.549      0.1275     -0.0018    -4.883e-7
+*cpg3       0       -1.68e-4   -3.9e-5     1.975e-6   1.287e-6
+*cpg4       0       1.98e-8     4.6e-9    -4.78e-10  -4.36e-10
+*hvr        0        12198       1917
+*ev         0        0.38        0.38
+
+*molden   3.466      0.0914     0.3195    ** LBMOLE/FT3
+*cp        3e-6       5e-6       5e-6
+*ct1      1.2e-4    1.496e-4   2.839e-4
+**                   61.69       50.07       LB/FT3
+**                   11.6        44.8        API
+
+*solid_den 'COKE' 57.2 0 0
+*solid_cp  'COKE' 4.06 0
+
+
+** Reactions
+** ---------
+
+** Note:  Inert gas is 80% CO2 and 20% CO, so Mw = 40.8
+
+** Cracking:  heavy oil -> light oil + coke (50/50 by mass)
+
+*storeac    0          1          0          0          0        0
+*stoprod    0          0        2.154        0          0      25.96
+*freqfac 4.167e6
+*eact 27000
+*renth 40000
+
+
+** Light oil burning:  light oil + o2 -> water + inert gas + energy
+
+*storeac    0          0          1          0        14.06      0
+*stoprod  6.58         0          0        11.96        0        0
+*freqfac 3.020e16
+*eact 59450
+*renth 2.9075e6
+
+
+** Heavy oil burning:  heavy oil + o2 -> water + inert gas + energy
+
+*storeac    0          1          0          0        60.55      0
+*stoprod  28.34        0          0        51.53        0        0
+*freqfac 3.020e16
+*eact 59450
+*renth 1.2525e7
+
+
+** Coke oil burning:  coke oil + o2 -> water + inert gas + energy
+
+*storeac    0          0          0          0        1.18       1
+*stoprod  0.55         0          0          1          0        0
+*freqfac 416.7e6
+*eact 25200
+*renth 2.25e5
+
+**  Reference conditions
+*prsr 14.7
+*temr 77
+*psurf 14.65
+*tsurf 62
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+ROCKFLUID
+
+RPT 1
+
+SWT
+**$        Sw       krw      krow      Pcow
+        0.110     0.000     1.000       0.0
+        0.219     0.005     0.447       0.0
+        0.312     0.021     0.194       0.0
+        0.400     0.056     0.053       0.0
+        0.469     0.093     0.009       0.0
+        0.513     0.126     0.001       0.0
+        0.566     0.166     0.000       0.0
+        1.000     1.000     0.000       0.0
+
+SLT
+**$        Sl       krg      krog      Pcog
+       0.5670     0.147      0.000       0.0
+       0.6192     0.090      0.008       0.0
+       0.6705     0.055      0.047       0.0
+       0.7386     0.020      0.17        0.0
+       0.8111     0.004      0.384       0.0
+       0.8394	  0.002237   0.482000	 0.0
+       0.85	  0.0016     0.516189	 0.0
+       0.875	  0.0008     0.596824	 0.0
+       0.885	  0.0005     0.629078	 0.0
+       0.895	  3.00E-04   0.661333	 0.0
+       0.905	  0.0001     0.693587	 0.0
+       0.915	  0.00005    0.725841	 0.0
+       0.925	  1.00E-05   0.758095	 0.0
+       0.935	  5.00E-06   0.790349	 0.0
+       0.945	  1.00E-06   0.822603	 0.0
+       0.95	  0	     0.838730	 0.0
+       1.00       0          1.0         0.0
+
+KRTEMTAB    *SWR      *KRWIRO      *SORG    *KRGCW
+**  Temp     Swi      Krw(Soirw)           Krg(Sor+Swi)
+    137.    0.11       0.166       0.457    0.147
+    567.    0.26       0.2         0.380    0.4
+RPT 2 COPY 1
+SWT
+**$        Sw       krw      krow      Pcow
+        0.110     0.000     1.000       0.0
+        0.219     0.005     0.447       0.0
+        0.312     0.021     0.194       0.0
+        0.400     0.056     0.053       0.0
+        0.469     0.093     0.009       0.0
+        0.513     0.126     0.001       0.0
+        0.566     0.166     0.000       0.0
+        1.000     1.000     0.000       0.0
+SLT
+**$        Sl       krg      krog      Pcog
+       0.5670     0.147     0.000       0.0
+       0.6192     0.090     0.008       0.0
+       0.6705     0.055     0.047       0.0
+       0.7386     0.020      0.17       0.0
+       0.8111     0.004     0.384       0.0
+       0.8394  0.002237  0.482000       0.0
+         0.85    0.0016  0.516189       0.0
+        0.875    0.0008  0.596824       0.0
+        0.885    0.0005  0.629078       0.0
+        0.895  3.00E-04  0.661333       0.0
+        0.905    0.0001  0.693587       0.0
+        0.915   0.00005  0.725841       0.0
+        0.925  1.00E-05  0.758095       0.0
+        0.935  5.00E-06  0.790349       0.0
+        0.945  1.00E-06  0.822603       0.0
+         0.95         0  0.838730       0.0
+         1.00         0       1.0       0.0
+**  Temp     Swi      Krw(Soirw)           Krg(Sor+Swi)
+KRTEMTAB SWR KRWIRO SORG KRGCW
+**$      TEMP       SWR    KRWIRO      SORG     KRGCW
+         137.      0.11     0.166     0.457     0.147
+         567.      0.26       0.2     0.380       0.4
+
+*KRTYPE *BINARY_DATA
+
+*DIFFI_OIL 'LITE OIL' *BINARY_DATA
+DIFFJ_OIL 'LITE OIL' EQUALSI
+DIFFK_OIL 'LITE OIL' EQUALSI
+
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+INITIAL
+
+VERTICAL DEPTH_AVE
+
+INITREGION 1
+REFPRES 1500
+REFDEPTH 2600.
+DWOC 2725.
+**$ Property: Pressure (psi)   Max: 1560.04  Min: 1475.48
+PRES BINARY_DATA 
+**$ Property: Temperature (F)   Max: 551.027  Min: 99.9853
+TEMP BINARY_DATA 
+**$ Property: Water Saturation  Max: 0.9999  Min: 0.109775
+SW BINARY_DATA 
+**$ Property: Gas Saturation  Max: 0.275539  Min: 0
+SG BINARY_DATA 
+**$ Property: Oil Mole Fraction(LITE OIL)  Max: 0.969334  Min: 0.74406
+MFRAC_OIL 'LITE OIL' BINARY_DATA 
+**$ Property: Oil Mole Fraction(HEVY OIL)  Max: 0.25594  Min: 0.0306656
+MFRAC_OIL 'HEVY OIL' BINARY_DATA 
+**$ Property: Gas Mole Fraction(INRT GAS)  Max: 0.999644  Min: 0
+MFRAC_GAS 'INRT GAS' BINARY_DATA 
+**$ Property: Gas Mole Fraction(OXYGEN)  Max: 0.20737  Min: 0
+MFRAC_GAS 'OXYGEN' BINARY_DATA 
+**$ Property: Initial Solid Concentration(COKE) (lbmole/ft3)   Max: 0.534062  Min: 2.37836e-008
+CONC_SLD 'COKE' BINARY_DATA 
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+NUMERICAL
+
+MAXSTEPS 5
+AIM STAB
+
+
+RUN
+
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 2005 1  1.
+
+   DTWELL 0.01
+
+   WELL  'SAGD1-I'
+   INJECTOR MOBWEIGHT EXPLICIT 'SAGD1-I'
+   INCOMP  WATER  1.  0.  0.
+   TINJW  550.
+   QUAL  0.8
+   OPERATE  MAX  STW  1000.  CONT REPEAT
+   OPERATE  MAX  BHP  5000.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.28  0.249  1.  0.
+PERF  GEO  'SAGD1-I'
+**$ UBA     ff  Status  Connection  
+    9 4 5   1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    9 5 5   1.  OPEN    FLOW-FROM  1
+    9 6 5   1.  OPEN    FLOW-FROM  2
+    9 7 5   1.  OPEN    FLOW-FROM  3
+    9 8 5   1.  OPEN    FLOW-FROM  4
+    9 9 5   1.  OPEN    FLOW-FROM  5
+    9 10 5  1.  OPEN    FLOW-FROM  6
+    9 11 5  1.  OPEN    FLOW-FROM  7
+    9 12 5  1.  OPEN    FLOW-FROM  8
+    9 13 5  1.  OPEN    FLOW-FROM  9
+    9 14 5  1.  OPEN    FLOW-FROM  10
+    9 15 5  1.  OPEN    FLOW-FROM  11
+    9 16 5  1.  OPEN    FLOW-FROM  12
+    9 17 5  1.  OPEN    FLOW-FROM  13
+    9 18 5  1.  OPEN    FLOW-FROM  14
+    9 19 5  1.  OPEN    FLOW-FROM  15
+    9 20 5  1.  OPEN    FLOW-FROM  16
+    9 21 5  1.  OPEN    FLOW-FROM  17
+    9 22 5  1.  OPEN    FLOW-FROM  18
+
+   WELL  'SAGD1-P'
+   PRODUCER 'SAGD1-P'
+   OPERATE  MAX  STL  1000.  CONT REPEAT
+   OPERATE  MIN  BHP  150.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.28  0.249  1.  0.
+PERF  GEO  'SAGD1-P'
+**$ UBA     ff  Status  Connection  
+    9 4 9   1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    9 5 9   1.  OPEN    FLOW-TO  1
+    9 6 9   1.  OPEN    FLOW-TO  2
+    9 7 9   1.  OPEN    FLOW-TO  3
+    9 8 9   1.  OPEN    FLOW-TO  4
+    9 9 9   1.  OPEN    FLOW-TO  5
+    9 10 9  1.  OPEN    FLOW-TO  6
+    9 11 9  1.  OPEN    FLOW-TO  7
+    9 12 9  1.  OPEN    FLOW-TO  8
+    9 13 9  1.  OPEN    FLOW-TO  9
+    9 14 9  1.  OPEN    FLOW-TO  10
+    9 15 9  1.  OPEN    FLOW-TO  11
+    9 16 9  1.  OPEN    FLOW-TO  12
+    9 17 9  1.  OPEN    FLOW-TO  13
+    9 18 9  1.  OPEN    FLOW-TO  14
+    9 19 9  1.  OPEN    FLOW-TO  15
+    9 20 9  1.  OPEN    FLOW-TO  16
+    9 21 9  1.  OPEN    FLOW-TO  17
+    9 22 9  1.  OPEN    FLOW-TO  18
+
+   WELL  'SAGD2-I'
+   INJECTOR MOBWEIGHT EXPLICIT 'SAGD2-I'
+   INCOMP  GAS  0 0 0 0.79 0.21
+   TINJW  550.
+   OPERATE  MAX  STG  1.0E6  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.28  0.249  1.  0.
+PERF  GEO  'SAGD2-I'
+**$ UBA      ff  Status  Connection  
+    25 4 5   1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    25 5 5   1.  OPEN    FLOW-FROM  1
+    25 6 5   1.  OPEN    FLOW-FROM  2
+    25 7 5   1.  OPEN    FLOW-FROM  3
+    25 8 5   1.  OPEN    FLOW-FROM  4
+    25 9 5   1.  OPEN    FLOW-FROM  5
+    25 10 5  1.  OPEN    FLOW-FROM  6
+    25 11 5  1.  OPEN    FLOW-FROM  7
+    25 12 5  1.  OPEN    FLOW-FROM  8
+    25 13 5  1.  OPEN    FLOW-FROM  9
+    25 14 5  1.  OPEN    FLOW-FROM  10
+    25 15 5  1.  OPEN    FLOW-FROM  11
+    25 16 5  1.  OPEN    FLOW-FROM  12
+    25 17 5  1.  OPEN    FLOW-FROM  13
+    25 18 5  1.  OPEN    FLOW-FROM  14
+    25 19 5  1.  OPEN    FLOW-FROM  15
+    25 20 5  1.  OPEN    FLOW-FROM  16
+    25 21 5  1.  OPEN    FLOW-FROM  17
+    25 22 5  1.  OPEN    FLOW-FROM  18
+
+   WELL  'SAGD2-P'
+   PRODUCER 'SAGD2-P'
+   OPERATE  MAX  STL  1000.  CONT REPEAT
+   OPERATE  MIN  BHP  150.  CONT REPEAT
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.28  0.249  1.  0.
+PERF  GEO  'SAGD2-P'
+**$ UBA      ff  Status  Connection  
+    25 4 9   1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    25 5 9   1.  OPEN    FLOW-TO  1
+    25 6 9   1.  OPEN    FLOW-TO  2
+    25 7 9   1.  OPEN    FLOW-TO  3
+    25 8 9   1.  OPEN    FLOW-TO  4
+    25 9 9   1.  OPEN    FLOW-TO  5
+    25 10 9  1.  OPEN    FLOW-TO  6
+    25 11 9  1.  OPEN    FLOW-TO  7
+    25 12 9  1.  OPEN    FLOW-TO  8
+    25 13 9  1.  OPEN    FLOW-TO  9
+    25 14 9  1.  OPEN    FLOW-TO  10
+    25 15 9  1.  OPEN    FLOW-TO  11
+    25 16 9  1.  OPEN    FLOW-TO  12
+    25 17 9  1.  OPEN    FLOW-TO  13
+    25 18 9  1.  OPEN    FLOW-TO  14
+    25 19 9  1.  OPEN    FLOW-TO  15
+    25 20 9  1.  OPEN    FLOW-TO  16
+    25 21 9  1.  OPEN    FLOW-TO  17
+    25 22 9  1.  OPEN    FLOW-TO  18
+
+DATE 2005 2 1

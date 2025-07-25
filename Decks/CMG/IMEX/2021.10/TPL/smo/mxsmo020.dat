@@ -1,0 +1,223 @@
+   **************************************************************************************
+   **                   mxsmo020.dat                                                   **
+   ** This is a 11x1x11 test case for the api tracking option. There is a producer at  **
+   ** the center of the grid.                                                          **
+   **                                                                                  **  
+   **************************************************************************************
+
+        ** Description of this case:
+        **  1) cross-section 11x1x11
+        **  2) depth ave initialisation
+        **  3) bubble point pressure low (1000 psi) to avoid gas appearance
+        **  4) initial vfrack distribution set using *APIT option 
+        **  5) vertical well in the center of the grid producing from the three uppermost layers
+        **     with constant rate 
+        **  6) The PVT table is made up of 3 API tables
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Test 2 for the API tracking option'
+   *TITLE3
+   'Monophasic - one producer '
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   1
+   *WPRN   *GRID   1
+
+   *OUTPRN *WELL   *BRIEF
+   *OUTPRN *RES    *ALL
+   *OUTPRN *TABLES *ALL
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP  *MASDENO *APIGRAV
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP *APIGRAV
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 11   1  11
+
+   *DI *CON 1000.0
+   *DJ *CON 1000.0
+   *DK *CON 50.0
+
+   *KDIR    *DOWN
+
+   *DEPTH 1 1 1 8400.0
+
+   *POR *CON 0.3
+                
+   *CPOR   3.0E-6
+   *PRPOR 14.7
+
+   *PERMI *CON  200.0
+   *PERMJ *CON  200.0
+   *PERMK *CON  200.0
+
+   *SECTOR 'sector1' 1:11 1 1:5
+   *SECTOR 'sector2' 1:11 1 6:11
+
+   *LEASE 'lease1' 1:11 1 5 *KDIR
+
+   *MODEL *API-INT
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   *PVTAPI 1
+   ** p         eg     visg
+     1000.   5.00000 0.010000
+     1500.   260.000 0.017500
+     2000.   516.000 0.023600
+     2500.   644.000 0.026000
+     3000.   772.000 0.028500
+     4000.  1028.000 0.033500
+     5000.  2160.000 0.058000 
+
+        *APIGRAD  50.0
+   ** p        rs      bo     viso
+     1000.     90.   1.0000   140. 1e-5
+     1500.    112.   1.0122   110. 1e-5
+     2000.    157.   1.0250   100. 1e-5
+     2500.    190.   1.0366    90. 1e-5
+     3000.    225.   1.0488    70. 1e-5
+     3500.    259.   1.0600    50. 1e-5
+     4000.    300.   1.0730    45. 1e-5
+     4500.    337.   1.0854    40. 1e-5
+     5000.    370.   1.0980    35. 1e-5
+
+        *APIGRAD  48.00
+   ** p        rs      bo     viso
+     1000.    100.   1.0000   120. 1e-5
+     1500.    122.   1.0122   100. 1e-5
+     2000.    167.   1.0250    90. 1e-5
+     2500.    200.   1.0366    80. 1e-5
+     3000.    235.   1.0488    60. 1e-5
+     3500.    269.   1.0600    40. 1e-5
+     4000.    310.   1.0730    35. 1e-5
+     4500.    347.   1.0854    20. 1e-5
+     5000.    390.   1.0980    15. 1e-5
+
+        *APIGRAD  40.0
+   ** p       rs       bo    viso
+     1000.    225.   1.13   1.5  7e-6
+     1500.    335.   1.19   1.3  7e-6
+     2000.    450.   1.26   1.0  7e-6
+     2500.    560.   1.32   .90  7e-6
+     3000.    780.   1.38   .80  7e-6
+     3500.    920.   1.44   .75  7e-6
+     4000.   1050.   1.51   .70  7e-6
+     4500.   1180.   1.57   .67  7e-6
+     5000.   1310.   1.63   .65  7e-6
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.4
+   *CVO   8.5E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+   
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    0.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0   
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+        *VERTICAL DEPTH_AVE WATER_OIL_GAS
+        *DWOC       8700.
+        *DGOC       8000.
+        *REFDEPTH   8800.
+        *REFPRES    4800.
+       *PB  *CON   1001.
+        *APIT 1
+         8500.  1.0
+         8800.  0.0
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        1000.0        ** Maximum time step size
+   *MAXSTEPS     100           ** Maximum number of time steps
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR  0.20
+   *AIM  *STAB  *AND-THRESH    
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1998 01 01
+   *DTWELL 1.0
+   *AIMWELL WELLNN
+   *WELL 1  'Producer'
+
+   *PRODUCER  1
+   *OPERATE *MAX  *STO  2000.0
+   *OPERATE *MIN  *BHP  1020.0
+                                  
+   *MONITOR *MIN  *STO     1.0  *STOP
+   *MONITOR *GOR       20000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 1
+   ** if     jf     kf     ff                         
+      6      1      1     1.0   
+      6      1      2     1.0   
+      6      1      3     1.0   
+
+   *DATE 1999 01 01
+   *DATE 2000 01 01
+   *DATE 2001 01 01
+   *DATE 2002 01 01
+   *DATE 2003 01 01
+   *DATE 2004 01 01
+   *DATE 2005 01 01
+   *DATE 2006 01 01
+   *DATE 2007 01 01
+   *DATE 2008 01 01
+                     
+   *STOP                           

@@ -1,0 +1,277 @@
+**--------------------------------------------------------------------**
+** GMWWM068.DAT:     Simultaneous BHP - Head Initialization           **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMWWM068.DAT                                               **
+**                                                                    **
+** MODEL:  10x1x3        HEADS AND BHP INITIALIZED TOGETHER           **       
+**         *BHPHEADINIT  CROSS-FLOWING MULTILATERAL PRODUCER          **
+**         FIELD UNITS   STONE'S FIRST MODEL FOR Kro                  **
+**         *KDIR *DOWN   BASED ON GMWWM046                            **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Illustrates use of the *BHPHEADINIT keyword.  If this data set is  **
+** run without the *BHPHEADINIT and *HEADITER lines, the plot of      **
+** the bottom-hole fluid rate for well 'Producer 2' against time has  **
+** severe oscillations.  If *BHPHEADINIT only is removed, with the    **
+** *HEADITER line remaining, the oscillations are much less severe    **
+** but are still evident.  Run without change the BHF rate is smooth. **
+**                                                                    **
+** This illustrates the possibility of instability which may be       **
+** introduced when well heads (pressure differences within the        **
+** wellbore between completions) are fixed independently of the       **
+** well's bottom hole pressure.  The cause of the instability in this **
+** example is the switching of completions from normal flow to        **
+** backflow and consequent density differences in the fluid flowing   **
+** in the well segments.                                              **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES
+*TITLE1
+'GMWWM068'
+*TITLE2
+'Simultaneous Iteration'
+*TITLE3
+'Of Heads and BHP'
+
+*INUNIT    *FIELD
+
+*WPRN      *WELL 1
+*WPRN      *GRID *TIME
+
+*OUTPRN    *GRID *IMPL *SO *SG *SW *PRES
+*OUTPRN    *WELL *ALL
+*OUTPRN *RES *ALL
+
+*WSRF      *GRID 5
+*WSRF      *WELL 1
+
+*WRST 0
+
+**--------------------------------------------------------------------**
+** Reservoir description Section                                      **
+**--------------------------------------------------------------------**
+
+*GRID *CART    10    1   3   ** This is an x-z cross sectional problem
+
+*KDIR *DOWN
+
+*DI *CON  200.0
+
+*DJ *CON 2500.0
+
+*DK *KVAR                       ** Block z dimensions vary with layer
+  92. 60. 207.
+
+*DEPTH *TOP 1    1   1  9000.   ** Depth to top center of first
+                                ** block in shallowest layer
+
+*DIP -5.7 0.0  ** Introduce 5.7 degree dip as depth to centre of top
+               ** of first block is 9000.0 feet.
+
+*POR  *KVAR                     ** Porosities vary with layer
+  0.13
+  0.16
+  0.13
+
+*PRPOR 3600.0                   ** Rock compressibility and
+*CPOR  4.0E-6                   ** reference pressure
+
+** Each of the I, J, and K permeabilities are constant within each layer
+** of the reservoir but vary from layer to layer. Hence the use of *KVAR
+** to input them layer by layer. Note that the first K layer is at
+** the  top of the reservoir.
+
+*PERMI *KVAR
+   100.
+   600.
+   200.
+
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.10
+
+** Insert transmissibility barriers between layers 1 and 2 and 2 and 3
+
+*TRANSK *IJK
+  1:10 1:1 1:3  1.0
+  1:10 1:1  1:1  0.0
+  1:10 1:1  2:2  0.0
+
+*SECTOR 'Region 1' 1:10 1:1  1:1  ** Shallowest non-communicating region
+*SECTOR 'Region 2' 1:10 1:1  2:2  ** Middle region
+*SECTOR 'Region 3' 1:10 1:1  3:3  ** Deepest region
+
+**--------------------------------------------------------------------**
+** Component Properties Section                                       **
+**--------------------------------------------------------------------**
+
+*MODEL *PR
+
+*NC 6 6
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69       18.       17.
+*VCRIT 0.099800  0.200500  0.369800  0.629700       0.7       0.8
+*TCRIT    190.6     369.8     507.4     617.7      720.     850.
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*BIN         0.
+           2*0.
+           3*0.
+           0.10     0.008      2*0.
+           0.10     0.008      3*0.
+*TRES 222.
+
+*DENW 63.02
+*CW      3.0E-06
+*REFPW   14.7
+*VISW    0.96
+
+**--------------------------------------------------------------------**
+** Rock-fluid Property Section                                        **
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*RPT
+
+  *KROIL *STONE1  ** Use Stone's 1st Model to compute oil relative
+                  ** permeability when three phases are present.
+
+*SWT              ** Water-oil relative permeability table.
+**   sw    krw    krow    pcow
+   0.22    0.0    1.0     7.0
+   0.30    0.07   0.4     4.0
+   0.40    0.15   0.125   3.0
+   0.50    0.24   0.0649  2.5
+   0.60    0.33   0.0048  2.0
+   0.80    0.65   0.0     1.0
+   0.90    0.83   0.0     0.5
+   1.00    1.0    0.0     0.0
+
+*SLT              ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog
+   0.22    1.0     0.0      3.9
+   0.30    0.8125  0.0      3.5
+   0.40    0.5     0.0      3.0
+   0.50    0.42    0.0      2.5
+   0.60    0.34    0.0      2.0
+   0.70    0.24    0.02     1.5
+   0.80    0.1     0.1      1.0
+   0.90    0.022   0.33     0.5
+   0.96    0.0     0.6      0.2
+   1.0     0.0     1.0      0.0
+
+**--------------------------------------------------------------------**
+** Initial Conditions Section                                         **
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+*REFPRES  3600.0                ** Set reference pressure
+*REFDEPTH 9070.0                ** at the reference depth.
+*DWOC     9370.0                ** Set water-oil contact
+*DGOC     9070.0                ** Set gas-oil contact
+
+** Initial oil composition :
+*ZOIL 0.50   0.07    0.03     0.20    0.15     0.05
+
+** Initial gas composition :
+*ZGAS 0.9304 0.04638 0.006924 0.01473 0.001512 0.0000314
+
+**--------------------------------------------------------------------**
+** Numerical Control Section                                          **
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+
+*NORM *GMOLAR 0.02  ** Crossflow may induce rapid composition changes.
+                    ** Setting *NORM keeps timesteps from exceeding
+                    ** convergence limits
+*NORM *SATUR  0.05
+*MAXCHANGE *GMOLAR 0.30
+*CONVERGE *MAXRES 0.0001
+*ITERMAX 40
+*NORTH 20
+**--------------------------------------------------------------------**
+** Well Data Section                                                  **
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE 1994 01 01
+
+*DTMAX    120.
+*DTWELL   0.1  **0.5
+
+*WELL 1 'Producer 1' *VERT  2 1
+*WELL 2 'Producer 2'
+*WELL 3 'Producer 3' *VERT  8 1
+*WELL 4 'Injector 1' *VERT 10 1
+
+*WELLINIT *ITER
+*AIMSET *CON 3
+*HEADITER 2 *ITERATIVE
+*BHPHEADINIT 2 *COMBINED
+
+*XFLOW-MODEL 1:4 *FULLY-MIXED
+
+*PRODUCER 1 3
+
+*OPERATE *MAX *STO 1000.00
+*OPERATE *MIN *BHP 1000.00 *CONT
+
+*PRODUCER 2    ** Primary operating constr
+
+*OPERATE *MAX *STO  100.00     ** Note that specified rate for
+                               ** crossflowing producer is 1/10
+                               ** that of the other producers.
+*OPERATE *MIN *BHP 1000.00 *CONT
+
+
+*INJECTOR 4
+*INCOMP *WATER
+
+*OPERATE *MAX *WATER 2000.00
+
+**             rad      geofac   wfrac  skin
+*GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+*PERFV *GEO 1
+** kf      ff
+   3    1.000   ** Main producer in region 3.
+
+
+*PERF *GEO 2    ** Multilateral Producer with Crossflow
+** ii jj  kk       ff
+   5  1   1       1.000   ** Low-rate producer completed in all regions.
+   4  1   1       1.000 *FLOW-TO 1
+   4  1   2       1.000
+   6  1   2       1.000 *FLOW-TO 1 *REFLAYER
+   3  1   1       1.000 *FLOW-TO 2
+   7  1   2       1.000 *FLOW-TO 4
+   5  1   2       1.000 *FLOW-TO 4
+   5  1   3       1.000
+
+
+
+*PERFV *GEO 3
+** kf      ff
+   1      1.000   ** Main producer in region 1.
+
+*PERFV *GEO 4
+** kf      ff
+    3    1.000   ** Water injector in region 3.
+
+*AIMWELL *WELLN
+
+
+*DATE 1999 01 01
+                   ** Normal termination should occur at
+                   ** this time (five years)
+*STOP

@@ -1,0 +1,5 @@
+<eclipse>
+<message source="eclrun" date="" time="0">
+Executing GRAF on pc system with auto architecture
+</message>
+</eclipse>

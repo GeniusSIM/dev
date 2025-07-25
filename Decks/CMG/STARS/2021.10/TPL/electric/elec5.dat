@@ -1,0 +1,268 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  PURPOSE:  Test and illustrate the use of hybrid grid together with
+**            electrical heating.
+
+**  FEATURES: The regions around two wells in a Cartesian grid are modelled
+**            with hybrid grids in a manner similar to the single well in
+**            data #3.  The run starts on maximum voltage constraint, switches
+**            to maximum total power constraint and then to maximum current,
+**            as shown by the corresponding special histories.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Electrical Heating Test Data #5'
+*title2 'Test/Illustrate Multi-Well Hybrid Grid'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y x w solconc obhloss viso visg
+outprn grid  elconduct elpotent elpower elpowerden elcumenrgy
+outprn res all
+*outprn *well *all
+*wrst 200
+*wprn *grid 200
+*wprn *iter 200
+wrst 1
+
+wprn sector 1
+wsrf sector 1
+
+outsrf grid  pres so sg temp
+outsrf grid  elconduct elpotent elpower elpowerden elcumenrgy elcurden elcur
+
+outsrf special blockvar temp 2,2,3 / 1,1,1
+               blockvar temp 2,2,3 / 2,1,1
+               blockvar temp 2,2,3 / 3,1,1
+               blockvar temp 2,2,3 / 4,1,1
+               blockvar elpotent 2,2,3 / 1,1,1
+               blockvar elpower 2,2,3 / 1,1,1
+               blockvar elconduct 2,2,3 / 1,1,1
+               elheat rate                ** total electrical heat rate
+               elheat cum                 ** total electrical heat cum
+               ebndstat 1 potential       ** 'Earth' voltage
+               ebndstat 2 potential       ** 'Electrode' voltage
+               ebndstat 1 current         ** 'Earth' current
+               ebndstat 2 current         ** 'Electrode' current
+               ebndstat 1 cumcurrent      ** 'Earth' accumulated current
+               ebndstat 2 cumcurrent      ** 'Electrode' accumulated current
+               ebndresis 1 2              ** Resistance between 'Electrode' and 'Earth'
+               epotgradb 4,4,5 2,2,5      ** Step voltage on surface
+
+outprn iter newton
+wprn iter 1
+wprn grid 1
+
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 5 5 5
+
+*di *con 20
+
+*dj *con 20
+
+*dk *con 2
+
+*refine 2 2 1:5 into 5 4 2 *hybrid *kdir *rw 0.282 *alphai 2.5
+*refine 4 4 1:5 into 5 4 2 *hybrid *kdir *rw 0.282 *alphai 2.5
+
+*por *con 0.3
+*permi *con 1000
+*permj *equalsi
+*permk *equalsi  / 2
+
+end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+**hlossprop  overbur 35 24  underbur 35 24
+      
+** Electrical Heating
+** ------------------
+*elecheat  ** Data from A Heibert thesis
+   *temmult
+      60   1.0    ** From A Heibert thesis, Fig 6.11
+     212   3.0
+   *atortu 1.3
+   *econdwi *con 0.83
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'Water'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0
+     *tcrit      705.4       0
+     *cpl1       0          300
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+*visctable
+
+**      Temp
+          45     0        5780
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 500
+*refdepth 1
+
+**sw *con 0.45   ** So by difference, since Sg = 0
+
+*temp *con 55
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*sdegree gauss
+*dtmax 90
+
+*norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+**    The injection and production phases of the single cycling well
+**  will be treated as two distinct wells which are in the same
+**  location but are never active at the same time.  In the well data
+**  below, both wells are defined immediately, but the producer is
+**  shut in, to be activated for the drawdown.
+
+
+date 1973 9 25.5
+
+   dtwell .02
+
+   ** PRODUCER 1:  Constant liquid rate type
+   well 1 'Producer 1'
+   producer 'Producer 1'
+   operate     stl    1000    ** Starting liquid rate is 1000 BPD
+   operate min bhp    400     ** Minumum BHP of 1 atm
+   geometry k  .282 .5 1 0
+   perf 'Producer 1'
+                   2 2 1:5 / 1 1 1:2  1.
+
+   ** PRODUCER 2:  Constant liquid rate type
+   well 2 'Producer 2'
+   producer 'Producer 2'
+   operate     stl    1000    ** Starting liquid rate is 1000 BPD
+   operate min bhp    400     ** Minumum BHP of 1 atm
+   geometry k  .282 .5 1 0
+   perf 'Producer 2'
+                   4 4 1:5 / 1 1 1:2  1.
+
+   elbound 'Earth' 2 2 1:5 / 1 1 1:2 -i
+   eltarget potential 'Earth' 0
+
+   elbound 'Electrode' 4 4 1:5 / 1 1 1:2  -i
+   eltarget potential 'Electrode' 300
+   eltarget current   'Electrode' 40
+
+   eltarget power 10
+
+time 10
+
+time 200

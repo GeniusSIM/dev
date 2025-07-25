@@ -1,0 +1,496 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    This is STGRO069 with *BLOCKGROUP defining several block groups and
+**    *BG using them.  In addition, a Cartesian block group is specified via
+**    *SBLOCKGROUP and referenced via *SBG. A block group could be specified
+**    as a subset of an existing *SBG.
+
+**    This data uses *BG and *SBG inside of *MOD.
+
+**    This data defines several reporting sectors from block groups
+**    via *ISECTOR *SBG.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Grid Option Template No. 70'
+*title2 'Verify/Illustrate *BLOCKGROUP with *BG/*SBG Inside of *MOD'
+*title3 'Based on STGRO069'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y obhloss verdsplpor subsidpor sbdz
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+*outprn *res *all
+
+outsrf well  layer all
+outsrf grid  pres so sg temp verdsplpor subsidpor sbdz
+outsrf special matbal well 'OIL'    ** Cumulative oil produced
+               obhloss              ** Cumulative heat loss
+               blockvar sg 5,4,1
+               blockvar temp 5,4,1
+               blockvar so 5,4,1
+               blockvar pres 5,4,1
+               blockvar temp 5 3 2
+               blockvar temp 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2
+               blockvar temp 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2
+               blockvar sg 6 2 3 / 3 2 2
+               blockvar sg 6 2 3 / 3 2 2 / 3 2 2 / 3 2 2 / 3 2 2
+               blockvar sg 7 2 3 / 1 2 2 / 1 2 2
+               blockvar sg 7 2 3 / 1 2 2 / 1 2 2 / 1 2 2 / 1 2 2
+               tfront 140 9:1 1 4   ** 140 deg contour, layer 4
+               tfront 300 9:1 1 4   ** 300 deg contour, layer 4
+               tfront 350 9:1 1 4   ** 350 deg contour, layer 4
+               tfront 400 9:1 1 4   ** 400 deg contour, layer 4
+               tfront 300 5 1:5 4   ** 300 deg contour, transvers
+               tfront 300 5 3 1:4   ** 300 deg contour, vertical
+               wellenergy 'INJECTOR' rate    ** Energy rate 'INJECTOR'
+               wellenergy 'INJECTOR' cum     ** Energy cum 'INJECTOR'
+               wellenergy 'CRNR PRDCR' rate  ** Energy rate 'CRNR PRDCR'
+               wellenergy 'CRNR PRDCR' cum   ** Energy cum 'CRNR PRDCR'
+               wellenergy 'EDGE PRDCR' rate  ** Energy rate 'EDGE PRDCR'
+               wellenergy 'EDGE PRDCR' cum   ** Energy cum 'EDGE PRDCR'
+               blockvar verdsplpor 5 3 1
+               blockvar verdsplpor 5 3 2
+               blockvar verdsplpor 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2
+               blockvar verdsplpor 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2
+               blockvar verdsplpor 5 3 3
+               blockvar verdsplpor 5 3 4
+
+wsrf grid 10
+wprn sector 1
+wsrf sector 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 9 5 4
+*kdir *down
+**ninepoint *ij
+
+**  The triangular area of 1/8 of nine-spot pattern is covered with a
+**  9x5 grid with grid lines diagonal to the line linking the injector
+**  with the nearest producer.  These blocks are trimmed using block
+**  modifiers.
+**  In addition, a point-distributed grid is required in order to put
+**  grid nodes on the injector-producer line.  To do this, an oversized
+**  grid is specified, and then trimmed back using block modifiers.
+
+**  The interwell distance is divided into 8 equal segments, requiring
+**  ni = 9.  The third corner is a 1/4 block, and is located at j = 5.
+
+**  The nine-spot pattern is 2.5 acres in area, or 330 ft square.  The
+**  distance between injector and far producer is (330/2)*1.414 =
+**  233.3 ft, giving a block size of 233.3/8 = 29.17 ft.
+
+*di *con 29.17
+*dj *con 29.17
+*dk *kvar 10 20 25 25
+
+** One block refined to 8 levels in center
+*refine 5 3 2 *into 3 3 3
+
+*di *rg 5 3 2 *ivar 9.723333333333333 9.723333333333333 9.723333333333333
+*dj *rg 5 3 2 *con  9.723333333333333
+*dk *rg 5 3 2 *kvar 6.666666666666667 6.666666666666667 6.666666666666667
+
+*refine 5 3 2 / 1 1 1 *into 2 2 2
+*refine 5 3 2 / 1 1 1 / 1 1 1 *into 2 2 2
+*refine 5 3 2 / 1 1 1 / 2 2 2 *into 2 2 2
+*refine 5 3 2 / 1 1 1 / 2 2 2 / 2 2 2 *into 2 2 2
+*refine 5 3 2 / 1 1 1 / 2 2 2 / 2 2 2 / 2 2 2 *into 2 2 2
+
+*di *rg 5 3 2 / 1 1 1 *ivar 4.8616666666666666 4.8616666666666666
+*dj *rg 5 3 2 / 1 1 1 *jvar 4.8616666666666666 4.8616666666666666
+*dk *rg 5 3 2 / 1 1 1 *kvar 3.3333333333333333 3.3333333333333333
+
+*refine 5 3 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 *into 3 3 3
+*refine 5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 *into 3 3 3
+
+** Two adjacent blocks refined to 5 levels
+*refine 6 2 3 *into 3 3 3
+*refine 7 2 3 *into 3 3 3
+*refine 6 2 3 / 3 2 2 *into 3 3 3
+*refine 7 2 3 / 1 2 2 *into 3 3 3
+*refine 6 2 3 / 3 2 2 / 3 2 2 *into 3 3 3
+*refine 7 2 3 / 1 2 2 / 1 2 2 *into 3 3 3
+*refine 6 2 3 / 3 2 2 / 3 2 2 / 3 2 2 *into 3 3 3
+*refine 7 2 3 / 1 2 2 / 1 2 2 / 1 2 2 *into 3 3 3
+
+** Non-uniform LGR block sizes
+*di *rg 6 2 3 *ivar 4 3 2  ** In these proportions
+*dj *rg 6 2 3 *jvar 3 1 3  ** In these proportions
+*dk *rg 6 2 3 *kvar 2 4 6  ** In these proportions
+*di *rg 7 2 3 *ivar 2 3 4  ** In these proportions
+*dj *rg 7 2 3 *jvar 3 1 3  ** In these proportions (must match neighbour)
+*dk *rg 7 2 3 *kvar 3 6 9  ** In these proportions (must match neighbour)
+
+** To have heat loss, block must be on boundary on all refinement levels
+*refine 4 3 4 *into 2 2 2
+*refine 4 3 4 / 1 2 1 *into 2 2 2
+*refine 4 3 4 / 1 2 1 / 1 2 2 *into 2 2 2
+*refine 4 3 4 / 1 2 1 / 1 2 2 / 1 1 1 *into 2 2 2  ** No heat loss
+*refine 4 3 4 / 1 2 2 *into 2 2 2
+*refine 4 3 4 / 1 2 2 / 2 2 2 *into 2 2 2
+*refine 4 3 4 / 1 2 2 / 2 2 2 / 1 1 2 *into 2 2 2  ** Heat loss for k=2
+*refine 4 3 1 *into 2 2 2
+*refine 4 3 1 / 1 2 1 *into 2 2 2
+*refine 4 3 1 / 1 2 1 / 2 2 1 *into 2 2 2
+*refine 4 3 1 / 1 2 1 / 2 2 1 / 1 1 1 *into 2 2 2  ** Heat loss for k = 1
+*refine 4 3 1 / 1 2 2 *into 2 2 2
+*refine 4 3 1 / 1 2 2 / 2 1 1 *into 2 2 2
+*refine 4 3 1 / 1 2 2 / 2 1 1 / 2 1 1 *into 2 2 2  ** No heat loss
+
+*blockgroup 'bg1' ijk 3:4 4:5   1 1
+                      3   4:5   1 0
+
+** Define block group 'bg2' using block group 'bg1'
+*blockgroup 'bg2' *BG 'bg1'   *con 1
+*blockgroup 'bg2' ijk 6:7 3:4 1:2  1
+
+** Apply *REFINE to all members of a block group
+*refine *BG 'bg2'  into 12 2 2
+refine 3 3 1 into 12 2 2
+
+*null *rg 3 3 1 *ijk 1 1 2  0
+                     8 1 1  0
+
+** Cartesian block group is a subset of a locally refined grid
+sblockgroup 'bg3' 12 1 2
+   3 3 1 / 1:12 1 1:2
+end_sblockgroup
+
+sblockgroup 'bg5' 5 2 1
+   3 3 1 / 4:8 1:2 2
+end_sblockgroup
+
+sblockgroup 'bg31' 6 1 2
+   SBG 'bg3' 1:6 1 1:2
+end_sblockgroup
+
+sblockgroup 'bg32' 6 1 2
+   SBG 'bg3' 7:12 1 1:2
+end_sblockgroup
+
+
+**  Trim grid to 1/8 of an inverted 9-spot pattern
+*vamod  2  0.5    0.5  1.0  0.5
+*vamod  3  0.5    1.0  1.0  0.5     *9p  0.5  1.0
+*vamod  4  0.5    1.0  1.0  0.5     *9p  1.0  0.5
+*vamod  5  0.125  0.5  1.0  0.125   *9p  0.5  1.0
+*vamod  6  0.25   1.0  1.0  0.25    *9p  1.0  0.5
+
+*vatype *all   5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+               5 2 2 2 2 2 2 2 5
+               0 3 1 1 1 1 1 4 0
+               0 0 3 1 1 1 4 0 0
+               0 0 0 3 1 4 0 0 0
+               0 0 0 0 6 0 0 0 0
+
+*por *con 0.3
+*permi *kvar 2000 500 1000 2000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*permi *bg 'bg1' *con 0.1
+*permj *bg 'bg2' *con 0.2
+
+permk *rg 3 3 1 *con 0
+     *mod *sbg 'bg3' = 1
+          *sbg 'bg3' * 0.1
+          *sbg 'bg3' + 0.9
+
+
+permk sbg 'bg31' Ivar 100 110 120 130 140 150 
+permk sbg 'bg32' Ivar 160 170 180 190 200 210
+
+*sectornames
+   'Layer 1'  1
+   'Layer 2'  2
+   'Layer 3'  3
+   'Layer 4'  4
+   'bg3'      5
+   'bg3 west' 6
+   'bg3 east' 7
+*isector *kvar 1 2 3 4
+*isector *sbg 'bg3'  *con 5
+*isector *sbg 'bg31' *con 6
+*isector *sbg 'bg32' *con 7
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         800     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+rpt 1
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+rpt 2 copy 1
+rpt 3 copy 1
+rpt 4 copy 2
+
+*krtype *con 1
+   *mod 1:3 1:2 3:4 = 2
+        6:7 1:2 3:4 = 3
+        *bg 'bg2' = 3
+        4:5 1:2 3:4 = 2
+        *bg 'bg1' = 2
+        8:9 1:2 3:4 = 3
+*krtype *sbg 'bg3' *kvar 3 4
+
+dispi_oil 'OIL' con 0.01
+   *mod 1:3 1:2 3:4 = 0.014
+        6:7 1:2 3:4 = 0.016
+        *sbg 'bg3' = 0.011
+        *sbg 'bg3' / 1.7
+        *bg 'bg2' = 0.012
+        *bg 'bg2' + 0.008
+        4:5 1:2 3:4 = 0.017
+        *bg 'bg1' = 0.013
+        *bg 'bg1' * 1.2
+        8:9 1:2 3:4 = 0.018
+dispi_oil 'OIL' *sbg 'bg5' *jvar 0.023 0.025
+dispj_oil 'OIL' equalsi
+dispj_oil 'OIL' *sbg 'bg3' *equalsi + 0.0001
+   *mod + 0.0002
+dispj_oil 'OIL' *bg 'bg2' *equalsi - 0.0001
+   *mod + 0.0006
+dispj_oil 'OIL' *bg 'bg1' *equalsi * 1.01
+   *mod * 1.2
+dispk_oil 'OIL' equalsi + 0.03
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+*pres *con 75
+   *mod 1:3 1:2 3:4 = 77
+        6:7 1:2 3:4 = 78
+        *bg 'bg2' = 85
+        *bg 'bg2' + 8
+        4:5 1:2 3:4 = 81
+        *bg 'bg1' = 79
+        *bg 'bg1' * 1.2
+        8:9 1:2 3:4 = 82
+*pres *sbg 'bg3' *ijk 1:12 1 1:2  60
+                      9:10 1 1    61
+                      8:11 1 2    62
+                      2    1 1:2  63
+                      5:6  1 1    64
+                      6:7  1 2    65
+                      1    1 1    66
+                      3    1 2    67
+
+*temp *con 125
+*temp *sbg 'bg3' *all
+   131 132 133 134 135 136 137 138 139 140 141 142
+   143 144 145 146 147 148 149 150 151 152 153 154
+
+*sw *con 0.45
+   *mod 1:3 1:2 3:4 = 0.42
+        6:7 1:2 3:4 = 0.47
+        *bg 'bg2' = 0.2
+        *bg 'bg2' + 0.04
+        4:5 1:2 3:4 = 0.48
+        *bg 'bg1' = 0.1
+        *bg 'bg1' * 1.2
+        8:9 1:2 3:4 = 0.49
+*sw *sbg 'bg3' *ivar 0.501 0.502 0.503 0.504 0.505 0.506 0.507 0.508 0.509 0.510 0.511 0.512
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*norm     press 200 satur 0.2  temp 50
+
+*maxsteps 1  ** Verify input only
+
+
+
+*run
+
+**  ==============  RECURRENT DATA  ======================
+
+** Project starts on December 18, 1978
+date 1978 12 18.5
+
+   dtwell 1
+
+                                               **           3
+   well 1 'INJECTOR'    vert 1 1  frac .125    **         o o o
+   well 2 'CRNR PRDCR'  vert 9 1  frac .125    **       o o o o o
+   well 3 'EDGE PRDCR'  vert 5 5  frac .25     **     o o o o o o o
+   well 4 'Observe 1'                          **   1 o o o o o o o 2
+   well 5 'Observe 2'
+
+   injector mobweight 'INJECTOR'
+   incomp water 1.0  0.0
+   tinjw 450
+   qual .7
+   operate     bhp 1000
+   operate max stw 300
+   perfv 'INJECTOR'
+            **  k  wi        ** Inject only in the bottom layer
+                4  106466.42 ** .007082*k*h / ln(cc*sqrt((dx**2+dy**2)/pi)/rw)
+                             ** k = 2000 md, h = 25 ft, dx = dy = 29.17 ft,
+                             ** cc = 0.249, rw = 0.3 ft
+
+   producer 'CRNR PRDCR' 'EDGE PRDCR'   ** Both producers have these attributes
+   operate     bhp    17
+   operate max stl    1000
+   operate max steam  10    ** Steam CWE in bbl/day
+   perfv 'CRNR PRDCR' 'EDGE PRDCR'
+               **  k   wi
+                   1   42586.566
+                   2   21293.283
+                   3   53233.208
+                   4  106466.42
+
+   producer 'Observe 1'
+   operate bhp 17
+   perf 'Observe 1'
+      5 3 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2 / 2 2 2  1.
+
+   producer 'Observe 2'
+   operate bhp 17
+   perf 'Observe 2'
+      6 2 3 / 3 2 2 / 3 2 2 / 3 2 2 / 3 2 2  1.
+      7 2 3 / 1 2 2 / 1 2 2 / 1 2 2 / 1 2 2  1.
+
+   shutin 'Observe 1' 'Observe 2'
+
+time 1095
+
+time 3650
+stop

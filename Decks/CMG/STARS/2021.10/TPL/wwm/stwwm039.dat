@@ -1,0 +1,337 @@
+
+*****************************************************************************  
+** Template: Fluid Redistribution through a Communicating Well             **
+*****************************************************************************
+**************************************************************************************
+** FILE : STWWM039.DAT                                                              **
+**                                                                                  **
+** MODEL: FOAM ASSISTED WAG PROCESS IN THE NORTH SEA        22x1x20 CARTESIAN GRID  **  
+**        MULTIPLE RELATIVE PERMEABILTY CURVES FOR FOAM     SI UNITS                **
+**        TWO SEPERATE RESERVOIRS COMMUNICATING THROUGH AN INJECTOR RUNNING ON:     **
+**        (1) Low STG rate, and/or                                                  **
+**        (2) Low DWB (PI-weighted average drawdown), or                            **
+**        (3) MODELSHUT (Shutin above formation)                                    **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**   "Simulation of WAG and Gas Injection with Potential Sweep                      **
+**    Improvement by Apllication of Foam", L.M. Surguchev et al,                    **
+**    paper presented at the Eighth European Symposium on IOR,                      **
+**    May 15-17,1995, Vienna, Austria                                               **
+**                                                                                  **
+**    2D model of generic north sea reservoir                                       **
+**    Empirical foam model for surfactant assisted water-alternating-gas            **
+**    Cross section 1000m * 200m * 60m                                              **
+**                                                         Based on stwwm020.dat    **
+**************************************************************************************
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 39'
+*TITLE2 'Fluid Redistribution in a Communicating Well'
+*TITLE3 'Modelshut, Drawdown, Low rate'
+
+*OUTUNIT *SI **EXCEPT 3 3
+
+*OUTPRN *GRID *PRES *SW  *SO *SG *KRG
+              *ADSORP *KRINTER *CAPN
+              *MASFR *ADSPCMP   **SPECIAL ADSORPTION COMPONENT (MASS FR)
+*OUTSRF *GRID *PRES *SW *SO *SG *KRG *VELOCRC
+
+*OUTPRN *WELL all ***WELLCOMP
+*OUTSRF *WELL ** MOLE
+*OUTPRN *ITER *NEWTON           ** TSS
+*WRST 1000
+*WPRN *GRID 1000
+*WSRF *GRID 10
+*WPRN *ITER 1
+
+
+**         GRID AND RESERVOIR DEFINITION
+**         ==============================
+*GRID *CART 22 1 20 **TWO DIMENSIONAL GRID
+*KDIR *DOWN
+*DEPTH *TOP 22 1 1 2500.139
+*DIP 8 0
+*DJ *CON 200
+*DI *IVAR 2 3 5 10 30 50 100 100 100  40  20 40   100 100 100 100 50 30 10 5 3 2
+*DK *KVAR 20*3
+*POR *IJK
+  1:22 1 1:10  0.25
+  1:22 1 11:20 0.20
+*PERMI *KVAR 10*2000. 10*200.
+*PERMJ *KVAR 10*2000. 10*200.
+*PERMK *KVAR 10*1000. 10*100.  **top: Kv/Kh = 0.5 ** bottom: Kv/Kh = 0.5
+**TRANSK *IJK 1:22 1 11 0.001  ** 1.  
+*NULL  IJK   1:22 1 11 0
+  
+*END-GRID
+
+*PRPOR 3000.    **kPa - 300 bar - reservoir pressure
+*CPOR 1.2E-05   **Rock Compressibilty at 280 bars
+                                                                           
+
+**         FLUID DEFINITIONS
+**         =================
+*MODEL 4 4 4 2 ** TWO AQUEOUS, OIL AND GAS (CH4) COMPONENTS  ** 0 - Default values for water
+
+*COMPNAME    'WATER'     'SURFACT'    'OIL'        'GAS'
+**           -------     --------    --------     --------
+*CMM           0.        0.23        0.072        0.016      ** MOLECULAR MASS Kg/gm MOLE
+*MOLDEN        0.        2330.       1.185E+04    7.97E+03   ** MOLAR DENSITY gmol/m3 
+*CP            0.        1.6E-05     1.25E-05     1.25E-05   ** LIQUID COMPRESSIBILITY 1/kPa 
+*TCRIT         0.         527.       486.7       -82.8       ** CRITICAL TEMPERATURE C
+*PCRIT         0.         144.       1213.8       4600.0     ** CRITICAL PRESSURE  kPa
+*AVG           0.         0.01         0.        1.737E-04
+*BVG           0.           0.         0.        7.478E-01   
+*KV1           0            0          0         .3572E+05
+*KV2           0            0          0           0
+*KV3           0         1.0E-06     1.E-06      1.947
+*KV4           0            0          0        -1.959E+02
+*KV4           0            0          0        -273.15
+**KV5          0            0          0        -273.15 **For correction replace the above line with this.
+
+*SOLID_DEN 'SURFACT' 535.9 0 0  ** Mass density based on 2330 gmole/m3
+
+*VISCTABLE ** values appropriate for 100 degrees C
+** TEMP(C)  WATER      SURF   OIL    GAS
+   85       0.5        0.5    1.13   0.126
+  121       0.5        0.5    1.13   0.126
+
+
+**         ROCK FLUID PROPERTIES
+**         =====================
+** FOAM MOBILITY REDUCTION IN RELATIVE PERMEABILITY EFFECTS WHICH ARE FLOW DEPENDENT
+** ---------------------------------------------------------------------------------
+*ROCKFLUID
+*KRTYPE *CON 1     ** Default curves which can be changed with well cards
+
+
+** ======================================================================
+*RPT 1   ** Curves for foam with gas into surfactant brine (higher MRF)   
+** ======================================================================
+
+** Interpolation between 2 Sets : Zero and Strong Foam Curves
+** Capillary Number Calculation is based on Aqueous surfactant IFT
+** Specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE **AQUEOUS MOLE FRAC    IFT
+                0.              50.
+                0.003           1.
+
+** CRITICAL FOAM PARAMETERS
+
+*FMMOB 100.                ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+
+
+** SET # 1 : No Foam, Corresponding to No Surfactant
+** ==================================================
+*KRINTRP 1
+*DTRAPW 1.0  ** No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+
+*KRGCW 0.1
+
+** SET # 2 : Foam, Corresponding to High Surfacatnt Concentration
+** ======================================================================
+
+*KRINTRP 2 *COPY 1 1 ** Copy from first Set and then overwrite
+*DTRAPW 0.01          ** Strong Foam - Inverse Mobility Reduction Factor (MRF = 100)
+
+*KRGCW 0.001   **Original Krgcw 1/100
+
+** ======================================================================
+*RPT 2 ** Curves for Foam with Surfactant Brine into Gas (lower MRF)    
+** ======================================================================
+
+** Capillary Number Calculation is based on aqueous surfactant IFT
+** specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE  **AQ MOLE FRAC    IFT
+              0.             50.
+              0.003          1.
+
+*FMMOB 10.                 ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+
+** SET # 3 : No Foam, Corresponding to no Surfactant
+** ======================================================================
+
+*KRINTRP 1
+*DTRAPW   1.  **No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+
+*KRGCW 0.1
+
+
+** SET #4 : Foam, Corresponding to High Surfactant Conc.
+** =============================================================
+*KRINTRP 2 *COPY 1 1 **Copy from first Set then overwrite.
+*DTRAPW 0.1  **Strong Foam Inverse Mobilty Reduction Factor (MRF=10.)
+
+*KRGCW 0.01   **Original Krgcw 1/10
+
+
+** ADSORPTION DATA
+** ---------------
+*ADSCOMP 'SURFACT' WATER ** Data for revesible aqueous surfactant adsorption.
+*ADMAXT 1.088  ** gmole surf/m3 PV - 0.05 mg surf/g rock ** 54.4
+*ADSLANG *TEMP
+   85.    130E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 85
+   121.   129E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 121
+
+
+
+
+** =========== INITIAL CONDITIONS ===================
+
+*INITIAL
+*TEMP *CON 100. 
+*VERTICAL *DEPTH_AVE  **Gravity Equilibrium calculation
+*REFPRES 30000          **kPa - 300 bar
+*REFDEPTH 2500.139
+*DWOC 2700.
+*DGOC 2400.
+*MFRAC_WAT 'WATER' *CON 1
+*MFRAC_OIL 'OIL' *CON 0.598
+*MFRAC_OIL 'GAS' *CON 0.402
+*MFRAC_GAS 'GAS' *CON 1  
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+*NUMERICAL            
+*TFORM *ZT
+*ISOTHERMAL
+*NORM
+*PRESS 200 *ZO 0.2  *ZNCG 0.2  *ZAQ 0.2
+
+
+
+** ===================== Recurrent Data ==================
+
+*RUN
+*TIME 0
+*DTWELL 0.1  
+*KRSWITCH 1         ** Second curves can be changed with well cards
+
+
+
+*WELL 1 'INJECTOR-1'
+*WELL 2 'CONNECTOR-2' 
+*WELL 3 'PRODUCER-3' 
+
+*INJECTOR *MOBWEIGHT 'INJECTOR-1'
+*INCOMP *WATER 1.0 0 0 0
+*OPERATE *STW 1200.0
+*OPERATE *DWN 4580.0          ** Drawdown constraints (*DWN/*DWA/*DWB)
+
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'INJECTOR-1'
+  1 1  12:20   1.0
+
+
+*PRODUCER 'PRODUCER-3'
+*OPERATE *STL 1500. ** Sm3/d
+*OPERATE *MIN *BHP 10000. **kPa - 100 bar
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'PRODUCER-3'
+ 22  1      1   200  flow-to 'SURFACE'  
+ 22  1      2   200  flow-to  1         ** 2
+ 22  1      3   200  flow-to  2         ** 3
+ 22  1      4   200  flow-to  3         ** 4
+ 22  1      5   200  flow-to  4         ** 5
+ 22  1      6   200  flow-to  5         ** 6
+ 22  1      7   200  flow-to  6         ** 7
+ 22  1      8   200  flow-to  7         ** 8
+ 22  1      9   200  flow-to  8         ** 9
+ 22  1     10   200  flow-to  9         ** 10
+ 20  1      4   200  flow-to  4         ** 11
+ 19  1      4   200  flow-to 11         ** 12
+ 18  1      4   200  flow-to 12         ** 13
+ 17  1      4   200  flow-to 13         ** 14
+ 16  1      4   200  flow-to 14         ** 15
+
+
+*XFLOW-MODEL 'CONNECTOR-2' *FULLY-MIXED
+
+*INJECTOR *MOBWEIGHT 'CONNECTOR-2'
+*INCOMP *GAS 0 0 0 1                       ** Communicating well: tests running on
+**OPERATE *STG 10.0                        ** (1) low STG rate, and/or
+*OPERATE *DWB 2.0                          ** (2) low DWB rate, or
+
+*GEOMETRY *K     0.108  0.249  1.0   2.0
+*PERF *GEO 'CONNECTOR-2'
+  11  1  1:20  1.0
+
+
+**MODELSHUT 'CONNECTOR-2' *ON              ** (3) Shutin above formation (modelshut)
+**SHUTIN 'CONNECTOR-2'
+
+*TIME 100.
+
+*TIME 300.
+
+*TIME 600.
+
+*TIME 800.
+*STOP 
+

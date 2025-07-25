@@ -1,0 +1,168 @@
+   ******************************************************************************
+   ** mxsmo009.dat:                Oil-Water (two-phase) Model                 **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO009.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3       MODIFIED SPE 1         TWO-PHASE (OIL-WATER TWO EQUATIONS) **
+   **                                                                                  **       
+   **************************************************************************************
+   **                                                                                  **
+   ** Based on the 1st SPE Comparative Solution Project, a gas  injection  model, with ** 
+   ** the number of equation to be solved changed from 3  to 2  (oil-water, two-phase) **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   **************************************************************************
+   ** I/O Control Section
+   **************************************************************************
+
+   *TITLE1
+   'Two Phase (Oil/Water) Test Problem'
+   *TITLE2
+   '2-phase test based on SPE 1 Geometry'
+
+   *INUNIT *FIELD
+
+   *WPRN   *WELL 10
+   *WPRN   *GRID *TIME
+   *WPRN   *ITER *BRIEF
+
+   *OUTPRN *GRID *SO *SW *PRES *OILPOT *BPP
+
+   *WSRF   *GRID 10
+   *OUTSRF *GRID *SO *SW *PRES *OILPOT *BPP
+   *WSRF   *WELL 1 
+
+
+   **************************************************************************
+   ** Reservoir Description Section
+   **************************************************************************
+   *GRID  *CART 10   10    3       ** Rectangular grid with 10 grid blocks
+                                   ** in I (x) direction, 10 grid blocks in
+                                   ** J (y) direction and 3 layers in K (z)
+                                   ** direction
+   *DI *CON                        ** I and J direction block dimensions
+       500.0                       ** are constant and same at 500 ft.
+   *DJ *CON                        ** K direction block dimensions are
+       500.0                       ** constant throughout a layer but differ
+   *DK *KVAR                       ** between layers.  Notice that the 
+        50.0 30.0 20.0             ** K layer is at the bottom of the 
+                                   ** reservoir.
+   *DEPTH 1 1 1 2000.0             ** Depth measured to the top of the first
+                                   ** grid block from the bottom of the 
+                                   ** reservoir.
+   *POR *CON                       ** Porosity is constant throughout.
+        0.300   
+
+   *CPOR   3.0000E-6
+   *PRPOR 14.7                                                           
+
+   ** Each of I, J, and K permeabilities are constant through each layer
+   ** but vary between the 3 layers.  This is why *KVAR is used.
+   *PERMI *KVAR        
+      200.0   50.0  500.0
+   *PERMJ *KVAR
+      200.0   50.0  500.0
+   *PERMK *KVAR
+       20.0  200.0  200.0      
+
+   
+   *MODEL *OILWATER                ** Two phase (2 equations solved)
+   **************************************************************************
+   ** Component Property section
+   **************************************************************************
+   *PVT
+   **  p      rs     bo     eg    viso    visg
+      515.0  180.0  1.21   159.0  0.91    0.0112      
+
+   *DENSITY *OIL    46.2
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.2
+
+   *CO      1.9174E-5
+   *CVO     4.6E-5
+   *BWI     1.04
+   *CW      3.04E-6
+   *REFPW   14.7
+   *VWI     0.31
+   *CVW     0.0  
+
+
+   *ROCKFLUID
+   **************************************************************************        
+   ** Rock-fluid Proprty section
+   **************************************************************************
+   *RPT
+   *SWT
+   **  sw      krw      krog      
+      0.12     0.0      1.0
+      0.88     1.0      0.0     
+                    
+
+   *INITIAL
+   **************************************************************************
+   ** Initial Conditions Section
+   **************************************************************************
+   *USER_INPUT
+   *PRES *CON
+     4800.0
+   *SO  *CON
+        0.88
+   *PB *CON  515.0   
+
+
+   *NUMERICAL
+   **************************************************************************
+   ** Numerical Methods Control Section
+   **************************************************************************
+   *DTMAX     250.
+   *NORM *PRESS 1000.
+   *NORM *SATUR    0.2
+   *AIM *THRESH  0.25  0.25   
+
+
+   *RUN
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   *DATE  1986  02  26
+   *DTWELL  1.00
+
+
+   *WELL 1 'Injector'
+   *WELL 2 'Producer'          
+
+   *INJECTOR  *MOBWEIGHT 1         ** Well 1 is defined as a mobility 
+   *INCOMP *WATER                  ** weighted water injector
+   *OPERATE *MAX *STW   20000.           
+   *OPERATE *MAX *BHP    8000.  *STOP   
+
+   *MONITOR *MIN *STW    1000.  *SHUTIN     
+   *MONITOR *BACKFLOW           *STOP
+   **            rad   geofrac   wfrac     skin
+   *GEOMETRY *K  0.25    0.34    1.0       0.0  
+   *PERF *GEO 1                             
+   ** if     jf     kf     ff                         
+      1      1      1      1.0   
+
+   *PRODUCER 2                     ** Well 2 is defined as an oil producer
+   *OPERATE *MAX *STO 20000.       ** by choosing the primary operating
+                                   ** constraint to be oil rate.
+   *OPERATE *MIN *BHP  1000.
+   *MONITOR *MIN *STO  1000.   *STOP
+   *MONITOR *BACKFLOW          *STOP
+   *MONITOR *WCUT      1.000   *STOP
+   **            rad   geofrac   wfrac     skin
+   *GEOMETRY *K  0.25   0.34     1.0       0.0  
+   *PERF *GEO 2           
+   ** if     jf     kf     ff                         
+      10     10     3      1.0   
+
+   *TIME 10950.0                                
+   *STOP

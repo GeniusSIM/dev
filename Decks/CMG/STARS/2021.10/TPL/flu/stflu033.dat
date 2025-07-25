@@ -1,0 +1,534 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate *INIT_FROM_RESTART by running the STFLU025 data
+**    after 1500 days, after getting initial conditions from STFLU024 restart.
+
+**    This is based on case STFLU025 with the following modifications:
+**       1) *FILENAME, *RESTIME and *INIT_FROM_RESTART added.
+**       2) Starting date changed to 1992/12/27 which corresponds to the
+**          end of STFLU024 (1500 days).
+**       3) Remaining *TIME data changed to corresponding *DATE data (e.g.,
+**          "*TIME 3300" becomes "*DATE 1997 12 01".
+**       4) Remove recurrent data not used after 1992/12/27 (cycles 1 to 6).
+
+**    Compared the results of STFLU033 and STFLU025 at the end of the run (1997/12/01).
+**    The following should be the same or similar:
+**       1) Material Balance:  "Current Total" of all components and energy;
+**                             all columns of components with zero "Initial Total".
+**       2) Conditions in all blocks (e.g., pressure, saturations).
+**       3) Rates for all wells present in both runs.
+**       4) Accumulations for wells not used in STFLU025 before 1992/12/27.
+
+
+
+** ==== INPUT/OUTPUT CONTROL ============================
+
+RESULTS SIMULATOR STARS
+
+** Get *INIT_FROM_RESTART info from this run at this time
+*FILENAME *INDEX-IN 'stflu024'
+*RESTIME 1500
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #33'
+*TITLE2 'Test/Illustrate *INIT_FROM_RESTART'
+*TITLE3 'Mimic STFLU025 - Initial Conditions from STFLU024'
+
+*INUNIT *SI 
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *X ** *Y 
+*OUTPRN *ITER NEWTON **UNCONV
+
+*OUTPRN *WELL *WELLCOMP
+*WPRN *ITER 1
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *X **TRMI *TRMJ *TRMK ** *Y 
+
+
+** ========= RESERVOIR DESCRIPTION ====================================
+*GRID *CART 18 9 1
+*KDIR *DOWN
+*DI *IVAR 30. 40. 40. 30. 40. 40. 30. 40. 40. 30.
+          40. 40. 30. 40. 100. 200. 400. 1e+03
+*DJ *JVAR  2.  2.  4.  8.  20.   8.   4.  2.  2.  
+*DK *CON 21.
+**      key     v            ai       aj        ak         ai-       aj-      ak-
+*VAMOD  2      0.2500000 0.5000000 0.5000000 0.2500000 0.5000000 0.5000000 0.2500000
+*VAMOD  3      0.5000000   1.00000 0.5000000 0.5000000   1.00000 0.5000000 0.5000000
+*VAMOD  4      0.5000000 0.5000000   1.00000 0.5000000 0.5000000   1.00000 0.5000000 
+*VAMOD  5        0.5E+03   0.50000   1.0E+03   0.5E+03   0.50000   1.0E+03   0.5E+03
+*VAMOD  6        1.0E+03   1.00000   1.0E+03   1.0E+03   1.00000   1.0E+03   1.0E+03
+*VATYPE  *CON 1
+         *MOD 1    1    1  = 2
+              1    9    1  = 2
+              1    2:8  1  = 3
+              2:17 1    1  = 4
+              2:17 9    1  = 4 
+              18   1    1  = 5
+              18   9    1  = 5
+              18   2:8  1  = 6
+
+*POR   *CON 0.25
+*PERMI *CON 1000
+*PERMJ *CON 1000
+*PERMK *CON 100
+
+*END-GRID
+
+*PRPOR 2750.
+*CPOR 3.E-06 
+                                              
+                                             
+** ==============  Thermal and heatloss properties of the rock
+*ROCKCP 2.35E+06  0.   
+*THCONR 6.E+05
+*THCONW 5.35E+04
+*THCONO 1.2E+04
+*THCONG 3.2E+03  
+**         *THCONMIX *COMPLEX
+*HLOSST 16.
+*HLOSSPROP  *OVERBUR     2.350e6   1.496e5    
+*HLOSSPROP  *UNDERBUR    2.350e6   1.496e5     
+                        
+
+** ============= COMPONENT PROPERTIES ==================================
+*MODEL        7  6   4   1
+*COMPNAME 'water'  'bitumn'    'ch4'    'co2'   'co/n2'  'oxygen' 'coke'
+*CMM     0.01802     0.508    0.016    0.044     0.028     0.032  0.0174
+*PCRIT   21977.0     861.0   4585.0   7353.0    3384.0    5030.0 
+*TCRIT     374.3      659.    -82.0     30.0    -147.0    -120.0 
+*KV1         0.         0. 545468.3 119950.0  
+*KV2         0.         0.      0.0      0.0 
+*KV3         0.         0.      0.0     4.55
+*KV4         0.         0.  -879.84   -236.8
+*KV5         0.         0.  -265.00    -79.1
+*MOLDEN      0.      1960.  59199.7  18103.6
+*CP          0.     1.E-06   1.E-06   1.E-06
+*CT1         0.   848.E-06 848.E-06 848.E-06
+
+*SOLID_DEN 'coke' 1740 0 0
+*SOLID_CP  'coke' 17.0   0
+
+*AVG    .000017  .00010573  .00010573 .0001070  .0003213  .0003355
+*BVG      1.116      0.820     0.8126   0.8655    0.7020     0.721    
+
+*CPL1       0.0     1060.0      19.25    19.79     31.14     28.10
+*CPL2       0.0        0.0     .05211    .0734   -.01356 -.0000037
+*CPL3       0.0        0.0   .0001197  .000056 .00002678 .00004745
+*CPL4       0.0        0.0  -1.131e-8 1.715e-8 -1.167e-8 -1.065e-8 
+
+*HVR        0.0        0.0        0.0      0.0 
+*EV         0.0        1.0       0.38     0.38    
+
+*XNACL 0.
+*PRSR 2750.
+*TEMR 16.
+*PSURF 101.
+*TSURF 16.
+
+*VISCTABLE
+** temp,(visc(i), i=1,numx)     ** unusual co2 contribution is fitted 
+ 10.00000   0.0  3.4090e+5   4391.000    2.059
+ 20.00000   0.0    77000.0    335.000    2.099
+ 30.00000   0.0    21570.0   53.20000    2.138
+ 40.00000   0.0   7222.000   14.00000    2.178
+ 50.00000   0.0   2806.000    5.21000    2.217
+ 60.00000   0.0   1235.000    2.45000    2.256
+ 70.00000   0.0    604.000    1.36000    2.294
+ 80.00000   0.0    323.000  0.8440000    2.333
+ 90.00000   0.0    186.000  0.5700000    2.371
+  100.000   0.0    114.000  0.4100000    2.409
+  200.000   0.0    6.81000  0.0838800    2.780
+  300.000   0.0    1.98000  0.0600000    3.140
+  400.000   0.0  0.9770000  0.0561700    3.494
+  500.000   0.0  0.6190000  0.0553200    3.844
+  600.000   0.0  0.4540000  0.0550900    4.192
+  700.000   0.0  0.3660000  0.0550200    4.539
+  800.000   0.0  0.3140000  0.0549900    4.887
+  900.000   0.0  0.2820000  0.0549800    5.236
+ 1000.000   0.0  0.2610000  0.0549800    5.586
+ 2000.000   0.0  0.2070000  0.0549800    9.258
+                                              
+** Chemical Reactions  
+** ====== REACTION 1   Bitumen ---> CH4 + COKE 
+*STOREAC    0.0         1.0      0.0        0.0      0.0      0.0     0.0
+*STOPROD    0.0         0.0     10.0        0.0      0.0      0.0     20.0
+**FREQFAC  1.296E+3
+*FREQFAC  1.296E+19
+*EACT  2.463e5
+*RENTH  -6.86E+06
+*RPHASE  0 2 0 0 0 0 0
+*RORDER  0 1 0 0 0 0 0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 1500.
+
+** ====== REACTION 2   Bitumen + O2 ---> H2O + CH4 + CO2 + CO/N2  + COKE
+*STOREAC    0.0         1.0      0.0        0.0      0.0      16.0     0.0
+*STOPROD    12.5        0.0      5.0        9.5      1.277    0.0      15.0
+*FREQFAC  4.56E+9
+*EACT     8.41e4
+*RENTH    6.29E+06
+*RPHASE  0  2  0  0  0  3   0
+*RORDER  0  1  0  0  0  0.5 0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 250.
+*RXCRITCON 'oxygen' 1
+
+** ====== REACTION 3   COKE + O2 ---> H2O + CO2 + CO/N2
+*STOREAC    0.0         0.0      0.0        0.0      0.0      1.225    1.0
+*STOPROD    0.5         0.0      0.0        0.95     0.2068   0.0      0.0
+*FREQFAC  2.28E+05
+*EACT    5.478E+04
+*RENTH   5.58E+05
+*RPHASE  0 0 0 0 0 3   4
+*RORDER  0 0 0 0 0 1.0 1.0
+*O2PP
+*RTEMLOWR 6.86
+*RTEMUPR 1500.
+
+
+** ======= ROCK-FLUID PROPERTIES ==========================  
+*ROCKFLUID                           
+
+*SWT               
+**water-oil system
+**      sw        krw       krow         pc
+    0.3210     0.0000     1.0000     0.0000
+    0.4560     0.0018     0.7080     0.0000
+    0.5705     0.0100     0.4300     0.0000
+    0.6236     0.0200     0.2660     0.0000
+    0.6713     0.0330     0.1520     0.0000
+    0.7158     0.0530     0.0670     0.0000
+    0.7585     0.0730     0.0330     0.0000
+    0.8011     0.1130     0.0130     0.0000
+    0.8200     0.1200     0.0000     0.0000
+*SLT
+**gas-liquid system
+**      sl        krg       krog         pc
+    0.5010     0.0380     0.0000     0.0000
+    0.5322     0.0260     0.0160     0.0000
+    0.5867     0.0200     0.0500     0.0000
+    0.6367     0.0150     0.1000     0.0000
+    0.6886     0.0100     0.1500     0.0000
+    0.7415     0.0070     0.2200     0.0000
+    0.7934     0.0045     0.3000     0.0000
+    0.8452     0.0026     0.4400     0.0000
+    0.8970     0.0016     0.6000     0.0000
+    0.9280     0.0006     0.8400     0.0000
+    0.9389     0.0003     0.9300     0.0000
+    0.9500     0.0000     1.0000     0.0000
+
+
+** ============== INITIALIZATION =================================
+
+*INITIAL
+
+*INIT_FROM_RESTART
+
+
+
+** ============  NUMERICAL CONTROL ================================
+
+*NUMERICAL
+*NORM  *PRESS 2000.000   *SATUR 0.250 *TEMP 50.00  *Y .300   *X  0.30  *W  0.30
+*TFORM *SXY
+*DTMAX 20.
+
+
+
+** ============  RECURRENT DATA  =================================
+
+*RUN
+
+*DATE 1992 12 27
+
+** start of 7th cycle ====       
+
+*DTWELL 0.1
+
+** Gas Injectors
+*WELL 'well2g'
+*INJECTOR 'well2g'
+*TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+*PERF 'well2g'
+**            i      j       k    wi
+              7      9       1    0.367 **10.
+
+*WELL 'well1p'
+*PRODUCER 'well1p'
+*OPERATE  *MAX *STL  37.5
+*OPERATE  *MIN *BHP 100.
+**OPERATE  *STL 0.75 *STOP
+*PERF 'well1p'
+**            i      j       k    wi
+              1      9       1    1.4659e3  **.125
+
+*WELL 'well3p'
+*PRODUCER 'well3p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well3p'
+**            i      j       k    wi
+             13      9       1    2.9319e3  **.250
+
+*WELL 'well4p'
+*PRODUCER 'well4p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well4p'
+**            i      j       k    wi
+              4      1       1    2.9319e3  **.250
+
+*WELL 'well5p'
+*PRODUCER 'well5p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100.
+*PERF 'well5p'
+**            i      j       k    wi
+             10      1       1    2.9319e3  **.250
+
+** Transmissibility multipliers for row 9
+*TRANSI  *CON 0.75 
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSJ  *CON 0.75
+         *MOD 1:16 9:9 1:1 = 1.
+*TRANSK  *CON 1.
+
+*PTRANSI *CON 2.666
+         *MOD 1:16 9:9 1:1 = 30000.
+*PTRANSJ *CON 2.666
+         *MOD 1:16 9:9 1:1 = 1.
+*PTRANSK *CON 1.               
+
+*PFRAC   *CON 1750.
+         *MOD 1:16 9:9 1:1 = 8000.
+*PFRACF  *CON 6750.
+         *MOD 1:16 9:9 1:1 = 10000.    
+
+   *OUTPRN *GRID *PRES *SW *SO *SG *TEMP *X ** *Y 
+
+*DATE 1993 01 01
+
+** Cycle 7 Air Injection
+
+*INJECTOR 'well2g'
+*INCOMP *GAS  0. 0. 0. 0. 0.01 0.99 
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1993 02 10
+
+*SHUTIN 'well2g'
+
+*WELL 'wel2w'
+*INJECTOR 'wel2w'
+*TINJW 40.
+*QUAL 0. 
+*INCOMP *WATER 1. 0. 0. 0. 
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STW  150.
+*PERF 'wel2w'
+**            i      j       k    wi
+              7      9       1    0.1
+
+*PRODUCER 'well1p'
+*OPERATE  *MAX *STL  37.5
+*OPERATE  *MIN *BHP 100.  
+*OPERATE *MAX *STG 1250.  
+
+*PRODUCER 'well3p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+
+*PRODUCER 'well4p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+
+*PRODUCER 'well5p'
+*OPERATE  *MAX *STL  75.
+*OPERATE  *MIN *BHP 100. 
+*OPERATE *MAX *STG 2500.  
+
+*DATE 1993 03 27
+
+*SHUTIN 'wel2w'
+*OPEN 'well2g'
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1993 04 01
+
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1993 05 11
+
+*SHUTIN 'well2g'
+*OPEN 'wel2w'
+
+*DATE 1993 06 25
+
+*SHUTIN 'wel2w'
+
+*DATE 1994 03 22
+
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   **Cycle 8 air injection
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1994 03 27
+
+*DTWELL 0.1             
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1994 05 06
+
+*DTWELL 0.1
+
+*DATE 1994 06 20
+
+*DTWELL 0.1               
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1994 06 25
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1994 08 04
+
+*DTWELL 0.1
+
+*DATE 1994 09 18
+
+*SHUTIN 'well2g'
+*DTWELL 0.1
+
+*DATE 1995 06 15
+
+*OPEN 'well2g'
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   ** Cycle 9 Air Injection
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1995 06 20
+
+*DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1995 09 13
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21 
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1995 09 18
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99
+TINJW 16.
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1995 10 28
+
+*DTWELL 0.1
+
+*DATE 1995 12 12
+
+*SHUTIN 'well2g'
+
+   *WRST *TNEXT
+
+*DATE 1996 09 07
+
+*OPEN 'well2g'
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   ** Cycle 10 Air Injection
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1996 09 12
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+INCOMP *GAS 0. 0. 0.  0. 0.01  0.99   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1996 10 22
+
+*DTWELL 0.1
+
+*DATE 1996 12 06
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.79  0.21   
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1996 12 11
+
+  *DTWELL 0.1
+*INJECTOR 'well2g'
+TINJW 16.
+*INCOMP *GAS 0. 0. 0.  0. 0.01  0.99  
+*OPERATE  *MAX *BHP 13000. 
+*OPERATE  *MAX *STG  25000.
+
+*DATE 1997 01 20
+
+*DTWELL 0.1
+
+*DATE 1997 03 06
+
+*SHUTIN 'well2g'
+
+*DATE 1997 12 01
+*STOP

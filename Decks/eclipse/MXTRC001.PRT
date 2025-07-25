@@ -1,0 +1,363 @@
+
+
+
+ $$$$$   $$$   $      $$$  $$$$    $$$   $$$$$     $    $$$    $$$ 
+ $      $   $  $       $   $   $  $   $  $        $$   $   $  $   $
+ $      $      $       $   $   $  $      $         $   $   $  $   $
+ $$$$   $      $       $   $$$$    $$$   $$$$      $   $   $  $   $
+ $      $      $       $   $          $  $         $   $   $  $   $
+ $      $   $  $       $   $      $   $  $         $   $   $  $   $
+ $$$$$   $$$   $$$$$  $$$  $       $$$   $$$$$    $$$   $$$    $$$ 
+
+
+
+                       $$$$$   $$$   $      $$$  $$$$    $$$   $$$$$     $    $$$    $$$ 
+                       $      $   $  $       $   $   $  $   $  $        $$   $   $  $   $
+                       $      $      $       $   $   $  $      $         $   $   $  $   $
+                       $$$$   $      $       $   $$$$    $$$   $$$$      $   $   $  $   $
+                       $      $      $       $   $          $  $         $   $   $  $   $
+                       $      $   $  $       $   $      $   $  $         $   $   $  $   $
+                       $$$$$   $$$   $$$$$  $$$  $       $$$   $$$$$    $$$   $$$    $$$ 
+
+
+
+                                             $$$$$   $$$   $      $$$  $$$$    $$$   $$$$$     $    $$$    $$$ 
+                                             $      $   $  $       $   $   $  $   $  $        $$   $   $  $   $
+                                             $      $      $       $   $   $  $      $         $   $   $  $   $
+                                             $$$$   $      $       $   $$$$    $$$   $$$$      $   $   $  $   $
+                                             $      $      $       $   $          $  $         $   $   $  $   $
+                                             $      $   $  $       $   $      $   $  $         $   $   $  $   $
+                                             $$$$$   $$$   $$$$$  $$$  $       $$$   $$$$$    $$$   $$$    $$$ 
+
+
+
+                                                                   $$$$$   $$$   $      $$$  $$$$    $$$   $$$$$     $    $$$    $$$ 
+                                                                   $      $   $  $       $   $   $  $   $  $        $$   $   $  $   $
+                                                                   $      $      $       $   $   $  $      $         $   $   $  $   $
+                                                                   $$$$   $      $       $   $$$$    $$$   $$$$      $   $   $  $   $
+                                                                   $      $      $       $   $          $  $         $   $   $  $   $
+                                                                   $      $   $  $       $   $      $   $  $         $   $   $  $   $
+                                                                   $$$$$   $$$   $$$$$  $$$  $       $$$   $$$$$    $$$   $$$    $$$ 
+ 
+ Version =  2010.1
+ Arch    =  PC WINDOWS (32 bit)
+Annex    | Modification date    | Update date          | baseline             
+=====    | =================    | ===========          | ========             
+ECLIPSE  | 28-MAY-2010 11:36:49 | 28-MAY-2010 20:43:29 | S:\2010.1_w22
+system   | 27-MAY-2010 16:14:43 | 28-MAY-2010 20:45:05 | S:\2010.1_w22
+utility  | 28-MAY-2010 11:56:05 | 28-MAY-2010 20:45:06 | S:\2010.1_w22
+ 
+
+1
+
+ ******** ECHO OF INPUT DATA FOR RUN mxtrc001
+
+ 0:    ******************************************************************************
+ 0:    ** mxtrc001.dat:    Tracking injection fluid by a tracer                    **
+ 0:    ******************************************************************************
+ 0:    **************************************************************************************
+ 0:    **                                                                                  **
+ 0:    ** FILE:                 MXTRC001.DAT                                               **
+ 0:    **                                                                                  **
+ 0:    ** MODEL:  201x1x1 Grid                                                             **
+ 0:    **                                                                                  **
+ 0:    **************************************************************************************
+ 0:    **                                                                                  **
+ 0:    ** This is a 200x1x1 cartesian grid water injection problem using minimum required  **
+ 0:    ** data input to trigger the tracer computation. For simplicity, model is single    **
+ 0:    ** phase and incompressible.                                                        **
+ 0:    **                                                                                  **
+ 0:    **                                                                                  **
+ 0:    **************************************************************************************
+ 0:    ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+ 0:    **************************************************************************************
+ 0: 
+ 0: RESULTS SIMULATOR IMEX
+ 0: 
+ 0:    ********************************************************************************
+ 0:    ** I/O Control Section                                                        **
+ 0:    ********************************************************************************
+ 0: 
+ 0:    *TITLE1
+ 0:    'IMEX Tracer Template #001'
+ 0:    *TITLE2
+ 0:    'Minimal Required Data Input for Tracer'
+ 0:    *TITLE3
+ 0:    'MID-POINT TVD Method'
+ 0: 
+ 0:    *INUNIT *FIELD
+ 0: 
+ 0:    *WPRN   *WELL   *TIME
+ 0:    *WPRN   *GRID   1
+ 0:    *WPRN   *ITER   *BRIEF
+ 0:    *OUTPRN *WELL   *BRIEF
+ 0:    *OUTPRN *RES    *ALL
+ 0:    *OUTPRN *TABLES *ALL
+ 0:    *OUTPRN *GRID   *SO *SG *PRES
+ 0: 
+ 0:    *WSRF   *GRID   1
+ 0:    *WSRF   *WELL   1
+ 0:    *OUTSRF *GRID   *SO *SG *PRES *SW
+ 0:    *OUTSRF *WELL   *LAYER *ALL *DOWNHOLE
+ 0: 
+ 0:    ********************************************************************************
+ 0:    ** Reservoir Description Section                                              **
+ 0:    ********************************************************************************
+ 0: 
+ 0:    *GRID *CART 201 1 1
+ 0: 
+ 0:    *KDIR *DOWN
+ 0: 
+ 0:    *DI *CON 5
+ 0:    *DJ *CON 5
+ 0:    *DK *CON 5
+ 0: 
+ 0:    *DTOP 201*7500.0
+ 0: 
+ 0:    *POR *CON 0.3
+ 0: 
+ 0:    *CPOR   3.0E-6
+ 0:    *PRPOR 14.7
+ 0: 
+ 0:    *PERMI *CON 100
+ 0:    *PERMJ *CON 100
+ 0:    *PERMK *CON 100
+ 0: 
+ 0:    *MODEL *BLACKOIL
+ 0:    ********************************************************************************
+ 0:    ** Component Property Section                                                 **
+ 0:    ********************************************************************************
+ 0:    *PVT
+ 0:    ** p              rs      bo          eg    viso     visg
+ 0:       14.7000   1.00000   1.06200   6.00000   1.04000 0.0080000
+ 0:       264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+ 0:       514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+ 0:      1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+ 0:      2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+ 0:      2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+ 0:      3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+ 0:      4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+ 0:      5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+ 0:      9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+ 0: 
+ 0:    *DENSITY *OIL    46.244
+ 0:    *DENSITY *GAS     0.0647
+ 0:    *DENSITY *WATER  62.238
+ 0:    *CO    1.3687E-5
+ 0:    *CVO   4.6000E-5
+ 0:    *BWI   1.0410
+ 0:    *CW    2.9886E-6
+ 0:    *REFPW 14.7
+ 0:    *VWI   0.31
+ 0:    *CVW   0.0
+ 0: 
+ 0:    *ROCKFLUID
+ 0:    ********************************************************************************
+ 0:    ** Rock-Fluid Property Section                                                **
+ 0:    ********************************************************************************
+ 0:    *RPT 1
+ 0:    *SWT
+ 0:    ** sw    krw   krow
+ 0:     0.00    0.0   1.0
+ 0:     0.10    0.1   0.9
+ 0:     1.00    1.0   0.0
+ 0: 
+ 0:    *SLT
+ 0:    **  sl     krg        krog
+ 0:       0.20    0.98        0.0
+ 0:       0.30    0.94        0.0
+ 0:       0.40    0.87        0.0001
+ 0:       0.50    0.72        0.001
+ 0:       0.55    0.6         0.01
+ 0:       0.60    0.41        0.021
+ 0:       0.70    0.19        0.09
+ 0:       0.75    0.125       0.2
+ 0:       0.80    0.075       0.35
+ 0:       0.88    0.025       0.7
+ 0:       0.95    0.005       0.98
+ 0:       0.98    0.0         1.00
+ 0: 
+ 0:    *INITIAL
+ 0:    ********************************************************************************
+ 0:    ** Initial Conditions Section                                                 **
+ 0:    ********************************************************************************
+ 0:    *USER_INPUT
+ 0: 
+ 0:    *PRES *CON 4746.
+ 0:    *SW *CON 0.2
+ 0:    *SO *CON 0.8
+ 0:    *PB *CON 15.
+ 0: 
+ 0:    *NUMERICAL
+ 0:    ********************************************************************************
+ 0:    ** Numerical Control Section                                                  **
+ 0:    ********************************************************************************
+ 0:    *DTMAX         10.
+ 0:    *NORM *PRESS  1000.0
+ 0:    *NORM *SATUR     0.10
+ 0:    *SORDER *NATURAL
+ 0: 
+ 0:    *TRACER
+ 0:    ********************************************************************************
+ 0:    ** Tracer Section                                                             **
+ 0:    ********************************************************************************
+ 0:    *TRCR-DEF
+ 0:       'trcr-inj-wel'    *W
+ 0: 
+ 0:    *TRCR-NUMSCHM *MID-POINT
+ 0:    *TRCR-DTFAC 3.0
+ 0: 
+ 0:    *RUN
+ 0:    ********************************************************************************
+ 0:    ** Well and Recurrent Data Section                                            **
+ 0:    ********************************************************************************
+ 0: 
+ 0: *DATE 1986 04 22
+ 0:    *DTWELL 0.01
+ 0: 
+ 0: *WELL 1  'prod1'
+ 0:    *PRODUCER   1
+ 0:    *OPERATE *MAX  *STW  0.01
+ 0:    **            rad    geofac  wfrac   skin
+ 0:    *GEOMETRY *K  0.25    0.34    1.0    0.0
+ 0:    *PERF *GEO 1
+ 0:    ** if     jf     kf     ff
+ 0:       1      1      1      1.0
+ 0: 
+ 0: *WELL 2  'prod2'
+ 0:    *PRODUCER   2
+ 0:    *OPERATE *MAX  *STW  0.01
+ 0:    **            rad    geofac  wfrac   skin
+ 0:    *GEOMETRY *K  0.25    0.34    1.0    0.0
+ 0:    *PERF *GEO 2
+ 0:    ** if     jf     kf     ff
+ 0:      201     1      1      1.0
+ 0: 
+ 0: *DATE 1986 08 01
+ 0: *DATE 1986 12 01
+ 0: *DATE 1987 02 01
+ 0: *DATE 1987 04 01
+ 0: *DATE 1987 08 01
+ 0: *DATE 1987 12 01
+ 0: 
+ 0: *WELL 3  'inj'
+ 0:    *INJECTOR   3
+ 0:    *INCOMP *WATER
+ 0:    *OPERATE *MAX  *STW  0.05
+ 0:    **            rad    geofac  wfrac   skin
+ 0:    *GEOMETRY *K  0.25    0.34    1.0    0.0
+ 0:    *PERF *GEO 3
+ 0:    ** if     jf     kf     ff
+ 0:       101    1      1      1.0
+ 0: 
+ 0: *TRCR-INJCONC  'inj'
+ 0:    'trcr-inj-wel' 1.0
+ 0: 
+ 0: *DATE 1988 04 01
+ 0: *DATE 1988 08 01
+ 0: *DATE 1988 12 01
+ 0: *DATE 1989 04 01
+ 0: *DATE 1989 08 01
+ 0: *DATE 1999 12 01
+ 0: *DATE 2000 12 01
+ 0: *DATE 2001 12 01
+ 0: *DATE 2002 12 01
+ 0: *DATE 2003 12 01
+ 0: *DATE 2004 12 01
+ 0: *DATE 2005 12 01
+ 0: *DATE 2006 12 01
+ 0: 
+ 0: *STOP
+
+ ******** END OF INPUT DATA FOR RUN mxtrc001
+
+ @--WARNING  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           SPURIOUS DATA BEFORE RESULTS  KEYWORD                           
+ @              *************************************************************
+ @              ** mxtrc001.dat:    Tracking injection fluid by a tracer     
+ @              *************************************************************
+ @              *************************************************************
+ @              **                                                           
+ @              ** FILE:                 MXTRC001.DAT                        
+ @              **                                                           
+ @              ** MODEL:  201x1x1 Grid                                      
+ @              *************************************************************
+     1 READING RESULTS 
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD RESULTS  MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+
+ @--WARNING  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           SPURIOUS DATA BEFORE END      KEYWORD                           
+ @              *************************************************************
+ @              ** I/O Control Section                                       
+ @              *************************************************************
+ @              *TITLE1                                                      
+ @              'IMEX Tracer Template #001'                                  
+ @              *TITLE2                                                      
+ @              'Minimal Required Data Input for Tracer'                     
+ @              *TITLE3                                                      
+ @           *STOP                                                           
+     2 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     3 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     4 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     5 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     6 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     7 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     8 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+     9 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+    10 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+    11 READING END     
+
+ @--  ERROR  AT TIME        0.0   DAYS    ( 1-JAN-   0):
+ @           THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                
+ @           THE RUNSPEC RECORD HAS BEEN READ                                
+
+ @--ERROR  RUN STOPPED BECAUSE NUMBER OF   ERRORS
+ @         EXCEEDS MAXIMUM PERMITTED VALUE (    10).
+ @         SEE MESSAGES KEYWORD.
+
+ Error summary 
+ Comments               0
+ Warnings               2
+ Problems               0
+ Errors                12
+ Bugs                   0
+ Final cpu       0.00 elapsed       0.00

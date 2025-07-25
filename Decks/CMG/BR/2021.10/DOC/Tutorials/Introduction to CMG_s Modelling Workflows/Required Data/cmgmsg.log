@@ -1,0 +1,111 @@
+2019-11-01 11:26:14     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2019-11-01 11:26:16     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2019-11-01 11:26:16     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2019-11-01 11:37:20     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2019-11-01 11:38:12     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2019-11-01 11:38:18     File: spatprop.cpp  Line: 950
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 12:15:17     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 12:17:04     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 12:24:01     File: kwfile.cpp  Line: 6728
+Cannot open file D:\Introduction to CMG\2020GR\3. Course Solution 2020GR\History Match\IMEX_TUTORIAL.DAT for writing.
+The file could be READONLY, SYSTEM, TEMPORARY, HIDDEN or
+a directory. It could be in a directory where you do not
+have write permission. Save under a different name.
+
+2020-10-07 12:24:17     File: resgbview.cpp  Line: 6003
+An unexpected error occurred while writing to D:\Introduction to CMG\2020GR\3. Course Solution 2020GR\History Match\IMEX_TUTORIAL.DAT
+
+2020-10-07 12:31:38     File: kwfile.cpp  Line: 6728
+Cannot open file D:\Introduction to CMG\2020GR\3. Course Solution 2020GR\History Match\IMEX_TUTORIAL.DAT for writing.
+The file could be READONLY, SYSTEM, TEMPORARY, HIDDEN or
+a directory. It could be in a directory where you do not
+have write permission. Save under a different name.
+
+2020-10-07 12:31:42     File: resgbview.cpp  Line: 6003
+An unexpected error occurred while writing to D:\Introduction to CMG\2020GR\3. Course Solution 2020GR\History Match\IMEX_TUTORIAL.DAT
+
+2020-10-07 16:06:33     File: proddata4.cpp  Line: 3696
+Invalid date: at row = 27.
+
+2020-10-07 16:11:39     File: proddata4.cpp  Line: 3696
+Invalid date: at row = 27.
+
+2020-10-07 16:12:52     File: proddata4.cpp  Line: 3696
+Invalid date: at row = 27.
+
+2020-10-07 16:15:55     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 16:16:18     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 16:16:18     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 16:16:20     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 16:17:45     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-07 16:24:49     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-10-08 12:35:27     File: proddata4.cpp  Line: 3508
+You have indicated well names are in columns at step 2.  So please select a column containing the well names. In case well names are given in rows (not listed as a column), then redo step 2 selections
+
+2020-10-08 12:51:47     File: proddata4.cpp  Line: 3696
+Invalid date: at row = 315.
+
+2020-11-24 16:21:58     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-24 16:22:03     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-24 16:22:09     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-24 16:23:29     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-24 16:23:31     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-24 16:27:59     File: proddata4.cpp  Line: 3508
+You have indicated well names are in columns at step 2.  So please select a column containing the well names. In case well names are given in rows (not listed as a column), then redo step 2 selections
+
+2020-11-25 14:26:39     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-25 14:26:54     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-25 14:26:56     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-25 14:38:37     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-25 14:38:40     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+
+2020-11-29 21:08:25     File: spatprop.cpp  Line: 998
+Could not find a single valid (non-null,pinchout, or zeropor) block in grid.
+

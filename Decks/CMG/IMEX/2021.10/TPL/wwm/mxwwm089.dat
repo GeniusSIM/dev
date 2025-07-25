@@ -1,0 +1,239 @@
+******************************************************************************
+** mxwwm089.dat:          Grid-less Well Template                           **
+******************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE:   MXWWM089.DAT                                                             **
+**                                                                                  **
+** MODEL:  1x1x5                    1D                         2 PHASES             **
+**         WBRANCH                  PERF-MD                    MODSI UNIT           **
+**                                                                                  **
+**************************************************************************************
+**                                                                                  **
+** A Gas Oil model to test the Grid-less well option with recurrent grid change.    **
+** Well perforations are re-constructed automatically after the grid change.        **
+**************************************************************************************
+** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+**************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+*TITLE1 'Grid-less well'
+*TITLE2 'Reconstruct perfs after a grid change'
+
+*INUNIT  *MODSI
+
+*WRST *TIME
+*WPRN *WELL     *TIME
+*WPRN *GRID     *TIME
+*OUTPRN *GRID   *SO    *SW    *PRES
+*WSRF   *WELL   *TIME
+*WSRF   *GRID   *TIME
+*OUTSRF *WELL
+*OUTSRF *GRID   *SO    *SW    *PRES
+
+*************************************
+** RESERVOIR DISCRIPTION AND GRID
+*************************************
+*GRID   *VARI  1    1    5
+
+  **CONVERT-TO-CORNER-POINT 
+
+*KDIR   *DOWN
+
+*DUALPERM
+*DI    *IVAR
+ 5.
+*DJ    *JVAR
+ 5.
+*DK    *CON
+2.0
+*DTOP  
+1280.
+*SHAPE  *GK
+*DIFRAC *CON 5
+*DJFRAC *CON 5
+*DKFRAC *CON 10
+*POR    *MATRIX    *CON
+0.15
+*POR    *FRACTURE  *CON
+0.015
+*VOLMOD *FRACTURE  *CON
+5000
+*SECTOR  *MATRIX  'M' 1:1  1:1 1:5
+*PRPOR   *MATRIX
+   1.02
+*CPOR    *MATRIX
+   .62E-6
+*PRPOR   *FRACTURE
+   1.02
+*CPOR    *FRACTURE
+   .78E-6
+*PERMI   *MATRIX *CON
+5.
+*PERMI  *FRACTURE *CON
+100000
+*PERMJ  *EQUALSI             
+*PERMK  *EQUALSI
+*************************************
+** FLUID PROPERTIES  
+*************************************
+*MODEL  *BLACKOIL
+
+*TRES   76.7
+
+*PVT  *BG   1
+1.      0     1.000  1.00000  7.41  .0111   109.4E-06
+25.    19     1.102   .04515  4.13  .0116   109.4E-06
+31     23     1.115   .03536  3.79  .0119   109.4E-06
+55     40     1.147   .01748  3.18  .0132   109.4E-06
+75     51     1.158   .01133  3.10  .0152   109.4E-06
+100    62     1.166   .00748  3.02  .0191   109.4E-06
+125    72     1.173   .00573  2.98  .0241   109.4E-06
+150    80     1.177   .00488  2.93  .0290   109.4E-06
+175    89     1.180   .00441  2.90  .0333   109.4E-06
+200    96     1.183   .00412  2.88  .0369   109.4E-06
+*PVT  *BG   2
+1.      0     1.000  1.00000  7.41  .0111   109.4E-06
+25.    19     1.102   .04515  4.13  .0116   109.4E-06
+31     23     1.115   .03536  3.79  .0119   109.4E-06
+55     40     1.147   .01748  3.18  .0132   109.4E-06
+75     51     1.158   .01133  3.10  .0152   109.4E-06
+100    62     1.166   .00748  3.02  .0191   109.4E-06
+125    72     1.173   .00573  2.98  .0241   109.4E-06
+150    80     1.177   .00488  2.93  .0290   109.4E-06
+175    89     1.180   .00441  2.90  .0333   109.4E-06
+200    96     1.183   .00412  2.88  .0369   109.4E-06
+
+
+
+
+*DENSITY  *OIL  894.0
+*DENSITY  *OIL  894.0
+*DENSITY  *GAS  1.3324
+*DENSITY  *GAS  1.3324
+*DENSITY  *WATER  1008.5
+*CVO    5.853E-03
+*BWI    1.019
+*CW     4.065E-05
+*REFPW  179
+*VWI    0.37
+*CVW    0
+
+*************************************
+** ROCK PROPERTIES    
+*************************************
+*ROCKFLUID
+*RPT 1   
+*SWT
+0.21    0.0      1.0        1.816
+0.25    0.013    0.7        1.038
+0.3     0.023    0.52       0.727
+0.35    0.042    0.378      0.519
+0.4     0.067    0.26       0.363
+0.45    0.113    0.168      0.259
+0.5     0.165    0.104      0.173
+0.6     0.32     0.024      0.069
+0.655   0.432    0.0        0.060
+1.0     1.0      0.0        0.0
+*SGT *NOSWC
+0.0     0.0      1.0        0.0510
+0.03    0.0      1.0        0.0520
+0.05    0.008    0.615      0.0524
+0.1     0.015    0.462      0.0535
+0.15    0.031    0.346      0.0546
+0.2     0.038    0.269      0.0558
+0.25    0.062    0.2        0.0569
+0.3     0.085    0.154      0.0580
+0.4     0.192    0.077      0.0602
+0.5     0.315    0.031      0.0741
+0.6     0.469    0.003      0.0994
+0.65    0.558    0.0        0.2931
+
+*RPT 2  
+
+*SWT
+0.  0.  1.
+1.  1.  0.
+*SGT *NOSWC
+0.0     0.0      1.0     0.0
+0.03    0.0      1.0     0.0
+0.05    0.008    0.615   0.0
+0.1     0.015    0.462   0.0
+0.15    0.031    0.346   0.0
+0.2     0.038    0.269   0.0
+0.25    0.062    0.2     0.0
+0.3     0.085    0.154   0.0
+0.4     0.192    0.077   0.0
+0.5     0.315    0.031   0.0
+0.6     0.469    0.003   0.0
+0.65    0.558    0.0     0.0
+ 1.    1.    0.    0
+
+*RTYPE  *MATRIX   *CON 1
+*RTYPE  *FRACTURE *CON 2
+
+*************************************
+** START INITIALIZATION   
+*************************************
+*INITIAL
+*VERTICAL *DEPTH_AVE *WATER_OIL_GAS *EQUIL
+*REFDEPTH  1285
+*REFDEPTH  1285
+*REFPRES   500.0
+*REFPRES   500.0
+*PB *MATRIX   *CON 500.0
+*PB *FRACTURE *CON 500.0
+*DWOC 2000.0  ** matrix
+*DWOC 2000.0  ** fracture
+*DGOC 1.0     ** matrix
+*DGOC 2000.0  ** fracture
+
+
+*************************************
+**  NUMERICAL CONTROL SECTION
+*************************************
+** Default all Numerical control
+*RUN
+*DATE          1998 01 01
+
+*WELL     1 'PRODUCER'
+
+
+
+*PRODUCER 1
+*OPERATE *MAX *STG 10000.0
+*OPERATE *MIN *BHP 200 **500.00    
+**             rad   geofac  wfrac  skin
+*GEOMETRY  *K  0.25   0.37    1.0    0.0 
+
+
+WBRANCH 'WB-1' ATTACHTO 'PRODUCER'
+**    x       y        z         md
+     2.5     2.5     0.0       0.0
+     2.5     2.5  1290.0    1290.0
+
+
+ *PERF-MD    GEO  1
+** Branch  MD interval     ff
+  'WB-1' 1280    1285.9 FR       1.0
+  'WB-1' 1285.9  1286   FR       1.0
+  'WB-1' 1280    1285.9 MT       1.0
+  'WB-1' 1285.9  1286   MT       1.0
+
+
+*TIME   30
+ REFINE 1:1 1:1 1:2 INTO 3 3 2
+
+
+*TIME   60
+
+*TIME   90
+*TIME   120
+*TIME   150
+*TIME   180
+*TIME   210
+*TIME   240
+*TIME   270
+*TIME   300
+*STOP

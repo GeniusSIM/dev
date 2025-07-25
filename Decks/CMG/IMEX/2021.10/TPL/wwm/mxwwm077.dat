@@ -1,0 +1,185 @@
+   ******************************************************************************
+   ** mxwwm077.dat:         Group Control with Vapor (Gas + Solvent) Rate      **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM077.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x1    PSEUDO-MISCIBLE FLOOD      GCONP MAX STV        LAB UNIT      **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This dataset uses the total surface vapor (gas + solvent) rate control for       **
+   ** a production group. Group target STV is altered later on by *GCONPMULT.          **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1    
+   'Lab Miscible Flood Experiment'
+   *TITLE2
+   'Surface Vapor Rate Group Control'
+
+   *WPRN   *WELL *TIME
+   *OUTPRN *WELL *ALL
+
+   *WSRF   *GRID   0
+   *WSRF   *WELL   5
+   *WRST   50
+
+   *INUNIT *LAB
+
+   *GRID  *CART 10 10  1
+   *********************************************************************************
+   **SECTION: RESERVOIR DESCRIPTION:                                              **
+   *********************************************************************************
+
+   *DI    *CON  2.2860     ** cm
+   *DJ    *CON  2.2860     ** cm
+   *DK    *CON  1.2700     ** cm
+
+   *DEPTH 1 1 1 1.0
+
+   *POR   *CON  0.2000
+   *PERMI *CON  10000.     ** md
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI
+
+   *CPOR        5.0000E-6 
+   *PRPOR   10788.0            ** kPa
+
+
+   *MODEL *MISCG
+   *********************************************************************************
+   **SECTION: PVT DATA:                                                           **
+   *********************************************************************************
+   *PVT
+   **  p(kPa)   rs        bo        eg     viso(mPa-s)      visg(mPa-s)
+     101.325    0.0       1.0       1.0       1.0        0.024390244    
+   11788.0   1.0d-1   1.000001  1.000001  0.999999       0.024390243   
+
+   *PVTS                                                  
+   **  p(kPa)    rss      es        viss(mPa-s)    omgos
+     101.325     0.0     1.0        0.024390244  0.687
+   11788.0       0.0    1.0000001  0.024390243   0.687 
+
+   *DENSITY *OIL      0.800    ** g/cm3
+   *DENSITY *GAS      0.00122  ** g/cm3
+   *DENSITY *WATER    1.000    ** g/cm3
+   *DENSITY *SOLVENT  0.050    ** g/cm3
+
+   *BWI         1.00000 
+   *CW          3.3000E-6
+   *CO          0.0
+   *CVO         0.0
+   *REFPW     101.325
+   *VWI         0.700          ** mPa-s
+   *CVW         0.0
+   *GORINT      0.0
+   *OMEGASG     0.780
+   *MINSS       0.2   
+
+
+   *ROCKFLUID
+   *********************************************************************************
+   ** Rock-Fluid Property Section                                                 **
+   *********************************************************************************
+   *RPT 1
+   *SWT
+   **   sw   krw    krow
+       0.0   0.0     1.0
+       0.8   0.8     0.0
+       1.0   1.0     0.0
+   *SLT
+   **   sl   krg    krog
+       0.0   1.0     0.0
+       1.0   0.0     1.0
+   
+
+   *INITIAL
+   *********************************************************************************
+   ** Initial Conditions                                                          **
+   *********************************************************************************
+   *USER_INPUT
+   *PRES     *CON 10788.      ** kPa
+   *PB       *CON 1000.       ** kPa
+   *PBS      *CON 10788.      ** kPa
+   *SW       *CON 0.0
+   *SO       *CON 1.0   
+
+
+   *NUMERICAL
+   *********************************************************************************
+   ** Numerical Control Section                                                   **
+   *********************************************************************************
+                     
+   *DTMAX  0.5184                 ** minutes
+
+   *RUN
+   *********************************************************************************
+   ** Well and Recurrent Data Section                                             **
+   *********************************************************************************
+   *DATE    1995  11  1
+   *DTWELL  0.01728     ** minutes   
+
+   *GROUP  'Group-1' *ATTACHTO 'Field'
+   *WELL 1 'Injector 1'  *ATTACHTO 'Group-1'
+   *WELL 2 'Injector 2'  *ATTACHTO 'Group-1'
+   *WELL 3 'Producer 3'  *ATTACHTO 'Group-1'
+   *WELL 4 'Producer 4'  *ATTACHTO 'Group-1'
+
+   *INJECTOR *MOBWEIGHT 1
+   *INCOMP  *SOLVENT
+   *OPERATE *MAX *STS  2.85125
+   *OPERATE *MAX *BHP  100000
+
+   *INJECTOR *MOBWEIGHT 2
+   *INCOMP  *GAS
+   *OPERATE *MAX *STG  2.85125
+   *OPERATE *MAX *BHP  100000
+
+   *PRODUCER 3
+   *OPERATE *MAX *STV 4.0
+   *OPERATE *MIN *BHP 10787.0
+
+   *PRODUCER 4
+   *OPERATE *MAX *STV 4.0
+   *OPERATE *MIN *BHP 10787.0
+
+   **                  RW,   CC,   WF,  SS
+   *GEOMETRY  *K  2.286E-01 0.34   1.0  0.0   
+
+   *PERF *GEO 'Injector 1'
+   ** i  j  k  ff
+      1  1  1  1.0
+
+   *PERF *GEO 'Injector 2'
+   ** i  j  k  ff
+      1  1  1  1.0
+
+   *PERF *GEO 'Producer 3'
+   **  i  j  k  ff
+      10 10  1  1.0
+
+   *PERF *GEO 'Producer 4'
+   **  i  j  k  ff
+      10  5  1  1.0
+
+   *GCONP  'Group-1'  *MAX *STV  3.0
+
+   *APPOR-METHOD *PROD 'Group-1' *INGUIDE
+
+   *GUIDEP  STV 3:4
+    0.2  0.8
+
+   *TIME  4.655232
+   *TIME 13.965696
+    *GCONPMULT 'Group-1' STV 1.5
+
+   *TIME 23.276160
+
+   *TIME 37.241856
+   *STOP

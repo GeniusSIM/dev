@@ -1,0 +1,232 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Verify and illustrate the usage of the initial component
+**            bubble point grid array keyword *PBC, as well as *OUTPRN/SRF
+**            *GRID keyword *BPP (K value tables).
+
+**  USAGE:    This data uses the Pbub = 0 option which sets initial bubble
+**            point pressure to block pressure, the saturation condition.
+**            An alternative *PBC line uses 225 psi.  Compare the result
+**            of this data to verify52 which uses table.
+
+**  ORIGIN:   Based on "verify51" but with K value tables generated from
+**            from K value correlation of "verify51".
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #52'
+*title2 'Verify *PBC and *BPP with K Value Tables'
+
+*inunit field   ** Output iunits the same as input
+
+*outprn *grid pres sw so sg temp y x obhloss viso bpp
+*outprn *well all
+outprn iter newton
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf grid  pres sw so sg temp bpp
+
+outsrf special blockvar bpp 2,1,2 'Soln Gas'
+               blockvar bpp 6,1,2 'Soln Gas'
+               blockvar bpp 9,1,2 'Soln Gas'
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 10 1 5  *rw 0.0  ** Radial cross-sectional grid
+                               ** Zero inner radius matches previous treatment
+*ninepoint *ik
+
+**  Logarithmic spacing in the radial direction (in feet)
+*di *ivar 0.713 1.25 2.18 3.82 6.69 11.7 20.5 35.8 62.7 109
+*dj *con 360  ** Full circle
+*dk *con 22.2
+
+*por *con 0.23
+*permi *con 41  **  Permeability is 41 md hoizontally
+*permj *equalsi
+*permk *con 53  **  Permeability is 53 md vertically
+*end-grid
+*cpor 8.8e-5
+*prpor 670
+*ctpor 5.4e-5
+*rockcp 34.5 ** in Btu/ft3-deg F
+**  Rock and fluid thermal conductivities in Btu/day-ft-deg F
+*thconr 38.16
+*thconw 8.98
+*thcono 1.67
+*thcong 0.48
+
+**  Thermal conductivity of overlying and underlying formation
+*hlossprop overbur 34.5 38.16 underbur 34.5 38.16
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 3 3 3   **  Standard water properties plus three oils
+
+*compname     'Water'   'Hevy Oil'  'Soln Gas'
+**            --------  ----------  ----------
+
+*cmm            18        378.93      16.043
+*pcrit        3217.1      149.65      361.96
+*tcrit        705.47     1107.81     -116.59
+
+*molden          0        0.1515       2.746
+*cp              0        1.5e-5      1.5e-5
+*ct1             0       5.93e-4     0.00123
+**Spec. Grav.              0.92        0.703
+
+*avg          1.169e-5   4.04e-6     6.22e-5
+*bvg           1.075      1.1027      0.8197
+*avisc           0       3.4238e-6    0.0138
+*bvisc           0       10733.6       205.9
+
+*cpl1            0        189.15       10.8
+*hvr             0          0         525.65
+*ev              0          0          0.38
+
+**  Reference conditions
+*prsr 14.65
+*temr 77
+*psurf 14.65
+*tsurf 62
+*xnacl 0.015
+
+*kvtablim 50 2250 90 690   ** Low/high p & T
+                                                                                                         
+*kvtable 'Soln Gas'                                                                                      
+
+**250		450		650		850		1050		1250		1450		1650		1850		2050		2250
+16.71319845	9.354870657	6.524744583	5.026442544	4.098922234	3.468208424	3.01148463	2.665481755	2.394290313	2.176014275	1.996542865
+26.56315942	14.86818465	10.37011743	7.988787726	6.514631242	5.512204833	4.786309847	4.236389403	3.805370677	3.458453165	3.173209878
+37.22874391	20.83802721	14.5339054	11.19642915	9.13037242	7.725453846	6.708099016	5.93737566	5.333295192	4.847084083	4.447310505
+48.13248469	26.94117288	18.79066833	14.47569534	11.80452158	9.98812342	8.672800618	7.676343949	6.895337371	6.266722321	5.749861057
+58.90883613	32.97301496	22.99769913	17.71664957	14.44742842	12.22435803	10.61454844	9.394995722	8.439130077	7.669774802	7.037193798
+69.34205461	38.81279541	27.07077264	20.85440764	17.00618169	14.38938804	12.49446851	11.0589234	9.933766428	9.028152279	8.283536201
+79.31473393	44.39479848	30.96405408	23.85365998	19.45198745	16.45885012	14.29140585	12.64940262	11.36242711	10.32656877	9.474863032
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      -----      ------      ------
+    0.514      0.0         1.0          7.2
+    0.609      0.053      0.289         2.6
+    0.629      0.067      0.249         2.2
+    0.655      0.081      0.161         1.8
+    0.670      0.092      0.120         1.6
+    0.684      0.109      0.097         1.5
+    0.690      0.116      0.088         1.4
+    0.713      0.134      0.053         1.2
+    0.724      0.151      0.041         1.2
+    0.733      0.160      0.033         1.1
+    0.744      0.175      0.026         1.0
+    0.760      0.186      0.016         1.0
+    0.773      0.204      0.010         1.0
+    0.788      0.215      0.006         1.0
+    0.797      0.220      0.0042        1.0
+    0.804      0.222      0.0032        1.0
+    0.810      0.224      0.0025        0.9
+    0.829      0.224      0.0           0.7
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg        Krog        Pcog
+**  -----      ------     ------      ------
+    0.737      0.411      0.0          26.7
+    0.761      0.310      0.035        25.7
+    0.787      0.233      0.076        25.4
+    0.803      0.185      0.109        24.7
+    0.818      0.149      0.146        24.1
+    0.841      0.111      0.235        23.4
+    0.862      0.080      0.328        22.3
+    0.878      0.054      0.383        22.0
+    0.889      0.040      0.445        21.0
+    0.906      0.021      0.516        20.0
+    0.917      0.013      0.573        19.5
+    0.924      0.0093     0.608        19.1
+    1.0        0.0        1.0          15.9
+
+*krtemtab  swr   sorw
+   104    .355   .247
+   400    .443   .198
+
+*sgr .02
+*sorg .1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*pres *con 717
+
+*sw *con 0.51   ** Get So by difference since Sg = 0
+
+*temp *con 93
+
+**pbc 'Soln Gas' *con 225      ** Bubble point pressure of 225 psi
+*pbc 'Soln Gas' *con 0         ** Saturation option
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*rangecheck *off
+*norm press 400
+*rangecheck *on
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1983 6 17.5
+
+   dtwell 1e-5
+
+   well 1 'CYC_1 INJT'
+
+   injector 'CYC_1 INJT'
+   tinjw 588
+   qual .71  ** Steam conditions at the wellhead
+   incomp  water  1.0  0.0  0.0 
+   operate stw 675
+   perf 'CYC_1 INJT'
+          ** i j k  wi
+             1 1 1 21.5
+
+time 15
+stop

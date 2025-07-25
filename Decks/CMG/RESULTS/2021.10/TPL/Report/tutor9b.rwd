@@ -1,0 +1,7 @@
+** This example shows how to get a listing of ALL possible columns
+** for an sr3 file.  The lines in the output may be cut and pasted
+** into a Result Report command input file after a *COLUMN-FOR keyword.
+**
+
+*FILE 'mxdrm005.sr3'
+*LIST-PARAMETERS

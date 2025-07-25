@@ -1,0 +1,311 @@
+**--------------------------------------------------------------------**
+** GMGRO014.DAT: Dynamic Gridding: Coarse Grid Case                   **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMGRO014.DAT                                               **
+**                                                                    **
+** MODEL:  10x10x4 CARTESIAN GRID     WATER FLOOD        9 COMPONENTS **
+** SI UNITS                                                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Templates GMGRO014 through GMGRO017 illustrate the dynamic         **
+** gridding feature for a small 3D 1/4 5-spot model with one          **
+** production well and one water injector. The 4 cases shown are:     **
+** GMGRO014 - Coarse grid                                             **
+** GMGRO015 - Fine grid                                               **
+** GMGRO016 - Fine grid with static amalgamation (=coarse grid)       **
+** GMGRO017 - Fine grid with dynamic amalgamation                     **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+** -------------------------------------------------------------------**
+
+** -------------------------------------------------------------------**
+** I/O CONTROL DATA
+** -------------------------------------------------------------------**
+RESULTS SIMULATOR GEM 200600
+
+FILENAMES OUTPUT SRFOUT RESTARTOUT INDEXOUT MAINRESULTSOUT 
+*TITLE1 '3D Water Injection Dynagrid Case'
+*TITLE2 'GMGRO14: Coarse Grid'
+*INUNIT  *SI
+
+*WSRF *GRID 1
+*WSRF *WELL 1
+*OUTPRN *GRID *NONE
+*OUTSRF *WELL
+*OUTSRF *GRID *PRES *SO *SW *SG
+
+
+**--------------------------------------------------------------------**
+** RESERVOIR DATA
+**--------------------------------------------------------------------**
+
+*GRID *CART 10 10 4
+*KDIR *DOWN
+
+*DEPTH *TOP 1 1 1 2500.0
+
+*DI *CON 30.0
+*DJ *CON 30.0
+*DK *CON 5.0
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+
+*POR *CON 0.15
+*PERMI *CON 95
+PERMJ EQUALSI
+PERMK EQUALSI * 0.02
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*CPOR  5.0E-06
+*PRPOR  35000.0
+
+**--------------------------------------------------------------------**
+** FLUID COMPONENT DATA
+**--------------------------------------------------------------------**
+
+*MODEL   *PR
+*NC    9    9
+*TRES        96.000
+*PVC3  1.3539480E-01
+*COMPNAME
+           'N2 toC1'      'CO2toC2'      'C3'           'IC4toNC4'
+           'IC5toC06'     'C07toC09'     'C10toC16'     'C17toC24'
+           'C25+'
+*SG         3.0221577E-01  4.4329790E-01  5.0700000E-01  5.7819357E-01
+            6.9314054E-01  7.8525712E-01  8.5056377E-01  9.1143517E-01
+            9.5249090E-01
+*TB        -1.6049343E+02 -5.3719921E+01 -4.2050000E+01 -3.6345547E+00
+            7.1803049E+01  1.5297067E+02  2.6837385E+02  3.9315689E+02
+            4.8731542E+02
+*PCRIT      4.5324093E+01  5.3162782E+01  4.1900000E+01  3.7088770E+01
+            3.2838773E+01  2.6458494E+01  1.9296251E+01  1.4216757E+01
+            1.1573978E+01
+*VCRIT      9.8935219E-02  1.3274023E-01  2.0300000E-01  2.5714574E-01
+            3.4045664E-01  4.9036441E-01  7.4594017E-01  1.0795148E+00
+            1.3476142E+00
+*TCRIT      1.9014706E+02  3.0512796E+02  3.6980000E+02  4.2050918E+02
+            5.1078554E+02  6.1587561E+02  7.3103090E+02  8.4900765E+02
+            9.3470364E+02
+*AC         8.2146257E-03  1.3201187E-01  1.5200000E-01  1.8842308E-01
+            2.5066835E-01  3.5551313E-01  5.5569225E-01  8.2291925E-01
+            1.0314146E+00
+*MW         1.6123283E+01  3.3803272E+01  4.4097000E+01  5.8124000E+01
+            8.4630754E+01  1.2781809E+02  2.0691792E+02  3.2801221E+02
+            4.4331116E+02
+*HCFLAG     0              0              0              0
+            0              0              0              0
+            0
+*BIN
+            1.6238459E-04
+            9.6865159E-04  3.3902110E-04
+            1.7070293E-03  8.2024597E-04  1.0509094E-04
+            2.8478390E-03  1.6601098E-03  5.0204436E-04  1.4804473E-04
+            4.7507397E-03  3.1809889E-03  1.4563849E-03  7.8174295E-04
+            2.5015123E-04
+            7.5054205E-03  5.5128381E-03  3.1554032E-03  2.1195446E-03
+            1.1529597E-03  3.3059863E-04
+            1.0412634E-02  8.0649542E-03  5.1712141E-03  3.8266433E-03
+            2.4857967E-03  1.1669492E-03  2.5671653E-04
+            1.2363292E-02  9.8113312E-03  6.6069879E-03  5.0825071E-03
+            3.5224642E-03  1.9110085E-03  6.5652987E-04  9.2505574E-05
+*VSHIFT    -1.5370970E-01 -1.0092533E-01 -7.3300940E-02 -5.7059692E-02
+           -7.9057556E-03  2.5188411E-02  6.8996235E-02  1.0314418E-01
+            1.3192573E-01
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.8936283E-02  1.3353826E-01  2.0300000E-01  2.5715385E-01
+            3.4103274E-01  4.9111812E-01  8.8823137E-01  1.2801981E+00
+            1.3480529E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02
+*PCHOR      7.6758546E+01  9.9965699E+01  1.5030000E+02  1.8763846E+02
+            2.5468775E+02  3.6512283E+02  5.6043618E+02  8.0834139E+02
+            9.8645026E+02
+
+*DENW    1020.0
+*CW      4.0E-07
+*REFPW   101.3
+*VISW    0.32
+
+**--------------------------------------------------------------------**
+** ROCK FLUID
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+RPT 1 SCALING-NEW
+SWT
+**$        Sw         krw          krow
+         0.12           0             1
+        0.135           0      0.910803
+         0.15           0       0.82792
+      0.19375  0.00136024       0.61924
+       0.2375  0.00669858      0.453967
+      0.28125   0.0170213      0.325232
+        0.325   0.0329877      0.226863
+      0.36875   0.0551119      0.153361
+       0.4125   0.0838227     0.0998731
+      0.45625    0.119492     0.0621641
+          0.5     0.16245     0.0365892
+      0.54375    0.212996     0.0200627
+       0.5875    0.271403      0.010026
+      0.63125    0.337923    0.00441381
+        0.675    0.412792    0.00161703
+      0.71875    0.496231   0.000443092
+       0.7625    0.588449  7.14633e-005
+      0.80625    0.689642  3.15826e-006
+         0.85         0.8             0
+SLT
+**$        Sl        krg         krog
+         0.42        0.6            0
+      0.45625   0.544638  0.000976563
+       0.4925   0.491093   0.00552427
+      0.52875   0.439427    0.0152231
+        0.565   0.389711      0.03125
+      0.60125   0.342027    0.0545915
+       0.6375   0.296464    0.0861149
+      0.67375   0.253125     0.126603
+         0.71   0.212132     0.176777
+      0.74625   0.173627     0.237305
+       0.7825   0.137784     0.308816
+      0.81875   0.104816     0.391906
+        0.855      0.075     0.487139
+      0.89125  0.0487139     0.595057
+       0.9275  0.0265165     0.716177
+      0.96375   0.009375     0.850997
+            1          0            1
+
+
+**--------------------------------------------------------------------**
+** INITIAL CONDITIONS
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL
+
+REFPRES 
+  35000.0
+
+REFDEPTH 
+  2500.0
+
+** Depth of water/oil contact
+DWOC 
+  2560.0
+
+
+SEPARATOR  800.0  20.0
+           101.3  15.6
+**$ Property: Global Composition(C25+)  Max: 0.0575536  Min: 0.0575536
+ZGLOBALC 'C25+' CON    0.0575536
+**$ Property: Global Composition(C17toC24)  Max: 0.10183  Min: 0.10183
+ZGLOBALC 'C17toC24' CON      0.10183
+**$ Property: Global Composition(C10toC16)  Max: 0.120287  Min: 0.120287
+ZGLOBALC 'C10toC16' CON     0.120287
+**$ Property: Global Composition(C07toC09)  Max: 0.0628426  Min: 0.0628426
+ZGLOBALC 'C07toC09' CON    0.0628426
+**$ Property: Global Composition(IC5toC06)  Max: 0.0428899  Min: 0.0428899
+ZGLOBALC 'IC5toC06' CON    0.0428899
+**$ Property: Global Composition(IC4toNC4)  Max: 0.0286045  Min: 0.0286045
+ZGLOBALC 'IC4toNC4' CON    0.0286045
+**$ Property: Global Composition(C3)  Max: 0.0479075  Min: 0.0479075
+ZGLOBALC 'C3' CON    0.0479075
+**$ Property: Global Composition(CO2toC2)  Max: 0.0758119  Min: 0.0758119
+ZGLOBALC 'CO2toC2' CON    0.0758119
+**$ Property: Global Composition(N2 toC1)  Max: 0.462273  Min: 0.462273
+ZGLOBALC 'N2 toC1' CON     0.462273
+
+**--------------------------------------------------------------------**
+** NUMERICAL METHODS CONTROL
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+*CONVERGE *MAXRES *NORMAL
+*NORM *PRESS  1.0E+06
+*NORM *SATUR  0.15
+*NORM *GMOLAR 0.15
+*MAXCHANGE *PRESS  1.0E+08
+*MAXCHANGE *SATUR  0.999
+*MAXCHANGE *GMOLAR 0.999
+*NORTH 100
+*ITERMAX 100
+
+**--------------------------------------------------------------------**
+** WELL DATA
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE  2000 7 1
+   *DTMAX    61.0
+   *DTMIN    0.0001
+   *DTWELL   1.0
+   *AIMSET *CON 0
+
+   *WELL 1 'PROD'
+   *PRODUCER 1
+      *OPERATE *MAX *STO 1.0E+10
+      *OPERATE *MIN *BHP   33000.0
+      
+   *WELL 2 'INJGAS'
+   *INJECTOR 2
+      INCOMP  SOLVENT  0.5974  0.1223  0.1317  0.0755  0.0708  0.0023  0.  0.  0.
+      *OPERATE *MAX *BHP 37000.0
+      *OPERATE *MAX *STG 1.0E+10
+
+   *WELL 3 'INJH2O'
+   *INJECTOR 3
+      INCOMP  WATER
+      *OPERATE *MAX *BHP 37000.0
+      *OPERATE *MAX *STW 1.0E+10
+
+   *GEOMETRY *K  0.354  0.34  1.0  0.0
+      *PERF *GEO 1
+      10 10 1:4  1.0
+      *PERF *GEO 2
+       1  1 1:4  1.0
+      *PERF *GEO 3
+       1  1 1:4  1.0
+       
+   *SHUTIN 2
+   
+DATE 2001 7 01
+
+*STOP
+
+RESULTS RELPERMCORR NUMROCKTYPE 1
+RESULTS RELPERMCORR CORRVALS 0.12 0.15 0.15 0.15 0.3 0.3 0 0
+RESULTS RELPERMCORR CORRVALS 1 0.8 0.6 -99999 2.3 4.5 2.5 1.5
+RESULTS RELPERMCORR CORRVALS_HONARPOUR -99999 -99999 -99999 -99999 -99999 -99999 -99999 -99999
+RESULTS RELPERMCORR STOP
+
+RESULTS SPEC 'Permeability K'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 0
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 1 0.02        
+RESULTS SPEC STOP
+
+
+RESULTS SPEC 'Permeability J'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 0
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC STOP
+

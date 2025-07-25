@@ -1,0 +1,112 @@
+** This file shows different methods that can be used to obtain parameters
+** that depends on componenets. All the columns should be identical.
+**
+** stt01b.rwd
+**
+
+FILE 'sttst01.sr3' 
+
+** Set the column width and print precision to apply to all columns
+
+PRECISION 4
+WIDTH     12
+
+
+TABLE-FOR WELL 'PRODUCER'  
+	** method 1
+	COLUMN-FOR component 'INRT GAS' 
+		PARAMETERS 'Cumulative Gas Moles(COMPONENT) SC'  
+	** method 2
+	COLUMN-FOR PARAMETERS 'Cumulative Gas Moles(INRT GAS) SC'   
+	** method 3
+	COLUMN-FOR component 'INRT GAS' 
+		PARAMETERS 'GASCMOLSC(COMPONENT)'  
+	** method 4
+	COLUMN-FOR PARAMETERS 'GASCMOLSC(INRT GAS)'   
+TABLE-END                               
+
+
+** .............................. Description .................................
+** 
+** LEGEND: 
+**	[]	anything in square brackets means --> optional
+**	int	integer number greater than 0
+**	str	string, usually represents a name or a type
+**	*	used before every keyword (not using * before each keyword will
+**		not affect how the command file works)
+**      ~	can specify multiple selections
+**	( | )	one or the other choice in the bracket is appropriate(not both)
+**	'name'	string = str
+**	name	value = integer = int 
+**
+** ............................................................................
+**
+** PRECISION
+** -----------
+** Action	specifies the number of significant figures to be printed
+**
+** Syntax	*PRECISION precision
+**			    
+** Notes	PRECISION 4 
+**		means that all numerical data in every column will have
+**		4 significant figures (digits)
+**
+** WIDTH
+** ------
+** Action	specifies the width in characters for a given column.
+**
+** Syntax	*WIDTH width
+**			    
+** Notes	WIDTH 12
+**		means that each column (WIDTH declared outside TABLE-FOR/END)
+**		has a width of 12 characters
+**
+**
+** TABLE-FOR
+** TABLE-END
+** ----------
+** Action	used to specify the information for a table or group of tables
+**
+** Syntax	*TABLE-FOR [(*WELLS str~ | *PARAMETERS str~)]
+**		*TABLE-END
+**
+** Notes	TABLE-FOR WELL 'PRODUCER'
+**		means that each column specified after COLUMN-FOR will be 
+**		describing the production well
+**
+** COLUMN-FOR
+** -----------
+** Action	used to specify the information for a column or a group of 
+**		columns
+**
+** Syntax	*COLUMN-FOR [*PARAMETERS str~]
+**			    [[*WELLS or *GROUPS or *SECTORS or *SPECIALS] str~]
+**			    [*PRECISION int][*WIDTH int][*MULTIPLY mult-factor]
+**			    [*UNITS str]
+**
+** Notes 	see below (after PARAMETERS)
+**
+** PARAMETERS
+** -----------
+** Action	used to specify the parameter-names for which information will
+**		be printed in tables and columns
+**
+** Syntax	*PARAMETER 'parameter-name' or
+**		*PARAMETER 'parameter-name (('component-name')|(COMPONENT))' 
+**			     
+** Notes  1	COLUMN-FOR PARAMETERS 'Cumulative Gas Moles(INRT GAS) SC'
+**	  2	COLUMN-FOR PARAMETERS 'GASCMOLSC(INRT GAS)'
+**	  3	COLUMN-FOR component 'INRT GAS'
+**			PARAMETERS 'Cumulative Gas Moles(COMPONENT) SC'
+**	  4	COLUMN-FOR component 'INRT GAS'
+**			PARAMETERS 'GASCMOLSC(COMPONENT)'
+**	
+**		the above four statments are equivalent, because of the format
+**		of COLUMN-FOR and PARAMETERS,and the fact that 'GASCMOLSC' is
+**		equivalent to 'Cumulative Gas Moles SC'.
+**		Each of these statements tells the Report Writer to use parame-
+**		ter 'GASCMOLSC' and its component 'INRT GAS', for a production
+**		well (as specified after TABLE-FOR),to generate a column in the
+**		table.
+**
+** ............................................................................

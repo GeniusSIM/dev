@@ -1,0 +1,306 @@
+*****************************************************************************
+** Template (stgeo049.dat):  Coupling Geomechanics Module to STARS         **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  stgeo049.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELLS                                     SI UNITS                **
+**         Elastoplastic model                             29X1X25 CARTESIAN GRID   **
+**                                                                                  **
+** USAGE: Temperature-dependent geomaterial properties                              **
+**        Unit of load is SI                                                        **
+**                                                                                  **
+** Purposes:                                                                        **
+**        Illustrate how the properties in geomechanics module change with          **
+**        tempearature. For some materials in a high temperature reservoir, their   **
+**        properties may change significantly. Because of this, an assumption of    **
+**        constant properties may lead to a seriuos error. This example is an       **
+**        example which shows how to enter a lookup table in the geomechanical      **
+**        section.                                                                  **  
+**                                                                                  **
+**        In RESULTS, the corresponding properties to the output keywords are:      **
+**        YOUNG:     Young Modulus                                                  **
+**        POISSON:   Poisson Ratio                                                  ** 
+**        GCOHESION: Cohesion                                                       **
+**        FRICANGLE: Friction Angle                                                 **
+**        THEXPCOEF: Linear Thermal Expansion Coefficient                           **
+**        THCOMPR:   Thermal Compressibility                                        **                                                    
+**                                                                                  **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #49'
+*title2 'Test/Illustrate *GRTEMTAB - T-Dependent Geomaterial Properties'
+
+INUNIT SI
+
+WPRN ITER 1
+OUTPRN ITER NEWTON
+
+WPRN GRID TIME
+OUTPRN GRID PRES TEMP
+
+WSRF WELL 1
+WSRF SECTOR 1
+WSRF GRID TIME
+
+WSRF GRIDDEFORM 1
+OUTSRF GRID OBHLOSS PRES TEMP VPOROS SUBSIDGEO VERDSPLGEO TVERDPLGEO TSUBSIDGEO VDISPL
+            STRESI STRESJ STRESK STRESSH STRESMXP STRESMNP STRESEFF STRESSM 
+            STRNEPL STRAINI STRAINJ STRAINK STRAINSH STRNMXP STRNMNP VPOROSGEO YOUNG
+            POISSON VPOROSTGEO PRMXDIR PRMNDIR GCOHESION FRICANGLE THEXPCOEF
+            THCOMPR  ** not released
+
+*OUTSRF *SPECIAL *BLOCKVAR *PRES   14,1,1
+                 *BLOCKVAR *VPOROS 14,1,1
+                 *BLOCKVAR *TVERDPLGEO   14,1,1
+                 *BLOCKVAR *TSUBSIDGEO   14,1,1
+                 *AVGVAR   *PRES
+                 *AVGVAR   *VPOROS
+                 *BLOCKVAR *YOUNG   15,1,19
+                 *BLOCKVAR *POISSON   15,1,19
+                 *BLOCKVAR *BIOT   15,1,19
+                 *BLOCKVAR *FRICANGLE   15,1,19
+                 *BLOCKVAR *GCOHESION   15,1,19
+                 *BLOCKVAR *THEXPCOEF   15,1,19
+                 *BLOCKVAR *THCOMPR   15,1,19
+
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+
+GRID CART 29 1 25
+
+KDIR DOWN
+
+DI IVAR 29*1
+DJ JVAR 45
+DK ALL 725*1
+
+DTOP 29*200
+
+POR CON           0.3
+
+PERMI CON         1000
+PERMJ CON         1000
+PERMK CON         1000
+
+END-GRID
+
+PRPOR 3447.38
+CPOR 1.45038e-007
+
+CTPOR 7e-6            ** 3*beta*(1-phi0)/phi0
+
+ROCKCP 1.5e6 
+THCONR 1.5e5
+THCONW 5e4
+THCONO 2e4
+THCONG 140
+THCONMIX SIMPLE
+HLOSSPROP OVERBUR  1.E+06 8.E+04
+          UNDERBUR 1.E+06 8.E+04
+
+
+
+**$ Fluid model and number of components
+
+MODEL 2 2 2 1
+
+COMPNAME 'H2O' 'Oil'
+CMM        0    .45
+PCRIT      0     0
+TCRIT      0     0
+MASSDEN    0   1010
+CP         0  1.5e-6
+CT1        0   6e-4
+
+VISCTABLE
+**$      temp       'H2O'   'Oil'
+            5         0  10000000
+           10         0   2000000
+           20         0    400000
+           40         0     22000
+           60         0      4000
+          100         0       200
+          140         0        40
+          180         0        15
+          200         0        10
+          220         0         7
+          240         0         4
+          500         0         1
+
+PRSR 10000
+TEMR 10
+
+
+
+ROCKFLUID
+
+RPT 1 WATWET
+
+SWT
+**$        Sw          krw         krow
+          0.3            0          0.8
+     0.334375  0.000231934      0.65918
+      0.36875   0.00185547     0.535938
+     0.403125   0.00626221     0.429102
+       0.4375    0.0148437       0.3375
+     0.471875    0.0289917     0.259961
+      0.50625    0.0500977     0.195313
+     0.540625    0.0795532     0.142383
+        0.575      0.11875          0.1
+     0.609375      0.16908    0.0669922
+      0.64375     0.231934    0.0421875
+     0.678125     0.308704    0.0244141
+       0.7125     0.400781       0.0125
+     0.746875     0.509558   0.00527344
+      0.78125     0.636426    0.0015625
+     0.815625     0.782776  0.000195313
+         0.85         0.95            0
+
+SLT
+**$        Sl          krg         krog
+         0.45         0.99            0
+     0.484375     0.815735  0.000195313
+      0.51875     0.663223    0.0015625
+     0.553125     0.531013   0.00527344
+       0.5875     0.417656       0.0125
+     0.621875     0.321702    0.0244141
+      0.65625     0.241699    0.0421875
+     0.690625     0.176199    0.0669922
+        0.725      0.12375          0.1
+     0.759375    0.0829028     0.142383
+      0.79375     0.052207     0.195313
+     0.828125    0.0302124     0.259961
+       0.8625    0.0154688       0.3375
+     0.896875   0.00652588     0.429102
+      0.93125   0.00193359     0.535938
+     0.965625  0.000241699      0.65918
+            1            0          0.8
+
+
+
+INITIAL
+
+VERTICAL DEPTH_AVE
+REFPRES 2000
+REFDEPTH 200
+DWOC 300
+DGOC 0
+
+
+
+NUMERICAL
+DTMAX 1
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+PLSTRAINY
+*GCOUPLING 2
+*GCFACTOR 1.0
+nitergeo 100
+forcetol 0.15
+calib_por
+
+*ELASTMOD 1.707e7   **KPa
+*POISSRATIO .3
+COHESION 500
+THEXPCOEF 1e-6
+
+GRTEMTAB  ELASTMOD  POISSRATIO  COHESION  FRICANGLE  THEXPCOEF    THCOMPR
+** tem    Young       Poisson     Cohes     Angle   linear exp  thermal comp
+     0  1.7100E+07     0.3         550       30      1.00E-06    7.0000E-06
+    10  1.7100E+07     0.3         550       30      1.00E-06    7.0000E-06   
+    50  1.6700E+07     0.305       525       26      1.10E-06    7.7000E-06
+   100  1.6200E+07     0.31        500       22      1.25E-06    8.7500E-06
+   200  1.5600E+07     0.315       475       18      1.75E-06    1.2250E-05
+   300  1.5000E+07     0.32        450       16      2.20E-06    1.5400E-05
+   600  1.3600E+07     0.332       425       13      3.50E-06    2.4500E-05
+   700  1.3300E+07     0.336       415       12      4.00E-06    2.8000E-05
+   800  1.3000E+07     0.34        400       11      5.00E-06    3.5000E-05
+  1000  1.2500E+07     0.345       350       10      8.00E-06    5.6000E-05
+
+*STRESS 1000 2000 0.0 1000
+*STRESSGRAD -0.49345  -0.9869 0.0 -0.49345
+
+
+
+** ================ End of Geomechanics section ===============
+
+RUN
+
+   DATE 2000 1 1
+   DTWELL 0.01
+
+   WELL  'Injector'
+   INJECTOR MOBWEIGHT EXPLICIT 'Injector'
+   INCOMP  WATER  1.  0.
+   TINJW  233.8
+   QUAL  0.9
+   OPERATE  MAX  BHP  3000.  CONT
+   OPERATE  MAX  STW  15.  CONT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  J  0.086  0.249  1.  0.
+   PERF  GEO  'Injector'
+   **$ UBA      ff  Status  Connection  
+      15 1 19  1.  OPEN    FLOW-FROM  'SURFACE'
+
+   WELL  'Producer'
+   PRODUCER 'Producer'
+   OPERATE  MIN  BHP  2000.  CONT
+   OPERATE  MAX  STEAM  1.  CONT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  J  0.086  0.249  1.  0.
+   PERF  GEO  'Producer'
+   **$ UBA      ff  Status  Connection  
+      15 1 24  1.  OPEN    FLOW-TO  'SURFACE'
+
+   SHUTIN 'Injector'
+   SHUTIN 'Producer'
+
+   **$ Property: Temp. Setpoint for Controller (C)   Max: 10  Min: 10
+   TMPSET CON           10
+      *MOD
+         **  Injector 2000-01-01
+         **  Producer 2000-01-01
+      15:15      1:1      19:19   = 220
+      15:15      1:1      24:24   = 220
+
+   **$ Property: Prop. Heat Transfer Coeff. (J/(day*C))   Max: 0  Min: 0
+   UHTR CON            0
+      *MOD
+         15:15      1:1      19:19   = 1e+008
+         15:15      1:1      24:24   = 1e+008
+         15:15      1:1      19:19   = 1e+008
+         15:15      1:1      24:24   = 1e+008
+
+DATE 2000 1 2
+DATE 2000 1 3
+
+   WRST TNEXT
+
+DATE 2000 1 4
+DATE 2000 1 5
+DATE 2000 1 6
+STOP

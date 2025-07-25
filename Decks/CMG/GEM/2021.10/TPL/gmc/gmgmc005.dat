@@ -1,0 +1,271 @@
+RESULTS SIMULATOR GEM
+
+*******************************************************************************
+** Template (gmgmc005.dat):  Cyclic Water Injection and 3D Cylindrical Grid  **
+*******************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc005.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE-WELL CYLCIC                              FIELD UNITS              **
+**         WATER INJECTION                                 13X10X10 RADIAL GRID     **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN GEM                      **
+**                                                                                  **
+**  This example includes:                                                          **
+**                                                                                  **
+**               Different rock types are assigned in the geomechanics              **
+**               section due to different Young's modulus on each layer.            **
+**               Different constitutive models are assigned on rock layers.         **
+**               Linear elastic model and nonlinear elastic model 2                 **
+**               (hyperelastic model) are employed.                                 **
+**               Output stresses, subsidence and displacement vector.               **
+**                                                                                  **
+**               The value of Young's modulus is obtained from the formula given by **
+**               Settari and Mourits (SPEJ, pp. 219-226,1998)                       **
+**************************************************************************************
+** After stgeo016.DAT
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1 'GEM Geomechanics Template #5'
+*TITLE2 '3D Cylindrical Grids'
+*TITLE3 'Two Constitutive Models'
+
+*INUNIT *FIELD   
+
+*OUTPRN *GRID *IMPL *PRES *SW *SO *SG *VISO *VISG
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+*OUTSRF *GRID  *PRES *SO *SG *TEMP *POROS *YOUNG *POISSON
+               *VERDSPLGEO *STRESI *STRESJ *STRESK *VDISPL *STRESSH *STRESMXP *STRESEFF
+
+*OUTSRF *WELL *PAVG 
+              *PRES       2,1,3
+              *VERDSPLGEO 2,1,3
+              *STRESI     2,1,3
+              *STRESK     2,1,3
+              *STRESSHIJ  2,1,3
+              *STRESSHJK  2,1,3
+              *STRESSHIK  2,1,3
+
+*WRST *TIME
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 13 10 10 *RW 0 
+
+**  Radial blocks:  small near well;  outer block is large
+*DI *IVAR  3 10*10 40 120
+*DJ *CON 36   **  Full circle
+*DK *KVAR 20 25 10 10 5 5 5 10 30  20
+
+*KDIR *DOWN
+
+*POR KVAR
+   0.00  0.00  0.2 0.3  0.25  0.25 0.28  0.31 0.0 0.0
+
+*PERMI *KVAR     100  100 100 2000 1000 500 2000 2000 100 100
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  / 2
+
+*CPOR 5E-6
+*PRPOR 75
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    2    2
+*TRES       120.000
+*COMPNAME
+           'C1'           'FC45'
+*SG         3.0000000E-01  9.4000000E-01
+*TB        -2.5861000E+02  1.0271300E+03
+*PCRIT      4.5400000E+01  7.1400000E+00
+*VCRIT      9.9000000E-02  1.9550000E+00
+*TCRIT      1.9060000E+02  9.5780000E+02
+*AC         8.0000000E-03  1.3295310E+00
+*MW         1.6043000E+01  5.3900000E+02
+*HCFLAG     0              0
+*BIN
+            1.3287519E-01
+*VSHIFT     0.0000000E+00  0.0000000E+00
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.3030000E+00  7.3780000E-03  1.7904413E+00
+            4.8507880E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      7.7000000E+01  1.0904000E+03
+
+*ENTHCOEF
+           -5.5811400E+00  5.6483400E-01 -2.8297300E-04  4.1739900E-07
+           -1.5255760E-10  1.9588570E-14
+            0.0000000E+00 -9.3523300E-03  3.9617000E-04 -5.5103520E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+*DENWS 62.5
+*DENW  62.5
+*VISW  0.40
+*REFPW 14.7
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+*INITIAL
+ *VERTICAL *DEPTH_AVE *WATER_OIL
+ *REFPRES 100
+ *REFDEPTH 100
+ *DWOC 200
+ *ZOIL 0.025 0.975
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL 
+*SDEGREE *GAUSS
+
+*NORM  *PRESS 145.
+*NORM *SATUR  0.10
+*NORM *GMOLAR 0.10
+*MAXCHANGE *PRESS 1000.
+
+*DTMAX 31.
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+*GEOM3D           ** 3D Finite elements
+
+**  Linear elastic rock
+*GEOROCK 1           ** rock type # 1
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+
+** Nonlinear elastic rock
+*GEOROCK 2           ** rock type # 2
+   *NLINEAR 2        ** For nonlinear elastic model 2
+   *ECOEF      650
+   *BCOEF      500
+   *GPATM      14.7
+   *FRATIO     0.9
+   *NE         0.4
+   *NB         0.4
+   *NTE        0.0
+   *NTB        0.0
+   *EXPN1      2.0
+   *EXPN2      1.0
+   *FRICANGMN  1.0
+   *DFRICANGLE 0.0
+   *COHESION   14.5
+   *FRICANGLE  40.0
+   *POISSRATIO 0.3           ** Poisson's ratio will remain unchanged in the model 
+                             ** if POISRATIO keyword appears.
+
+** Assign constitutive model on rock layer
+*GEOTYPE   ijk
+**         i      j   k    rocktype
+           1:13   1:10   1:2     1      ** rock type 1 for layers 1 to 2
+           1:13   1:10   3:8     2      ** rock type 2 for layers 3 to 8
+           1:13   1:10   9:10    1      ** rock type 1 for layers 9 to 10
+
+** Initial stresses: sigmaxx  sigmayy  sigmazz  sigmaxy  sigmayz  sigmaxz
+*STRESS3D 1000.0 1000.0 1000.0 0.0 0.0 0.0
+
+*PRESCBC3D           ** Prescribed boundary conditions
+  *IJK  1:13  1:10  10
+**local node  direction    displ 
+        5:8     03          0.0
+  *IJK   13  1:10  1:10
+**local node  direction    displ 
+        2:3     01:02       0.0
+        6:7     01:02       0.0
+
+**  ==============  RECURRENT DATA  ======================
+*RUN
+
+*DATE 1973 9 25.5
+   *DTWELL 0.01
+
+   *WELL 1 'Injector 1' *VERT 1 1
+   *INJECTOR  'Injector 1'
+   *INCOMP *WATER
+   *OPERATE *MAX  *BHP 1000     ** Starting BHP is 1000 psi
+   *OPERATE *MAX  *STW 1000     ** Maximum water rate is 1000 BPD
+   *GEOMETRY *K  0.3 0.5 1.0 0.0
+   *PERFV *GEOA 'Injector 1'
+            **  k  ff 
+                3   1.
+                4   1.
+
+   *WELL 2 'Producer 1' *VERT 1 1
+   *PRODUCER 'Producer 1'
+   *OPERATE *MAX *STL 1000    ** Starting liquid rate is 1000 BPD
+   *OPERATE *MIN *BHP 17      ** Minumum BHP of 1 atm
+   *GEOMETRY *K  0.3 0.5 1.0 0.0
+   *PERFV *GEOA 'Producer 1'
+                **  k
+                    5   1.0
+                    6   1.0
+                    7   1.0
+
+   *SHUTIN 'Producer 1'  ** Shut in producer
+
+*TIME 30
+
+   *SHUTIN 'Injector 1'  ** Shut in injector
+
+*TIME 40
+
+   *OPEN 'Producer 1'  ** Turn on producer
+
+*TIME 365
+
+*STOP
+

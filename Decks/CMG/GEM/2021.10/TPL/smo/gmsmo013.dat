@@ -1,0 +1,188 @@
+**--------------------------------------------------------------------**
+** GMSMO013.DAT:  Higher-Order Scheme with TVD Flux Limiting          **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO013.DAT                                                **
+**                                                                    **
+** MODEL: CART 30x30x1 GRID     7 COMPONENTS   PATTERN FLOOD          **
+**        HIGHER-ORDER SCHEME WITH TVD FLUX LIMITING                  **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set uses a higher-order scheme incorporating    **
+** a TVD flux limiter in a pattern flood.  Even though the grid is    **
+** irregular, the default limiter was used.                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES *OUTPUT *SRFOUT *RESTARTOUT *INDEXOUT *MAINRESULTSOUT
+*TITLE1  'TVD ON A DIAGONAL GRID'
+*TITLE2  '7 COMPONENT OIL'
+*TITLE3  'WATER FLOODING, 5-SPOT'
+
+*INUNIT *SI
+
+*WRST   0
+*WPRN *WELL  *TIME  
+*WPRN *GRID  *TIME 
+*WPRN *ITER  *BRIEF
+*OUTPRN *RES *NONE
+*OUTPRN *WELL *BRIEF
+*OUTPRN *GRID *IMPL *SO *SW *SG *PRES
+*WSRF *GRID *TIME
+*WSRF *WELL 1
+*OUTSRF *GRID *SO *SW *SG *PRES
+*OUTSRF *WELL *PAVG
+
+**-------------------------------------RESERVOIR & GRID DATA------------
+*GRID  *CART  30  30  1
+
+*DI  *IVAR  4.99851345  2*9.9970269
+            38.488553565  13.495986315  4.498662105  2*1.499554035  2*0.499851345  2*1.499554035  4.498662105  13.495986315  38.488553565
+            14*9.9970269  4.99851345
+*DJ  *JVAR  4.99851345  14*9.9970269
+            38.488553565  13.495986315  4.498662105  2*1.499554035  2*0.499851345  2*1.499554035  4.498662105  13.495986315  38.488553565
+            2*9.9970269  4.99851345
+*DK  *CON   10.0
+*DEPTH  *TOP 1 1 1  10000.0
+*POR  *CON  0.1
+
+*PERMI *CON  10.0
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  *  0.10
+
+*CPOR   0.0
+*PRPOR  100000.0
+**-------------------------------------FLUID PROPERTY DATA--------------
+*MODEL   *PR
+*NC    7    7
+*TRES         100.000
+*PVC3  1.2000000E+00
+*COMPNAME
+'C1+N2   ' 'C2+CO2  ' 'C3+C4   ' 'C5      ' 'C6-C12  '
+'C13-C21 ' 'C22+    '
+*PCRIT     4.5310000E+01  5.2850000E+01  3.9810000E+01  3.3350000E+01
+           2.7270000E+01  1.7630000E+01  1.0340000E+01
+*VCRIT     9.9000000E-02  1.3400000E-01  2.2500000E-01  3.0500000E-01
+           4.6300000E-01  8.2000000E-01  1.4160000E+00
+*TCRIT     1.9010000E+02  3.0510000E+02  3.9130000E+02  4.6540000E+02
+           5.9450000E+02  7.3970000E+02  8.8620000E+02
+*AC        8.2000000E-03  1.3000000E-01  1.6660000E-01  2.4010000E-01
+           3.7080000E-01  6.1510000E-01  1.0501000E+00
+*MW        1.6136000E+01  3.3585000E+01  4.9870000E+01  7.2151000E+01
+           1.2316000E+02  2.2588000E+02  5.1565000E+02
+*HCFLAG    0  0  0  0  0  0  0
+*BIN
+     1.5255105E-03
+     1.1136134E-02  4.4610319E-03
+     2.0759899E-02  1.1176279E-02  1.5405611E-03
+     3.8471653E-02  2.5120786E-02  8.6208655E-03  2.8973803E-03
+     7.0402774E-02  5.2453134E-02  2.7280742E-02  1.6097511E-02  5.4220416E-03
+     1.0800439E-01  8.6397063E-02  5.4019684E-02  3.8117875E-02  2.0494690E-02
+     4.9546518E-03
+*VSHIFT
+     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+     0.0000000E+00  0.0000000E+00
+*MIXVC     1.0000000E+00
+*VISVC
+     9.9000000E-02  1.3400000E-01  2.2500000E-01  3.0500000E-01  4.6300000E-01
+     8.2000000E-01  1.4160000E+00
+*VISCOEFF
+     1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02  9.3324000E-03
+*OMEGA
+     4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+     4.5723553E-01  4.5723553E-01
+*OMEGB
+     7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+     7.7796074E-02  7.7796074E-02
+*PCHOR
+     4.6102857E+01  9.5957143E+01  1.4248571E+02  2.0614571E+02  3.5188571E+02
+     6.4537143E+02  1.4732857E+03
+
+*PHASEID  *OIL
+*CW       4.8027E-07
+*REFPW    1.0E+05
+*VISW     0.3235
+*DENW     1005.0
+
+**-------------------------------------ROCK FLUID DATA------------------
+*ROCKFLUID
+*KRGAS *KRO
+
+*RPT 1 
+*KROIL *STONE2 *SWSG
+*SWT
+0.0       0.0       1.0       0.0       0.0   
+1.0       1.0       0.0       0.0       0.0
+
+*SGT
+0.0       0.0       1.0       0.0
+1.0       1.0       0.0       0.0
+**-------------------------------------INITIAL RESERVOIR CONDITION------
+*INITIAL
+*SEPARATOR  100000.0  100.0
+
+*USER_INPUT
+*PRES     *CON   100000.0
+*SW       *CON   0.0  
+*ZGLOBALC 'C13-C21' CON       0.1332
+*ZGLOBALC 'C6-C12' CON       0.2488
+*ZGLOBALC 'C5' CON        0.034
+*ZGLOBALC 'C3+C4' CON        0.108
+*ZGLOBALC 'C2+CO2' CON        0.098
+*ZGLOBALC 'C1+N2' CON        0.324
+*ZGLOBALC 'C22+' CON        0.054
+**-------------------------------------NUMERICAL METHOD-----------------
+*NUMERICAL
+*AIM *OFF
+*NORM      *PRESS  1000 
+*NORM      *SATUR  0.025
+*NORM      *GMOLAR 0.1
+*MAXCHANGE *SATUR 0.8
+
+
+*NORTH 80
+*ITERMAX 150
+*DTMAX 10.
+*TWOPTFLUX
+************************WELL DATA & RECURRENT DATA**********************************
+*RUN
+*DATE 1998 1 1
+
+   *DTWELL 0.2 
+   *DTMIN  0.001
+   *AIMWELL *WELLN 
+
+   *WELL 1 'PROD1'
+   *PRODUCER 1
+   *OPERATE *MAX *STL     16.81
+   *GEOMETRY *K 1.0 0.56 0.25 0.0 
+   *PERF *GEO 1 
+       30  1  1  1.0 
+
+   *WELL 2 'INJ1' 
+   *INJECTOR 2 
+   *INCOMP  *WATER
+   *OPERATE *MAX *STW     16.81
+   *OPERATE *MAX *BHP    1.5E+05
+   *GEOMETRY *K 1.0 0.56 0.25 0.0 
+   *PERF *GEO 2 
+      1 30  1  1.0
+
+*TIME  100
+*TIME  200
+*TIME  300
+*TIME  400
+*TIME  500
+*TIME  850
+*TIME  950
+*TIME 1000
+*TIME 1200
+*TIME 1500
+*TIME 2000
+*TIME 2500
+*STOP

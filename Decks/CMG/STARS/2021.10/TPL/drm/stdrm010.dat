@@ -1,0 +1,483 @@
+
+***************************************************************************** 
+** Template (stdrm010.dat): Empirical Model of a Field Steam Foam Process  **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  ** 
+** FILE :  STDRM010.DAT                                                             **
+**                                                                                  **
+** MODEL:  FOAM MODELLED AS GAS PERMEABILITY REDUCTION       9X1X3 RADIAL GRID      **  
+**         FOAM SENSITIVITY TO SURFACTANT AND OIL            SI UNITS               **
+**         STRENGTH  OF FOAM IS REGION DEPENDENT             ADSORPTION EFFECTS     **
+**                                                                                  **
+** USAGE:  SIMPLE STEAM FOAM FIELD MODEL ILLUSTATING MULTIPLE FOAM CAPABILITIES     **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**      This data represents an idealization of SPE paper 19690.                    **
+**  The reservoir is an unbounded one-sixth of a three spot pattern                 **
+**  containing vertical high permeability, high water saturation                    **
+**  zones around both injection and production wells. These are                     **
+**  in turn connected by a similar horizontal streak at the top of                  **
+**  the reservoir. This configuration approximately models the results              **
+**  of a hydraulically fractured Alberta reservoir.                                 **
+**                                                                                  **
+**      A radial crossection (9 by 3) grid is employed with a highly                **
+**  compressible formation. Significant steam override is observed                  **
+**  and foam treatments are applied to correct this. The test problem               **
+**  describes a field foam run after two years of steam-only injection.             **
+**                                                                                  **
+**  Special Features:                                                               **
+**                                                                                  **
+**    1)  An empirical foam modelling approach is employed with                     **
+**        foam mobility reduction treated via modified gas relative                 **
+**        permeability curves (which can be region dependent).                      **
+**    2)  The degree of mobility reduction is interpolated as a                     **
+**        product of factors which can be obtained from experiment                  **
+**           -aqueous surfactant  concentration                                     **
+**           -prescence of oil phase                                                **
+**           -capillary number (equiv to dimensionless velocity)                    **
+**    3)  Surfactant transport is modelled with surfactant                          **
+**        availability determined by a combination of surfactant                    **
+**        adsorption, surfactant decomposition, and oil partitioning.               **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 23'
+*TITLE2 'Steam History Match & Foam Forecast'
+
+*INUNIT  *SI  *EXCEPT 6 1  ** darcy instead of millidarcy
+
+*OUTPRN *GRID *PRES *SW *SG *SO *TEMP *OBHLOSS *KRG *KRO *KRW
+              *ADSORP *KRINTER *CAPN *VISO
+              *MOLFR *ADSPCMP  ** special adsorption component (mole fr)
+              *PPM   *RLPMCMP  ** special rel perm component (in ppm)
+
+*OUTPRN *WELL ALL
+*OUTPRN *ITER *NEWTON
+
+*WRST 300
+*WPRN *GRID 300
+*WPRN *ITER 1
+
+*OUTSRF GRID  *PRES *SW *SO *SG *TEMP *ADSORP
+              *MOLFR *ADSPCMP  ** special adsorption component (mole fr)
+              *PPM   *RLPMCMP  ** special rel perm component (in ppm)
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *RADIAL 9 1 3  *RW 0.0   ** Two-dimensional radial crossection grid
+                               ** Zero inner radius matches previous treatment
+
+*DI *IVAR 2 8 14 14 8 2 8 14 500
+*DJ *CON 60
+*DK *CON 15.0
+**DJ *CON 0.3333  *DK *CON 15.0
+
+*POR *CON 0.35
+
+*PERMI *CON 1           ** Standard bed permeability
+  *MOD 1  1 1:2 =  10   ** Higher perm commumication path
+       6  1 1:2 =  10   ** Higher perm commumication path
+     1:9  1   3 =  10   ** Higher perm commumication path
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+
+*PRPOR 1200.0
+
+*CPOR 1E-5
+*CTPOR 3.84E-5
+*ROCKCP 2.347E+6
+*THCONR 1.495E+5
+*THCONW 5.35E+4
+*THCONO 1.15E+4
+*THCONG 4.5E+3
+*HLOSSPROP  *OVERBUR 2.347E+6 1.495E+5  *UNDERBUR 2.347E+6 1.495E+5
+*HLOSST 15.5
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 3 3 3 2   ** Two aqueous and a dead oil components
+
+*COMPNAME  'WATER' 'SURFACT'  'BITUMEN'
+**          -----   --------   --------
+*CMM        0.0182     0.480     0.500
+*MOLDEN       0.0      2020      2020
+*CP             0      4e-6      4e-6
+*CT1            0      4e-4      4e-4
+*CT2            0    1.6e-7    1.6e-7
+*PCRIT      21760      1100      1100
+*TCRIT      371.0     494.0     494.0
+
+*CPG1       0         125.6     125.6
+*CPG2       0             0         0
+*CPL1       0        1047.0    1047.0
+*CPL2       0             0         0
+*HVAPR      0        5500.0    5500.0
+
+*SOLID_DEN 'SURFACT' 23040 0 0  ** Mass density based on 48000 gmole/m3
+*SOLID_CP 'SURFACT' 17 0
+
+*VISCTABLE
+
+**    Temp
+  10.00000    0.0   1.00000  3.0000E+6
+  23.90000    0.0   1.00000  1.5000E+6
+  37.80000    0.0   1.00000    30000.0
+  65.60000    0.0   1.00000   2000.000
+  93.30000    0.0   1.00000    300.000
+   121.000    0.0   1.00000   87.00000
+   148.900    0.0   1.00000   31.00000
+   204.400    0.0   1.00000    9.00000
+   260.000    0.0   1.00000    4.30000
+   315.600    0.0   1.00000    2.90000
+
+**  Gas/liq K values  are defaulted correlation
+**  Liq/liq K values  are entered as tables
+*LIQLIQKV
+*KVTABLIM 100.0 8000.0  15 550
+*KVTABLE 'WATER'
+    0    0
+    0    0
+*KVTABLE 'SURFACT'
+   .2   .2
+   .2   .2
+*KVTABLE  'BITUMEN'
+    0    0
+    0    0
+
+** Reference conditions
+*PRSR 100.0
+*TEMR 15.5
+*PSURF 100.0
+*TSURF 15.5
+
+**  reaction describes surfactant decomposition
+**  first order decay rate is assumed (valid for basic pH)
+
+*STOREAC    0            1        0
+*STOPROD    26.37        0        0
+*RPHASE     0            1        0
+*RORDER     0            1        0
+*FREQFAC  34.7
+*EACT 32500
+*RENTH 0
+*O2CONC
+
+
+*ROCKFLUID
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**  This simulation incorporates foam mobility reduction in
+**  relative permeability effects which are region dependent.
+**  ---------------------------------------------------------------
+
+*KRTYPE *CON       1   ** Standard bed permeability
+  *MOD 1  1 1:2 =  2   ** Higher perm commumication path
+       6  1 1:2 =  2   ** Higher perm commumication path
+     1:9  1   3 =  2   ** Higher perm commumication path
+
+*RPT 1    ** First rock type for standard permeability zones
+**  ---------------------------------------------------------------
+**  Interpolation between 3 sets: zero, weak and strong foam curves
+**  Capillary number calculation is based on aqueous SURFACT IFT
+**  specified at 2 temperatures and 2 SURFACT concentrations.
+
+*INTCOMP 'SURFACT' *WATER
+*INTLIN
+
+*IFTTABLE    ** aq mole frac      IFT
+     *TEMP  10.0
+                    0.0            13.
+                    0.3            13.
+     *TEMP 320.0
+                    0.0            13.
+                    0.3            13.
+
+*FMSURF 1.875E-4
+*FMCAP 1.0E-4
+*FMOIL 0.5
+*FMMOB 50
+*EPSURF 1.0
+*EPCAP 1.0
+*EPOIL 1.0
+
+**  Set #1:  No foam, corresponding to no SURFACT
+**  ----------------------------------------------
+
+*KRINTRP 1
+
+*DTRAPW  1.0  ** no mobility reduction
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+ 0.0930000       0.0   1.00000       0.0
+ 0.1500000 1.7000E-4 0.8400000       0.0
+ 0.2000000 8.0000E-4 0.7100000       0.0
+ 0.2500000 0.0024000 0.5800000       0.0
+ 0.3000000 0.0061000 0.4650000       0.0
+ 0.4000000 0.0250000 0.2780000       0.0
+ 0.5000000 0.0760000 0.1360000       0.0
+ 0.6000000 0.1800000 0.0410000       0.0
+ 0.6500000 0.2600000 0.0130000       0.0
+ 0.7000000 0.3600000 0.0110000       0.0
+ 0.8000000 0.5700000 0.0060000       0.0
+ 0.9000000 0.7500000       0.0       0.0
+   1.00000   1.00000       0.0       0.0
+
+*SLT  *NOSWC   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+ 0.1500000   1.00000       0.0       0.0
+ 0.4000000 0.9900000 1.0000E-4       0.0
+ 0.4200000 0.9850000 8.0000E-4       0.0
+ 0.4500000 0.9800000 0.0070000       0.0
+ 0.5000000 0.8500000 0.0260000       0.0
+ 0.5500000 0.6900000 0.0550000       0.0
+ 0.6000000 0.5400000 0.0900000       0.0
+ 0.7000000 0.2870000 0.1860000       0.0
+ 0.8000000 0.1140000 0.3310000       0.0
+ 0.9000000 0.0220000 0.5700000       0.0
+ 0.9500000 0.0045000 0.7600000       0.0
+   1.00000       0.0   1.00000       0.0
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.00
+*SGR 0.05
+*SORG 0.16
+
+
+**  Set #2:  Weak foam, corresponding to intermediate SURFACT concentration
+**  -----------------------------------------------------------------------
+
+*KRINTRP 2 *COPY 1 1    ** copy from first set, then overwrite
+
+*DTRAPW 0.4  ** weak foam inverse mobility reduction factor (MRF=2.5)
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.00
+*SGR 0.05
+*SORG 0.16
+*KRGCW 0.4
+
+**  Set #3:  Strong foam, corresponding to high SURFACT concentration
+**  -----------------------------------------------------------------
+
+*KRINTRP 3 *COPY 1 1    ** copy from first set, then overwrite
+
+*DTRAPW 0.02  ** strong foam inverse mobility reduction factor (MRF=50)
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.00
+*SGR 0.05
+*SORG 0.16
+*KRGCW 0.02
+
+*RPT 2    ** Second rock type for high permeability zones
+**  ---------------------------------------------------------------
+**  Interpolation between 3 sets: zero, weak and strong foam curves
+**  Capillary number calculation is based on aqueous SURFACT IFT
+**  specified at 2 temperatures and 2 SURFACT concentrations.
+
+*INTCOMP 'SURFACT' *WATER
+*INTLIN
+
+*IFTTABLE    ** aq mole frac      IFT
+     *TEMP  10.0
+                    0.0            13.
+                    0.3            13.
+     *TEMP 320.0
+                    0.0            13.
+                    0.3            13.
+
+*FMSURF 1.875E-4
+*FMCAP 1.0E-4
+*FMOIL 0.5
+*FMMOB 50
+*EPSURF 1.0
+*EPCAP 1.0
+*EPOIL 1.0
+
+**  Set #1:  No foam, corresponding to no SURFACT
+**  ----------------------------------------------
+
+*KRINTRP 1
+
+*DTRAPW  1.0  ** no mobility reduction
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+       0.0       0.0   1.00000       0.0
+ 0.2000000 0.2000000 0.8000000       0.0
+ 0.4000000 0.4000000 0.6000000       0.0
+ 0.6000000 0.6000000 0.4000000       0.0
+ 0.8000000 0.8000000 0.2000000       0.0
+   1.00000   1.00000       0.0       0.0
+
+*SLT  *NOSWC   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+       0.0   1.00000       0.0       0.0
+ 0.2000000 0.8000000 0.2000000       0.0
+ 0.4000000 0.6000000 0.4000000       0.0
+ 0.6000000 0.4000000 0.6000000       0.0
+ 0.8000000 0.2000000 0.8000000       0.0
+   1.00000       0.0   1.00000       0.0
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.01
+*SGR 0.05
+*SORG 0.16
+
+
+**  Set #2:  Weak foam, corresponding to intermediate SURFACT concentration
+**  -----------------------------------------------------------------------
+
+*KRINTRP 2 *COPY 2 1    ** copy from first set, then overwrite
+
+*DTRAPW 0.4  ** weak foam inverse mobility reduction factor (MRF=2.5)
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.01
+*SGR 0.05
+*SORG 0.16
+*KRGCW 0.4
+
+**  Set #3:  Strong foam, corresponding to high SURFACT concentration
+**  -----------------------------------------------------------------
+
+*KRINTRP 3 *COPY 2 1    ** copy from first set, then overwrite
+
+*DTRAPW 0.02  ** strong foam inverse mobility reduction factor (MRF=50)
+
+**  Override critical saturations on table
+*SWR 0.15
+*SORW 0.01
+*SGR 0.05
+*SORG 0.16
+*KRGCW 0.02
+
+
+**  Adsorption Data
+**  ---------------
+
+*ADSCOMP 'SURFACT' *WATER   **Data for reversible aqueous surfactant adsorption
+*ADMAXT 2.56   ** no mobility effects
+*ADSLANG *TEMP
+     51.0 5.41e+6 0 2.1e+6   ** Langmuir concentration coefficients at T=51
+    151.0 1.08e+6 0 9.3e+5   ** Langmuir concentration coefficients at T=151
+    250.0 2.00e+5 0 5.3e+5   ** Langmuir concentration coefficients at T=250
+
+
+
+*INITIAL
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*PRES *KVAR                 800.0 688.0 532.0
+*SW   *CON 0.15             **Standard bed permeability
+      *MOD 1  1 1:2 =  .5   ** Higher perm commumication path
+           6  1 1:2 =  .5   ** Higher perm commumication path
+         1:9  1   3 =  .5   ** Higher perm commumication path
+
+*TEMP *CON 15.5             **Standard bed permeability
+      *MOD 1  1 1:2 =  110  ** Higher perm commumication path
+           6  1 1:2 =  110  ** Higher perm commumication path
+         1:9  1   3 =  110  ** Higher perm commumication path
+
+*mfrac_wat 'WATER' *con 1
+
+*NUMERICAL
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*TFORM *SXY
+
+*DTMAX 100.0
+*SDEGREE 1
+*SORDER *RCMRB
+*UPSTREAM *KLEVEL
+
+*NORM      *PRESS 500  *SATUR .2   *TEMP 45  Y .2  *W .2
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL 0.1
+
+   *WELL 1 'INJTR'  *FRAC .1667    ** Well list
+   *WELL 2 'PRODN'  *FRAC .5000
+
+   *PRODUCER 'PRODN'
+   *OPERATE *STL 30.0
+   *PERF 'PRODN'   **  i j k  wi
+                 6 1 1 2345.49 ** 200
+
+   *INJECTOR *MOBWEIGHT 'INJTR'
+   *INCOMP  *WATER  1.0  0.0  0.0
+   *TINJW 210
+   *QUAL .7
+   *OPERATE *STW 150
+
+   *PERF 'INJTR'   ** i j k  wi
+              1 1 1 469.098 ** 40
+
+** Obtain printouts and results at the following times
+   *TIME  365
+   *TIME  730
+   *DTWELL  1.0
+
+   *INJECTOR MOBWEIGHT 'INJTR'
+
+   *INCOMP *WATER .9998125   1.875E-4  0         ** inj surfactant (1.0wt%)
+   *TINJW 210
+   *QUAL .7
+   *OPERATE *STW 150
+
+   *PERF 'INJTR'   ** i j k  wi
+               1 1 1 469.098 ** 40
+*TIME 1095
+
+*TIME 1460.0
+*STOP

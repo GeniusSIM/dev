@@ -1,0 +1,6 @@
+Suggested Block Dimensions for Maps Demonstration:
+
+#ofblocks= 25*35*4
+Size of i blocks = 110
+Size of j blocks = 125
+

@@ -1,0 +1,429 @@
+**--------------------------------------------------------------------**
+** GMGHG025.DAT: CO2 Injection into an oil reservoir with geochemistry**
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMGHG025.DAT                                                **
+**                                                                    **
+** MODEL: CART 9x9x8 GRID               CO2 INJECTION INTO AN OIL     **
+**        7 COMPONENTS                  RESERVOIR WITH GEOCHEMISTRY   **
+**        SI UNITS                      ACTIVCOEF AND                 **
+**                                      EQUIL-REACT-RATE ON           **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This data set tests the input of activity coefficients             **
+** and the specification of equilibrium conditions with the           **
+** keyword *EQUIL-REACT-RATE *ON and *CHEM-EQUIL-SET *ON.             **
+**                                                                    **
+** Demonstrate use of keywords:                                       **
+**    *ACTIVCOEF                                                      **
+**    *EQUIL-REACT-RATE *ON                                           **
+**    *CHEM-EQUIL-SET *ON                                             **
+**                                                                    **
+**    *CONV-RESONLY *ON                                               **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+*RESULTS *SIMULATOR *GEM
+
+** ------- Input/Output ---------------
+
+*TITLE1 'Oil Reservoir - CO2 Injection'
+*TITLE2 'Geochemistry - ACTIVCOEF'
+
+*INUNIT *SI
+
+*WPRN *WELL  1
+*WPRN *GRID  20
+
+*WSRF *WELL 1
+*WSRF *GRID *TIME
+*OUTSRF *WELL *PSPLIT
+
+*OUTPRN *RES *NONE
+*OUTPRN *GRID *IMPL
+              *MOLALITY 'CO2' *MOLALITY 'H+' *MOLALITY 'Ca++'
+              *MOLALITY 'Na+' *MOLALITY 'Cl-' *MOLALITY 'HCO3-' *MINERAL 'Calcite'
+              *MINERAL 'Dolomit*'
+
+*OUTSRF *GRID *SW *SO *SG *PRES *DENW *DENG *IMPL
+              *Z 'CO2' *W 'CO2'
+              *MOLALITY 'CO2' *MOLALITY 'H+' *MOLALITY 'Ca++'
+              *MOLALITY 'Na+' *MOLALITY 'Cl-' *MOLALITY 'HCO3-' *MINERAL 'Calcite'
+              *MINERAL 'Dolomit*'
+*OUTSRF *RES *ALL
+*DIARY *CHANGES-UNCONV
+
+** ------------- Grid ----------------------
+*GRID *VARI 9 9 8
+*KDIR DOWN
+*DI *CON 175.
+*DJ *CON 175.
+*DK *CON 25.
+*DTOP 81*2900.
+*POR CON 0.38
+*PERMI CON 75.
+*PERMJ EQUALSI
+*PERMK EQUALSI * 0.01
+*CPOR  MATRIX   1.E-08
+*PRPOR MATRIX   1000.
+
+** --------------- Fluid Model ---------------
+
+*MODEL   *PR
+*NC    7    7
+*TRES  63
+*COMPNAME
+           'CO2'          'N2-C1'      'C2-C3'      'IC4-C7'
+           'C8-C12'     'C13-C19'     'C20+'
+*HCFLAG     0              0              0              0
+            0              0              0
+*VISCOR *HZYT
+*MIXVC      8.0000000E-01
+*VISCOEFF   1.2276000E-01  1.8691200E-02  4.6826400E-02 -3.2606400E-02
+            9.1552018E-03
+
+*SG         4.9270000E-01  2.6282000E-01  4.8204056E-01  6.2754543E-01
+            7.4136000E-01  8.1700000E-01  9.8465000E-01
+*TB        -1.0251350E+02 -1.6145270E+02 -6.2577742E+01  3.7160571E+01
+            1.4508190E+02  2.5418710E+02  4.4158660E+02
+*PCRIT      7.2813426E+01  4.5133267E+01  4.4837117E+01  3.3010859E+01
+            2.3632774E+01  1.7324778E+01  1.3418697E+01
+*VCRIT      9.3100000E-02  9.9600000E-02  1.6983143E-01  3.0949222E-01
+            5.2270000E-01  7.7700000E-01  1.1153000E+00
+*TCRIT      3.0420000E+02  1.8911400E+02  3.3985500E+02  4.7127100E+02
+            5.9716300E+02  7.0877400E+02  9.0218000E+02
+*AC         2.2500000E-01  8.7400000E-03  1.2690000E-01  2.5150000E-01
+            4.5250000E-01  6.9540000E-01  1.0884000E+00
+*MW         4.4010000E+01  1.6203000E+01  3.6237000E+01  7.1726000E+01
+            1.2883500E+02  2.1241800E+02  4.7234860E+02
+*BIN
+            3.4100000E-02
+            6.8000000E-03 -1.8100000E-02
+            4.3000000E-03 -1.2500000E-02  1.4999112E-06
+           -1.1200000E-02 -3.8000000E-03  5.2416148E-06  1.1442941E-06
+           -1.1200000E-02  8.9000000E-03  9.5445378E-06  3.5209541E-06
+            6.5512761E-07
+            7.8500000E-02  4.0000000E-02  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VSHIFT    -4.5000000E-02 -7.3650000E-02 -6.1649000E-02 -1.0875000E-01
+            5.7712700E-01  6.9592800E-01 -7.7241000E-01
+*VISVC      7.4480000E-02  9.2141292E-02  2.1988125E-01  3.5757108E-01
+            6.7509198E-01  9.3240000E-01  1.4622927E+00
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      1.2650000E+02  4.0400000E+01  1.0264959E+02  2.0859618E+02
+            3.6820000E+02  5.7540000E+02  9.5300000E+02
+*ENTHCOEF
+            0.0000000E+00  4.0264500E-02  4.0395300E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.7048000E-01  3.3677500E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  7.5596996E-02  4.1107346E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.4119065E-02  3.9933737E-04 -5.1606373E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -1.3703000E-02  4.0814100E-04 -5.6927800E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -2.6237900E-02  4.1228200E-04 -5.9535200E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -4.2423300E-02  3.8233900E-04 -5.8323300E-08
+            0.0000000E+00  0.0000000E+00
+
+
+*SOLUBILITY
+** HENRYC calculated at    63.00 deg C
+*HENRYC     2.9E+06  0 0 0 0 0 0
+*REFPH      5.4500000E+04  5.4500000E+04  5.4500000E+04  5.4500000E+04
+            5.4500000E+04  5.4500000E+04  5.4500000E+04
+*VINFINITY  3.5523124E-02  3.5676437E-02  5.2342505E-02  9.1320952E-02
+            1.5567605E-01  2.6333828E-01  4.0204946E-01
+
+*ENTHCOEF
+            9.6880000E-02  1.5884300E-01 -3.3712000E-05  1.4810500E-07
+           -9.6620300E-11  2.0738320E-14
+           -2.8385700E+00  5.3828500E-01 -2.1140900E-04  3.3927600E-07
+           -1.1643220E-10  1.3896120E-14
+           -1.4220000E-02  2.6461200E-01 -2.4568000E-05  2.9140200E-07
+           -1.2810330E-10  1.8134820E-14
+            1.4595600E+00  9.9070000E-02  2.3873600E-04  9.1593000E-08
+           -5.9405000E-11  9.0964500E-15
+            0.0000000E+00 -4.5853896E-02  4.2931307E-04 -6.4542244E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -3.8449563E-02  4.1919171E-04 -6.2341518E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -2.9759094E-02  4.1045810E-04 -6.0027166E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *ROWE-CHOU
+*AQUEOUS-VISCOSITY  *KESTIN
+
+*DER-CHEM-EQUIL  *NUMERICAL
+*DER-REACT-RATE  *NUMERICAL
+
+*PERM-VS-POR   0
+
+*ACTIVITY-MODEL  *B-DOT
+*SALINITY-CALC  *ON
+*SALINITY   0.00000
+*AQFILL  *OFF
+
+*NC-AQUEOUS 6
+*COMPNAME-AQUEOUS
+'H+' 'Ca++' 'Mg++' 'Na+' 'Cl-'
+'HCO3-'
+*MW-AQUEOUS
+    1.0079   40.0800   24.3050   22.9898   35.4530
+   61.0171
+*ION-SIZE-AQUEOUS
+   9.00   6.00   8.00   4.00   3.00
+   4.50
+*CHARGE-AQUEOUS
+    1.0    2.0    2.0    1.0   -1.0
+   -1.0
+
+*NC-MINERAL 2
+*COMPNAME-MINERAL
+'Calcite' 'Dolomit*'
+*MW-MINERAL
+  100.0892  184.4034
+*MASSDENSITY-MINERAL
+   2709.95   2863.85
+
+*ACTIVCOEF
+1.7694 1.0 1.0 1.0 1.0 1.0 1.0 0.98867
+0.97170 0.11926 0.10872 0.69509 0.69509 0.73224
+*EQUIL-REACT-RATE *ON
+*CHEM-EQUIL-SET *ON
+
+*REACTION-CHEM 'CO2' + 'H2O' = 'H+' + 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+ -6.549243E+00  9.001740E-03 -1.021150E-04  2.761879E-07 -3.561421E-10
+
+*REACTION-RATE-TST  'Calcite' + 'H+' = 'Ca++' + 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+  2.068889E+00 -1.426678E-02 -6.060961E-06  1.459215E-07 -4.189284E-10
+*REACTIVE-SURFACE-AREA       88.00
+*ACTIVATION-ENERGY    41879.00
+*LOG-TST-RATE-CONSTANT    -8.80000
+*REF-TEMP-RATE-CONST       25.00
+
+*REACTION-RATE-TST 'Dolomit*' + 2 'H+' = 'Ca++' + 'Mg++' + 2 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+  5.134654E+00 -4.402834E-02  3.995842E-05  1.827975E-07 -7.564715E-10
+*REACTIVE-SURFACE-AREA       88.00
+*ACTIVATION-ENERGY    41879.00
+*LOG-TST-RATE-CONSTANT   -10.00000
+*REF-TEMP-RATE-CONST       25.00
+
+
+*PHASEID *CRIT
+*CW  4.35E-07
+*REFPW 60000.0
+*OGW_FLASH *NO_H2OVAP
+
+*DERIVATIVEMETHOD *NUMERALL
+*TRACE-INTERNAL-OFF
+
+** -------------------- Rock Fluid -----------
+*ROCKFLUID
+*RPT
+*SGT
+      0.005     0.0       0.740           0.0
+      0.040     0.005     0.650           0.0
+      0.080     0.013     0.513           0.0
+      0.120     0.026     0.400           0.0
+      0.160     0.040     0.315           0.0
+      0.200     0.058     0.250           0.0
+      0.240     0.078     0.196           0.0
+      0.280     0.100     0.150           0.0
+      0.320     0.126     0.112           0.0
+      0.360     0.156     0.082           0.0
+      0.400     0.187     0.060           0.0
+      0.440     0.222     0.040           0.0
+      0.480     0.260     0.024           0.0
+      0.520     0.300     0.012           0.0
+      0.560     0.348     0.005           0.0
+      0.600     0.400     0.0             0.0
+      0.640     0.450     0.0             0.0
+      0.680     0.505     0.0             0.0
+      0.720     0.562     0.0             0.0
+      0.760     0.620     0.0             0.0
+      0.800     0.680     0.0             0.0
+      0.840     0.740     0.0             0.0
+*SWT
+      0.160     0.0       0.740      50.00000
+      0.200     0.002     0.680      32.00000
+      0.240     0.010     0.620      21.00000
+      0.280     0.020     0.562      15.50000
+      0.320     0.033     0.505      12.00000
+      0.360     0.049     0.450       9.20000
+      0.400     0.066     0.400       7.00000
+      0.440     0.090     0.348       5.30000
+      0.480     0.119     0.300       4.20000
+      0.520     0.150     0.260       3.40000
+      0.560     0.186     0.222       2.70000
+      0.600     0.227     0.187       2.10000
+      0.640     0.277     0.156       1.70000
+      0.680     0.330     0.126       1.30000
+      0.720     0.390     0.100       1.00000
+      0.760     0.462     0.078       0.70000
+      0.800     0.540     0.058       0.50000
+      0.840     0.620     0.040       0.40000
+      0.880     0.710     0.026       0.30000
+      0.920     0.800     0.013       0.20000
+      0.960     0.900     0.005       0.10000
+      0.995     1.0       0.0         0.0
+
+*KROIL *STONE2 *SWSG
+
+** -------------- Initial ------------------------
+*INITIAL
+*VERTICAL *COMP
+*CDEPTH  2500.
+*ZDEPTH  3000.
+         5.3000000E-02  4.5500000E-01  1.2300000E-01  8.3400000E-02
+         1.0200000E-01  7.7600000E-02  1.0600000E-01
+
+*REFDEPTH 	3000.
+*REFPRES 	34500.
+*DWOC 	3000.
+*SWOC 	0.999
+
+**'H+' 'Ca++' 'Mg++' 'Na+' 'Cl-'
+**'HCO3- is a secondary component.
+*MOLALITY-AQUEOUS-PRIMARY
+   3.544E-06  9.7736e-02  8.7529e-02 2.4309 2.8909
+
+*VOLUMEFRACTION-MINERAL
+0.0088 0.0088
+
+** ----------------- Numerical ----------------------
+*NUMERICAL
+  *NORM *PRESS 500.
+  *NORM *SATUR  0.10
+  *NORM *GMOLAR 0.05
+  *MAXCHANGE *PRESS 5000
+  *CONVERGE *MAXRES  1.E-04
+  *CONV-RESONLY *ON
+  *ITERCER 5
+
+  *DTMIN 1.E-06
+  *DTMAX 182.5
+  *MAXSTEPS 200
+** ----------------- Recurrent -----------------------
+*RUN
+
+*DATE 2000 01 01
+*DTWELL 0.01
+*AIMWELL *WELLNN
+
+*WELL 'CO2-Injector'
+*INJECTOR 'CO2-Injector'
+*INCOMP *SOLVENT  1 0 0 0 0 0 0
+*OPERATE *MAX *STG  1.4E+06 *CONT
+*OPERATE *MAX *BHP 50000.
+   *GEOMETRY K 0.2 0.37 1. 0.
+   *PERF GEO   'CO2-Injector'
+        9 9 3 1. *OPEN *FLOW-FROM 'SURFACE'
+        9 9 7 1. *OPEN *FLOW-FROM 1
+
+
+*WELL  'Prod'
+*PRODUCER 'Prod'
+*OPERATE *MAX *STO  2000. *CONT
+*OPERATE *MIN *BHP 500.
+   *GEOMETRY K 0.2 0.37 1. 0.
+   *PERF GEO   'Prod'
+        1 1 1   1. *OPEN *FLOW-TO 'SURFACE'
+        1 1 2   1. *OPEN *FLOW-TO 1
+        1 1 3   1. *OPEN *FLOW-TO 2
+        1 1 4   1. *OPEN *FLOW-TO 3
+
+*DATE 2000 02 29
+*DATE 2000 03 31
+*DATE 2000 04 30
+*DATE 2000 05 31
+*DATE 2000 06 30
+*DATE 2000 07 31
+*DATE 2000 08 31
+*DATE 2000 09 30
+*DATE 2000 10 31
+*DATE 2000 11 30
+
+*DATE 2001 01 01
+*DATE 2002 01 01
+*DATE 2003 01 01
+*DATE 2004 01 01
+*DATE 2005 01 01
+
+*DATE 2006 01 01
+*DATE 2007 01 01
+*DATE 2008 01 01
+*DATE 2009 01 01
+*DATE 2010 01 01
+
+*DATE 2011 01 01
+*DATE 2012 01 01
+*DATE 2013 01 01
+*DATE 2014 01 01
+*DATE 2015 01 01
+
+*DATE 2016 01 01
+*DATE 2017 01 01
+*DATE 2018 01 01
+*DATE 2019 01 01
+*DATE 2020 01 01
+
+*DATE 2021 01 01
+*DATE 2022 01 01
+*DATE 2023 01 01
+*DATE 2024 01 01
+*DATE 2025 01 01
+
+*SHUTIN 1
+*DATE 2026 01 01
+*DATE 2027 01 01
+*DATE 2028 01 01
+*DATE 2029 01 01
+*DATE 2030 01 01
+
+*DATE 2031 01 01
+*DATE 2032 01 01
+*DATE 2033 01 01
+*DATE 2034 01 01
+*DATE 2035 01 01
+
+*DATE 2036 01 01
+*DATE 2037 01 01
+*DATE 2038 01 01
+*DATE 2039 01 01
+*DATE 2040 01 01
+
+*DATE 2050 01 01
+*DATE 2060 01 01
+*DATE 2070 01 01
+*DATE 2080 01 01
+*DATE 2090 01 01
+*DATE 2100 01 01
+
+*DATE 2110 01 01
+*DATE 2120 01 01
+*DATE 2130 01 01
+*DATE 2140 01 01
+*DATE 2150 01 01
+*DATE 2160 01 01
+*DATE 2170 01 01
+*DATE 2180 01 01
+*DATE 2190 01 01
+*DATE 2200 01 01
+
+*DATE 2210 01 01
+*DATE 2220 01 01
+*DATE 2230 01 01
+*DATE 2240 01 01
+*DATE 2250 01 01
+*STOP

@@ -1,0 +1,578 @@
+   **********************************************************************************
+   ** mxhrw001.dat:           Slanted Horizontal Wells with Refined Grid           **
+   **                            in Tight Reservoir                                **
+   ********************************************************************************** 
+   **********************************************************************************************
+   **                                                                                          **
+   ** FILE: (a demo template)              MXHRW001.DAT                                        **
+   **                                                                                          **
+   ** MODEL:  17x13x4 GRIDS (VARI)             TIGHT RESERVOIR         18 OIL WELL SPACING     **
+   **         12 WELLS (9 VERT.,3 HORIZ.)      2 SECTORS               GRID REFINEMENT         **                         
+   **         FIELD UNIT                                                                       **
+   **                                                                                          **
+   **********************************************************************************************
+   **                                                                                          **
+   ** THIS TEMPLATE ILLUSTRATES THE USE OF HORIZONTAL WELLS TO MAXIMIZE  OIL  RECOVERY  FOR  A **
+   ** TIGHT RESERVOIR.  THERE ARE TWO SECTORS IN THE TEMPLATE, ONE SECTOR HAS  VERTICAL  WELLS **
+   ** AND THE OTHER HAS HORIZONTAL WELLS.  THE HORIZONTAL WELLS RECOVER MORE RESERVES THAN THE **
+   ** VERTICAL WELLS AT THE SAME ABANDONMENT CONDITIONS. IN THE TEMPLATE, THE HORIZONTAL WELLS **
+   ** ARE DRILLED AS SLANTED HOLES TO MAXIMIZE FLOW RATE AS HORIZONTAL PERMEABILITY IS GREATER **
+   ** THAN VERTICAL PERMEABILITIY.  WELLBORE GRID REFINEMENT OPTION IS USED FOR BOTH  VERTICAL **
+   ** WELLS AND HORIZONTAL WELLS.   PRODUCTION PERFORMANCES FOR THE  VERTICAL  WELLS  AND  THE **
+   ** HORIZONTAL  WELLS  ARE  SUMMARIZED  BELOW.                                               **                                   
+   **                                                                                          **
+   **********************************************************************************************
+   **                                                                                       **
+   ** RUN RESULT (VERTICAL WELL-SECTOR 1)                                                      **
+   **                                                                                          **
+   **  INITIAL CONDITION (1995-01-01):  Pressure= 4862 psi,  OOIP=     5431 mstb               **
+   **  END CONDITION     (2006-12-31):  Pressure= 3213 psi,  Recovery= 1470 mstb,  R.F.= 8.8%  **
+   **                                                                                          **
+   **                                                                                          **
+   ** RUN RESULT (HORIZONTAL WELL-SECTOR 2)                                                    **               
+   **                                                                                          **
+   **  INITIAL CONDITION (1995-01-01):  Pressure= 4862 psi,  OOIP=     5431 mstb               **
+   **  END CONDITION     (2023-12-31):  Pressure= 1800 psi,  Recovery= 3095 mstb,  R.F.= 18.6% **
+   **                                                                                          **
+   **********************************************************************************************
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *FILENAMES *OUTPUT *INDEX-OUT *MAIN-RESULTS-OUT
+
+       *TITLE1  'HORIZ. WELL IN TIGHT RESERVOIR,MXHRW001'
+       *TITLE2  'V. & SLANTED H. WELLS IN TIGHT FIELD'
+       *TITLE3  'COMPARE V. WELLS TO SLANTED WELLS'
+       *CASEID  'MXHRW001'
+
+
+   **---INPUT/OUTPUT CONTROL SECTION----------------------------------------------------
+
+       *INUNIT *FIELD
+       *WRST         *TIME                                          
+       *WPRN   *WELL *TIME                      
+       *WPRN   *GRID *TIME                                         
+       *OUTPRN *WELL *LAYER                        
+       *OUTPRN *GRID *IMEXMAP *SG *SO *PRES   
+       *WSRF   *WELL *TIME                       
+       *WSRF   *GRID 1 **TIME                        
+       *OUTSRF *GRID *SG *SO *PRES 
+       *OUTDIARY     *BRIEF   *HEADER  20                            
+
+
+   **---RESERVOIR DESCRIPTION-----------------------------------------------------------
+
+       *GRID *VARI  17 13  4
+       *KDIR *DOWN                            
+
+       *DI *IVAR  520.0  260.0  2*390.0  260.0    2*390.0  260.0    2*410.0  7*553.0 
+       *DJ *JVAR  230.0  230.0  230.0    3*460.0  230.0    3*460.0  230.0    230.0    230.0 
+       *DK *CON    19.0
+       *MOD   
+                  1:1   1:13  1:1 = 13
+                  1:1   1:13  4:4 = 10
+                 17:17  1:13  1:1 = 4
+              
+                  1:17  1:1   1:1 = 13
+                  1:17  1:1   4:4 = 3
+                  1:17 13:13  1:1 = 3  
+                  1:17 13:13  4:4 = 13                        
+                  
+                 16:16  1:13  1:1 = 12
+                 16:16  1:13  4:4 = 9
+
+       *DTOP       
+        8517 8512 8490 8478 8476 8475 8478 8482 8490 8495   8500 8507 8512 8518 8534 8557 8570 
+        8514 8499 8487 8478 8476 8475 8478 8482 8490 8495   8501 8505 8509 8513 8529 8544 8548 
+        8511 8495 8484 8478 8476 8475 8478 8482 8490 8495   8502 8504 8506 8510 8514 8525 8536 
+        8508 8492 8484 8478 8476 8475 8478 8482 8490 8495   8503 8503 8506 8508 8510 8515 8530 
+        8505 8492 8484 8478 8476 8475 8478 8482 8490 8495   8504 8504 8506 8508 8510 8513 8522 
+        8505 8492 8484 8478 8476 8475 8478 8482 8490 8495   8505 8504 8506 8508 8510 8513 8520 
+        8505 8492 8484 8478 8476 8475 8478 8482 8490 8496   8506 8505 8506 8508 8510 8513 8518 
+        8505 8492 8484 8478 8476 8475 8478 8482 8491 8497   8507 8505 8506 8508 8510 8513 8518 
+        8505 8492 8484 8478 8476 8475 8478 8483 8492 8498   8508 8506 8506 8508 8510 8513 8518 
+        8505 8492 8484 8478 8476 8475 8478 8484 8493 8499   8509 8507 8506 8508 8510 8513 8518 
+        8515 8492 8484 8478 8476 8475 8479 8485 8494 8501   8510 8508 8507 8508 8511 8514 8530 
+        8530 8510 8500 8490 8476 8476 8480 8486 8450 8520   8515 8509 8508 8509 8520 8540 8550 
+        8535 8530 8510 8500 8490 8480 8481 8490 8505 8527   8520 8515 8520 8525 8535 8555 8580 
+
+   *****Grid Reinement For Vertical Perforations 
+       *REFINE   3  3  1 
+       *RANGE    2:2   3:3   1:4
+       *RANGE    5:5   3:3   1:4  
+       *RANGE    8:8   3:3   1:4  
+       *RANGE    2:2   7:7   1:4
+       *RANGE    5:5   7:7   1:4  
+       *RANGE    8:8   7:7   1:4  
+       *RANGE    2:2  11:11  1:4
+       *RANGE    5:5  11:11  1:4  
+       *RANGE    8:8  11:11  1:4  
+
+       *****Grid Reinement For Slanted Horizontal Perforations 
+       *RANGE   12:12  3:3   1:1
+       *RANGE   13:13  3:3   2:2
+       *RANGE   14:14  3:3   3:3
+       *RANGE   15:15  3:3   4:4
+
+       *RANGE   12:12  7:7   1:1  
+       *RANGE   13:13  7:7   2:2  
+       *RANGE   14:14  7:7   3:3  
+       *RANGE   15:15  7:7   4:4  
+
+       *RANGE   12:12 11:11  1:1  
+       *RANGE   13:13 11:11  2:2  
+       *RANGE   14:14 11:11  3:3  
+       *RANGE   15:15 11:11  4:4  
+
+       *POR    *CON 0.15
+
+       *CPOR    3.0E-6
+       *PRPOR    14.7          
+
+       ******Set Sector For Vertical And Horiz. Areas
+       *SECTOR  'VERTICAL'  1:10  1:13  1:4
+       *SECTOR  'HORIZONT' 11:17  1:13  1:4  
+       
+       *PERMI  *CON       0.25  **Tightness
+       *PERMJ  *EQUALSI * 1.00
+       *PERMK  *EQUALSI * 0.50
+
+       ********Set Fault And Throw
+       **FAULT     10  10:11 1:13
+       ********Set Trans Mod. To Divide the reservoir into 2 Sectors for prod. comparison
+       *TRANSI *CON  1          
+       *MOD    10:10 1:13 1:4 = 0
+                 
+
+   **---COMPONENT PROPERTY---------------------------------------------------------------
+
+       *MODEL *BLACKOIL     
+       *PVT
+         **     p      rs     bo       eg    viso    visg
+              515.0    82.2  1.017   127.0  0.9100  0.0112
+             1015.0   155.0  1.105   250.0  0.8300  0.0140
+             2015.0   283.0  1.235   496.0  0.6950  0.0189
+             3015.0   433.0  1.355   740.0  0.5940  0.0228
+             4015.0   590.0  1.425   986.0  0.5100  0.0268
+             5015.0   777.0  1.567  1211.0  0.4490  0.0309
+             7015.0  1025.0  1.700  1833.0  0.2030  0.0470
+
+       *DENSITY *OIL    48.730
+       *DENSITY *GAS     0.065
+       *DENSITY *WATER  62.238
+       *CO             1.3687E-5
+       *CVO            4.6000E-5
+       *BWI             1.0410
+       *CW             2.9886E-6
+       *REFPW             14.7
+       *VWI               0.31
+       *CVW               0.00
+
+
+   **---ROCK-FLUID PROPERTY-------------------------------------------------------------
+
+       *ROCKFLUID
+       *RPT 1
+       *SWT
+           **  sw     krw   krow   
+             0.250    0.00   1.0
+             0.500    0.70   0.4 
+             0.820    1.00   0.0     
+             1.000    1.00   0.0
+       *SLT
+          **  sl      krg   krog  
+             0.250   1.000   0.000     
+             0.300   0.940   0.000       
+             0.400   0.870   0.001       
+             0.500   0.720   0.010
+             0.550   0.600   0.050
+             0.600   0.410   0.121 
+             0.700   0.190   0.250
+             0.750   0.125   0.400
+             0.800   0.075   0.650
+             0.880   0.000   1.000
+             1.000   0.000   1.000
+
+
+   **---INITIAL CONDITION--------------------------------------------------------------
+
+       *INITIAL
+       *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+       *PB *CON    4025.0          
+       *REFDEPTH   8500.0           
+       *REFPRES    4850.0           
+       *DWOC       9500.0           
+       *DGOC       7500.0           
+
+
+   **---NUMERICAL----------------------------------------------------------------------
+
+       *NUMERICAL
+       *DTMAX  91.0
+       *NCUTS   8           
+       *MAXSTEPS 1000
+
+
+   **---RUN AND WELL DATA--------------------------------------------------------------
+
+       *RUN
+       *DATE 1995 01 01
+
+
+       *WELL  1   'VERT1'  
+       *WELL  2   'VERT2'  
+       *WELL  3   'VERT3'  
+       *WELL  4   'VERT4'  
+       *WELL  5   'VERT5'  
+       *WELL  6   'VERT6'  
+       *WELL  7   'VERT7'  
+       *WELL  8   'VERT8'  
+       *WELL  9   'VERT9'  
+
+       *WELL 10   'HORI1'
+       *WELL 11   'HORI2'
+       *WELL 12   'HORI3'
+
+
+   *******************************
+   **VERTICAL WELLS
+   *******************************
+
+       *PRODUCER   1
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   1  
+         ** If   Jf    Kf   Ir Jr Kr   ff 
+             2   3     1  /  2  2  1  1.0    
+             2   3     2  /  2  2  1  1.0    
+             2   3     3  /  2  2  1  1.0    
+             2   3     4  /  2  2  1  1.0  
+  
+       *KRPERF 
+             2   3     1  /  2  2  1  *SETN 1     
+             2   3     2  /  2  2  1  *SETN 1
+             2   3     3  /  2  2  1  *SETN 1
+             2   3     4  /  2  2  1  *SETN 1
+
+       *PRODUCER   2
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   2  
+         ** If  Jf   Kf   Ir Jr Kr  ff  
+            5   3   1  /  2  2  1  1.0    
+            5   3   2  /  2  2  1  1.0    
+            5   3   3  /  2  2  1  1.0    
+            5   3   4  /  2  2  1  1.0    
+
+       *KRPERF 
+            5   3   1  /  2  2  1  *SETN 1    
+            5   3   2  /  2  2  1  *SETN 1    
+            5   3   3  /  2  2  1  *SETN 1    
+            5   3   4  /  2  2  1  *SETN 1    
+
+       *PRODUCER   3
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   3  
+         ** If   Jf  Kf   Ir Jr Kr   ff  
+             8   3   1  /  2  2  1  1.0    
+             8   3   2  /  2  2  1  1.0    
+             8   3   3  /  2  2  1  1.0    
+             8   3   4  /  2  2  1  1.0    
+
+       *KRPERF 
+             8   3   1  /  2  2  1  *SETN 1   
+             8   3   2  /  2  2  1  *SETN 1    
+             8   3   3  /  2  2  1  *SETN 1    
+             8   3   4  /  2  2  1  *SETN 1    
+
+       *PRODUCER   4
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   4  
+         ** If   Jf    Kf   Ir Jr Kr   ff 
+             2   7   1   /  2  2  1  1.0    
+             2   7   2   /  2  2  1  1.0    
+             2   7   3   /  2  2  1  1.0    
+             2   7   4   /  2  2  1  1.0    
+
+       *KRPERF 
+             2   7   1   /  2  2  1  *SETN 1    
+             2   7   2   /  2  2  1  *SETN 1   
+             2   7   3   /  2  2  1  *SETN 1    
+             2   7   4   /  2  2  1  *SETN 1   
+
+       *PRODUCER   5
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   5  
+         ** If   Jf  Kf    Ir Jr Kr   ff  
+             5   7   1  /  2  2  1  1.0    
+             5   7   2  /  2  2  1  1.0    
+             5   7   3  /  2  2  1  1.0    
+             5   7   4  /  2  2  1  1.0    
+
+       *KRPERF 
+             5   7   1  /  2  2  1  *SETN 1    
+             5   7   2  /  2  2  1  *SETN 1    
+             5   7   3  /  2  2  1  *SETN 1   
+             5   7   4  /  2  2  1  *SETN 1    
+
+       *PRODUCER   6
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   6  
+         ** If  Jf  Kf   Ir Jr Kr   ff  
+            8   7   1  /  2  2  1  1.0    
+            8   7   2  /  2  2  1  1.0    
+            8   7   3  /  2  2  1  1.0    
+            8   7   4  /  2  2  1  1.0    
+
+       *KRPERF 
+            8   7   1  /  2  2  1  *SETN 1    
+            8   7   2  /  2  2  1  *SETN 1    
+            8   7   3  /  2  2  1  *SETN 1    
+            8   7   4  /  2  2  1  *SETN 1    
+
+       *PRODUCER   7
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   7  
+         ** If   Jf  Kf    Ir Jr Kr   ff 
+            2    11  1  /  2  2  1  1.0    
+            2    11  2  /  2  2  1  1.0    
+            2    11  3  /  2  2  1  1.0    
+            2    11  4  /  2  2  1  1.0 
+   
+       *KRPERF 
+            2    11  1  /  2  2  1  *SETN 1    
+            2    11  2  /  2  2  1  *SETN 1   
+            2    11  3  /  2  2  1  *SETN 1   
+            2    11  4  /  2  2  1  *SETN 1    
+
+       *PRODUCER   8
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   8  
+         ** If Jf  Kf    Ir Jr Kr   ff  
+            5  11  1  /  2  2  1  1.0    
+            5  11  2  /  2  2  1  1.0    
+            5  11  3  /  2  2  1  1.0    
+            5  11  4  /  2  2  1  1.0
+    
+       *KRPERF 
+            5  11  1  /  2  2  1  *SETN 1    
+            5  11  2  /  2  2  1  *SETN 1    
+            5  11  3  /  2  2  1  *SETN 1    
+            5  11  4  /  2  2  1  *SETN 1
+
+       *PRODUCER   9
+       *OPERATE *MAX *STO     200.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      13.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *K   0.111 0.39 1.0  0.0
+       *PERF   *GEO   9  
+         ** If Jf  Kf   Ir Jr Kr   ff  
+            8  11  1 /  2  2  1  1.0    
+            8  11  2 /  2  2  1  1.0    
+            8  11  3 /  2  2  1  1.0    
+            8  11  4 /  2  2  1  1.0
+    
+       *KRPERF
+            8  11  1 /  2  2  1  *SETN 1    
+            8  11  2 /  2  2  1  *SETN 1    
+            8  11  3 /  2  2  1  *SETN 1    
+            8  11  4 /  2  2  1  *SETN 1    
+
+   ******************************
+   **HORIZONTAL WELLS
+   ******************************
+
+       *PRODUCER  10
+       *OPERATE *MAX *STO    1000.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      30.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *I   0.111 0.39 1.0  0.0
+       *PERF   *GEO  10  
+      ** If  Jf  Kf  Ir Jr Kr   ff  
+         12  3   1 / 1  2  1  1.0       
+         12  3   1 / 2  2  1  1.0       
+         12  3   1 / 3  2  1  1.0       
+         13  3   2 / 1  2  1  1.0       
+         13  3   2 / 2  2  1  1.0       
+         13  3   2 / 3  2  1  1.0       
+         14  3   3 / 1  2  1  1.0       
+         14  3   3 / 2  2  1  1.0       
+         14  3   3 / 3  2  1  1.0      
+         15  3   4 / 1  2  1  1.0       
+         15  3   4 / 2  2  1  1.0       
+         15  3   4 / 3  2  1  1.0
+       
+       *KRPERF 
+         12  3   1 / 1  2  1  *SETN 1      
+         12  3   1 / 2  2  1  *SETN 1       
+         12  3   1 / 3  2  1  *SETN 1       
+         13  3   2 / 1  2  1  *SETN 1       
+         13  3   2 / 2  2  1  *SETN 1       
+         13  3   2 / 3  2  1  *SETN 1       
+         14  3   3 / 1  2  1  *SETN 1       
+         14  3   3 / 2  2  1  *SETN 1       
+         14  3   3 / 3  2  1  *SETN 1      
+         15  3   4 / 1  2  1  *SETN 1       
+         15  3   4 / 2  2  1  *SETN 1       
+         15  3   4 / 3  2  1  *SETN 1       
+
+       *PRODUCER  11
+       *OPERATE *MAX *STO    1000.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      30.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *I   0.111 0.39 1.0  0.0
+       *PERF   *GEO  11  
+      ** If  Jf  Kf  Ir Jr Kr  ff  
+         12  7   1 / 1  2  1  1.0    
+         12  7   1 / 2  2  1  1.0    
+         12  7   1 / 3  2  1  1.0    
+         13  7   2 / 1  2  1  1.0    
+         13  7   2 / 2  2  1  1.0    
+         13  7   2 / 3  2  1  1.0    
+         14  7   3 / 1  2  1  1.0    
+         14  7   3 / 2  2  1  1.0    
+         14  7   3 / 3  2  1  1.0    
+         15  7   4 / 1  2  1  1.0    
+         15  7   4 / 2  2  1  1.0    
+         15  7   4 / 3  2  1  1.0
+    
+       *KRPERF
+         12  7   1 / 1  2  1  *SETN 1    
+         12  7   1 / 2  2  1  *SETN 1    
+         12  7   1 / 3  2  1  *SETN 1   
+         13  7   2 / 1  2  1  *SETN 1   
+         13  7   2 / 2  2  1  *SETN 1   
+         13  7   2 / 3  2  1  *SETN 1    
+         14  7   3 / 1  2  1  *SETN 1    
+         14  7   3 / 2  2  1  *SETN 1    
+         14  7   3 / 3  2  1  *SETN 1    
+         15  7   4 / 1  2  1  *SETN 1   
+         15  7   4 / 2  2  1  *SETN 1   
+         15  7   4 / 3  2  1  *SETN 1
+
+       *PRODUCER  12
+       *OPERATE *MAX *STO    1000.0  *SHUTIN
+       *OPERATE *MIN *BHP     100.0  *SHUTIN
+       *MONITOR *MIN *STO      30.0  *SHUTIN
+       *MONITOR *GOR         5000.0  *SHUTIN
+       **               Rw   cc   f    s
+       *GEOMETRY *I   0.111 0.39 1.0  0.0
+       *PERF   *GEO  12  
+      ** If Jf  Kf  Ir Jr Kr   ff  
+         12 11  1 / 1  2  1  1.0     
+         12 11  1 / 2  2  1  1.0     
+         12 11  1 / 3  2  1  1.0     
+         13 11  2 / 1  2  1  1.0     
+         13 11  2 / 2  2  1  1.0     
+         13 11  2 / 3  2  1  1.0     
+         14 11  3 / 1  2  1  1.0     
+         14 11  3 / 2  2  1  1.0     
+         14 11  3 / 3  2  1  1.0     
+         15 11  4 / 1  2  1  1.0     
+         15 11  4 / 2  2  1  1.0     
+         15 11  4 / 3  2  1  1.0    
+
+       *KRPERF
+         12 11  1 / 1  2  1  *SETN 1     
+         12 11  1 / 2  2  1  *SETN 1     
+         12 11  1 / 3  2  1  *SETN 1     
+         13 11  2 / 1  2  1  *SETN 1     
+         13 11  2 / 2  2  1  *SETN 1     
+         13 11  2 / 3  2  1  *SETN 1    
+         14 11  3 / 1  2  1  *SETN 1     
+         14 11  3 / 2  2  1  *SETN 1     
+         14 11  3 / 3  2  1  *SETN 1     
+         15 11  4 / 1  2  1  *SETN 1     
+         15 11  4 / 2  2  1  *SETN 1     
+         15 11  4 / 3  2  1  *SETN 1    
+
+
+   ********************************************************
+   **BEGINS TO PRODUCE AT THE FOLLOWING CAPACITY
+   **(DECLINE AT A MINIMUM BOTTOM HOLE PRESS. CONSTRAINT) 
+   ********************************************************
+
+       *ALTER    1   2   3   4   5   6   7   8   9  10  11  12          
+                 9*50.0                             3*100.0  
+
+       *OUTPRN *WELL *LAYER                       
+       *OUTPRN *GRID *SG *SO *PRES   
+
+       **DATE 1995 01 31  
+       *DATE 1995 12 31
+       **DATE 1996 12 31
+       *DATE 1997 12 31
+       **DATE 1998 12 31
+       *DATE 1999 12 31
+       **DATE 2000 12 31  
+       *DATE 2001 12 31  **VERTICAL WELL RATES BEGIN TO DECLINE DUE TO TIGHTNESS 
+       **DATE 2002 12 31  
+       *DATE 2003 12 31
+       **DATE 2004 12 31
+       **DATE 2005 12 31  
+       *DATE 2006 12 31  **ALL VERTICAL WELLS SUSPENDED DUE TO LOW RATE (TIGHTNESS)
+       **DATE 2007 12 31
+       *DATE 2008 12 31
+       **DATE 2009 12 31
+       *DATE 2010 12 31  
+       **DATE 2011 12 31
+       **DATE 2012 12 31
+       **DATE 2013 12 31
+       **DATE 2014 12 31
+       *DATE 2015 12 31
+       **DATE 2016 12 31
+       **DATE 2017 12 31
+       **DATE 2018 12 31
+       **DATE 2019 12 31
+       *DATE 2020 12 31
+       **DATE 2021 12 31
+       **DATE 2022 12 31
+       *DATE 2023 12 31  **HORIZONTAL WELLS REACHED ABANDON. GOR
+       *STOP

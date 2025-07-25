@@ -1,0 +1,431 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**    This data set illustrates option *SHAPE *K-AV2 for natural-fracture
+**    matrix-fracture transmissibility.
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS 200600
+
+*interrupt *stop
+
+*TITLE1 'STARS Grid Option Template No. 80'
+*TITLE2 'Test/Illustrate *SHAPE *K-AV2 with *DUALPERM'
+*TITLE3 'Based on STSMO020'
+
+inunit field
+
+outprn grid pres sw so sg temp y obhloss
+outprn well all
+outprn iter newton
+wprn grid 400
+wprn iter 400
+prntorien 2 0
+OUTSRF GRID PRES SG SO SW TEMP 
+
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+GRID VARI 5 1 10
+KDIR UP
+DI IVAR 
+ 5 10 15 20 25
+DJ JVAR 
+ 5
+DK ALL
+ 50*3
+DTOP
+ 5*0
+DUALPERM 
+SHAPE K-AV2
+
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL MATRIX CON            1
+
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL FRACTURE CON            1
+
+**$ Property: Fracture Spacing I (ft)   Max: 1.633  Min: 1.633
+DIFRAC CON        1.633
+DJFRAC EQUALSI
+
+**$ Property: Fracture Spacing K (ft)   Max: 0  Min: 0
+DKFRAC CON            0
+
+**$ Property: Porosity  Max: 0.329  Min: 0.28
+POR MATRIX ALL 
+ 0.28 0.281 0.282 0.283 0.284 0.285 0.286 0.287 0.288 0.289 0.29 0.291
+ 0.292 0.293 0.294 0.295 0.296 0.297 0.298 0.299 0.3 0.301 0.302 0.303
+ 0.304 0.305 0.306 0.307 0.308 0.309 0.31 0.311 0.312 0.313 0.314 0.315
+ 0.316 0.317 0.318 0.319 0.32 0.321 0.322 0.323 0.324 0.325 0.326 0.327
+ 0.328 0.329
+
+**$ Property: Porosity  Max: 0.0329  Min: 0.028
+POR FRACTURE ALL 
+ 0.028 0.0281 0.0282 0.0283 0.0284 0.0285 0.0286 0.0287 0.0288 0.0289
+ 0.029 0.0291 0.0292 0.0293 0.0294 0.0295 0.0296 0.0297 0.0298 0.0299
+ 0.03 0.0301 0.0302 0.0303 0.0304 0.0305 0.0306 0.0307 0.0308 0.0309
+ 0.031 0.0311 0.0312 0.0313 0.0314 0.0315 0.0316 0.0317 0.0318 0.0319
+ 0.032 0.0321 0.0322 0.0323 0.0324 0.0325 0.0326 0.0327 0.0328 0.0329
+
+**$ Property: Permeability I (md)   Max: 50  Min: 50
+PERMI MATRIX CON           50
+
+**$ Property: Permeability I (md)   Max: 2000  Min: 2000
+PERMI FRACTURE CON         2000
+
+**$ Property: Permeability J (md)   Max: 50  Min: 50
+PERMJ MATRIX CON           50
+
+**$ Property: Permeability J (md)   Max: 2000  Min: 2000
+PERMJ FRACTURE CON         2000
+
+**$ Property: Permeability K (md)   Max: 50  Min: 50
+PERMK MATRIX CON           50
+
+**$ Property: Permeability K (md)   Max: 2000  Min: 2000
+PERMK FRACTURE CON         2000
+
+**$ Property: Trans Multiplier I  Max: 3.5  Min: 1
+TRANSI MATRIX ALL 
+ 20*1 2*3.5 28*1
+
+**$ Property: Trans Multiplier K  Max: 4.5  Min: 1
+TRANSK MATRIX ALL 
+ 20*1 2*4.5 28*1
+
+**$ Property: Trans Multiplier I  Max: 3.6  Min: 1
+TRANSI FRACTURE ALL 
+ 20*1 2*3.6 28*1
+
+**$ Property: Trans Multiplier K  Max: 4.6  Min: 1
+TRANSK FRACTURE ALL 
+ 20*1 2*4.6 28*1
+
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+*end-grid
+
+** Instrinsic formation/rock properties
+cpor 5e-4
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+HLOSSPROP OVERBUR 35 24
+         UNDERBUR 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**              -----    --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       8.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+
+visctable
+
+**    Temp
+      70          0     2.9666e5
+      80          0     1.3466e5
+      90          0       65248
+     100          0       33500
+     125          0        7839
+     150          0        2349
+     175          0       853.2
+     200          0       360.7
+     250          0        90.7
+     300          0        31.7
+     350          0        13.9
+     400          0        7.22
+     450          0        4.23
+     500          0        2.71
+     550          0        1.87
+
+** Reference conditions
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0
+    1.0        1.0          0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+
+**   Assign rel perm sets
+
+**$ Property: Rel Perm Set Number  Max: 1  Min: 1
+KRTYPE MATRIX CON            1
+
+**$ Property: Rel Perm Set Number  Max: 2  Min: 2
+KRTYPE FRACTURE CON            2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+initial
+
+** Fractures in layer 5 will have initial pressure of 150 psi
+** Pressure in other layers (matrix and fracture) will be adjusted
+** according to gravity
+
+**$ Property: Pressure (psi)   Max: 159.941  Min: 148.25
+PRES FRACTURE ALL 
+ 154.81 159.94 159.913 159.936 159.941 154.839 158.478 158.612 158.637
+ 158.642 154.535 157.362 157.319 157.339 157.343 154.203 156.303 156.023
+ 156.041 156.044 153.887 155.278 157.12 154.744 154.745 153.822 154.217
+ 156.489 153.447 153.446 153.621 153.302 153.062 152.15 152.147 153.499
+ 153.307 156.975 150.851 150.848 153.422 153.296 157.63 149.552 149.549
+ 153.377 153.275 156.211 148.253 148.25
+
+**$ Property: Pressure (psi)   Max: 172.819  Min: 148.427
+PRES MATRIX ALL 
+ 154.857 163.15 159.913 160.09 160.114 154.837 158.425 161.615 158.853
+ 158.815 154.538 157.878 162.89 157.582 157.517 154.213 156.566 164.158
+ 156.041 156.218 153.959 155.435 163.838 154.794 154.92 153.817 154.399
+ 165.989 153.729 153.623 153.625 153.524 172.819 153.114 152.326 153.501
+ 153.332 167.921 151.314 151.027 153.432 153.296 166.683 150.08 149.728
+ 153.372 153.272 156.915 148.782 148.427
+
+**$ Property: Temperature (F)   Max: 357.398  Min: 75.0197
+TEMP MATRIX ALL 
+ 348.112 128.412 79.5341 75.163 75.0197 354.589 151.872 82.7115 75.2822
+ 75.0206 354.965 179.806 86.1765 75.3983 75.0221 355.208 205.343 90.539
+ 75.5555 75.0243 355.626 238.244 95.2045 75.7873 75.0278 357.398 272.014
+ 98.5569 76.1992 75.0337 356.812 337.154 108.778 77.2031 75.0426 357.053
+ 353.114 106.08 76.6646 75.0444 356.816 354.927 108.641 76.675 75.0485
+ 352.125 345.421 109.657 76.8093 75.0555
+
+**$ Property: Temperature (F)   Max: 357.93  Min: 75.0197
+TEMP FRACTURE ALL 
+ 357.916 128.61 79.5224 75.163 75.0197 357.93 150.323 82.7047 75.2822
+ 75.0206 357.773 180.602 86.1608 75.3985 75.0221 357.599 205.667 90.5447
+ 75.5557 75.0243 357.434 239.911 95.2035 75.7882 75.0278 357.4 276.022
+ 98.5567 76.2037 75.0337 357.295 357.128 112.172 77.4031 75.0429 357.231
+ 357.13 106.079 76.6637 75.0446 357.191 357.125 108.639 76.6742 75.0486
+ 357.167 357.114 109.653 76.8098 75.0558
+
+**$ Property: Water Saturation  Max: 0.947868  Min: 0
+SW FRACTURE ALL 
+ 0.0711524 1.20832E-007 0.945151 0.947788 0.947794 0.0152738 0.00956589
+ 0.911541 0.947776 0.947821 0.00956404 2.20978E-008 0.849664 0.947749
+ 0.947825 0.00997966 0.00343512 0.729533 0.947858 0.947828 0.00811239
+ 0.00592892 0 0.947221 0.947831 0.000191101 0.00549889 0 0.946481 0.947833
+ 0.000517622 0.0126155 0.0663011 0.946863 0.947835 0.000473115 0.00147885
+ 0 0.945004 0.947839 0.000457303 0.00115528 0 0.941739 0.947842 0.000421044
+ 0.000978602 4.73156E-008 0.937132 0.947868
+
+**$ Property: Water Saturation  Max: 0.544168  Min: 0.447529
+SW MATRIX ALL 
+ 0.502204 0.451525 0.449358 0.451401 0.451477 0.511356 0.455036 0.449195
+ 0.451371 0.451485 0.498045 0.456676 0.448869 0.451333 0.451493 0.511522
+ 0.462921 0.448659 0.451188 0.4515 0.534544 0.466683 0.448854 0.4511
+ 0.451508 0.519298 0.486061 0.448336 0.450982 0.451514 0.482536 0.487978
+ 0.447529 0.450734 0.451519 0.484799 0.494733 0.448241 0.450841 0.451526
+ 0.505328 0.49065 0.448565 0.450869 0.451533 0.544168 0.499019 0.450587
+ 0.450871 0.451538
+
+**$ Property: Oil Saturation  Max: 0.552471  Min: 0.359498
+SO MATRIX ALL 
+ 0.497796 0.548475 0.550642 0.548599 0.548523 0.488644 0.544964 0.550805
+ 0.548629 0.548515 0.501955 0.543324 0.551131 0.548667 0.548507 0.488478
+ 0.537079 0.551341 0.548812 0.5485 0.465456 0.533317 0.551146 0.5489
+ 0.548492 0.359498 0.513939 0.551664 0.549018 0.548486 0.517464 0.512022
+ 0.552471 0.549266 0.548481 0.515201 0.505267 0.551759 0.549159 0.548474
+ 0.494673 0.50935 0.551435 0.549131 0.548467 0.455832 0.500981 0.549413
+ 0.549129 0.548462
+
+**$ Property: Oil Saturation  Max: 1  Min: 0
+SO FRACTURE ALL 
+ 0.889097 1 0.0548486 0.0522118 0.0522062 0.205659 0.990434 0.088459
+ 0.0522236 0.0521789 0.294244 1 0.150336 0.0522515 0.0521752 0.287813
+ 0.996565 0.270467 0.0521421 0.0521719 0.249189 0.994071 1 0.0527787
+ 0.052169 0.00616158 0.994501 1 0.0535185 0.0521666 0.0034829 0.492653
+ 0.933699 0.053137 0.0521646 0.00238725 0.00767861 1 0.0549959 0.0521613
+ 0.00189278 0.000550035 1 0.0582608 0.052158 0 0.000178781 1 0.0628683
+ 0.052132
+
+**$ Property: Gas Saturation  Max: 0.999579  Min: 0
+SG FRACTURE ALL 
+ 0.0397504 4*0 0.779068 4*0 0.696192 4*0 0.702207 4*0 0.742699 4*0
+ 0.993647 4*0 0.995999 0.494732 3*0 0.99714 0.990843 3*0 0.99765 0.998295
+ 3*0 0.999579 0.998843 3*0
+
+**$ Property: Gas Saturation  Max: 0.121204  Min: 0
+SG MATRIX ALL 
+ 25*0 0.121204 24*0
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+newtoncyc 10
+sdegree 1
+sorder rcmrb
+dtmax 90
+upstream klevel
+maxsteps 20
+
+norm      press 200  satur  .2   temp 180  y .2   x .2
+
+
+
+run
+
+**  ==============  RECURRENT DATA  ======================
+
+date 1973 9 25.5
+
+   dtwell .004
+                            ** Horizontal well in J direction
+   WELL  'Injector 1'
+
+   injector mobweight 'Injector 1'
+   incomp water 1.0  0.0
+   tinjw 360.77
+   qual .7
+   operate     bhp   155    ** Start on BHP
+   operate max stw   1000   ** Maximum water rate
+          ** i j k wi = 0.007082 *k * h / ln(0.5 * re / rw)
+                             **41.62
+   PERF  WI  'Injector 1'
+   **$ UBA    wi       Status  Connection  
+    1 1 2  36926.1  OPEN    FLOW-FROM  'SURFACE'
+                            **             "
+   WELL  'Producer 1'
+
+   producer 'Producer 1'
+   operate     bhp    154   ** Start on BHP
+   operate max stl    1000  ** Maximum liquid rate
+   operate max steam  5e-2  cont  ** maximum steam rate
+                         ** rw cc ff ss
+              ** i j k
+
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  J  0.3  0.5  1.  0.
+
+   PERF  GEO  'Producer 1'
+   **$ UBA    ff  Status  Connection  
+    1 1 1  1.  OPEN    FLOW-TO  'SURFACE'
+
+time 45 
+
+   **$ Property: Trans Multiplier I  Max: 0.5  Min: 0.5
+   TRANSI MATRIX IJK 
+     1:2     1:1     5:5    0.5         
+
+   **$ Property: Trans Multiplier I  Max: 0.6  Min: 0.6
+   TRANSI FRACTURE IJK 
+     1:2     1:1     5:5    0.6         
+
+   **$ Property: Trans Multiplier K  Max: 1.6  Min: 1.6
+   TRANSK FRACTURE IJK 
+     1:2     1:1     5:5    1.6         
+
+time 90
+time 150
+time 210
+time 365
+time 730
+
+RESULTS SPEC 'Fracture Spacing J'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 0
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC STOP
+

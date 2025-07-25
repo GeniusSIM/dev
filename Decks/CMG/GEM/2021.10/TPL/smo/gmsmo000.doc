@@ -1,0 +1,260 @@
+               SIMULATOR OPTIONS
+               -----------------
+
+
+
+Templates in the Simulator Options (SMO) directory:
+
+GMSMO001.DAT -- Gas Phase Diffusion in a Fractured Reservoir
+GMSMO002.DAT -- Water and Solvent Injection with Interfacial Tension Effects
+GMSMO003.DAT -- Relative Permeability Endpoints Set Block-by-Block
+GMSMO004.DAT -- Multi-Region Depth-Averaged Initialization
+GMSMO005.DAT -- Solvent and Dry Gas Injection Using Pseudo-Component Option
+GMSMO006.DAT -- WAG Model with Solubility-in-Water Option
+GMSMO007.DAT -- Two-Dimensional Miscible Flood
+GMSMO008.DAT -- Restarted Run from template GMSMO007
+GMSMO009.DAT -- Test of *CHECKONLY.
+GMSMO010.DAT -- Use of *SECTORARRAY keyword.
+GMSMO011.DAT -- Water and Solvent Injection With IFT Effects
+GMSMO012.DAT -- WAG Model With Solubility In Water (OGW Flash)
+GMSMO013.DAT -- Higher-Order Scheme with TVD Flux Limiting
+GMSMO014.DAT -- Enhanced Coal Bed Methane Problem
+GMSMO015.DAT -- Velocity Dependent Relative Permeabilities
+GMSMO016.DAT -- GMSMO014 with alternate adsorption specification
+GMSMO017.DAT -- GMSMO014 with alternate adsorption specification
+GMSMO018.DAT -- SPE Comparative Problem 3 with Rock Dilation
+GMSMO019.DAT -- SPE Comparative Problem 3 with Rock Compaction
+GMSMO020.DAT -- ECM problem with Palmer and Mansoori rock mechanics
+GMSMO021.DAT -- ECM problem with P&M rock mechanics; alternate input
+GMSMO022.DAT -- GMFLU001 using the *SETPI option
+GMSMO023.DAT -- Pcog Hysteresis Test Model
+GMSMO024.DAT -- Krow Hysteresis Test Model 1 (Initially on Drainage)
+GMSMO025.DAT -- Rel. Perm. Endpoints set block-by-block
+GMSMO026.DAT -- 2-D Miscible Flood With Group Well Control (GMWWM001)
+GMSMO027.DAT -- Re-started Run From Template GMSMO026
+GMSMO028.DAT -- 3rd SPE Problem with DEPLETION
+GMSMO029.DAT -- 3rd SPE Problem with DEPLETION and Hysteresis
+GMSMO030.DAT -- Irreversible compaction w/o DEPLETION keyword
+GMSMO031.DAT -- Irreversible compaction with DEPLETION keyword
+GMSMO032.DAT –- JFUNC keyword and tilted WOC
+GMSMO033.DAT -- Solvent and Dry Gas Injection with SORM including water zone
+GMSMO034.DAT –- Three phase WAG hysteresis
+GMSMO035.DAT –- Cap Rock Leakage through Wells
+GMSMO036.DAT –- Cap Rock Leakage through Wells restart
+GMSMO037.DAT –- Specify Surface and Reservoir Aqueous Properties
+GMSMO038.DAT -- Use of *SWINIT option in *VERTICAL *BLOCK_CENTER initialization
+                to specify initial water saturation distribution.
+GMSMO039.DAT -- Oil-Wet Multi-Region Depth-Averaged Initialization
+GMSMO040.DAT -- Oil-Wet 2-D Miscible Flood With Group Well Control
+GMSMO041.DAT -- Coalbed Methane with LGR
+GMSMO042.DAT -- Coalbed Methane using Palmer-Mansoori model and SETPI.
+GMSMO043.DAT –- Compressibility output in a variable salinity model
+GMSMO044.DAT -- Velocity Dependent Relative Permeabilities -- Pope's model.
+GMSMO045.DAT -- Mixed initialization for CBM models
+GMSMO046.DAT -- Usage of EOSSET-wise independent viscosity correlations.
+GMSMO047.DAT -- Demonstrate use of *FINE-INTG subkeyword in DEPTH-AVE initialization.
+GMSMO048.DAT -- Companion template to GMSMO047 for comparison.
+GMSMO049.DAT -- Test implicit switching based on composition threshold of aqueous components.
+GMSMO050.DAT -- Demonstrate use of non-equilibrium water saturation over-ride option (SWNEQ).
+GMSMO051.DAT -- Demonstrate use of compaction table redefinition in recurrent section -
+                LGR in reservoir descrition section.
+GMSMO052.DAT -- Demonstrate use of compaction table redefinition in recurrent section -
+                LGR in recurrent section.              
+GMSMO053.DAT -- Demonstrate use of temperature-dependent volume shifts.
+GMSMO054.DAT -- CBM Modeling with simplifiled rel-perm input (via *KRCBM keyword)
+GMSMO055.DAT -- CBM Modeling - use of multiplying factor to adsorbed amounts calculated
+                by Langmuir isotherm.
+GMSMO056.DAT -- Ion-Exchange Modelling. A low salinity water flood is simulated.
+GMSMO057.DAT -- A companion template to gmsmo056. Ion-exchange modelling is turned-off
+                for comparison with results from gmsmo056.
+                
+GMSMO058.DAT -- CBM reservoir development with AUTODRILL. User defined drainage radius of 
+                wells is used as an input to prioritize drilling of wells.               
+GMSMO059.DAT -- CBM reservoir development with AUTODRILL. A companion template to
+                gmsmo058. Uses instantaneous production potential to prioritize drilling 
+                of wells.
+
+GMSMO060.DAT -- Demonstrate output of well-stream quantities for aqueous phase.
+GMSMO061.DAT -- Demonstrate use of *CEC-CALC for computing CEC based on an internal correlation.
+GMSMO062.DAT -- Test adsorption of a component from aqueous phase -- Langmuir isotherm.
+GMSMO063.DAT -- Test adsorption of a component from aqueous phase -- Langmuir isotherm and
+                residual adsorption level specification.
+GMSMO064.DAT -- Test adsorption of a component from aqueous phase -- Tabular adsorption input
+                and residual adsorption level specification.
+GMSMO065.DAT -- Demonstrate use of *AQUIFER *RESBND that attaches aquifer to first set of 
+                active blocks if the boundary blocks are null.
+GMSMO066.DAT -- Demonstrate ose of *AQUIFER *RESBND that attaches aquifer to first set of
+                active blocks if the boundary blocks are null; for comparison with the 
+                equivalent *AQUIFER *BOUNDARY model.
+GMSMO067.DAT -- Test data set using *AQUIFER *BOUNDARY for comparison with the results 
+                of gmsmo066 that uses *AQUIFER *RESBND.
+GMSMO068.DAT -- Template to demonstrate use of flash convergence keyword *QNSS-TO-NR and
+                related output.
+GMSMO069.DAT -- Demonstrate effect of (In)Accessible pore volume (*PORFT) and Residual 
+                Resistance Factor (*RRFT) in a model with adsorption in aqueous phase.
+
+GMSMO070.DAT -- Template to illustrate 3 point scaling and contrast it with 2 point 
+                horizonal scaling option in GEM.
+GMSMO071.DAT -- Template to illustrate 2 point scaling and contrast it with 3 point
+                horizonal scaling option in GEM.
+GMSMO072.DAT -- Template to illustrate 3 point vertical (rel perm) scaling 
+GMSMO073.DAT -- Template to illustrate 3 point vertical (rel perm) scaling -- consistency checks.
+
+GMSMO074.DAT -- Composition input options in DEPTH_AVE initialization; use of *ZOIL
+GMSMO075.DAT -- Composition input options in DEPTH_AVE initialization; use of *ZDEPTH
+GMSMO076.DAT -- Composition input options in DEPTH_AVE initialization; use of *ZGLOBALC
+
+GMSMO077.DAT -- Specifying initial saturation with *SWINIT in DEPTH_AVE initialization.
+
+GMSMO078.DAT -- Use of Relative Permeability End Point Smoothing.
+GMSMO079.DAT -- Linear Smoothing of Relative Permeability End Points.
+
+GMSMO080.DAT -- Grid Orientation Effect in Miscible Displacement - Parallel Grids, 5 point.
+GMSMO081.DAT -- Grid Orientation Effect in Miscible Displacement - Diagonal Grids, 5 point.
+GMSMO082.DAT -- Grid Orientation Effect in Miscible Displacement - Parallel Grids, 9 point.
+GMSMO083.DAT -- Grid Orientation Effect in Miscible Displacement - Diagonal Grids, 9 point.
+GMSMO084.DAT -- Grid Orientation Effect in Miscible Displacement - Use of keywords *TRANSIJ- 
+                and *TRANSINJ+ in 9-point discretization.
+                
+GMSMO085.DAT -- Empirical Foam Model -- Keywords Usage.
+GMSMO086.DAT -- Companion data set to GMSMO085 with Foam effects switched-off.
+
+GMSMO087.DAT -- Simultaneous Use of IFT dependent Relative Permeabilities and Hysteresis.
+
+GMSMO088.DAT -- Flux Sector Output – Keyword Usage.
+
+GMSMO089.DAT -- Handling of two-phase miscible to single-phase transition for relative 
+                permeability calculations with IFT dependence.
+
+GMSMO090.DAT -- Use of three-point end-point scaling keywords for individual relative 
+                permeability curves.
+
+GMSMO091.DAT -- Surfactant injection in aqueous phase; o-w capillary number based
+                relative permeability interpolation. Logarithmic interpolation
+                of IFT table.
+GMSMO092.DAT -- Surfactant injection in aqueous phase; o-w capillary number based
+                relative permeability interpolation. Linear interpolation of
+                IFT table.
+GMSMO093.DAT -- Companion dataset to GMSMO091; No surfactant injected in the
+                aqueous phase.
+
+GMSMO094.DAT -- Empirical Foam Model 2 - Keyword Usage.
+
+GMSMO095.DAT -- Modify oil relative permeability for Stone-1 using SOMGAS and SOMGASI tables,
+                in presence of hysteresis in oil relative permeability from oil-water table.
+GMSMO096.DAT -- Modify oil relative permeability for Stone-1 using SOMWAT and SOMWATI tables,
+                in presence of hysteresis in oil relative permeability from gas-oil table.
+GMSMO097.DAT -- Ion-Exchange and Geochemistry Reactions.
+
+GMSMO098.DAT -- Demonstrate use of table-based endpoint scaling of relative permeability curves.
+
+GMSMO099.DAT -- Demonstrate use of *INTERP_ENDS for a two staged interpolation of relative permeability.
+
+GMSMO100.DAT -- Combination of Table- and Block-based Relative Permeability End-Points in Interpolation.
+
+GMSMO101.DAT -- CBM Modeling with Palmer-Higgs Coal Mechanics.
+
+GMSMO102.DAT -- 2 Point Capillary Pressure Scaling.
+
+GMSMO103.DAT -- 2 Point Capillary Pressure Scaling -- J function.
+
+GMSMO104.DAT -- Use of *DIM_DETH_TABLE and *MAXDATE keywords.
+
+GMSMO105.DAT -- Use of Pressure vs. Transmissibility Multipliers in CROKTAB..
+
+GMSMO106.DAT -- Use of Pressure vs. Permeability Multipliers (i,j,k) in CROKTAB..
+
+GMSMO107.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 1
+GMSMO108.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 2
+GMSMO109.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 3
+GMSMO110.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 4
+GMSMO111.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 5
+GMSMO112.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 6
+GMSMO113.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 7
+GMSMO114.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 8
+GMSMO115.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 9
+GMSMO116.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 10
+GMSMO117.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 11
+GMSMO118.DAT -- Demonstrate use of coupled hysteresis between o-w Relative Permeability and Pc
+                Test Model 12
+GMSMO119.DAT -- Demonstrate use of keyword *ADTSC in Numerical section for Adaptive Time 
+                Stepping Control
+GMSMO120.DAT -- Demonstrate use of keyword *ADTSC in Numerical and Recurrent sections for
+                Adaptive Time Stepping Control
+GMSMO121.DAT -- Demonstrate use of *REFCURR option that re-initilizes reference state for
+                porosity, permeabilty/transmissibility multplier in compaction dilation models.
+
+GMSMO122.DAT -- Water Induced Compaction with Hysteresis
+
+GMSMO123.DAT -- DEPLETION option with Rock Dilation 
+
+GMSMO124.DAT -- Rock Compaction with *COVTAB and *COVB-STRESS
+GMSMO125.DAT -- Rock Compaction with *COVTAB
+
+GMSMO126.DAT -- Kr Interpoplation via *INTERP-SCAL(1)
+GMSMO127.DAT -- Kr Interpoplation via *INTERP-SCAL(2)
+
+GMSMO128.DAT -- Semi-logarithmic treatment of Compaction-Dialtion Tables.
+
+GMSMO129.DAT -- 3-Phase WAG Hysteresis
+                 (a) Direct input of Land's constant via, *HYSKRG *LANDCTGAS *LANDC;
+                 (b) Land's trapping model based on total gas saturation, via, *HYSKRG *LANDCTGAS
+
+GMSMO130.DAT -- 3-Phase WAG Hysteresis - Use of *LAND *NOCRIT *LANDC
+GMSMO131.DAT -- 3-Phase WAG Hysteresis - Use of HYSKRG *AISSAOUI *NOCRIT
+GMSMO132.DAT -- 3-Phase WAG Hysteresis - Use of *HYSKRG *TABLE
+GMSMO133.DAT -- 3-Phase WAG Hysteresis - *LAND *LINEAR *NOCRIT
+
+GMSMO134.DAT -- Use of PSEUDOP2 option for WI calculation.
+GMSMO135.DAT -- 3-Phase WAG Hysteresis - Use of HYSKRG *AISSAOUI *NOCRIT
+                SORG & SORW as a function of trapped gas saturation.
+GMSMO136.DAT -- *GASZONE *NOOIL with *SWINIT_NOCRIT in Initialization.
+GMSMO137.DAT -- Salinity in Gravity Capillary Equilibrium
+
+GMSMO138.DAT -- 3-Phase WAG Hysteresis Time Step Dependent Saturation Thresholds (1)
+GMSMO139.DAT -- 3-Phase WAG Hysteresis Time Step Dependent Saturation Thresholds (2)
+GMSMO140.DAT -- 3-Phase WAG Hysteresis Time Step Dependent Saturation Thresholds (3)
+
+GMSMO141.DAT -- Full field run using Flux type of Boundary
+GMSMO142.DAT -- Reduced run using Flux type of Boundary
+GMSMO143.DAT -- Full field run using Pressure type of Boundary
+GMSMO144.DAT -- Reduced run using Pressure type of Boundary
+GMSMO145.DAT -- Flux Boundary with Flux Sectors  -- Full-field run
+GMSMO146.DAT -- Flux Boundary with Flux Sectors  -- Reduced run
+
+GMSMO147.DAT -- Discrete Rock Dilation Test Case
+
+GMSMO148.DAT -- SWINIT in BLOCK_CENTER Initialization with PCWMAX
+GMSMO149.DAT -- Capillary Pressure Scaling for SWINIT
+
+GMSMO150.DAT -- Relative Permeability and Saturation End-Point Scaling in 3-Phase WAG
+
+GMSMO151.DAT -- Use of SWINIT_ADJMOB to scale/shift Pcow for maintaining gravity-capillary equilibrium
+
+GMSMO152.DAT -- Test recurrent reading of user porosity function
+
+GMSMO153.DAT -- Test use of SIP data format for grid-arrays.
+
+GMSMO154.DAT -- 3-Phase WAG Hysteresis - Larsen and Skauge drainage loops
+
+GMSMO155.DAT -- Surface Complexation Modeling -- Relative Permeability interpolation based on *EQVSCX (1)
+GMSMO156.DAT -- Surface Complexation Modeling -- Relative Permeability interpolation based on *EQVSCX (2)
+GMGMC157.DAT -- Surface Complexation Modeling With Solubility -- Rel Perm interpolation based on Zeta Potential
+GMGMC158.DAT -- Surface Complexation Modeling With Solubility -- No Rel Perm interpolation
+GMGMC159.DAT -- Surface Complexation Modeling of a Slim Tube Experiment
+
+Cross references to templates in other directories:
+
+GMWWM001.DAT -- Copy of GMSMO007
+GMFLU001.DAT -- Related to GMSMO022

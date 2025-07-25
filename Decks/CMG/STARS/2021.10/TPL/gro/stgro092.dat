@@ -1,0 +1,214 @@
+   
+
+**                          OVERVIEW
+**                          ========
+
+**   This data set illustrates the application of discrete fracture network (DFN) modelling
+**   with following features:
+
+**   1)  *BEGIN_DFN and associated keywords are used to define DFN with CMG data input
+**       format. DFN is further discretized into 2 discrete fracture units (DFU).
+
+**   2)  Keywords *PERM-DF, *APER-DF and *VERTEX are used to define DFN properties.
+
+**   3)  Two disconnected regions are communicating through DFN in nulled grid blocks.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Grid Option Template No. 92'
+*TITLE2 'Test/Illustrate Discrete Fracture Network (DFN)'
+*TITLE3 'DFN Between Disconnected Regions'
+
+   *INUNIT *FIELD               
+
+   *OUTSRF *GRID *SO *SG *SW  *PRES
+   *OUTSRF *WELL  *LAYER *ALL
+   *WSRF   *GRID 2
+   *WSRF   *WELL 1
+   *WRST
+
+          
+   **************************************************************************  
+   ** Definition of fundamental grid
+   **************************************************************************
+
+   *GRID *CART    21    1   15   ** x-z cross sectional
+
+   *CONVERT-TO-CORNER-POINT 
+
+   *KDIR *DOWN
+
+   *DI *CON  90.0
+   *DJ *CON  2400.0
+   *DK *CON  24.0
+
+   **DEPTH 1    1   1  9000.0     ** Depth to center of first block, in topmost layer
+
+   *PAYDEPTH *KVAR  9000 9024 9048 9072 9096 9120 9144 9168 9192 9216 9240 9264 9288 9312 9336
+
+
+   *POR  *CON 0.12
+                         
+   *PERMI *CON 600.0
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI * 0.10
+ 
+   *NULL IJK 1:21  1   8   0
+ 
+   *BEGIN_DFN 'dnf1' CMG  2
+     *PERM-DF CON 1000
+     *APER-DF CON 0.1
+     *VERTEX
+          315      0   9132
+          315   2400   9132
+          315   2400   9204
+          315      0   9204
+         1585      0   9132
+         1585   2400   9132
+         1585   2400   9204
+         1585      0   9204
+   *END_DFN
+                              
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'Water'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4  
+                                     
+   **  ==============  INITIAL CONDITIONS  ======================
+
+   *INITIAL
+
+   *VERTICAL *BLOCK_CENTER
+   *REFPRES  3600.0                ** Set reference pressure
+   *REFDEPTH 9120.0                ** at the reference depth.
+   *DWOC     9370.0                ** Set water-oil contact
+   *DGOC     9070.0                ** Set gas-oil contact
+   
+   *temp *con 125
+
+   **  ==============  NUMERICAL CONTROL  ======================
+
+   *NUMERICAL
+
+   tform zt
+   isothermal         
+
+   **  ==============  RECURRENT DATA  =========================
+
+   *RUN
+   
+   *DATE 1994 01 01
+   *DTWELL   0.025
+
+   *WELL 1 'Producer 1' 
+   *WELL 2 'Injector 1'
+ 
+   *PRODUCER 1                 ** Main producer
+   *OPERATE *MIN *BHP 3600.00
+
+   *INJECTOR 2                 ** Main water injector
+   *INCOMP *WATER 1 0
+   *OPERATE *MAX *STW 2000.00     
+
+
+   *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+   *PERF *GEO 1
+    11  1  6    1.0
+    11  1  5    1.0
+                       
+   *PERF *GEO 2
+    11 1 11     2.0
+    11 1 12     1.0
+    11 1 13     1.0
+
+
+   *TIME 1000.0
+   *TARGET  *DWA  'Injector 1'     ** Switch to average drawdown
+           50.0
+
+   *TIME 3000.0                    
+   *STOP

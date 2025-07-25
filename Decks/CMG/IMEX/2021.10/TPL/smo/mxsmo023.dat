@@ -1,0 +1,254 @@
+   ******************************************************************************
+   ** mxsmo023.dat :      Rock Compaction Model - Hystersis Option             **                                   
+   ** *CROCKTABH compaction option based on data set mxwwm005.dat              **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO023.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3                    SMO 23                        ROCK COMPACTION **       
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** SMO 23 gas injection problem is modified to inject  gas  at  a  rate  that would ** 
+   ** replace the voidage  at  desired  fractions.   The leaseline  option  is         **
+   ** activated to generate production output based on each of the leases.  The rock   **
+   ** compaction model with hysteresis is applied to the entire reservoir. See         **
+   ** mxmso022.dat for an example of irreversible rock compaction (*CIRREVERS).        **  
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1
+   'Rock Compaction Model-Hysteresis option'
+   *TITLE2
+   '10x10x3 rectangular grid problem'
+
+   *INUNIT *FIELD
+
+   *WPRN   *WELL 10
+   *WPRN   *GRID 10
+
+   *OUTPRN *GRID *EXCEPT *SS  *SSPRES *WINFLUX  *DATUMPRES
+   
+   *WSRF   *GRID 0
+   *WSRF   *WELL 1
+
+   *OUTSRF  *SPECIAL 10 10 1 *PRES
+   *OUTSRF  *SPECIAL 10 10 1 *POROS
+
+   ****************************************************************************
+   ** Reservoir Description Section
+   **************************************************************************
+   *GRID *CART  10   10    3       ** Rectangular grid with 10 grid blocks in 
+                                   ** I direction, 10 grid blocks in J 
+                                   ** direction and 3 layers in the K
+                                   ** direction.
+   *DI *CON  1000.0                ** Dimension of I direction blocks are
+                                   ** constant for each block (1000 ft).
+   *DJ *CON  1000.0                ** Dimension of J direction blocks are
+                                   ** constant for each block (1000 ft).
+   *DK *KVAR                       ** K direction dimensions are the same
+    50.0  30.0  20.0              ** within a layer but differ between layers.
+
+   *DEPTH  1 1 1 2000.0            ** Depth to center of first block, in bottom layer.   
+
+   *POR *CON 0.30                  ** Porosity is constant throughout.
+
+   *CPOR   3.0E-6                  ** Rock compressibility and
+   *PRPOR 14.7                     ** reference pressure.
+
+   *CROCKTYPE  1                   ** rock type number 1
+   *CROCKTAB                       ** data table for main path
+** press    por.mult   perm.mult (hor) 
+   14.7     1.0        1.0         ** press : pressure   
+   100.0    1.000256   1.001       ** por.mult : porosity multiplier   
+   200.0    1.000556   1.002       ** perm.mult (hor): horizontal permeability multiplier.  
+   500.0    1.001456   1.005       ** Vertical permeability multiplier is the same as    
+   1000.    1.002956   1.01        ** horizontal permeability multiplier when column 4 
+   2000.    1.005956   1.02        ** does not appear.   
+   5000.    1.014956   1.05   
+   7000.    1.020956   1.07    
+   10000.   1.029956   1.1    
+   20000.   1.059956   1.2
+                                   
+   *CROCKTABH                      ** data table for hysteresis path. This keyword can not
+   1000.0   1.002956   1.01        ** be combined with *CIRREVERS as used in data set
+   2000.0   1.004956   1.02        ** mxsmo022.dat.  
+   3000.0   1.006956   1.03
+   4000.0   1.008956   1.04
+   5000.0   1.010956   1.05
+   6000.0   1.012956   1.06
+   7000.0   1.014956   1.07
+   8000.0   1.016956   1.08
+   
+   *CROCKTABH                     ** data table for hysteresis path
+   2000.0   1.005956   1.02
+   3000.0   1.007956   1.03
+   4000.0   1.009956   1.04
+   5000.0   1.011956   1.05
+   6000.0   1.013956   1.06
+   7000.0   1.015956   1.07
+   8000.0   1.017956   1.08
+   
+   *CROCKTABH                     ** data table for hysteresis path
+   5000.0   1.014956   1.05
+   6000.0   1.016956   1.06
+   7000.0   1.018956   1.07
+   8000.0   1.020956   1.08   
+** note: if *CTYPE does not appear, all grid blocks are assumed to be rock type 1   
+   
+   *PERMI *KVAR                    ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0          ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                    ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0          ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                    ** that the first K layer is at bottom of the
+       20.0  200.0  200.0          ** reservoir.
+
+                  
+   ** By specifying the sector and leaseline options you are requesting
+   ** special output for the areas indicated.                 
+   ** Each sector is defined here separately
+   **            name    i1:i2  j1:j2  k1:k2
+   *SECTOR  'South-West'  1:4    1:4    1:3
+            'South-East'  1:4    5:10   1:3
+   *SECTOR  'North-West'  5:10   1:4    1:3
+            'North-East'  5:10   5:10   1:3
+            'Total-Field' 1:10   1:10   1:3
+         
+   ** The leaseline is defined here as well.
+   **       caname i1:i2  j1:j2   k1:k2         
+   *LEASE   'LOO1'  5:5    1:10    1:3    *IDIR
+                                                                    
+
+   **************************************************************************
+   ** Component Property section
+   **************************************************************************
+   *MODEL *BLACKOIL                ** Three phase (three equations solved)
+       
+   *PVT
+   **   p        rs    bo       eg   viso       visg
+       14.7     1.0   1.06     6.0   1.04      0.0080
+      265.0    90.5   1.15    82.7   0.975     0.0096
+      515.0   180.0   1.21   159.0   0.910     0.0112
+     1015.0   371.0   1.30   313.0   0.830     0.0140
+     2015.0   636.0   1.43   620.0   0.695     0.0189
+     2515.0   775.0   1.50   773.0   0.641     0.0208
+     3015.0   930.0   1.57   926.0   0.594     0.0228
+     4015.0  1270.0   1.69  1233.0   0.510     0.0268
+     5015.0  1600.0   1.83  1541.0   0.449     0.0309
+     9015.0  2984.0   2.36  2591.0   0.203     0.0470   
+
+   *DENSITY *OIL         46.2
+   *DENSITY *GAS          0.0647
+   *DENSITY *WATER       62.2   
+
+   *CO       1.37E-5
+   *CVO      4.60E-5
+   *BWI      1.04
+   *CW       3.04E-6
+   *REFPW   14.7
+   *VWI      0.31
+   *CVW      0.0
+
+                                                                          
+   **************************************************************************
+   ** Rock-fluid Property Section
+   **************************************************************************
+   *ROCKFLUID
+   *RPT
+   *SWT                            ** Water-oil relative permeability table.
+   **    sw       krw      krow       
+        0.12      0.0      1.0
+        0.5       0.5      0.5
+        0.7       0.7      0.3
+        0.82      1.0      0.0
+
+   *SLT                            ** Liquid-gas relative permeability table.
+   **    sl       krg      krog    
+        0.12     0.984     0.0      
+        0.15     0.98      0.0      
+        0.3      0.940     0.0      
+        0.4      0.87      1.0E-4   
+        0.5      0.72      0.001    
+        0.55     0.6       0.01     
+        0.6      0.41      0.021    
+        0.7      0.19      0.09     
+        0.75     0.125     0.2      
+        0.8      0.075     0.35     
+        0.88     0.025     0.7      
+        0.95     0.005     0.98     
+        0.98     0.0       0.997    
+        0.999    0.0       1.0      
+        1.0      0.0       1.0      
+
+
+   **************************************************************************
+   ** Initial conditions Section
+   **************************************************************************
+   *INITIAL 
+   *USER_INPUT 
+   *PRES *CON 4800.0               ** Initial reservoir pressure, bubble
+   *PB   *CON 4015.0               ** point pressure, water and oil saturations
+   *SO   *CON    0.88              ** are all constant throughout.
+   *SW   *CON    0.12   
+
+
+   **************************************************************************
+   ** Numerical Control Section
+   **************************************************************************
+   *NUMERICAL
+   *DTMAX  250.0
+   *MAXSTEPS  100
+   *NORM *PRESS 1000.0
+   *NORM *SATUR    0.2
+   *AIM *THRESH   
+
+
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   *RUN
+   *DATE  1986 4  22
+   *DTWELL  1.00
+                         
+   *GROUP 'g1' *ATTACHTO 'field'   **Define gathering centre for voidage replacement.      
+
+   *WELL 1  'GAS INJECTOR'     *ATTACHTO 'g1'
+   *WELL 2  'PRODUCER'         *ATTACHTO 'g1'
+
+   *INJECTOR *MOBWEIGHT  1         ** Injector 1 matches the voidage from producer 2
+   *INCOMP  *GAS                   ** Gas is being injected.
+   *OPERATE *MAX  *STG  1.0E+8
+   *OPERATE *MAX  *BHP  27000.   
+
+   *PRODUCER 2
+   *OPERATE *MAX  *STO  20000.0
+   *OPERATE *MIN  *BHP   1000.0
+   *MONITOR *MIN  *STO   1000.0  *STOP
+   *MONITOR *GOR        20000.0  *STOP   
+
+   *PERF 1
+   ** if     jf     kf     wi     (setn)   SWC   SGC   SORW  SORG  SWCO
+      1      1      3    1.0E+5     
+      2      1      3    1.0E+5
+      3      1      3    1.0E+5
+      4      1      3    1.0E+5
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25 0.34  1.0  0.0
+   *PERF *GEO 2                             
+   ** if     jf     kf     ff                         
+      10     10     1      1.0                  
+
+   *GCONI 'g1'      ** Specify voidage replacement.
+   *VREP *GAS 1.0
+   *APPOR-METHOD  *GASI  'g1'  *IP
+
+
+   *TIME 3650.000
+   *STOP

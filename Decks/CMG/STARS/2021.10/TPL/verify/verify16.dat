@@ -1,0 +1,427 @@
+** OVERVIEW
+** ========
+**........................................................................................
+** The original version of this tempelate used Discretized Wellbore (DW)                 .
+**   that has been replaced with Flexible Wellbore since the DW became obsolete.         .
+**   Compared to the original DW version, some numerical tunnings, well constraints      . 
+**   and physical properties might have been changed to avoid numerical difficulties and . 
+**   unphysical solutions.                                                               .  
+**........................................................................................
+** PURPOSE:  Verify and illustrate:
+** (1) Arbitrary correspondence between FlexWell
+** and their attached source/sink well number.  Before
+** version 96.00 correspondence was hard-wired.
+** (2) Fixed correspondence prevented changing between injection
+** and production (cycling) for a s/s well attached to a
+** FlexWell.
+** (3) Transmissibility multiplier in wellbore.
+** USAGE:    Run this data as is, comparing to verify #17, 18 & 19.
+** ORIGIN:   This run is based on TB #33.
+** (1) Previously, tubing had to come immediately before annulus.
+** This data has s/s well #1 as annulus but s/s well #3 as tubing.
+** (2) Previously, no cycling was allowed for discretiezed wellbores.
+** This data has
+** TUBING         ANNULUS
+** 0 - 1 day     Injection     Production
+** 1 - 2 day     Production    Injection
+** (3) K direction transmissibility multiplier of 1/2 is applied
+** in the vertical wellbore.
+** ==============  INPUT/OUTPUT CONTROL  ======================
+RESULTS SIMULATOR STARS
+INTERRUPT STOP
+TITLE1 'Verification Run #16'
+TITLE2 'FlexWell, TU < AN and Steam Cycling'
+
+inunit field  except  6 1  ** Darcy instead of md
+              except 12 0  ** kPa-m instead of dynes/cm
+**outprn grid pres sw so sg temp obhloss viso
+WPRN GRID TIME
+OUTPRN WELL ALL
+OUTPRN ITER NEWTON
+WPRN ITER 1
+WSRF WELL TIME
+WSRF GRID TIME
+OUTSRF WELL LAYER ALL
+OUTSRF GRID ALL
+
+prntorien 2 0
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 4 9
+kdir up
+di ivar 40 80 120 160 200  ** Blocks small near well;  outer block is large
+dj jvar 10 20 30 40
+dk con 5
+**$  0 = null block, 1 = active block
+NULL CON            1
+
+por con .3    
+
+permi con 2
+PERMJ EQUALSI
+PERMK EQUALSI
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+  
+end-grid
+
+prpor 75
+
+*ROCKTYPE 1                           ** MATRIX HEAT PROPERTIES
+	*CPOR 	5E-4
+	*ROCKCP 35
+    	*THCONR 106
+    	*THCONW 8.6
+    	*THCONO 1.8
+    	*THCONG 0.64
+	*HLOSSPROP OVERBUR 35 24 UNDERBUR 35 24
+
+thtype con 1
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**             -------   --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       3.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+avg            1.13e-5      0
+bvg             1.075       0
+
+visctable
+
+**    Temp
+       70          0     2.9666e5
+       80          0     1.3466e5
+       90          0       65248
+      100          0       33500
+      125          0        7839
+      150          0        2349
+      175          0       853.2
+      200          0       360.7
+      250          0        90.7
+      300          0        31.7
+      350          0        13.9
+      400          0        7.22
+      450          0        4.23
+      500          0        2.71
+      550          0        1.87
+
+** Reference conditions
+prsr 14.7
+temr 125
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+**krtype con 1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+VERTICAL OFF
+
+INITREGION 1
+
+pres con 154  ** Same conditions in wellbore and matrix
+
+sw  con 0.45
+
+so con 0.55
+
+temp con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+sdegree 1
+dtmax 15
+
+numset 1
+converge press 1.  temp 2.
+NORM PRESS 15 SATUR 0.2 TEMP 50 Y 0.2 X 0.2
+
+numset 2
+converge press 1.  temp 2.
+NORM PRESS 15 SATUR 0.2 TEMP 50 Y 0.2 X 0.2
+rangecheck on
+NUMTYPE CON 2
+
+north 300
+itermax 300
+
+converge varonly
+
+upstream klevel
+precab 1.d-6
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+
+dtwell .01
+WELL  'ANNULUS'			FRAC  0.5                 
+WELL  'Producer 1'		FRAC  0.5
+WELL  'TUBING'			FRAC  0.5
+
+
+producer 'ANNULUS'
+operate     bhp   154      ** Start on BHP
+operate max stw   80       ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.4  0.229  1.0  0.0
+PERF_FLX  GEO  'ANNULUS'
+**$ UBA    ff   Status  Connection  
+    2 1 2  1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    3 1 2  1.0  OPEN    FLOW-TO  1
+    4 1 2  1.0  OPEN    FLOW-TO  2
+LAYERXYZ  'ANNULUS'
+**$ perf geometric data: UBA, block entry(x,y,z) block exit(x,y,z), length
+    2 1 2  40.000000  5.000000  37.500000  120.000000  5.000000  37.500000  80.000000
+    3 1 2  120.000000  5.000000  37.500000  240.000000  5.000000  37.500000  120.000000
+    4 1 2  240.000000  5.000000  37.500000  400.000000  5.000000  37.500000  160.000000
+
+
+producer 'Producer 1'
+operate     bhp    136     ** Start on BHP
+operate max stl    80      ** Maximum liquid rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.15  0.229  1.0  0.0
+PERF  GEO  'Producer 1'
+**$ UBA    ff   Status  Connection  
+    2 1 1  1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    3 1 1  1.0  OPEN    FLOW-TO  1
+    4 1 1  1.0  OPEN    FLOW-TO  2
+LAYERXYZ  'Producer 1'
+**$ perf geometric data: UBA, block entry(x,y,z) block exit(x,y,z), length
+    2 1 1  40.000000  5.000000  42.500000  120.000000  5.000000  42.500000  80.000000
+    3 1 1  120.000000  5.000000  42.500000  240.000000  5.000000  42.500000  120.000000
+    4 1 1  240.000000  5.000000  42.500000  400.000000  5.000000  42.500000  160.000000
+
+
+injector mobweight 'TUBING'
+tinjw 355
+qual .7
+incomp water  1.0  0.0
+operate     bhp   155      ** Start on BHP
+operate max stw   80    ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.15  0.229  1.0  0.0
+PERF_FLX  GEO  'TUBING'
+**$ UBA    ff   Status  Connection  
+    2 1 2  1.0  CLOSED  FLOW-FROM  'SURFACE'  REFLAYER
+    3 1 2  1.0  CLOSED  FLOW-FROM  1
+    4 1 2  1.0  OPEN    FLOW-FROM  2
+LAYERXYZ  'TUBING'
+**$ perf geometric data: UBA, block entry(x,y,z) block exit(x,y,z), length
+    2 1 2  40.000000  5.000000  37.500000  120.000000  5.000000  37.500000  80.000000
+    3 1 2  120.000000  5.000000  37.500000  240.000000  5.000000  37.500000  120.000000
+    4 1 2  240.000000  5.000000  37.500000  400.000000  5.000000  37.500000  160.000000
+ 
+FLX_WELLBORE 'FlexWell-1' ATTACHTO 'ANNULUS' 'TUBING'
+	SOLID_BLOCK OFF
+	ANNULUS ATTACHTO 'ANNULUS'
+		TUBULARS CONSTANT
+			ID 0.8
+			OD 0.801
+	WALL_CP 54.13
+	WALL_HCN 622.46
+	CEMENT_HEAT_PROP 27.56 18.96
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+	TUBING ATTACHTO 'TUBING'
+		TUBULARS CONSTANT
+			ID 0.3
+			OD 0.301
+	WALL_CP 54.13
+	WALL_HCN 622.46
+	INSULATION_HEAT_PROP 0.049 2.69
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  100
+ 
+ 
+
+
+
+
+
+
+
+
+
+date 1973 9 26.5
+
+dtwell 0.25
+
+WELL  'TUBNEW'			FRAC  0.5         
+   producer 'TUBNEW'
+   operate     bhp   154      ** Start on BHP
+   operate max stw   180    ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.15  0.229  1.0  0.0
+PERF_FLX  GEO  'TUBNEW'
+**$ UBA    ff   Status  Connection  
+    2 1 2  1.0  CLOSED  FLOW-TO  'SURFACE'  REFLAYER
+    3 1 2  1.0  CLOSED  FLOW-TO  1
+    4 1 2  1.0  OPEN    FLOW-TO  2
+LAYERXYZ  'TUBNEW'
+**$ perf geometric data: UBA, block entry(x,y,z) block exit(x,y,z), length
+    2 1 2  40.000000  5.000000  37.500000  120.000000  5.000000  37.500000  80.000000
+    3 1 2  120.000000  5.000000  37.500000  240.000000  5.000000  37.500000  120.000000
+    4 1 2  240.000000  5.000000  37.500000  400.000000  5.000000  37.500000  160.000000
+REPLACE 'TUBING' 'TUBNEW' IN 'FlexWell-1'
+
+
+WELL  'ANNEW'			FRAC  0.5         
+   injector mobweight 'ANNEW'
+   incomp water  1.0  0.0
+   tinjw 355
+   qual .7
+   operate     bhp   155      ** Start on BHP
+   operate max stw   180    ** Maximum water rate
+**$          rad  geofac  wfrac  skin
+GEOMETRY  I  0.4  0.229  1.0  0.0
+PERF_FLX  GEO  'ANNEW'
+**$ UBA    ff   Status  Connection  
+    2 1 2  1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    3 1 2  1.0  OPEN    FLOW-FROM  1
+    4 1 2  1.0  OPEN    FLOW-FROM  2
+LAYERXYZ  'ANNEW'
+**$ perf geometric data: UBA, block entry(x,y,z) block exit(x,y,z), length
+    2 1 2  40.000000  5.000000  37.500000  120.000000  5.000000  37.500000  80.000000
+    3 1 2  120.000000  5.000000  37.500000  240.000000  5.000000  37.500000  120.000000
+    4 1 2  240.000000  5.000000  37.500000  400.000000  5.000000  37.500000  160.000000
+REPLACE 'ANNULUS' 'ANNEW' IN 'FlexWell-1'
+SHUTIN 'ANNULUS'
+SHUTIN 'TUBING'
+    
+
+REPORTING-GROUP 'FlexWell: FlexWell-1'
+    'ANNEW' 'ANNULUS' 'TUBING' 'TUBNEW'
+    1.0  1.0  1.0  1.0
+
+
+date 1973 9 27.5
+
+date 1973 9 28.5
+**stop
+time 365
+**stop
+time 730
+time 1095
+time 1460
+time 1825
+time 2190
+time 2555
+time 2920
+time 3285
+time 3650
+time 4380
+time 4745
+time 5110
+time 5475
+stop
+
+RESULTS FLEXWELL BEGIN
+RESULTS FLEXWELL FLEXWELL_NAME 'FlexWell-1'
+RESULTS FLEXWELL AUTO_COMPLETE_PERFS 'YES'
+RESULTS FLEXWELL TUBING_WELL_NAME 'TUBING' SELECTED_ANNULUS_COMPLETION_BRANCH 'Annulus Main Branch ending with UBA [4,1,2]   :   1973-09-25.50'
+RESULTS FLEXWELL END
+
+RESULTS SPEC 'Permeability J'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 'REGION_WHOLEGRID'
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC SPECKEEPMOD 'YES'
+RESULTS SPEC STOP
+
+
+RESULTS SPEC 'Permeability K'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 'REGION_WHOLEGRID'
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC SPECKEEPMOD 'YES'
+RESULTS SPEC STOP
+

@@ -1,0 +1,433 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  This dataset is a multi-pattern version of the inverted 9-spot in STGRO014.
+**  1-million grid blocks, 6.5 Gb allocation, 4.1 Gb usage.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+
+RESULTS SIMULATOR STARS
+
+dim dimsum
+
+interrupt restart-stop
+
+title1 'STARS Grid Option Template No. 13'
+title2 '7x4 Patterns of 41x41x24, 1 Million Blocks, 6.5 Gb Allocation, 4.1 Gb Usage'
+title3 'Based on STGRO014'
+
+inunit field   ** output same as input
+
+outprn well none
+
+outprn iter newton
+wprn iter 1
+
+outsrf well component all
+outsrf special fracimpes
+
+outsolvr on
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 281 161 24
+kdir down
+ninepoint ij
+
+**  Each nine-spot pattern is 2.5 acres in area (330.0 ft square),
+**  and is covered with a 41x41 grid. The length along the side
+**  is 330.0 ft, and the block size is 330.0/40 = 8.25 ft.
+
+**       <---------- 330 ft ----------->
+
+**       P--------------P--------------P
+**       |              |              |
+**       |              |              |    Full 2.5-acre inverted
+**       |              |              |    nine-spot pattern
+**       |              |              |
+**       |              |              |
+**       |              |              |
+**       P--------------I--------------P
+**       |              |              |
+**       |              |              |
+**       |              |              |     J
+**       |              |              |     |
+**       |              |              |     |
+**       |              |              |     |
+**       P--------------P--------------P     --------> I
+
+**  A point-distributed grid is required in order to put grid nodes on
+**  the injector-producer line.  To do this, an oversized grid is
+**  specified, and then trimmed back using block modifiers.
+
+vamod  2  0.5    0.5  1.0  0.5   ** blocks along horizontal sides
+vamod  3  0.5    1.0  0.5  0.5   ** blocks along vertical sides
+vamod  4  0.25   0.5  0.5  0.25  ** corner blocks
+
+vatype con 1
+  mod
+
+   **** VAMOD DATA 
+   2:280        1  1:24 = 2
+   2:280      161  1:24 = 2
+       1    2:160  1:24 = 3
+     281    2:160  1:24 = 3
+       1        1  1:24 = 4
+     281        1  1:24 = 4
+       1      161  1:24 = 4
+     281      161  1:24 = 4
+
+
+**  Divide the previous 4 layers into 24 as follows:
+**   Zone 1 (10.0 ft): 2 layers of 3.3 ft, 1 layer of 3.4 ft
+**   Zone 2 (20.0 ft): 5 layers of 3.3 ft, 1 layer of 3.5 ft
+**   Zone 3 (25.0 ft): 6 layers of 3.6 ft, 1 layer of 3.4 ft
+**   Zone 4 (25.0 ft): 7 layers of 3.1 ft, 1 layer of 3.3 ft
+
+di con 8.3 
+dj con 8.3 
+dk kvar 2*3.3 1*3.4 5*3.3 1*3.5 6*3.6 1*3.4 7*3.1 1*3.3  
+permi kvar 3*2000.0 6*500.0 7*1000.0 8*2000.0 
+permj equalsi
+permk equalsi  / 2
+por con 0.3
+*end-grid
+cpor 5e-4
+prpor 75
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'    'OIL'
+**               -----    -------
+     cmm        18.02      600       
+     pcrit      3206.2      0        ** These four properties
+     tcrit      705.4       0        ** are for the gas phase.
+     avg        1.13e-5     0        ** The dead oil component does
+     bvg        1.075       0        ** not appear in the gas phase.
+
+     molden       0       0.10113
+     cp           0       5.e-6
+     ct1          0       3.8e-4
+
+     cpl1         0       300
+
+visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+** Automatic static vertical equilibrium
+vertical depth_ave
+refpres 75
+refdepth 5
+
+temp con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+itermax 100
+aim stab
+
+norm     press 200 satur 0.2  temp 50
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on December 18, 1978
+date 1978 12 18.5
+
+   dtwell 1
+
+   **** WELL DEFINITIONS (28 injectors, 107 producers)
+   well      1  'INJ E001 S001  C'  vert     21     21  frac  1.00
+   well      2  'INJ E001 S002  C'  vert     21     61  frac  1.00
+   well      3  'INJ E001 S003  C'  vert     21    101  frac  1.00
+   well      4  'INJ E001 S004  C'  vert     21    141  frac  1.00
+   well      5  'INJ E002 S001  C'  vert     61     21  frac  1.00
+   well      6  'INJ E002 S002  C'  vert     61     61  frac  1.00
+   well      7  'INJ E002 S003  C'  vert     61    101  frac  1.00
+   well      8  'INJ E002 S004  C'  vert     61    141  frac  1.00
+   well      9  'INJ E003 S001  C'  vert    101     21  frac  1.00
+   well     10  'INJ E003 S002  C'  vert    101     61  frac  1.00
+   well     11  'INJ E003 S003  C'  vert    101    101  frac  1.00
+   well     12  'INJ E003 S004  C'  vert    101    141  frac  1.00
+   well     13  'INJ E004 S001  C'  vert    141     21  frac  1.00
+   well     14  'INJ E004 S002  C'  vert    141     61  frac  1.00
+   well     15  'INJ E004 S003  C'  vert    141    101  frac  1.00
+   well     16  'INJ E004 S004  C'  vert    141    141  frac  1.00
+   well     17  'INJ E005 S001  C'  vert    181     21  frac  1.00
+   well     18  'INJ E005 S002  C'  vert    181     61  frac  1.00
+   well     19  'INJ E005 S003  C'  vert    181    101  frac  1.00
+   well     20  'INJ E005 S004  C'  vert    181    141  frac  1.00
+   well     21  'INJ E006 S001  C'  vert    221     21  frac  1.00
+   well     22  'INJ E006 S002  C'  vert    221     61  frac  1.00
+   well     23  'INJ E006 S003  C'  vert    221    101  frac  1.00
+   well     24  'INJ E006 S004  C'  vert    221    141  frac  1.00
+   well     25  'INJ E007 S001  C'  vert    261     21  frac  1.00
+   well     26  'INJ E007 S002  C'  vert    261     61  frac  1.00
+   well     27  'INJ E007 S003  C'  vert    261    101  frac  1.00
+   well     28  'INJ E007 S004  C'  vert    261    141  frac  1.00
+   well     29  'PRD E001 S001  E'  vert     41     21  frac  1.00
+   well     30  'PRD E001 S001  N'  vert     21      1  frac  0.50
+   well     31  'PRD E001 S001  S'  vert     21     41  frac  1.00
+   well     32  'PRD E001 S001  W'  vert      1     21  frac  0.50
+   well     33  'PRD E001 S001 NE'  vert     41      1  frac  0.50
+   well     34  'PRD E001 S001 NW'  vert      1      1  frac  0.25
+   well     35  'PRD E001 S001 SE'  vert     41     41  frac  1.00
+   well     36  'PRD E001 S001 SW'  vert      1     41  frac  0.50
+   well     37  'PRD E001 S002  E'  vert     41     61  frac  1.00
+   well     38  'PRD E001 S002  S'  vert     21     81  frac  1.00
+   well     39  'PRD E001 S002  W'  vert      1     61  frac  0.50
+   well     40  'PRD E001 S002 SE'  vert     41     81  frac  1.00
+   well     41  'PRD E001 S002 SW'  vert      1     81  frac  0.50
+   well     42  'PRD E001 S003  E'  vert     41    101  frac  1.00
+   well     43  'PRD E001 S003  S'  vert     21    121  frac  1.00
+   well     44  'PRD E001 S003  W'  vert      1    101  frac  0.50
+   well     45  'PRD E001 S003 SE'  vert     41    121  frac  1.00
+   well     46  'PRD E001 S003 SW'  vert      1    121  frac  0.50
+   well     47  'PRD E001 S004  E'  vert     41    141  frac  1.00
+   well     48  'PRD E001 S004  S'  vert     21    161  frac  0.50
+   well     49  'PRD E001 S004  W'  vert      1    141  frac  0.50
+   well     50  'PRD E001 S004 SE'  vert     41    161  frac  0.50
+   well     51  'PRD E001 S004 SW'  vert      1    161  frac  0.25
+   well     52  'PRD E002 S001  E'  vert     81     21  frac  1.00
+   well     53  'PRD E002 S001  N'  vert     61      1  frac  0.50
+   well     54  'PRD E002 S001  S'  vert     61     41  frac  1.00
+   well     55  'PRD E002 S001 NE'  vert     81      1  frac  0.50
+   well     56  'PRD E002 S001 SE'  vert     81     41  frac  1.00
+   well     57  'PRD E002 S002  E'  vert     81     61  frac  1.00
+   well     58  'PRD E002 S002  S'  vert     61     81  frac  1.00
+   well     59  'PRD E002 S002 SE'  vert     81     81  frac  1.00
+   well     60  'PRD E002 S003  E'  vert     81    101  frac  1.00
+   well     61  'PRD E002 S003  S'  vert     61    121  frac  1.00
+   well     62  'PRD E002 S003 SE'  vert     81    121  frac  1.00
+   well     63  'PRD E002 S004  E'  vert     81    141  frac  1.00
+   well     64  'PRD E002 S004  S'  vert     61    161  frac  0.50
+   well     65  'PRD E002 S004 SE'  vert     81    161  frac  0.50
+   well     66  'PRD E003 S001  E'  vert    121     21  frac  1.00
+   well     67  'PRD E003 S001  N'  vert    101      1  frac  0.50
+   well     68  'PRD E003 S001  S'  vert    101     41  frac  1.00
+   well     69  'PRD E003 S001 NE'  vert    121      1  frac  0.50
+   well     70  'PRD E003 S001 SE'  vert    121     41  frac  1.00
+   well     71  'PRD E003 S002  E'  vert    121     61  frac  1.00
+   well     72  'PRD E003 S002  S'  vert    101     81  frac  1.00
+   well     73  'PRD E003 S002 SE'  vert    121     81  frac  1.00
+   well     74  'PRD E003 S003  E'  vert    121    101  frac  1.00
+   well     75  'PRD E003 S003  S'  vert    101    121  frac  1.00
+   well     76  'PRD E003 S003 SE'  vert    121    121  frac  1.00
+   well     77  'PRD E003 S004  E'  vert    121    141  frac  1.00
+   well     78  'PRD E003 S004  S'  vert    101    161  frac  0.50
+   well     79  'PRD E003 S004 SE'  vert    121    161  frac  0.50
+   well     80  'PRD E004 S001  E'  vert    161     21  frac  1.00
+   well     81  'PRD E004 S001  N'  vert    141      1  frac  0.50
+   well     82  'PRD E004 S001  S'  vert    141     41  frac  1.00
+   well     83  'PRD E004 S001 NE'  vert    161      1  frac  0.50
+   well     84  'PRD E004 S001 SE'  vert    161     41  frac  1.00
+   well     85  'PRD E004 S002  E'  vert    161     61  frac  1.00
+   well     86  'PRD E004 S002  S'  vert    141     81  frac  1.00
+   well     87  'PRD E004 S002 SE'  vert    161     81  frac  1.00
+   well     88  'PRD E004 S003  E'  vert    161    101  frac  1.00
+   well     89  'PRD E004 S003  S'  vert    141    121  frac  1.00
+   well     90  'PRD E004 S003 SE'  vert    161    121  frac  1.00
+   well     91  'PRD E004 S004  E'  vert    161    141  frac  1.00
+   well     92  'PRD E004 S004  S'  vert    141    161  frac  0.50
+   well     93  'PRD E004 S004 SE'  vert    161    161  frac  0.50
+   well     94  'PRD E005 S001  E'  vert    201     21  frac  1.00
+   well     95  'PRD E005 S001  N'  vert    181      1  frac  0.50
+   well     96  'PRD E005 S001  S'  vert    181     41  frac  1.00
+   well     97  'PRD E005 S001 NE'  vert    201      1  frac  0.50
+   well     98  'PRD E005 S001 SE'  vert    201     41  frac  1.00
+   well     99  'PRD E005 S002  E'  vert    201     61  frac  1.00
+   well    100  'PRD E005 S002  S'  vert    181     81  frac  1.00
+   well    101  'PRD E005 S002 SE'  vert    201     81  frac  1.00
+   well    102  'PRD E005 S003  E'  vert    201    101  frac  1.00
+   well    103  'PRD E005 S003  S'  vert    181    121  frac  1.00
+   well    104  'PRD E005 S003 SE'  vert    201    121  frac  1.00
+   well    105  'PRD E005 S004  E'  vert    201    141  frac  1.00
+   well    106  'PRD E005 S004  S'  vert    181    161  frac  0.50
+   well    107  'PRD E005 S004 SE'  vert    201    161  frac  0.50
+   well    108  'PRD E006 S001  E'  vert    241     21  frac  1.00
+   well    109  'PRD E006 S001  N'  vert    221      1  frac  0.50
+   well    110  'PRD E006 S001  S'  vert    221     41  frac  1.00
+   well    111  'PRD E006 S001 NE'  vert    241      1  frac  0.50
+   well    112  'PRD E006 S001 SE'  vert    241     41  frac  1.00
+   well    113  'PRD E006 S002  E'  vert    241     61  frac  1.00
+   well    114  'PRD E006 S002  S'  vert    221     81  frac  1.00
+   well    115  'PRD E006 S002 SE'  vert    241     81  frac  1.00
+   well    116  'PRD E006 S003  E'  vert    241    101  frac  1.00
+   well    117  'PRD E006 S003  S'  vert    221    121  frac  1.00
+   well    118  'PRD E006 S003 SE'  vert    241    121  frac  1.00
+   well    119  'PRD E006 S004  E'  vert    241    141  frac  1.00
+   well    120  'PRD E006 S004  S'  vert    221    161  frac  0.50
+   well    121  'PRD E006 S004 SE'  vert    241    161  frac  0.50
+   well    122  'PRD E007 S001  E'  vert    281     21  frac  0.50
+   well    123  'PRD E007 S001  N'  vert    261      1  frac  0.50
+   well    124  'PRD E007 S001  S'  vert    261     41  frac  1.00
+   well    125  'PRD E007 S001 NE'  vert    281      1  frac  0.25
+   well    126  'PRD E007 S001 SE'  vert    281     41  frac  0.50
+   well    127  'PRD E007 S002  E'  vert    281     61  frac  0.50
+   well    128  'PRD E007 S002  S'  vert    261     81  frac  1.00
+   well    129  'PRD E007 S002 SE'  vert    281     81  frac  0.50
+   well    130  'PRD E007 S003  E'  vert    281    101  frac  0.50
+   well    131  'PRD E007 S003  S'  vert    261    121  frac  1.00
+   well    132  'PRD E007 S003 SE'  vert    281    121  frac  0.50
+   well    133  'PRD E007 S004  E'  vert    281    141  frac  0.50
+   well    134  'PRD E007 S004  S'  vert    261    161  frac  0.50
+   well    135  'PRD E007 S004 SE'  vert    281    161  frac  0.25
+
+   injector mobweight 'INJ*'
+   tinjw 450
+   qual .7
+   incomp  water  1.0  0.0
+   operate     bhp 1000
+   operate max stw 300
+
+   perfv geo 1:28
+       ** Inject only in the bottom zone
+       ** k  
+      17:24  1.0
+
+   producer 'PRD*'
+   operate     bhp    17
+   operate max stl    1000
+   operate max steam  10    ** Steam CWE in bbl/day
+
+   perfv geo 29:135
+       ** Produce from all zones
+       ** k  
+       1:24  1.0
+
+time 30
+
+   stop
+
+time 60
+time 91
+time 121
+time 151
+time 182
+
+   stop
+
+time 213
+time 244
+time 274
+time 305
+time 335
+time 365
+time 456
+time 547
+time 639
+time 730
+
+   stop
+
+time 1095
+time 1460
+time 1825
+time 2190
+time 2555
+time 2920
+time 3285
+
+   outprn well wellcomp
+
+time 3650
+stop

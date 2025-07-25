@@ -1,0 +1,390 @@
+   ** PAR032.INC (32 MB) will suffice.
+   ******************************************************************************
+   ** mxgro005.dat:              13,500 grids model                            **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXGRO005.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  45x30x10                  200 WELLS                       FIELD UNIT     **
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** A cartesian  45x30x10  grids  model  with  200  wells. It is designed for        **
+   ** testing 32 MB common blocks model only.                                          **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+*TITLE1
+   'Test for 32 Mb. Common'    
+*TITLE2
+   'Total Blocks: 13500, Active = 9000, Null = 4500, Wells = 200' 
+*TITLE3
+   'Maximum Perforations per well = 5, Maximum perforating blocks = 1000'
+
+
+   *RANGECHECK *OFF
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   *TIME
+   *WPRN   *GRID   *TIME
+   *WPRN   *ITER   *MATRIX
+   *OUTPRN *WELL   all
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *IMEXMAP
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL    1
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************   
+
+   *GRID *CART 45  30  10
+                          
+   *DI *CON 1000.0           
+   *DJ *CON 1000.0           
+   *DK *con 30
+   *NULL *IJK
+               1:30   1:30   6:10  0                       
+
+   *DEPTH 1 1 1 8400.0       
+
+
+   *POR *CON 0.3             
+
+   *CPOR   3.0E-6            
+   *PRPOR 14.7               
+
+   *PERMI *con 100
+   *PERMJ *con 100
+   *PERMK *con 10
+
+
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                            
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *ON               ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       9500.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        30.         ** Maximum time step size
+   *MAXSTEPS      1
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0   
+
+   *AIMSET *CON 1
+                  
+*WELL 1   'pro1  '  *vert  2  1
+*WELL 2   'pro2  '  *vert  2  2
+*WELL 3   'pro3  '  *vert  2  3
+*WELL 4   'pro4  '  *vert  2  4
+*WELL 5   'pro5  '  *vert  2  5
+*WELL 6   'pro6  '  *vert  2  6
+*WELL 7   'pro7  '  *vert  2  7
+*WELL 8   'pro8  '  *vert  2  8
+*WELL 9   'pro9  '  *vert  2  9
+*WELL 10  'pro10 '  *vert  2  10
+*WELL 11  'pro11 '  *vert  2  11
+*WELL 12  'pro12 '  *vert  2  12
+*WELL 13  'pro13 '  *vert  2  13
+*WELL 14  'pro14 '  *vert  2  14
+*WELL 15  'pro15 '  *vert  2  15
+*WELL 16  'pro16 '  *vert  4  1 
+*WELL 17  'pro17 '  *vert  4  2 
+*WELL 18  'pro18 '  *vert  4  3 
+*WELL 19  'pro19 '  *vert  4  4 
+*WELL 20  'pro20 '  *vert  4  5 
+*WELL 21  'pro21 '  *vert  4  6 
+*WELL 22  'pro22 '  *vert  4  7 
+*WELL 23  'pro23 '  *vert  4  8 
+*WELL 24  'pro24 '  *vert  4  9 
+*WELL 25  'pro25 '  *vert  4  10
+*WELL 26  'pro26 '  *vert  4  11
+*WELL 27  'pro27 '  *vert  4  12
+*WELL 28  'pro28 '  *vert  4  13
+*WELL 29  'pro29 '  *vert  4  14
+*WELL 30  'pro30 '  *vert  4  15
+*WELL 31  'pro31 '  *vert  6  1 
+*WELL 32  'pro32 '  *vert  6  2 
+*WELL 33  'pro33 '  *vert  6  3 
+*WELL 34  'pro34 '  *vert  6  4 
+*WELL 35  'pro35 '  *vert  6  5 
+*WELL 36  'pro36 '  *vert  6  6 
+*WELL 37  'pro37 '  *vert  6  7 
+*WELL 38  'pro38 '  *vert  6  8 
+*WELL 39  'pro39 '  *vert  6  9 
+*WELL 40  'pro40 '  *vert  6  10
+*WELL 41  'pro41 '  *vert  6  11
+*WELL 42  'pro42 '  *vert  6  12
+*WELL 43  'pro43 '  *vert  6  13
+*WELL 44  'pro44 '  *vert  6  14
+*WELL 45  'pro45 '  *vert  6  15
+*WELL 46  'pro46 '  *vert  8  1 
+*WELL 47  'pro47 '  *vert  8  2 
+*WELL 48  'pro48 '  *vert  8  3 
+*WELL 49  'pro49 '  *vert  8  4 
+*WELL 50  'pro50 '  *vert  8  5 
+*WELL 51  'pro51 '  *vert  8  6 
+*WELL 52  'pro52 '  *vert  8  7 
+*WELL 53  'pro53 '  *vert  8  8 
+*WELL 54  'pro54 '  *vert  8  9 
+*WELL 55  'pro55 '  *vert  8  10
+*WELL 56  'pro56 '  *vert  8  11
+*WELL 57  'pro57 '  *vert  8  12
+*WELL 58  'pro58 '  *vert  8  13
+*WELL 59  'pro59 '  *vert  8  14
+*WELL 60  'pro60 '  *vert  8  15
+*WELL 61  'pro61 '  *vert  10 1 
+*WELL 62  'pro62 '  *vert  10 2 
+*WELL 63  'pro63 '  *vert  10 3 
+*WELL 64  'pro64 '  *vert  10 4 
+*WELL 65  'pro65 '  *vert  10 5 
+*WELL 66  'pro66 '  *vert  10 6 
+*WELL 67  'pro67 '  *vert  10 7 
+*WELL 68  'pro68 '  *vert  10 8 
+*WELL 69  'pro69 '  *vert  10 9 
+*WELL 70  'pro70 '  *vert  10 10
+*WELL 71  'pro71 '  *vert  10 11
+*WELL 72  'pro72 '  *vert  10 12
+*WELL 73  'pro73 '  *vert  10 13
+*WELL 74  'pro74 '  *vert  10 14
+*WELL 75  'pro75 '  *vert  10 15
+*WELL 76  'pro76 '  *vert  12 1 
+*WELL 77  'pro77 '  *vert  12 2 
+*WELL 78  'pro78 '  *vert  12 3 
+*WELL 79  'pro79 '  *vert  12 4 
+*WELL 80  'pro80 '  *vert  12 5 
+*WELL 81  'pro81 '  *vert  12 6 
+*WELL 82  'pro82 '  *vert  12 7 
+*WELL 83  'pro83 '  *vert  12 8 
+*WELL 84  'pro84 '  *vert  12 9 
+*WELL 85  'pro85 '  *vert  12 10
+*WELL 86  'pro86 '  *vert  12 11
+*WELL 87  'pro87 '  *vert  12 12
+*WELL 88  'pro88 '  *vert  12 13
+*WELL 89  'pro89 '  *vert  12 14
+*WELL 90  'pro90 '  *vert  12 15
+*WELL 91  'pro91 '  *vert  14 1 
+*WELL 92  'pro92 '  *vert  14 2 
+*WELL 93  'pro93 '  *vert  14 3 
+*WELL 94  'pro94 '  *vert  14 4 
+*WELL 95  'pro95 '  *vert  14 5 
+*WELL 96  'pro96 '  *vert  14 6 
+*WELL 97  'pro97 '  *vert  14 7 
+*WELL 98  'pro98 '  *vert  14 8 
+*WELL 99  'pro99 '  *vert  14 9 
+*WELL 100 'pro100'  *vert  14 10
+*WELL 101 'pro101'  *vert  14 11
+*WELL 102 'pro102'  *vert  14 12
+*WELL 103 'pro103'  *vert  14 13
+*WELL 104 'pro104'  *vert  14 14
+*WELL 105 'pro105'  *vert  14 15
+*WELL 106 'pro106'  *vert  16 1 
+*WELL 107 'pro107'  *vert  16 2 
+*WELL 108 'pro108'  *vert  16 3 
+*WELL 109 'pro109'  *vert  16 4 
+*WELL 110 'pro110'  *vert  16 5 
+*WELL 111 'pro111'  *vert  16 6 
+*WELL 112 'pro112'  *vert  16 7 
+*WELL 113 'pro113'  *vert  16 8 
+*WELL 114 'pro114'  *vert  16 9 
+*WELL 115 'pro115'  *vert  16 10
+*WELL 116 'pro116'  *vert  16 11
+*WELL 117 'pro117'  *vert  16 12
+*WELL 118 'pro118'  *vert  16 13
+*WELL 119 'pro119'  *vert  16 14
+*WELL 120 'pro120'  *vert  16 15
+*WELL 121 'pro121'  *vert  18 1 
+*WELL 122 'pro122'  *vert  18 2 
+*WELL 123 'pro123'  *vert  18 3 
+*WELL 124 'pro124'  *vert  18 4 
+*WELL 125 'pro125'  *vert  18 5 
+*WELL 126 'pro126'  *vert  18 6 
+*WELL 127 'pro127'  *vert  18 7 
+*WELL 128 'pro128'  *vert  18 8 
+*WELL 129 'pro129'  *vert  18 9 
+*WELL 130 'pro130'  *vert  18 10
+*WELL 131 'pro131'  *vert  18 11
+*WELL 132 'pro132'  *vert  18 12
+*WELL 133 'pro133'  *vert  18 13
+*WELL 134 'pro134'  *vert  18 14
+*WELL 135 'pro135'  *vert  18 15
+*WELL 136 'pro136'  *vert  20 1 
+*WELL 137 'pro137'  *vert  20 2 
+*WELL 138 'pro138'  *vert  20 3 
+*WELL 139 'pro139'  *vert  20 4 
+*WELL 140 'pro140'  *vert  20 5 
+*WELL 141 'pro141'  *vert  20 6 
+*WELL 142 'pro142'  *vert  20 7 
+*WELL 143 'pro143'  *vert  20 8 
+*WELL 144 'pro144'  *vert  20 9 
+*WELL 145 'pro145'  *vert  20 10
+*WELL 146 'pro146'  *vert  20 11
+*WELL 147 'pro147'  *vert  20 12
+*WELL 148 'pro148'  *vert  20 13
+*WELL 149 'pro149'  *vert  20 14
+*WELL 150 'pro150'  *vert  20 15
+
+*WELL 151 'inj1  '  *vert  3  1 
+*WELL 152 'inj2  '  *vert  3  2 
+*WELL 153 'inj3  '  *vert  3  3 
+*WELL 154 'inj4  '  *vert  3  4 
+*WELL 155 'inj5  '  *vert  3  5 
+*WELL 156 'inj6  '  *vert  3  6 
+*WELL 157 'inj7  '  *vert  3  7 
+*WELL 158 'inj8  '  *vert  3  8 
+*WELL 159 'inj9  '  *vert  3  9 
+*WELL 160 'inj10 '  *vert  3  10
+*WELL 161 'inj11 '  *vert  3  11
+*WELL 162 'inj12 '  *vert  3  12
+*WELL 163 'inj13 '  *vert  3  13
+*WELL 164 'inj14 '  *vert  3  14
+*WELL 165 'inj15 '  *vert  3  15
+*WELL 166 'inj16 '  *vert  5  1 
+*WELL 167 'inj17 '  *vert  5  2 
+*WELL 168 'inj18 '  *vert  5  3 
+*WELL 169 'inj19 '  *vert  5  4 
+*WELL 170 'inj20 '  *vert  5  5 
+*WELL 171 'inj21 '  *vert  5  6 
+*WELL 172 'inj22 '  *vert  5  7 
+*WELL 173 'inj23 '  *vert  5  8 
+*WELL 174 'inj24 '  *vert  5  9 
+*WELL 175 'inj25 '  *vert  5  10
+*WELL 176 'inj26 '  *vert  5  11
+*WELL 177 'inj27 '  *vert  5  12
+*WELL 178 'inj28 '  *vert  5  13
+*WELL 179 'inj29 '  *vert  5  14
+*WELL 180 'inj30 '  *vert  5  15
+*WELL 181 'inj31 '  *vert  7  1 
+*WELL 182 'inj32 '  *vert  7  2 
+*WELL 183 'inj33 '  *vert  7  3 
+*WELL 184 'inj34 '  *vert  7  4 
+*WELL 185 'inj35 '  *vert  7  5 
+*WELL 186 'inj36 '  *vert  7  6 
+*WELL 187 'inj37 '  *vert  7  7 
+*WELL 188 'inj38 '  *vert  7  8 
+*WELL 189 'inj39 '  *vert  7  9 
+*WELL 190 'inj40 '  *vert  7  10
+*WELL 191 'inj41 '  *vert  7  11
+*WELL 192 'inj42 '  *vert  7  12
+*WELL 193 'inj43 '  *vert  7  13
+*WELL 194 'inj44 '  *vert  7  14
+*WELL 195 'inj45 '  *vert  7  15
+*WELL 196 'inj46 '  *vert  9  1 
+*WELL 197 'inj47 '  *vert  9  2 
+*WELL 198 'inj48 '  *vert  9  3 
+*WELL 199 'inj49 '  *vert  9  4 
+*WELL 200 'inj50 '  *vert  9  5 
+
+   *PRODUCER  1:150
+   *OPERATE *MAX  *STO 20.0            
+   *OPERATE *MIN  *BHP  500.0           
+                                       
+   *MONITOR *GOR       20000.0  *STOP  
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERFV *GEO 1:150
+   ** kf     ff                         
+      2:5   1.0
+
+   *INJECTOR  151:200
+   *INCOMP  *WATER
+   *OPERATE *MAX  *STW 20.0           
+   *OPERATE *MAX  *BHP 10000.0
+   ** to a minimum pressure constraint.
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERFV *GEO 151:200
+   ** kf     ff                         
+      4:5    1.0
+
+   *TIME 3650.0                        
+   *STOP                               

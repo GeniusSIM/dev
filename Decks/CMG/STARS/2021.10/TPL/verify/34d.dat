@@ -1,0 +1,474 @@
+
+
+**                       OVERVIEW
+**                       ========
+
+
+
+** The purpose of this run is to test/illustrate
+
+**   1) All three orientation options
+**   2) nkr = 1 and nkr > 1 axial refinement options
+**   3) njr = 1 and njr = 4 theta refinement options
+**   4) hybrid null block options
+**   5) prepare for run 34e
+
+** This run consists of a 5 x 5 x 5 coarse grid with many hybrid grids.
+** The fundamental block sizes and rock properties are uniform and
+** isotropic, so that only a few different numbers show up in the
+** transmissibilities.  This results in the theta=pi/2 isotropic case.
+
+** Blocks that are nulled out in run 34e.dat are nulled out here as well,
+** so that the two runs will have the same blocks and connections.  This
+** allows you to compare directly this run's debug printout with that of
+** run 34e, in which block modifiers are used to cut the hybrid grids
+** into halves and quarters.
+
+** The results are checked best by running with the debug printout
+** in routine CARTES enabled.  This printout shows the values of
+** transmissibilities for each connection.  Use this debug printout
+** instead of the block-based transmissibility printout which is neither
+** complete nor reliable.
+
+
+** The following are the expected values of the transmissibilities in md-ft.  There
+** are 735 connections but only 24 different values.
+
+** Case 1:  Between two full blocks
+
+**          200000
+
+** Case 2:  Hybrid blocks in axial direction.  Circular cross-sectional
+**          areas vary with ir.  "x" is with normal block separation; x*4/3
+**          is 3/4 as much separation; and x*2 is 1/2 as much separation.
+**          For njr=1, the center is the same as njr=4 but the other ir
+**          are four times as much.
+
+**               -------- njr = 4 -------     njr = 1
+**           ir      x      x*4/3     x*2         x
+**           1    247.40   329.87   494.80     247.40
+**           2    942.48   1256.6   1885.0     3769.9
+**           3    48995.   65326.   97989.     195979
+
+** Case 3:  Out the side of the hybrid grid to a full block.  This is the
+**          same for njr=1 as it is for njr=4.
+
+**          nkr
+**           1      321292
+**           2      160646
+
+** Case 4:  Hybrid blocks in radial direction.
+
+**                --- njr = 4 ---     njr = 1
+**           ir      x       x*2         x
+**          1-2   217305   108652     869220
+**          2-3   165258   82629.     661031
+
+** Case 5:  Hybrid blocks in theta direction.
+
+**           ir      x       x*2
+**           2    176508   88254.
+**           3    277459   138729
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+
+RESULTS SIMULATOR STARS
+
+checkonly
+*interrupt *stop
+
+title1 'STARS Test Bed No. 34d'
+title2 'Test Hybrid in 3 Directions, Two NKR and Two NJR'
+title3 'Preparation for Partial Grids for Symmetry Elements'
+
+inunit  field
+
+outprn grid pres sw so sg temp y
+outprn well all
+wprn grid 300
+wprn iter 300
+
+outsrf grid temp
+
+outsrf special blockvar temp 3,1,1
+               blockvar temp 3,5,1 / 3,3,1
+               blockvar temp 3,5,1 / 2,4,1
+               blockvar temp 3,5,1 / 3,1,2
+               blockvar temp 3,4,1 / 3,4,1
+               blockvar temp 2,3,1 / 1,1,1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 5 5
+
+di con 100
+dj con 100
+dk con 100
+
+
+**  Refinement Definitions
+**  ----------------------
+
+** The following is the definition of the various hybrid grids.
+** They are grouped by the type of parent block:
+**    I-J Half-plane (plane K=1 split in half) *IDIR and *JDIR
+**    I-K Half-plane (plane J=1 split in half) *IDIR and *KDIR
+**    J-K Half-plane (plane I=1 split in half) *JDIR and *KDIR
+**    I-J Quarter Column (both planes I=1 & J=1 split in half)
+**    I-K Quarter Column (both planes I=1 & K=1 split in half)
+**    J-K Quarter Column (both planes J=1 & K=1 split in half)
+
+** For each of the 9 parent type and orientation cases above, these
+** three refinement cases are done:
+
+**                   axial  angular     label
+**                    no      yes     "nkr = 1"
+**                    yes     yes     "nkr > 1"
+**                    no      no      "njr = 1"
+
+** I-J Half-plane (K=1) in *IDIR and *JDIR
+refine 4 3 1  into  3 4 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 5 3 1  into  3 4 2  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 3 2 1  into  3 1 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 4 3 1  into  3 4 1  hybrid idir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 5 3 1  into  3 4 2  hybrid idir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 3 2 1  into  3 1 1  hybrid idir rw 0.25 rwi 1.75 6  ** njr = 1
+
+refine 3 4 1  into  3 4 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 3 5 1  into  3 4 2  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 2 3 1  into  3 1 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 3 4 1  into  3 4 1  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 3 5 1  into  3 4 2  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 2 3 1  into  3 1 1  hybrid jdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+** I-K Half-plane (J=1) in *IDIR and *KDIR
+refine 4 1 3  into  3 4 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 5 1 3  into  3 4 2  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 3 1 2  into  3 1 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 4 1 3  into  3 4 1  hybrid idir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 5 1 3  into  3 4 2  hybrid idir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 3 1 2  into  3 1 1  hybrid idir rw 0.25 rwi 1.75 6  ** njr = 1
+
+refine 3 1 4  into  3 4 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 3 1 5  into  3 4 2  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 2 1 3  into  3 1 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 3 1 4  into  3 4 1  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 3 1 5  into  3 4 2  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 2 1 3  into  3 1 1  hybrid kdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+** J-K Half-plane (I=1) in *JDIR and *KDIR
+refine 1 4 3  into  3 4 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 1 5 3  into  3 4 2  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 1 3 2  into  3 1 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 1 4 3  into  3 4 1  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 1 5 3  into  3 4 2  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 1 3 2  into  3 1 1  hybrid jdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+refine 1 3 4  into  3 4 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 1 3 5  into  3 4 2  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 1 2 3  into  3 1 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 1 3 4  into  3 4 1  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 1 3 5  into  3 4 2  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 1 2 3  into  3 1 1  hybrid kdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+** I-J Quarter Column (I=1,J=1) in *KDIR
+refine 1 1 4  into  3 4 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 1 1 5  into  3 4 2  hybrid kdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 1 1 2  into  3 1 1  hybrid kdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 1 1 4  into  3 4 1  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 1 1 5  into  3 4 2  hybrid kdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 1 1 2  into  3 1 1  hybrid kdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+** I-K Quarter Column (I=1,K=1) in *JDIR
+refine 1 4 1  into  3 4 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 1 5 1  into  3 4 2  hybrid jdir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 1 2 1  into  3 1 1  hybrid jdir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 1 4 1  into  3 4 1  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 1 5 1  into  3 4 2  hybrid jdir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 1 2 1  into  3 1 1  hybrid jdir rw 0.25 rwi 1.75 6  ** njr = 1
+
+** J-K Quarter Column (J=1,K=1) in *IDIR
+refine 4 1 1  into  3 4 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr = 1
+refine 5 1 1  into  3 4 2  hybrid idir alphai 8 alpha 4 rw 0.25  ** nkr > 1
+refine 2 1 1  into  3 1 1  hybrid idir alphai 8 alpha 4 rw 0.25  ** njr = 1
+** refine 4 1 1  into  3 4 1  hybrid idir rw 0.25 rwi 1.75 6  ** nkr = 1
+** refine 5 1 1  into  3 4 2  hybrid idir rw 0.25 rwi 1.75 6  ** nkr > 1
+** refine 2 1 1  into  3 1 1  hybrid idir rw 0.25 rwi 1.75 6  ** njr = 1
+
+
+**  Null Block Definitions
+**  ----------------------
+
+** Assign null blocks to hybrid blocks to match modifiers in 34e,
+** so that 34d and 34e have the same number of blocks and connections
+** to facilitate output comparisons.
+
+** This information is obtained from inspection of the diagrams on
+** page 136 of the STARS 96.00 User's Guide.
+
+** I-J Half-plane (K=1) in *IDIR and *JDIR
+null rg 4 3 1 jvar 0 1 1 1
+   mod 1 1 1 = 1
+null rg 5 3 1 jvar 0 1 1 1
+   mod 1 1 1:2 = 1
+null rg 3 4 1 jvar 1 0 1 1
+null rg 3 5 1 jvar 1 0 1 1
+
+** I-K Half-plane (J=1) in *IDIR and *KDIR
+null rg 4 1 3 jvar 1 1 1 0
+null rg 5 1 3 jvar 1 1 1 0
+null rg 3 1 4 jvar 1 1 1 0
+null rg 3 1 5 jvar 1 1 1 0
+
+** J-K Half-plane (I=1) in *JDIR and *KDIR
+null rg 1 4 3 jvar 1 1 0 1
+null rg 1 5 3 jvar 1 1 0 1
+null rg 1 3 4 jvar 1 1 0 1
+null rg 1 3 5 jvar 1 1 0 1
+
+** I-J Quarter Column (I=1,J=1) in *KDIR
+null rg 1 1 4 jvar 1 1 0 0
+null rg 1 1 5 jvar 1 1 0 0
+
+** I-K Quarter Column (I=1,K=1) in *JDIR
+null rg 1 4 1 jvar 1 0 0 1
+null rg 1 5 1 jvar 1 0 0 1
+
+** J-K Quarter Column (J=1,K=1) in *IDIR
+null rg 4 1 1 jvar 0 1 1 0
+   mod 1 1 1 = 1
+null rg 5 1 1 jvar 0 1 1 0
+   mod 1 1 1:2 = 1
+
+
+por con 0.35
+permi con 2000
+permj con 2000
+permk con 2000
+
+end-grid
+
+cpor 1.0e-4
+
+rockcp 33.0
+thconr 42.24
+thconw 42.24
+thcono 42.24
+thcong 42.24
+**hlossprop **overbur  33.0   35.28
+            ** underbur 33.0   35.28
+hlossprop -k 33.0   35.28
+          +k 33.0   35.28
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'   'DEAD OIL'
+**              -----     --------
+cmm             18.02      600.0
+pcrit          3206.2       0           ** flag for ideal gas
+tcrit           705.4        0
+molden            0        0.10113
+cp                0        5.0e-6
+ct1               0        5.0E-4
+
+cpl1              0         300
+
+avg            1.13e-5       0
+bvg             1.075        0
+
+visctable
+**   Temp
+      74          0       1275
+     100          0        380
+     150          0         91.2
+     200          0         28.8
+     250          0         13.5
+     300          0          7.9
+     350          0          5.2
+     500          0          2
+
+prsr 14.7
+temr 74.0
+tsurf 60.0
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.2        0.0        0.8475
+    0.25       0.0045     0.71
+    0.3        0.01       0.6
+    0.35       0.02       0.51
+    0.4        0.03       0.43
+    0.45       0.04       0.355
+    0.5        0.05       0.287
+    0.6        0.075      0.16
+    0.65       0.09       0.1175
+    0.7        0.105      0.057
+    0.75       0.12       0.02
+    0.79       0.135      0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  -----     ------    ------
+    0.285     0.127     0.0
+    0.35      0.105     0.015
+    0.4       0.09      0.025
+    0.45      0.073     0.037
+    0.5       0.06      0.05
+    0.55      0.045     0.065
+    0.6       0.035     0.085
+    0.65      0.027     0.1175
+    0.7       0.02      0.137
+    0.75      0.015     0.175
+    0.8       0.012     0.225
+    0.85      0.007     0.29
+    0.9       0.0       0.39
+    1.0       0.0       0.8475
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+vertical depth_ave
+refpres 3000
+refblock  1  1  1
+
+**pres con 2000
+**sw kvar  6*0.2   ** So by difference, since Sg = 0
+
+temp all 100 101 102 103 104  ** k = 1
+         105 106 107 108 109
+         110 111 112 113 114
+         115 116 117 118 119
+         120 121 122 123 124
+
+         125 126 127 128 129  ** k = 2
+         130 131 132 133 134
+         135 136 137 138 139
+         140 141 142 143 144
+         145 146 147 148 149
+
+         150 151 152 153 154  ** k = 3
+         155 156 157 158 159
+         160 161 162 163 164
+         165 166 167 168 169
+         170 171 172 173 174
+
+         175 176 177 178 179  ** k = 4
+         180 181 182 183 184
+         185 186 187 188 189
+         190 191 192 193 194
+         195 196 197 198 199
+
+         200 201 202 203 204  ** k = 5
+         205 206 207 208 209
+         210 211 212 213 214
+         215 216 217 218 219
+         220 221 222 223 224
+
+** I-J Half-plane (K=1) in *IDIR and *JDIR
+temp rg 4 3 1 all  225 226 227  228 229 230  231 232 233  234 235 236
+temp rg 5 3 1 all  237 238 239  240 241 242  243 244 245  246 247 248
+                   249 250 251  252 253 254  255 256 257  258 259 260
+temp rg 3 2 1 all  261 262 263
+
+temp rg 3 4 1 all  264 265 266  267 268 269  270 271 272  273 274 275
+temp rg 3 5 1 all  276 277 278  279 280 281  282 283 284  285 286 287
+                   288 289 290  291 292 293  294 295 296  297 298 299
+temp rg 2 3 1 all  300 301 302
+
+** I-K Half-plane (J=1) in *IDIR and *KDIR
+temp rg 4 1 3 all  303 304 305  306 307 308  309 310 311  312 313 314
+temp rg 5 1 3 all  315 316 317  318 319 320  321 322 323  324 325 326
+                   327 328 329  330 331 332  333 334 335  336 337 338
+temp rg 3 1 2 all  339 340 341
+
+temp rg 3 1 4 all  342 343 344  345 346 347  348 349 350  351 352 353
+temp rg 3 1 5 all  354 355 356  357 358 359  360 361 362  363 364 365
+                   366 367 368  369 370 371  372 373 374  375 376 377
+temp rg 2 1 3 all  378 379 380
+
+** J-K Half-plane (I=1) in *JDIR and *KDIR
+temp rg 1 4 3 all  381 382 383  384 385 386  387 388 389  390 391 392
+temp rg 1 5 3 all  393 394 395  396 397 398  399 400 401  402 403 404
+                   405 406 407  408 409 410  411 412 413  414 415 416
+temp rg 1 3 2 all  417 418 419
+
+temp rg 1 3 4 all   99  98  97   96  95  94   93  92  91   90  89  88
+temp rg 1 3 5 all   87  86  85   84  83  82   81  80  79   78  77  76
+                    75  74  73   72  71  70   69  68  67   66  65  64
+temp rg 1 2 3 all   63  62  61
+
+** I-J Quarter Column (I=1,J=1) in *KDIR
+temp rg 1 1 4 all  420 421 422  423 424 425  426 427 428  429 430 431
+temp rg 1 1 5 all  432 433 444  445 446 447  448 449 450  451 452 453
+                   454 455 456  457 458 459  460 461 462  463 464 465
+temp rg 1 1 2 all  466 467 468
+
+** I-K Quarter Column (I=1,K=1) in *JDIR
+temp rg 1 4 1 all  469 470 471  472 473 474  475 476 477  478 479 480
+temp rg 1 5 1 all  481 482 483  484 485 486  487 488 489  490 491 492
+                   493 494 495  496 497 498  499 500 501  502 503 504
+temp rg 1 2 1 all  505 506 507
+
+** J-K Quarter Column (J=1,K=1) in *IDIR
+temp rg 4 1 1 all  508 509 510  511 512 513  514 515 516  517 518 519
+temp rg 5 1 1 all  520 521 522  523 524 525  526 527 528  529 530 531
+                   532 533 534  535 536 537  538 539 540  541 542 543
+temp rg 2 1 1 all  544 545 546
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1e-2
+
+   well 1 'STEAM INJT'
+
+   injector  mobweight 'STEAM INJT'
+   tinjw 200
+   incomp  water  1.0  0.0
+   operate stw 629.0
+   perf 'STEAM INJT'  **  i j k
+                          1 1 1  8872.2013 **10.
+
+time 150

@@ -1,0 +1,252 @@
+
+*****************************************************************************
+** Template (stdrm005.dat): Dilute Stable Emulsion Flow in Parallel Cores  **
+*****************************************************************************
+**************************************************************************************
+** FILE :  STDRM005.DAT                                                             **
+**                                                                                  **
+** MODEL:  NONEQUILIBRIUM APPROACH TO EMULSION CAPTURE       20X2X1 CARTESIAN GRID  **  
+**         MOBILITY REDUCTION THROUGH ENTRAPMENT (NOT VISCOSITY)    LAB UNITS       **
+**                                                                                  **
+** USAGE:  RADKE FILTRATION THEORY APPROACH TO EMULSION CAPTURE IN CORES            **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    A dilute stable emulsion flow is simulated, using the approach of             **
+**  Radke.  Data was obtained by smoothing results from                             **
+**            (a) SPEJ, June 1984, p351, and                                        **
+**            (b) Ind. Eng. Chem. Fund. (1984), v23, p342.                          **
+**                                                                                  **
+**  Special Features:                                                               **
+**                                                                                  **
+**  1)  Flow mechanism of dilute stable emulsion is through reduction of            **
+**      local permeability (entrapment), not viscosity alteration.                  **
+**                                                                                  **
+**  2)  Flow parameters are filtration coefficient, flow diversion                  **
+**      coefficient, and flow restriction parameter.                                **
+**                                                                                  **
+**  3)  Model assumes emulsion particles are monodisperse, and trapping             **
+**      depends on permeability, at a single flow velocity.  Also, there            **
+**      is no re-entrainment.                                                       **
+**                                                                                  **
+**  4)  Parameters can be obtained by fitting single phase (aqueous)                **
+**      effluent emulsion concentration profiles and pressure drop                  **
+**      data across the core as a function of produced pore volume.                 **
+**                                                                                  **
+**  5)  Radke provides additional interpretation of observed parameter              **
+**      variation in terms of particle and grain sizes resulting                    **
+**      in changes to the type of trapping (straining, interception).               **
+**                                                                                  **
+**  6)  This run demonstrates the application of this single phase                  **
+**      flow information to (two phase) displacement of viscous oil                 **
+**      in parallel cores resulting in improved microscopic and                     **
+**      macroscopic displacement efficiency.                                        **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 11'
+*TITLE2 'Emulsion Flow with Parallel Core Oil Displacement'
+*TITLE3 'from Radke'
+
+*INUNIT *LAB *EXCEPT  2 0  ** deg K instead of deg C
+
+*OUTUNIT *LAB *EXCEPT 2 0  ** deg K instead of deg C
+
+*OUTPRN GRID PRES SW SO W RFW
+            VOLFR  VISCCMP   ** SPECIAL VISCOSITY COMPONENT (in volfr)
+            VOL    SOLCONC   ** ENTRAPPED COMPONENT (in vol)
+**            NUM    SOLCONC   ** ENTRAPPED COMPONENT (in num)
+
+*WRST 100
+WPRN GRID 100
+WPRN ITER 1
+
+*OUTPRN *WELL WELLCOMP
+*OUTPRN *ITER NEWTON
+
+*OUTSRF WELL  COMPONENT ALL
+
+*OUTSRF *GRID PRES SW SO SG TEMP RFW
+            VOLFR  VISWCOM   ** SPECIAL VISCOSITY COMPONENT (in volfr)
+            VOL    SOLCONC   ** ENTRAPPED COMPONENT (in vol)
+**            NUM    SOLCONC   ** ENTRAPPED COMPONENT (in num)
+
+*OUTSRF *SPECIAL DELPBLK 1,1,1 20,1,1
+                 DELPBLK 1,1,2 20,1,2
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 20 1 2  ** Two parallel 20-block cores
+
+** Two cores in parallel, each 50 cm x 5 cm**2 sandpacks
+*DI *CON .25
+*DJ *CON 2.216
+*DK *CON 2.216
+
+*POR *CON .34
+
+*PERMI *KVAR 1150 570
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+
+*PRPOR 101.1
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 4 3 3 2   ** Two aqueous and two oleic components
+
+*COMPNAME   'WATER'   'ENTR OIL'   'FREE OIL'   'TRAP OIL'
+**          -------    --------     --------     --------
+*CMM          .018       .18          .18          .18
+*MOLDEN      .05550     .00555        .00555                ** oil = 1/10 water for easier mol -> vol
+*SOLID_DEN 'TRAP OIL' 9.99e-4 0 0                           ** Trapped mass density matches fluid
+*PCRIT       22120       1824         1824
+*TCRIT       647.4      658.3        658.3
+
+*AVISC         1         150          150                   ** High oil viscosity (150 cp)
+*BVISC       1.116      1.102        1.102
+*VSMIXCOMP 'ENTR OIL'
+
+*KV1           0          0          1.33e6
+*KV4           0          0           -3775
+*KV5           0          0           91.31
+** No equilibrium mass transfer between liquid phases
+** (mass transfer is non-equilibrium via reactions)
+
+
+**  Chemical reactions describe non-equilibrium mass transfer
+**  (capture) of flowing emulsion droplets by the porous media
+
+   **  Linear capture (rate constant is filtration coefficient)
+   *STOREAC    0          1            0             0
+   *STOPROD    0          0            0             1
+   *FREQFAC .4
+   *PERMSCALE  **  eff. perm     scale factor
+                     300           10     ** Filtration coefficient as
+                     600            3     ** function of permeability.
+                    1200            1     ** 'freqfac' is filtration
+                    2400           0.3    ** coefficient at unit scale factor.
+
+   **  Modification at high capture levels
+   **  (rate constant(2)/rate constant(1) is Radke's flow diversion)
+   *STOREAC    0          1            0             1
+   *STOPROD    0          2            0             0
+   *FREQFAC 5600
+   *PERMSCALE  **  eff. perm     scale factor
+                     300           2.5    ** Flow diversion depends on permeability.
+                     600           1.5    ** 'freqfac' is flow diversion at unit scale factor.
+                    1200            1     ** Nonmonotonic behaviour is a result
+                    2400           .75    ** of interception dominating straining
+                                          ** capture as permeability increases.
+
+   ** Flow restriction parameter as function of permeability
+   *BLOCKAGE *W 'TRAP OIL' ** eff. perm   flow restr factor
+                              300            300
+                              600            600
+                             1200            900
+                             2400           1200
+
+** Reference conditions
+*PRSR 101.1
+*TEMR 298.14
+*PSURF 101.1
+*TSURF 298.14
+
+*ROCKFLUID
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*SWT
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.234     0.          1.
+    0.25      0.00025     0.729
+    0.3       0.002       0.512
+    0.35      0.00675     0.343
+    0.4       0.016       0.216
+    0.45      0.03125     0.125
+    0.5       0.054       0.064
+    0.55      0.08575     0.027
+    0.6       0.128       0.008
+    0.65      0.18225     0.001
+    0.7       0.21        0.
+    1.        1.          0.
+
+*SLT
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29        0.7        0.
+    1.          0.         1.
+
+*INITIAL
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*PRES *CON 101.3
+*SW *CON .234001      ** So by difference
+*TEMP *CON 296.9
+mfrac_wat 'WATER' con 1
+
+*NUMERICAL
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*DTMAX 35
+*TFORM ZT
+*ISOTHERMAL
+
+*NORM      *PRESS 100  *ZAQ .4    *ZO .4    *ZNCG .4
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+
+*TIME 0
+
+   *DTWELL 35.0
+
+   *WELL 1 'INJTR'
+   *INJECTOR *MOBWEIGHT 'INJTR'
+   *INCOMP *WATER .9985 .0015 0         ** Inject oil-in-water emulsion
+   *OPERATE *STW  .12
+   *PERF 'INJTR'  **  i   j   k  wi
+               1   1   1  22392.83 ** 13.26  ** Inject into top core
+               1   1   2  45190.96 ** 26.76  ** Inject into bottom core
+
+   *WELL 2 'PRODN'
+   PRODUCER 'PRODN'
+   *OPERATE *BHP 101.3
+   *PERF 'PRODN'  **  i   j   k  wi
+              20   1   1  22392.83 ** 13.26  ** Produce from top core
+              20   1   2  45190.96 ** 26.76  ** Produce from bottom core
+
+*TIME  980
+*TIME 1960
+*STOP

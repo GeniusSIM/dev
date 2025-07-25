@@ -1,0 +1,204 @@
+  ******************************************************************************
+  ** mxsmo044.dat:  DRSDT Model                                               **
+  ******************************************************************************
+  **************************************************************************************
+  **                                                                                  **
+  ** FILE:   MXSMO044.DAT                                                             **
+  **                                                                                  **
+  ** MODEL:  5x5x1 grid black oil model, drsdt = 0.3                                  **
+  **         Gas injection followed by production and water injection                 **
+  ** This template illustrates the use of the DRSDT option                            **
+  ** Run the model through and display simulataneously P, BP, RS and Sg for various   **
+  ** grid blocks to view the effect drsdt has on a gas/water injection problem        **
+  **                                                                                  **
+  **************************************************************************************
+  ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);  support@cmgl.ca  (Internet) **
+  **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'DRSDT Test Model'
+*TITLE2
+'drsdt = 0.3'
+*NOLIST
+*INUNIT *FIELD              
+*WPRN   *WELL 0
+*WPRN   *GRID 1
+*WSRF   *GRID   1
+*WSRF   *WELL   1
+*OUTSRF *GRID PRES BPP SG RS
+
+********************************************************************************
+** Reservoir Description Section                                              **
+********************************************************************************
+*GRID *CART 5 5  1                                  
+*KDIR *DOWN                 
+*DI *CON 300.0              
+*DJ *CON 300.0              
+*DK *CON 100                   
+*DEPTH 1 1 1 9050.      
+*POR *CON 0.30                 
+*CPOR   1.0E-6  
+*PRPOR 3600.0              
+*PERMI *CON 100.0                
+*PERMJ *EQUALSI           
+*PERMK *EQUALSI 
+  
+*MODEL *BLACKOIL       
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*TRES 100
+*PVT  *ZG
+** p       rs     bo      zg    viso     visg
+  14.7       0 1.0000   .9999   1.0    .0125
+   400     165 1.0120   .8369   1.0    .0130
+   800     335 1.0255   .8370   1.0    .0135
+  1200     500 1.0380   .8341   1.0    .0140
+  1600     665 1.0510   .8341   1.0    .0145
+  2000     828 1.0630   .8370   1.0    .0150
+  2400     985 1.0750   .8341   1.0    .0155
+  2800    1130 1.0870   .8341   1.0    .0160
+  3200    1270 1.0985   .8398   1.0    .0165
+  3600    1390 1.1100   .8299   1.0    .0170
+  4000    1500 1.1200   .8300   1.0    .0175
+  9000    3000 1.3000   .8301   1.0    .0176
+*DENSITY *OIL    44.986
+*GRAVITY *GAS     0.92
+*DENSITY *WATER  63.021
+*CO    1.0E-5
+*BWI   1.0034
+*CW    3.0E-6
+*REFPW 2000
+*VWI   0.96
+*CVW   0.0
+
+DRSDT 0.30
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+*RPT 1
+*SWT
+** sw    krw     krow       
+0.20     0.00    1.00
+0.25     *INT    *INT
+0.30     *INT    *INT
+0.40     *INT    *INT
+0.50     *INT    *INT
+0.60     *INT    *INT
+0.70     *INT    *INT
+0.80     *INT    *INT
+0.85     *INT    *INT
+0.90     1.00    0.00    
+
+*SLT                          
+** sl    krg    krog   
+0.30     1.00    0.00
+0.35     *INT    *INT   
+0.40     *INT    *INT
+0.50     *INT    *INT
+0.60     *INT    *INT
+0.70     *INT    *INT
+0.80     *INT    *INT
+0.90     *INT    *INT
+1.00     0.00    1.00   
+
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *BLOCK_CENTER
+*PB *CON    0.0 
+*REFDEPTH   9035. 
+*REFPRES    2000.
+*DWOC       9950.
+*DGOC       8800. 
+*DATUMDEPTH 9035.
+
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*DTMAX       30.
+*MAXSTEPS    300
+*MINCYC 2
+                       
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2000 01 01
+*DTWELL 1.00
+*AIMWELL *WELLNN
+
+*GROUP 'ALL-WELLS' *ATTACHTO 'FIELD'
+*WELL 1   'Injector1'  *VERT 1 1  
+*WELL 2   'Producer1'  *VERT 1 1  
+*WELL 3   'Injector2'  *VERT 1 1  
+*GEOMETRY *K  0.5     0.355    1.0    0.0
+
+*INJECTOR  1
+*INCOMP *GAS
+*OPERATE  *MAX  *STG  2000000
+*PERFV *GEOA 1
+** kf      ff
+   1     1
+
+*PRODUCER  2
+*OPERATE *MAX  *STG  2000000
+*OPERATE *MIN  *BHP  20
+
+*PERFV *GEOA 2
+** kf     ff
+   1      1
+
+*INJECTOR  3
+*INCOMP *WATER
+*OPERATE  *MAX  *STW  1000
+*PERFV *GEOA 3
+** kf      ff
+   1     1
+
+OPEN   1
+SHUTIN 2
+SHUTIN 3
+
+*TIME   1
+*TIME   5
+*TIME  10
+*TIME  20
+*TIME  30
+*TIME  40
+*TIME  50
+*TIME 100
+*INJECTOR  1
+*INCOMP *GAS
+*OPERATE  *MAX  *STG  800000
+*TIME 200
+*INJECTOR  1
+*INCOMP *GAS
+*OPERATE  *MAX  *STG  6000000
+*TIME 400
+*SHUTIN 1
+*OPEN 2
+*TIME 600
+*TIME 1200
+*SHUTIN 2
+*OPEN 1
+*TIME 1500
+SHUTIN 2
+OPEN 3
+*TIME 2000
+SHUTIN 3
+SHUTIN 1
+OPEN 2
+*TIME 4500
+*STOP

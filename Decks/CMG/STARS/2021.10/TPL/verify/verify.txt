@@ -1,0 +1,473 @@
+
+
+     STARS Verification data sets
+     ----------------------------
+
+verify01.dat:
+  title1 'Verification Run #1'
+  title2 'OB Heatloss versus AQ Heatloss'
+
+verify02.dat:
+  title1 'Verification Run #2'
+  title2 'AQ does nothing in equilibrium'
+
+verify03.dat:
+  title1 'Verification Run #3'
+  title2 'Test *AQUIFER *BOUNDARY Option'
+
+verify04.dat:
+  title1 'Verification Run #4'
+  title2 'Test *AQUIFER *BOUNDARY Option with LGR'
+
+verify05.dat:
+  title1 'Verification Run #5'
+  title2 'Test *AQUIFER *BOTTOM Option'
+
+verify06.dat:
+  title1 'Verification Run #6'
+  title2 'Test *AQUIFER *BOTTOM Option with LGR'
+
+verify07.dat:
+  title1 'Verification Run #7'
+  title2 'Test *AQUIFER *REGION Option'
+
+verify08.dat:
+  title1 'Verification Run #8'
+  title2 'Test *AQUIFER *REGION Option with LGR'
+
+verify09.dat:
+  title1 'Verification Run #9'
+  title2 'Test *AQUIFER *BOTTOM Option with Hybrid Grid'
+
+verify10.dat:
+  title1 'Verification Run #10'
+  title2 'Test *AQUIFER *BOUNDARY Option with Hybrid Grid'
+
+verify13.dat:
+  title1 'Verification Run #13'
+  title2 'Block Heatloss to Check Radial AQ Heatloss'
+
+verify14.dat:
+  title1 'Verification Run #14'
+  title2 'Block Heatloss to Check Radial AQ Heatloss'
+
+verify15.dat:
+  title1 'Verification Run #15'
+  title2 'Water/Gas Vertical Equilibrium Illustration'
+
+verify16.dat:
+  title1 'Verification Run #16'
+  title2 'FlexWell, TU < AN and Steam Cycling'
+
+verify17.dat:
+  title1 'Verification Run #17'
+  title2 'FlexWell, TU < AN and Steam Cycling and *KDIR *DOWN'
+
+verify20.dat:
+  title1 'Verification Run #20'
+  title2 'No active wells open initially'
+
+verify21.dat:
+  title1 'Verification Run #21'
+  title2 'Vertical Relative Permeablility Test'
+
+verify22.dat:
+  title1 'Verification Run #22'
+  title2 'Open and Shut Wells with Zero/Non-zero Values'
+
+verify24.dat:
+  title1 'Verification Run #24'
+  title2 'Illustrate Per-Area Convective Heat Transfer Input'
+
+verify25.dat:
+  title1 'Verification Run #25'
+  title2 'Test Handling of Space Requirement Too Large (500,000 Blocks)'
+
+verify26.dat:
+  title1 'Verification Run #26'
+  title2 'Test Output & SR2 Handling of Well Recompletion'
+  title3 'Test Diagonal Tranmissibility Multipliers'
+
+verify27.dat:
+  title1 'Verification Run #27'
+  title2 'Test/Illustrate *TFRONT Custom Column in J Direction'
+  title3 'Based on Test Bed No. 1'
+
+verify28.dat:
+  title1 'Verification Run #28'
+  title2 'Test/Illustrate *TFRONT Custom Column in I Direction'
+  title3 'Based on Test Bed No. 1'
+
+verify29.dat:
+  title1 'Verification Run #29'
+  title2 'Verify Adiabatic Heater Option'
+  title3 '2D Cylindrical Version of STTST01'
+
+verify30.dat:
+  title1 'Verification Run #30'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst06'
+
+verify31.dat:
+  title1 'Verification Run #31'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst07'
+
+verify32.dat:
+  title1 'Verification Run #32'
+  title2 'Criteria-Based Cycling'
+  title3 'Based on sttst08'
+
+verify33.dat:
+  title1 'Verification Run #33'
+  title2 'Test restart runs with *THTYPE, *VSTYPE and *KRTYPE Options'
+
+verify35.dat:
+  title1 'Verification Run #35'
+  title2 'Multi-component Non-linear Mixing for Liquid Density and Viscosity'
+
+verify36.dat:
+  title1 'Verification Run #36'
+  title2 'Per-Block Rock-Fluid Endpoint Scaling - T Dependence'
+
+verify37.dat:
+  title1 'Verification Run #37'
+  title2 'Per-Block Rock-Fluid Endpoint Scaling - Interpolation'
+
+verify38.dat:
+  title1 'Verification Run #38'
+  title2 'Test *ONETIME well constraint option'
+
+verify40.dat:
+  title1 'Verification Run #40'
+  title2 'Per-Block Over-Ride of VE Saturations with User Input'
+
+verify41.dat:
+  title1 'Verification Run #41'
+  title2 'Trans. Mults. in Hybrid Grids;  Trans. Mults. Inheritance'
+
+verify42.dat:
+  title1 'Verification Run #42'
+  title2 '*RANGE Syntax Variant of *REFINE'
+
+verify43.dat:
+  title1 'Verification Run #43'
+  title2 'Group Tree Definition from *GROUP/*WELL ... *ATTACHTO'
+
+verify44.dat:
+  title1 'Verification Run #44'
+  title2 'Verify *NETGROSS with *DILATION:  Base Case'
+
+verify45.dat:
+  title1 'Verification Run #45'
+  title2 'Verify *NETGROSS with *DILATION:  Net-to-Gross = 50%'
+
+verify46.dat:
+  title1 'Verification Run #46'
+  title2 'Verify *NETGROSS with *COMPACT_VAR:  Base Case'
+
+verify47.dat:
+  title1 'Verification Run #47'
+  title2 'Verify *NETGROSS with *COMPACT_VAR:  Net-to-Gross = 50%'
+  title3 'Based on VERIFY46'
+
+verify48.dat:
+  title1 'Verification Run #48'
+  title2 'Verify *NETGROSS with Elastic Compressibility'
+  title3 'and *PERMSCALE/*BLOCKAGE:  Net-to-Gross = 50%'
+
+verify49.dat:
+  title1 'Verification Run #49'
+  title2 'Verify *MFRAC_x and *DISPI/J/K_x with Dual Porosity'
+
+verify50.dat:
+  title1 'Verification Run #50'
+  title2 'Verify *MFRAC_x and *DISPI/J/K_x with LGR'
+
+verify51.dat:
+  title1 'Verification Run #51'
+  title2 'Verify *PBC and *BPP with K Value Correlations'
+
+verify52.dat:
+  title1 'Verification Run #52'
+  title2 'Verify *PBC and *BPP with K Value Tables'
+
+verify53.dat:
+  title1 'Verification Run #53'
+  title2 'Verify *BHPDEPTH and *HEADGRAD'
+
+verify54.dat:
+  title1 'Verification Run #54'
+  title2 'Verify FlexWell in Hybrid grid with Axial Refinement'
+
+verify55.dat:
+  title1 'Verification Run #55'
+  title2 'Semi-Analytical Wellbore Model'
+  title3 'Wellbore Heatloss without Wellhead Constraint'
+
+verify56.dat:
+  title1 'Verification Run #56'
+  title2 'Semi-Analytical Wellbore Model'
+  title3 'Source/Sink with Gas Lift'
+
+verify57.dat:
+  title1 'Verification Run #57'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'STTST20 with WHP Constraint'
+
+verify58.dat:
+  title1 'Verification Run #58'
+  title2 'Test/Illustrate Large Number of Components'
+  title3 'and Data Lines Up to 255 Characters Long'
+
+verify59.dat:
+  title1 'Verification Run #59'
+  title2 'Test/Illustrate 3D Asymmetric Radial Grid with Vector Plots'
+  title3 'Based on STTST06'
+
+verify60.dat:
+  title1 'Verification Run #60'
+  title2 'Verify *PINCHOUTARRAY Option'
+
+verify61.dat:
+  title1 'Verification Run #61'
+  title2 'Verify *DUALPOR With Compaction'
+
+verify62.dat:
+  title1 'Verification Run #62'
+  title2 'Verify *DUALPERM With Dilation'
+
+verify63.dat:
+  title1 'Verification Run #63'
+  title2 'Verify *MINC With Compaction'
+
+verify64.dat:
+  title1 'Verification Run #64'
+  title2 'Verify *SUBDOMAIN With Dilation'
+
+verify65.dat:
+  title1 'Verification Run #65'
+  title2 'Dynamic amalgamation with *AQUIFER option'
+
+verify66.dat:
+  title1 'Verification Run #66'
+  title2 'Dynamic refinement with *AQUIFER option'
+
+verify67.dat:
+  title1 'Verification Run #67'
+  title2 'Verify T < 0 C with NUMW = 0'
+
+verify68.dat:
+  title1 'Verification Run #68'
+  title2 'Verify *MONITOR *SHUTLAYER'
+  title3 'Based on STTST07'
+
+verify69.dat:
+  title1 'Verification Run #69'
+  title2 'Verify *INCLUDE'
+  title3 'Based on STTST01'
+
+verify70.dat:
+  title1 'Verification Run #70'
+  title2 'Test/Illustrate *CHECK-WHYSTAB'
+  title3 'Based on STTST70'
+
+verify72.dat:
+  title1 'Verification Run #72'
+  title2 'Test/Illustrate *DATUMDEPTH *REFDENSITY *GRIDBLOCK'
+  title3 'Based on STSMO052'
+
+verify73.dat:
+  title1 'Verification Run #73'
+  title2 'Test/Illustrate *DATUMDEPTH *REFDENSITY Specified Density'
+  title3 'Based on STSMO052'
+
+verify74.dat:
+  title1 'Verification Run #74'
+  title2 'Test/Illustrate *SHUTLAYER with *MONITOR *MAX *TEMP'
+  title3 'Based on STTST07'
+
+verify75.dat:
+  title1 'Verification Run #75'
+  title2 'Test/Illustrate *EACT_TAB to Reproduce STTST01'
+  title3 'Based on STTST01'
+
+verify76.dat:
+  title1 'Verification Run #76'
+  title2 'Test/Illustrate Oil-Wet Kr & Pc with *INTCOMP'
+  title3 'Based on STSMO049'
+
+verify77.dat:
+  title1 'Verification Run #77'
+  title2 'Test/Illustrate Wettability Change with *INTCOMP'
+  title3 'Based on VERIFY76 and STTST06'
+
+verify78.dat:
+  title1 'Verification Run #78'
+  title2 'Test/Illustrate *SCONNECT in Isothermal Single-Porosity System'
+  title3 'Based on STTST11'
+
+verify79.dat:
+  title1 'Verification Run #79'
+  title2 'Test/Illustrate *SCONNECT in Isothermal Naturally Fractured System'
+  title3 'Based on STGRO030'
+
+verify80.dat:
+  title1 'Verification Run #80'
+  title2 'Test/Illustrate *SCONNECT in Thermal System with *PERMTAB'
+  title3 'Based on STTST06'
+
+verify81.dat:
+  title1 'Verification Run #81'
+  title2 'Test/Illustrate *BPCWMAX & *BPCGMAX with *KRINTRP'
+  title3 'Based on STTST28'
+
+verify82.dat:
+  title1 'Verification Run #82'
+  title2 'Test/Illustrate Transmissibility Multipliers in *NINEPOINT *IK Plane'
+  title3 'Based on STTST20'
+
+verify83.dat:
+  title1 'Verification Run #83'
+  title2 'Test/Illustrate Transmissibility Multipliers in *NINEPOINT *IJ Plane'
+  title3 'Based on STTST20'
+
+verify84.dat:
+  title1 'Verification Run #84'
+  title2 'Test/Illustrate *OILWET with Pcow Endpoint Overrides'
+  title3 'Based on STSMO049'
+
+verify85.dat:
+  title1 'Verification Run #85'
+  title2 'Test/Illustrate Mechanical Dispersivity *MDSPI/J/K_x'
+  title3 'Based on VERIFY50'
+
+verify86.dat:
+  title1 'Verification Run #86'
+  title2 'Verify *TNEXT with Group Control Steam Cycling'
+  title3 'Based on STWWM041'
+
+verify87.dat:
+  title1 'Verification Run #87'
+  title2 'Verify *UPWIND *IJ with *REFINE'
+  title3 'Based on STGRO054'
+
+verify88.dat:
+  title1 'Verification Run #88'
+  title2 'Test/Illustrate Multiple *SCONNECT Applied to One Cell'
+  title3 'Based on VERIFY80'
+
+verify89.dat:
+  title1 'Verification Run #89'
+  title2 'Verify/Illustrate *MOD *ARRAY'
+  title3 'Based on STTST07'
+
+verify90.dat:
+  title1 'Verification Run #90'
+  title2 'Verify Multi-Face Combined Aquifer and Heat Loss'
+  title3 'Based on VERIFY03'
+
+verify91.dat:
+  title1 'Verification Run #91'
+  title2 'Verify New-Group Restart Operation'
+  title3 'Based on ???'
+
+verify92.dat:
+  title1 'Verification Run #92'
+  title2 'Verify Restart of *MONITOR *STODWN'
+  title3 'Based on STWWM038'
+
+verify93.dat:
+  title1 'Verification Run #93'
+  title2 'Illustrate/Verify *SETPI (*WAT,*OIL,*LIQ,*GAS) to Modify Well Indices'
+  title3 'Based on STTST08'
+
+verify94.dat:
+  title1 'Verification Run #94'
+  title2 'Verify Operation of *LININTERP with Rel Perm End-Point Overrides'
+
+verify95.dat:
+  title1 'Verification Run #95'
+  title2 'Verify Operation of *NEXTSEG in first *OPERATE'
+
+verify96.dat:
+  title1 'Verification Run #96'
+  title2 'Apply *TUNING_TOOLS to a Dual Porosity Problem'
+
+verify97.dat:
+  title1 'Verification Run #97'
+  title2 'Verify/Illustrate All *OUTBOARD *OUTLIST Items'
+  title3 'Based on STWWM118'
+
+verify98.dat:
+  title1 'Verification Run #98'
+  title2 'Verify/Illustrate *WRST *ELAPSED-HRS'
+  title3 'Based on STWWM064'
+
+verify99.dat:
+  title1 'Verification Run #99'
+  title2 'Verify Detection of Diagonal Tranmissibility Multipliers Alone'
+  title3 'Based on VERIFY26'
+
+verify100.dat:
+  title1 'Verification Run #100'
+  title2 'Test/Illustrate *JFUNC *GAS, *JF_PCLIMIT, *SIGMAG_TAB, *SRFTNG'
+  title3 'Based on STSMO082'
+
+verify101.dat:
+  title1 'Verification Run #101'
+  title2 'Test/Illustrate *JFUNC *WATER, *JF_PCLIMIT, *SRFTNW'
+  title3 'Based on STSMO082'
+
+verify102.dat:
+  title1 'Verification Run #102'
+  title2 'Verify *AQMETHOD *PRES and *AQMETHOD *FLUX'
+  title3 'Based on STTST24'
+
+28a.dat:
+  title1 'STARS Test Bed No. 28a'
+  title2 'Modification of TB 28 for testing zero porosity and null options'
+  title3 'Unrefined matrix (*DUALPOR)'
+
+28b.dat:
+  title1 'STARS Test Bed No. 28a'
+  title2 'Modification of TB 28 for testing zero porosity and null options'
+  title3 'Refined matrix (*MINC)'
+
+34a.dat:
+  title1 'STARS Test Bed No. 34a'
+  title2 'Full hybrid test (2 directions, non-uniform properties)'
+  title3 'No axial refinement'
+
+34b.dat:
+  title1 'STARS Test Bed No. 34b'
+  title2 'Full hybrid test (3 directions, non-uniform properties)'
+  title3 'Axial refinement'
+
+34c.dat:
+  title1 'STARS Test Bed No. 34c'
+  title2 'Test Hybrid in 3 Directions'
+  title3 'Isotropic, Nearly Isotropic and Anisotropic'
+
+34d.dat:
+  title1 'STARS Test Bed No. 34d'
+  title2 'Test Hybrid in 3 Directions, Two NKR and Two NJR'
+  title3 'Preparation for Partial Grids for Symmetry Elements'
+
+34e.dat:
+  title1 'STARS Test Bed No. 34e'
+  title2 'Test Hybrid in 3 Directions, Two NKR and Two NJR'
+  title3 'Partial Grids for Symmetry Elements'
+
+51a.dat:
+  title1 'STARS Test Bed No. 51'
+  title2 'STTST51 with Liq-Liq K Values'
+
+hyb.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'
+
+hyb_1ang.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'
+
+t22.dat:
+  title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'

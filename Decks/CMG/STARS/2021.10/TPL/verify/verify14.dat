@@ -1,0 +1,274 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Verify infinite radial heatloss-only aquifer model.
+
+**  USAGE:    Run this data as is, and compare with verification run #13.
+
+**  RESULTS:  Temperatures should be similar to Ver. Run #13.  However,
+**            no attempt was made to match, since this would involve
+**            calibration.
+
+**  CONTEXT:  With the installation of the well-to-surface option,
+**            the heat loss from the wellbore must be done with the
+**            aquifer model in heatloss-only mode (aquifer permeability
+**            and porosity are zero) since the OB heatloss model
+**            does not support the radial geometry.
+
+**  ORIGIN:   This run is based on TB #60.
+
+**  DESCR:    Run with 22 blocks, the outer 20 of which are conducting
+**            heat away from the inner two blocks.  For the first 100 days
+**            block #2 is being heated to 300 F, and during second 100 days
+**            it is being cooled to 150 F.
+
+**            This is a rather severe test of the semi-analytical heatloss
+**            method used by the aquifer model, since there are two large
+**            temperature transients instead of just one.  The P and Q
+**            coefficients go very large (+ and -) for the first new
+**            time steps after the second transient, but recover back to
+**            physical values.
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #14'
+*title2 'Block Heatloss to Check Radial AQ Heatloss'
+
+inunit field  except  6 1  ** Darcy instead of md
+              except 12 0  ** kPa-m instead of dynes/cm
+
+outprn grid pres sw so sg temp cchloss **obhloss viso
+            **kro krg krw masdeno masdeng masdenw
+wprn grid 5 **400
+outprn well all
+outprn iter tss **newton
+wprn iter 1
+prntorien 2 0
+
+outsrf grid pres sw so sg temp
+
+*aqstat on
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid radial 2 1 1 rw 0
+
+di ivar 0.01 1.68
+dj jvar 360
+dk kvar 20
+
+por con 1e-6
+
+permi con 1e-6
+permj equalsi  
+permk equalsi
+
+aquifer boundary
+AQMETHOD semi-analytical
+aqgeom radial infinite
+AQPROP  0.0  1e-20  1e-20  0.0 0.0 0.0 
+aqcomp 5.0E-04
+hfprop 35.0 24.0 
+
+end-grid
+
+prpor 75
+rocktype 1                           ** Matrix heat properties
+cpor 5e-4
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'Water'    'OIL'
+**             -------   --------
+cmm             18.02      600
+molden            0       0.1075
+cp                0        5e-6
+ct1               0       3.8e-4
+pcrit          3206.2       0
+tcrit           705.4       0
+cpl1              0        300
+avg            1.13e-5      0
+bvg             1.075       0
+
+visctable
+
+**    Temp
+       70          0     2.9666e5
+       80          0     1.3466e5
+       90          0       65248
+      100          0       33500
+      125          0        7839
+      150          0        2349
+      175          0       853.2
+      200          0       360.7
+      250          0        90.7
+      300          0        31.7
+      350          0        13.9
+      400          0        7.22
+      450          0        4.23
+      500          0        2.71
+      550          0        1.87
+
+** Reference conditions
+prsr 14.7
+temr 125
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+rpt 2    **  -----------  WELLBORE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0
+    1.0        1.0          0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+
+**   Assign rel perm sets
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+pres con 154  ** Same conditions in wellbore and matrix
+
+sw  con 0.45
+temp con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+sdegree 1
+sorder redblack
+dtmax 90
+
+rangecheck off
+norm      press 20    satur .2   temp 50  y .2   x .2
+**norm      press 2    satur .2   temp 50  y .2   x .2
+rangecheck on
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+
+   dtwell .1
+
+   tmpset ijk 2 1 1  300
+   uhtr   ijk 2 1 1  1e6
+
+   well 1 'Producer 1'        ** Horizontal well (*HORZWELL)
+
+   producer 'Producer 1'
+   operate     bhp    30 **136     ** Start on BHP
+   geometry k 0.15 0.25  1  0    ** Use tube-end option
+   perf tube-end  'Producer 1'
+              ** i j k           Attach horizontal well to s/s
+                 2 1 1  1.0      ** well at (1,1,19)
+
+   shutin 'Producer 1'
+
+time 100
+
+   tmpset ijk 2 1 1  150
+   uhtr   ijk 2 1 1  -1e6
+
+   dtwell .1
+
+time 200

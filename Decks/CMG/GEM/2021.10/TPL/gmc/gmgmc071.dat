@@ -1,0 +1,342 @@
+***********************************************************************************
+** Template (gmgmc071.dat):  HYDRAULIC FRACTURE INITIATION AND PROPAGATION       **
+***********************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  GMGMC071.DAT                                                             **
+**                                                                                  **
+** MODEL:  VERTICAL WELL           ELASTIC MODEL           FIELD UNITS              **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  TO ILLUSTRATE HOW A HYDRAULIC FRACTURE INITIATES AND PROPAGATES IN 3D.   **
+**                                                                                  **
+**         Fracture permeability is computed based on the fracture width which      **
+**         is calculated from the split nodes between elements.                     **
+**                                                                                  **
+**                                                                                  **
+**         RESERVOIR:      31 x 5 x  22   CARTESIAN GRID                            **
+**         GEOMECHANICS :  31 x 6 x  22   CARTESIAN GRID                            **
+**                                                                                  **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #71'
+*TITLE2 'Hydraulic Fractures Initiation and Propagation'
+*TITLE3 'in a single plane'
+
+
+*INUNIT *FIELD
+
+*WSRF *WELL 1
+*WSRF *GRID 2
+*WSRF *GRIDDEFORM 1
+*OUTSRF *GRID *PERM PERMEFF PRES SG SO SW Y 'CO2' Z 'CO2' TSTRESI TSTRESJ 
+              *TSTRESK TSUBSIDGEO VDISPL YLDSTATE YOUNG *WCRACK *SCRACK *SAFACTOR
+*OUTSRF *RES *ALL
+*OUTSRF *SPECIAL *WCRACK 16 3 15
+                 *SCRACK 16 3 15
+
+
+*WPRN   *GRID 0
+*OUTPRN *GRID *NONE
+*OUTPRN *RES *NONE
+
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION          0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+** -------- Reservoir Description ----------------------------------
+
+*GRID VARI 31  5  22
+*KDIR DOWN
+*DI *IVAR 
+  3*500 10*100 5*20 10*100 3*500
+*DJ *JVAR 
+  1*500 1*100 1*20 1*100 1*500 
+*DK *ALL
+ 775*200 1860*30 775*200
+*DTOP
+ 155*6500
+
+*DUALPERM 
+*SHAPE GK
+*TRANSFER 1
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *CON 0
+
+**$  0 = null block, 1 = active block
+*NULL *MATRIX  *CON    1
+**$  0 = null block, 1 = active block
+*NULL *FRACTURE *CON   1
+*MOD
+   1:31  1:2    1:22   = 0
+   1:31  4:5    1:22   = 0
+
+*POR *MATRIX *CON       0.25
+*POR *FRACTURE *CON     0.1
+
+*PERMI *FRACTURE *KVAR 
+    6*0.1 1.E-03 15*0.000254
+  *MOD
+    16:16  3:3  15:15	=	100
+*PERMI *MATRIX *KVAR 
+    6*0.1 200 15*0.000254
+
+*PERMJ *MATRIX   *EQUALSI
+*PERMJ *FRACTURE *EQUALSI
+
+*PERMK *MATRIX   *EQUALSI * 0.3
+*PERMK *FRACTURE *EQUALSI * 0.3
+
+*CROCKTYPE 1
+   *DEPLETION
+   *CCPOR *FRACTURE 1e-06
+   *CCPOR *MATRIX 1e-06
+   *CPRPOR *FRACTURE 2800
+   *CPRPOR *MATRIX 2800
+CROCKTYPE 2
+   *CCPOR *FRACTURE 1e-06
+   *CCPOR *MATRIX   1e-06
+   *CPRPOR *FRACTURE 2800
+   *CPRPOR *MATRIX   2800
+*CTYPE *MATRIX *CON    1
+*CTYPE *FRACTURE *CON  2
+
+** --------------  Model and number of components -----------------------
+*MODEL *PR
+*NC 2 2
+*COMPNAME 'CO2' 'CH4' 
+*HCFLAG    0     0 
+*TRES 122 
+*VISCOR *HZYT
+*MIXVC 1
+*VISCOEFF 1.0230000E-01 2.3364000E-02 5.8533000E-02 -4.0758000E-02 9.3324000E-03 
+*MW     4.4010000E+01 1.6043000E+01 
+*AC     0.225         0.008 
+*PCRIT  7.2800000E+01 4.5400000E+01 
+*VCRIT  9.4000000E-02 9.9000000E-02 
+*TCRIT  3.0420000E+02 1.9060000E+02 
+*PCHOR  78    77 
+*SG    0.818   0.3 
+*TB   -109.21 -258.61 
+*OMEGA  0.457236 0.457236 
+*OMEGB  0.0777961 0.0777961 
+*VSHIFT 0   0 
+*VISVC 9.4000000E-02 9.9000000E-02 
+*BIN
+  1.0300000E-01 
+
+** -------------- Rock Fluid Prperties --------------------------------
+
+*ROCKFLUID
+*RPT 1
+**$        Sw       krw      krow
+*SWT
+     1.63E-02  0.00E+00         0
+     2.05E-02  4.61E-03         0
+     2.41E-02  9.22E-03         0
+     2.83E-02  2.30E-02         0
+     3.22E-02  3.69E-02         0
+     3.62E-02  4.61E-02         0
+     4.04E-02  6.91E-02         0
+     4.43E-02  8.76E-02         0
+     4.82E-02  1.20E-01         0
+     5.21E-02  1.52E-01         0
+     5.64E-02  1.84E-01         0
+     6.03E-02  2.26E-01         0
+     6.45E-02  2.72E-01         0
+     6.87E-02  3.32E-01         0
+     7.23E-02  3.92E-01         0
+     7.65E-02  4.61E-01         0
+     8.05E-02  5.39E-01         0
+     8.44E-02  6.22E-01         0
+     8.86E-02  7.10E-01         0
+     9.25E-02  7.97E-01         0
+     9.64E-02  9.03E-01         0
+     9.97E-02  1.00E+00         0
+**$        Sg       krg      krog
+*SGT
+     3.26E-03         0         0
+     3.58E-02     0.005         0
+     7.49E-02     0.009         0
+     1.14E-01     0.018         0
+     1.56E-01     0.037         0
+     1.95E-01     0.055         0
+     2.35E-01     0.074         0
+     2.77E-01     0.097         0
+     3.13E-01     0.124         0
+     3.55E-01     0.157         0
+     3.97E-01     0.180         0
+     4.36E-01     0.217         0
+     4.79E-01     0.258         0
+     5.18E-01       0.3         0
+     5.57E-01     0.346         0
+     5.96E-01     0.401         0
+     6.38E-01     0.452         0
+     6.78E-01     0.502         0
+     7.17E-01     0.562         0
+     7.59E-01     0.622         0
+     7.95E-01     0.740         0
+     9.99E-01         1         0
+
+** ---------------- Initialization data ----------------------------
+
+*INITIAL
+
+*VERTICAL *BLOCK_CENTER *WATER_GAS
+
+*NREGIONS 22
+
+*SEPARATOR
+**$  Stage Pres.  Stage Temp.
+            14.7           61
+*ITYPE *MATRIX *KVAR 
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+*ITYPE *FRACTURE *KVAR 
+ 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22
+
+*ZOIL
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+
+*ZGAS
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+0.001 0.999
+
+*REFPRES 
+  2786    2870.7  2954.7  3038.7  3122.7  3171  3183.6  3196.2  3208.8  3221.4  
+  3234    3246.6  3259.2  3271.8  3284.4  3297  3309.6  3357.9  3441.9  3525.9  
+  3609.9  3679.2
+
+*REFDEPTH 
+  6600  6800  7000  7200  7400  7515  7545  7575  7605  7635  
+  7665  7695  7725  7755  7785  7815  7845  7960  8160  8360  
+  8560  8760
+
+*DWGC 
+  10000  10000  10000  10000  10000  10000  10000  10000  10000  10000  
+  10000  10000  10000  10000  10000  10000  10000  10000  10000  10000  
+  10000  10000
+
+** ----------------------- Numerical Control ----------------
+*NUMERICAL
+*NORM *PRESS 500.
+*MAXCHANGE *PRESS 50000.
+*NORM *SATUR 0.15
+*NORM *GMOLAR 0.10
+*MAXCHANGE *SATUR 0.8
+*CONVERGE *PRESS 1E-04
+*PRECC 1.E-05
+*NORTH 80
+*ITERMAX 150
+*DTMIN 1e-12
+**  ---------------  Geomechanics model  ----------------------
+*GEOMECH
+*GEOM3D
+*GEOGRID  GCART  31  6   22                    ** Using GEOGRID
+*GDI  *GIVAR    3*500 10*100 5*20 10*100 3*500 
+*GDJ  *GJVAR    1*500 1*100 2*10 1*100 1*500
+*GDK  *GKVAR   5*200   12*30  5*200
+
+*GTRANSLK  6500.0                             ** Translation in the k direction
+
+*GEOROCK 1
+  *ELASTMOD 4e06
+  *POISSRATIO 0.25
+  *COHESION 6e05
+  *GCRITICAL *TENFRAC  1800.0   ** Tensile fracture criterion
+  *GPERMAX 1E6
+
+GEOROCK 2
+ *ELASTMOD 4e06
+ *POISSRATIO 0.25
+ *COHESION 6e05
+ *GCRITICAL *TENFRAC  1800.0   ** Tensile fracture criterion
+ *GPERMAX 1E6
+
+*GEOTYPE *MATRIX   *KVAR  7*1 15*1
+*GEOTYPE *FRACTURE *KVAR  7*2 15*2
+
+
+STRESS3D                      ** Initial stress field
+*IJK   1:31  1:6   1:22
+       3250 3250 6500 0 0 0
+*IJK
+    1:31     3:4    1:22
+       3250   1250  6500 0 0 0    ** Stress on weak planes (J=3 & J= 4)
+
+*STRESSGRAD3D -0.5 -0.5 -1.0 0 0 0
+
+*HYDROFRAC                       ** Keyword for hydraulic fracture
+  *IJK  1:31   3    13:17    02  ** Fracture occurs between planes J = 3 & J = 4 and within the height K=13 & K = 17
+                                 ** and from the length I=1 to I = 31, perpendicular to plane passing through J.
+*MAGNIFYDJ  5E2                  ** Magnify the deformation in the j direction for visualization
+*DISPLACTOL 1.E-02               ** Convergence tolerance for nodal displacement vector
+
+** ----------------- Recurrent and Well Data --------------------------------
+*RUN
+*DATE 2012 1 1
+*DTWELL  1e-6
+
+*WELL  'Well-1'
+*INJECTOR 'Well-1'
+*INCOMP  *WATER
+*OPERATE *MAX *STW 100000
+*OPERATE *MAX *BHP 15000. 
+**$            rad  geofac  wfrac  skin
+*GEOMETRY  *K  0.25  0.37  1.  0.
+*PERF  *GEOA  'Well-1'
+**$ UBA       ff  Status  Connection  
+   16  3  15  1E3  *OPEN   *FLOW-FROM  'SURFACE'
+
+*DATE 2012 1 1.2
+
+*STOP

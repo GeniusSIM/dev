@@ -1,0 +1,578 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**    Test and illustrate keyword *PTUBE1 to specify hyraulics table for use with
+**    *PHWELLBORE *TABLE and WHP constraint.
+
+**    This template also illustrates keyword *NWHYFS to specify the number of points
+**    for WHP root search.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 46'
+*TITLE2 'Test/Illustrate Isothermal *PTUBE1 with WHP Constraint'
+
+*OUTUNIT *SI
+
+*OUTPRN *GRID *PRES *SW  *SO *SG *KRG
+              *ADSORP *KRINTER *CAPN
+              *MASFR *ADSPCMP   **SPECIAL ADSORPTION COMPONENT (MASS FR)
+*OUTSRF *GRID *PRES *SW *SO *SG *KRG
+
+*OUTPRN *WELL all
+*OUTSRF *WELL
+*OUTPRN *ITER *NEWTON
+*WPRN *GRID time
+*WSRF *GRID time
+*WPRN *ITER 1
+*WRST 60
+
+
+
+** =======================  GRID DATA  ===========================
+
+*GRID *CART 22 1 20 **TWO DIMENSIONAL GRID
+
+*KDIR *DOWN
+*DEPTH *TOP 22 1 1 2500.139
+*DIP 8 0
+
+*DJ *CON 200
+*DI *IVAR 2 3 5 10 30 50 100 100 100  40  20 40   100 100 100 100 50 30 10 5 3 2
+*DK *KVAR 20*3
+
+*POR *IJK
+  1:22 1 1:10  0.25
+  1:22 1 11:20 0.20
+
+*PERMI *KVAR 10*2000. 10*200.
+*PERMJ *KVAR 10*2000. 10*200.
+*PERMK *KVAR 10*1000. 10*100.  **top: Kv/Kh = 0.5 ** bottom: Kv/Kh = 0.5
+
+*NULL  IJK   1:22 1 11 0
+  
+*END-GRID
+
+*PRPOR 3000.    **kPa - 300 bar - reservoir pressure
+*CPOR 1.2E-05   **Rock Compressibilty at 280 bars
+                                                                           
+
+** ===================  COMPONENT PROPERTIES  ==============
+
+*MODEL 4 4 4 2 ** TWO AQUEOUS, OIL AND GAS (CH4) COMPONENTS  ** 0 - Default values for water
+
+*COMPNAME    'WATER'     'SURFACT'    'OIL'        'GAS'
+**           -------     --------    --------     --------
+*CMM           0.        0.23        0.072        0.016      ** MOLECULAR MASS Kg/gm MOLE
+*MOLDEN        0.        2330.       1.185E+04    7.97E+03   ** MOLAR DENSITY gmol/m3 
+*CP            0.        1.6E-05     1.25E-05     1.25E-05   ** LIQUID COMPRESSIBILITY 1/kPa 
+*TCRIT         0.         527.       486.7       -82.8       ** CRITICAL TEMPERATURE C
+*PCRIT         0.         144.       1213.8       4600.0     ** CRITICAL PRESSURE  kPa
+*AVG           0.         0.01         0.        1.737E-04
+*BVG           0.           0.         0.        7.478E-01   
+*KV1           0            0          0         .3572E+05
+*KV2           0            0          0           0
+*KV3           0         1.0E-06     1.E-06      1.947
+*KV4           0            0          0        -1.959E+02
+*KV4           0            0          0        -273.15
+**KV5          0            0          0        -273.15 **For correction replace the above line with this.
+
+*SOLID_DEN 'SURFACT' 535.9 0 0  ** Mass density based on 2330 gmole/m3
+
+*VISCTABLE ** values appropriate for 100 degrees C
+** TEMP(C)  WATER      SURF   OIL    GAS
+   85       0.5        0.5    1.13   0.126
+  121       0.5        0.5    1.13   0.126
+
+
+**         ROCK FLUID PROPERTIES
+**         =====================
+** FOAM MOBILITY REDUCTION IN RELATIVE PERMEABILITY EFFECTS WHICH ARE FLOW DEPENDENT
+** ---------------------------------------------------------------------------------
+*ROCKFLUID
+*KRTYPE *CON 1     ** Default curves which can be changed with well cards
+
+
+** ======================================================================
+*RPT 1   ** Curves for foam with gas into surfactant brine (higher MRF)   
+** ======================================================================
+
+** Interpolation between 2 Sets : Zero and Strong Foam Curves
+** Capillary Number Calculation is based on Aqueous surfactant IFT
+** Specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE **AQUEOUS MOLE FRAC    IFT
+                0.              50.
+                0.003           1.
+
+** CRITICAL FOAM PARAMETERS
+
+*FMMOB 100.                ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+
+
+** SET # 1 : No Foam, Corresponding to No Surfactant
+** ==================================================
+*KRINTRP 1
+*DTRAPW 1.0  ** No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+
+*KRGCW 0.1
+
+** SET # 2 : Foam, Corresponding to High Surfacatnt Concentration
+** ======================================================================
+
+*KRINTRP 2 *COPY 1 1 ** Copy from first Set and then overwrite
+*DTRAPW 0.01          ** Strong Foam - Inverse Mobility Reduction Factor (MRF = 100)
+
+*KRGCW 0.001   **Original Krgcw 1/100
+
+** ======================================================================
+*RPT 2 ** Curves for Foam with Surfactant Brine into Gas (lower MRF)    
+** ======================================================================
+
+** Capillary Number Calculation is based on aqueous surfactant IFT
+** specified at two temperatures and 2 surfactant concentrations
+  *INTCOMP 'SURFACT' WATER
+  *INTLIN
+  *IFTTABLE  **AQ MOLE FRAC    IFT
+              0.             50.
+              0.003          1.
+
+*FMMOB 10.                 ** Mobilty Reduction Factor
+*FMSURF 0.00005            ** Critical Surfactant Concentration, mole fraction
+*FMCAP  2.E-04             ** Reference Capillary Number Value
+*FMOIL 1.                  ** Critical Oil Saturation for Foam Tolerence
+*EPSURF 1.                 ** Exponent for Surfactant Concentration Contribution
+*EPCAP  0.                 ** Exponent for Capillary Number Contribution
+*EPOIL  0.                 ** Exponent for Oil Saturation Contribution
+
+** SET # 3 : No Foam, Corresponding to no Surfactant
+** ======================================================================
+
+*KRINTRP 1
+*DTRAPW   1.  **No Mobility Reduction
+*SWT         ** Water-Oil Relative Permeabilty
+**   SW     KRW        KROW
+**  -----  --------   ---------- 
+    0.12    0.        1.
+    0.1455  0.0035    0.9
+    0.3     0.057     0.55
+    0.545   0.170     0.066
+    0.7     0.35      0.
+    1.0     1.0       0.
+
+*SLT         ** Liquid-Gas Relative Permeability
+**   SL     KRG        KROG
+**  ----   -------    ---------
+    0.15    1.        0.
+    0.34    0.4       0.0009
+    0.46    0.25      0.009
+    0.64    0.095     0.09
+    0.76    0.04      0.22
+    0.88    0.01      0.49
+    1.0     0.        1.
+
+*KRGCW 0.1
+
+
+** SET #4 : Foam, Corresponding to High Surfactant Conc.
+** =============================================================
+*KRINTRP 2 *COPY 1 1 **Copy from first Set then overwrite.
+*DTRAPW 0.1  **Strong Foam Inverse Mobilty Reduction Factor (MRF=10.)
+
+*KRGCW 0.01   **Original Krgcw 1/10
+
+
+** ADSORPTION DATA
+** ---------------
+*ADSCOMP 'SURFACT' WATER ** Data for revesible aqueous surfactant adsorption.
+*ADMAXT 1.088  ** gmole surf/m3 PV - 0.05 mg surf/g rock ** 54.4
+*ADSLANG *TEMP
+   85.    130E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 85
+   121.   129E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 121
+
+
+
+** ==================== INITIAL CONDITIONS =======================
+
+*INITIAL
+
+*TEMP *CON 100. 
+
+*VERTICAL *DEPTH_AVE  **Gravity Equilibrium calculation
+*REFPRES 30000          **kPa - 300 bar
+*REFDEPTH 2500.139
+
+*DWOC 2700.
+*DGOC 2400.
+
+*MFRAC_WAT 'WATER' *CON 1
+*MFRAC_OIL 'OIL' *CON 0.598
+*MFRAC_OIL 'GAS' *CON 0.402
+*MFRAC_GAS 'GAS' *CON 1  
+
+
+
+** ==================== NUMERICAL CONTROL =======================
+
+*NUMERICAL
+
+*TFORM *ZT
+*ISOTHERMAL
+
+*NORM
+*PRESS 200 *ZO 0.2  *ZNCG 0.2  *ZAQ 0.2
+*CONVERGE VARONLY
+
+
+
+*RUN
+
+** ========================= Recurrent Data =====================
+
+*TIME 0
+
+*DTWELL 0.1
+
+
+** ===== Hydraulics Table  =============
+
+*PTUBE1   1
+*DEPTH     1600.00
+*GOR  ** g = 1     2     3       4       5       6       7       8      9
+            10.  100.  1000.   2000.   3000.   4000.   6000.   8000.  10000.
+*OIL  ** o = 1     2     3       4       5
+            1.    50.   100.    200.    300.
+*WCUT ** w = 1     2     3       4       5
+           .00    .20   .60     .80     .90
+*ALQ  ** a = 1
+           0.0
+*WHP  **      whp(1)     ...                          whp(5)
+                500.     2000.     6000.    10000.    14000.
+*BHP
+** g o w a    bhp(1)     ...                          bhp(5)
+   1 1 1 1     11313     12812     16819     20822     24824
+   1 2 1 1     10850     12284     15900     19681     23710
+   1 3 1 1      6364     10611     15896     19495     23097
+   1 4 1 1      3864      7749     15249     19495     23097
+   1 5 1 1      2959      6408     13868     19432     23098
+   1 6 1 1      2489      5667     12732     18993     23098
+   1 7 1 1      2010      4856     11424     17518     22951
+   1 8 1 1       953      4413     10676     16580     22015
+   1 9 1 1       877      4133     10182     15949     21316
+   1 1 2 1     11857     13357     17366     21373     25379
+   1 2 2 1     11405     12860     16518     20340     24368
+   1 3 2 1      6824     10982     16471     20133     23756
+   1 4 2 1      4230      8065     15427     20128     23756
+   1 5 2 1      3246      6711     13823     19649     23757
+   1 6 2 1      2725      5943     12781     18635     23604
+   1 7 2 1      2188      5087     11541     17279     22347
+   1 8 2 1      1220      4613     10811     16446     21512
+   1 9 2 1       903      4310     10321     15872     20925
+   1 1 3 1     12966     14470     18486     22500     26514
+   1 2 3 1     12661     14127     17930     21844     25872
+   1 3 3 1      9287     12820     17884     21647     25381
+   1 4 3 1      6102     10104     17039     21631     25381
+   1 5 3 1      4678      8449     15526     21080     25378
+   1 6 3 1      3893      7451     14409     20063     24921
+   1 7 3 1      3052      6289     12990     18659     23612
+   1 8 3 1      2172      5625     12111     17745     22737
+   1 9 3 1      1416      5193     11504     17092     22099
+   1 1 4 1     13532     15038     19058     23077     27095
+   1 2 4 1     13372     14837     18742     22709     26735
+   1 3 4 1     11471     14285     18714     22573     26417
+   1 4 4 1      8689     12622     18481     22573     26418
+   1 5 4 1      6830     10815     17695     22501     26418
+   1 6 4 1      5700      9578     16604     22046     26406
+   1 7 4 1      4414      8040     15012     20635     25502
+   1 8 4 1      3612      7119     13958     19624     24567
+   1 9 4 1      2513      6503     13201     18870     23858
+   1 1 5 1     13819     15326     19348     23370     27391
+   1 2 5 1     13727     15213     19179     23175     27200
+   1 3 5 1     12774     15035     19138     23078     27004
+   1 4 5 1     11189     14263     19111     23061     26992
+   1 5 5 1      9481     13215     18899     23046     26979
+   1 6 5 1      8134     12038     18466     23021     26967
+   1 7 5 1      6420     10289     17176     22518     26930
+   1 8 5 1      5403      9130     16083     21580     26373
+   1 9 5 1      4236      8309     15248     20821     25679
+   2 1 1 1     11126     12846     16853     20857     24860
+   2 2 1 1      5472      8840     14844     19643     23743
+   2 3 1 1      4110      5166      9867     14785     19432
+   2 4 1 1      6036      6524      9951     14358     18857
+   2 5 1 1      8038      8325     10853     14749     19013
+   2 6 1 1     10022     10217     12122     15527     19530
+   2 7 1 1      EXTP     14013     15270     17768     21243
+   2 8 1 1      EXTP     17792     18710     20712     23575
+   2 9 1 1      EXTP     21596     22317     23986     26553
+   2 1 2 1     11653     13406     17416     21422     25428
+   2 2 2 1      6488      9719     15624     20327     24415
+   2 3 2 1      4569      5654     10469     15480     20175
+   2 4 2 1      6448      6941     10431     14908     19464
+   2 5 2 1      8421      8712     11291     15233     19545
+   2 6 2 1     10388     10583     12525     15976     20014
+   2 7 2 1      EXTP     14369     15621     18165     21664
+   2 8 2 1      EXTP     18145     19068     21049     23950
+   2 9 2 1      EXTP     21951     22676     24354     26853
+   2 1 3 1     12970     14625     18642     22657     26672
+   2 2 3 1      9172     12021     17561     21960     26018
+   2 3 3 1      6541      7624     12520     17534     22172
+   2 4 3 1      8305      8801     12285     16794     21347
+   2 5 3 1     10234     10519     13101     17044     21350
+   2 6 3 1      EXTP     12352     14321     17767     21790
+   2 7 3 1      EXTP     16082     17360     19969     23450
+   2 8 3 1      EXTP     19853     20774     22798     25781
+   2 9 3 1      EXTP     23707     24442     26085     28609
+   2 1 4 1     14020     15548     19569     23589     27609
+   2 2 4 1     12011     14399     19224     23214     27227
+   2 3 4 1      9654     10608     15109     19809     24251
+   2 4 4 1     11429     11868     15107     19388     23766
+   2 5 4 1      EXTP     13647     16059     19804     23949
+   2 6 4 1      EXTP     15524     17392     20662     24536
+   2 7 4 1      EXTP     19329     20579     23104     26464
+   2 8 4 1      EXTP     23177     24101     26121     29047
+   2 9 4 1      EXTP     27122     27849     29535     32092
+   2 1 5 1     15559     17087     21109     25132     29155
+   2 2 5 1     14839     16596     20833     24905     28933
+   2 3 5 1     14643     15420     19384     23862     28128
+   2 4 5 1     16751     17113     19876     23682     27852
+   2 5 5 1      EXTP     19175     21284     24633     28461
+   2 6 5 1      EXTP     21274     22950     25900     29487
+   2 7 5 1      EXTP     25479     26652     29000     32145
+   2 8 5 1      EXTP     29714     30613     32561     35360
+   2 9 5 1      EXTP     34053     34782     36454     38967
+   3 1 1 1     11109     12926     16934     20936     24939
+   3 2 1 1      5809      8624     14716     19708     23822
+   3 3 1 1      7305      7774     11093     15430     19848
+   3 4 1 1     11180     11371     13270     16606     20548
+   3 5 1 1      EXTP     15105     16353     18895     22321
+   3 6 1 1      EXTP     18864     19764     21754     24694
+   3 7 1 1      EXTP     26546     27149     28599     30880
+   3 8 1 1      EXTP     34786     35245     36418     38369
+   3 9 1 1      EXTP     43827     44205     45221     46955
+   3 1 2 1     11749     13524     17534     21543     25550
+   3 2 2 1      6884      9585     15649     20441     24529
+   3 3 2 1      8025      8499     11840     16219     20669
+   3 4 2 1     11876     12064     13973     17323     21264
+   3 5 2 1      EXTP     15783     17038     19588     23006
+   3 6 2 1      EXTP     19538     20451     22450     25395
+   3 7 2 1      EXTP     27276     27883     29339     31584
+   3 8 2 1      EXTP     35579     36040     37224     39182
+   3 9 2 1      EXTP     44694     45073     46098     47841
+   3 1 3 1     13398     15004     19023     23040     27057
+   3 2 3 1     10309     12740     18219     22382     26388
+   3 3 3 1     11182     11617     14783     19000     23314
+   3 4 3 1      EXTP     15251     17087     20309     24135
+   3 5 3 1      EXTP     19037     20271     22765     26088
+   3 6 3 1      EXTP     22868     23785     25783     28685
+   3 7 3 1      EXTP     30875     31480     32922     35201
+   3 8 3 1      EXTP     39587     40055     41263     43244
+   3 9 3 1      EXTP     49118     49500     50552     52327
+   3 1 4 1     15310     16846     20870     24893     28916
+   3 2 4 1     14355     16026     20377     24477     28510
+   3 3 4 1     16518     16876     19608     23468     27707
+   3 4 4 1      EXTP     21013     22674     25597     29158
+   3 5 4 1      EXTP     25191     26355     28694     31826
+   3 6 4 1      EXTP     29402     30297     32236     35027
+   3 7 4 1      EXTP     38199     38814     40286     42575
+   3 8 4 1      EXTP     47877     48351     49590     51594
+   3 9 4 1      EXTP     58368     58751     59843     61656
+   3 1 5 1     20309     21781     25804     29827     33849
+   3 2 5 1     20927     22094     25694     29608     33617
+   3 3 5 1      EXTP     27686     30123     33605     37465
+   3 4 5 1      EXTP     32877     34417     37115     40456
+   3 5 5 1      EXTP     38127     39258     41484     44461
+   3 6 5 1      EXTP     43416     44312     46222     48924
+   3 7 5 1      EXTP     54339     54973     56503     58814
+   3 8 5 1      EXTP     66206     66693     67997     70056
+   3 9 5 1      EXTP      EXTP     79240     80396     82281
+   4 1 1 1     11434     13197     17207     21215     25221
+   4 2 1 1      7350      9186     15274     20084     24097
+   4 3 1 1      EXTP     13497     15313     18510     22321
+   4 4 1 1      EXTP     20953     21863     23853     26752
+   4 5 1 1      EXTP     28756     29344     30778     33037
+   4 6 1 1      EXTP     37201     37668     38863     40834
+   4 7 1 1      EXTP     56671     56997     57943     59574
+   4 8 1 1      EXTP      EXTP     80312     81135     82598
+   4 9 1 1      EXTP      EXTP    107777    108536    109900
+   4 1 2 1     12218     13920     17933     21944     25954
+   4 2 2 1      8655     10510     16322     20900     24929
+   4 3 2 1      EXTP     14730     16516     19660     23418
+   4 4 2 1      EXTP     22279     23182     25165     28042
+   4 5 2 1      EXTP     30182     30784     32228     34499
+   4 6 2 1      EXTP     38820     39287     40491     42471
+   4 7 2 1      EXTP     58663     58989     59943     61587
+   4 8 2 1      EXTP      EXTP     82702     83534     85010
+   4 9 2 1      EXTP      EXTP    110594    111357    112733
+   4 1 3 1     14799     16344     20368     24390     28413
+   4 2 3 1     13794     15181     19584     23687     27727
+   4 3 3 1      EXTP     20502     22143     25041     28569
+   4 4 3 1      EXTP     28798     29686     31614     34393
+   4 5 3 1      EXTP     37512     38126     39595     41881
+   4 6 3 1      EXTP     47128     47602     48843     50814
+   4 7 3 1      EXTP      EXTP     69324     70321     72018
+   4 8 3 1      EXTP      EXTP     95154     96022     97556
+   4 9 3 1      EXTP      EXTP    125263    126051    127486
+   4 1 4 1     20170     21606     25636     29665     33693
+   4 2 4 1     21214     22130     25494     29287     33292
+   4 3 4 1      EXTP     32304     33845     36558     39924
+   4 4 4 1      EXTP     42766     43657     45574     48286
+   4 5 4 1      EXTP     53715     54346     55889     58212
+   4 6 4 1      EXTP     65532     66025     67344     69428
+   4 7 4 1      EXTP      EXTP     92265     93339     95139
+   4 8 4 1      EXTP      EXTP    122721    123658    125297
+   4 9 4 1      EXTP      EXTP    157633    158477    160017
+   4 1 5 1     38132     39532     43545     47558     51572
+   4 2 5 1     40076     40820     43783     47495     51465
+   4 3 5 1      EXTP     62335     63733     66057     68842
+   4 4 5 1      EXTP     79222     80229     82314     85148
+   4 5 5 1      EXTP     94938     95648     97361     99844
+   4 6 5 1      EXTP      EXTP    112122    113608    115865
+   4 7 5 1      EXTP      EXTP    148199    149414    151392
+   4 8 5 1      EXTP      EXTP    188619    189668    191480
+   4 9 5 1      EXTP      EXTP    233675    234607    236308
+   5 1 1 1     11873     13598     17611     21621     25631
+   5 2 1 1      9115     10489     15839     20433     24518
+   5 3 1 1      EXTP     19210     20400     22810     26037
+   5 4 1 1      EXTP     30981     31576     33023     35306
+   5 5 1 1      EXTP     44402     44826     45957     47841
+   5 6 1 1      EXTP     59861     60192     61165     62836
+   5 7 1 1      EXTP      EXTP     98099     98916    100387
+   5 8 1 1      EXTP      EXTP    145489    146266    147724
+   5 9 1 1      EXTP      EXTP    204989    205673    207027
+   5 1 2 1     12880     14515     18533     22548     26562
+   5 2 2 1     10978     12252     17171     21476     25544
+   5 3 2 1      EXTP     21051     22222     24591     27765
+   5 4 2 1      EXTP     33156     33763     35218     37508
+   5 5 2 1      EXTP     47022     47449     48593     50490
+   5 6 2 1      EXTP      EXTP     63285     64271     65961
+   5 7 2 1      EXTP      EXTP    102213    103043    104534
+   5 8 2 1      EXTP      EXTP    151638    152397    153809
+   5 9 2 1      EXTP      EXTP    211473    212161    213529
+   5 1 3 1     16960     18414     22445     26474     30503
+   5 2 3 1     17587     18441     22020     25820     29835
+   5 3 3 1      EXTP     30261     31384     33632     36657
+   5 4 3 1      EXTP     44606     45222     46734     49049
+   5 5 3 1      EXTP     60930     61366     62577     64547
+   5 6 3 1      EXTP      EXTP     79757     80811     82592
+   5 7 3 1      EXTP      EXTP    124152    125041    126633
+   5 8 3 1      EXTP      EXTP    179681    180475    181976
+   5 9 3 1      EXTP      EXTP    246059    246779    248239
+   5 1 4 1     27801     29164     33198     37232     41266
+   5 2 4 1     29939     30583     33395     36984     40963
+   5 3 4 1      EXTP     52297     53486     55794     58847
+   5 4 4 1      EXTP     72101     72780     74418     76846
+   5 5 4 1      EXTP      EXTP     94413     95758     97882
+   5 6 4 1      EXTP      EXTP    118481    119657    121601
+   5 7 4 1      EXTP      EXTP    174594    175576    177326
+   5 8 4 1      EXTP      EXTP    242444    243312    244970
+   5 9 4 1      EXTP      EXTP    323152    323936    325560
+   5 1 5 1     66795     68158     72147     76136     80125
+   5 2 5 1     69485     70086     72817     76422     80345
+   5 3 5 1      EXTP    105172    106156    107966    110236
+   5 4 5 1      EXTP      EXTP    146328    147902    150110
+   5 5 5 1      EXTP      EXTP    184419    185886    188084
+   5 6 5 1      EXTP      EXTP    223034    224415    226606
+   5 7 5 1      EXTP      EXTP    307915    309106    311216
+   5 8 5 1      EXTP      EXTP    407010    408031    410030
+   5 9 5 1      EXTP      EXTP    522843    523680    525556
+
+*WELL 1 'INJECTOR-1'
+*WELL 2 'CONNECTOR-2' 
+*WELL 3 'PRODUCER-3' 
+
+*NWHYFS 1:3
+  11
+
+
+*INJECTOR *MOBWEIGHT 'INJECTOR-1'
+*INCOMP *WATER 1.0 0 0 0
+*OPERATE *STW 1200.0
+*OPERATE *DWN 4580.0          ** Drawdown constraints (*DWN/*DWA/*DWB)
+
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'INJECTOR-1'
+  1 1  12:20   1.0
+
+
+*PRODUCER 'PRODUCER-3'
+
+*PHWELLBORE *TABLE 1600.0 1
+*OPERATE *STL 1500. ** Sm3/d
+*OPERATE *MIN *BHP 10000. **kPa - 100 bar
+*OPERATE  *MIN *WHP 10000.  CONT
+
+
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'PRODUCER-3'
+ 22  1      1   200  flow-to 'SURFACE'  
+ 22  1      2   200  flow-to  1         ** 2
+ 22  1      3   200  flow-to  2         ** 3
+ 22  1      4   200  flow-to  3         ** 4
+ 22  1      5   200  flow-to  4         ** 5
+ 22  1      6   200  flow-to  5         ** 6
+ 22  1      7   200  flow-to  6         ** 7
+ 22  1      8   200  flow-to  7         ** 8
+ 22  1      9   200  flow-to  8         ** 9
+ 22  1     10   200  flow-to  9         ** 10
+ 20  1      4   200  flow-to  4         ** 11
+ 19  1      4   200  flow-to 11         ** 12
+ 18  1      4   200  flow-to 12         ** 13
+ 17  1      4   200  flow-to 13         ** 14
+ 16  1      4   200  flow-to 14         ** 15
+
+
+*XFLOW-MODEL 'CONNECTOR-2' *FULLY-MIXED
+
+*INJECTOR *MOBWEIGHT 'CONNECTOR-2'
+*INCOMP *GAS 0 0 0 1                       ** Communicating well: tests running on
+**OPERATE *STG 10.0                        ** (1) low STG rate, and/or
+*OPERATE *DWB 2.0                          ** (2) low DWB rate, or
+
+*GEOMETRY *K     0.108  0.249  1.0   2.0
+*PERF *GEO 'CONNECTOR-2'
+  11  1  1:20  1.0
+
+
+**MODELSHUT 'CONNECTOR-2' *ON              ** (3) Shutin above formation (modelshut)
+**SHUTIN 'CONNECTOR-2'
+
+*TIME 100.
+
+*TIME 300.
+
+*TIME 600.
+*STOP

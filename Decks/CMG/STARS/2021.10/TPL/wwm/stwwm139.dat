@@ -1,0 +1,277 @@
+
+*****************************************************************************
+** Template  (stwwm139.dat):       Well Skin-Tuner Multiplier              **
+*****************************************************************************
+*****************************************************************************
+** FILE : STWWM139.DAT                                                     **
+**                                                                         **
+** After running a production well for history-matching, the skin-tuner    **
+** multiplier is calculated and applied to the well index for achieving    **
+** a matching rate and bhp specified by the user.                          **
+** Testing Well Management keyword: *SKIN-TUNER                            **
+**                                                                         **
+*****************************************************************************
+*****************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Well Management Template No. 139'
+*TITLE2 'Verify/Illustrate Skin-Tuner Multiplier *SKIN-TUNER'
+*TITLE3 'Base on STWWM083'
+
+*OUTUNIT *SI *EXCEPT 3 3
+
+*OUTSRF *GRID *PRES *SW *SO *SG *KRG
+
+*OUTPRN *WELL ALL
+*OUTSRF *WELL *DOWNHOLE
+*WRST
+
+
+
+**         GRID AND RESERVOIR DEFINITION
+**         =============================
+
+*GRID *CART 20 1 20 **TWO DIMENSIONAL GRID
+
+*KDIR *DOWN
+
+*DEPTH *TOP 20 1 1 2500.139
+*DIP 8 0
+
+*DJ *CON 200
+*DI *IVAR 2 3 5 10 30 50 100 100 100 100 100 100 100 100 50 30 10 5 3 2
+*DK *KVAR 20*3
+
+*POR *IJK
+  1:20 1 1:10  0.25
+  1:20 1 11:20 0.20
+
+*PERMI *KVAR 10*2000. 10*200.
+*PERMJ *KVAR 10*2000. 10*200.
+*PERMK *KVAR 10*1000. 10*100.  **top: Kv/Kh = 0.5 ** bottom: Kv/Kh = 0.5
+
+null ijk 20 1  17 0
+** Transmissibilty barrier between two reservoir units:
+
+*TRANSK *IJK 1:20 1 11 0.01  ** 1.  
+
+**SECTOR 'WELLZONE' 15  1  13
+
+*END-GRID
+
+*PRPOR 3000.  **kPa - 300 bar - reservoir pressure
+
+*CPOR 1.2E-05 **Rock Compressibilty at 280 bars
+
+
+
+**         FLUID DEFINITIONS
+**         =================
+*MODEL 4 4 4 2 ** TWO AQUEOUS, OIL AND GAS (CH4) COMPONENTS  ** 0 - Default values for water
+
+*COMPNAME    'WATER'     'SURFACT'    'OIL'        'GAS'
+**           -------     --------    --------     --------
+*CMM           0.        0.23        0.072        0.016      ** MOLECULAR MASS Kg/gm MOLE
+*MOLDEN        0.        2330.       1.185E+04    7.97E+03   ** MOLAR DENSITY gmol/m3 
+*CP            0.        1.6E-05     1.25E-05     1.25E-05   ** LIQUID COMPRESSIBILITY 1/kPa 
+*TCRIT         0.         527.       486.7       -82.8       ** CRITICAL TEMPERATURE C
+*PCRIT         0.         144.       1213.8       4600.0     ** CRITICAL PRESSURE  kPa
+*AVG           0.         0.01         0.        1.737E-04
+*BVG           0.           0.         0.        7.478E-01   
+*KV1           0            0          0         .3572E+05
+*KV2           0            0          0           0
+*KV3           0         1.0E-06     1.E-06      1.947
+*KV4           0            0          0        -273.15
+**
+*SOLID_DEN 'SURFACT' 535.9 0 0  ** Mass density based on 2330 gmole/m3
+
+*VISCTABLE ** values appropriate for 100 degrees C
+** TEMP(C)  WATER      SURF   OIL    GAS
+   85       0.5        0.5    1.13   0.126
+  121       0.5        0.5    1.13   0.126
+
+
+
+**         ROCK FLUID PROPERTIES
+**         =====================
+
+** FOAM MOBILITY REDUCTION IN RELATIVE PERMEABILITY EFFECTS WHICH ARE FLOW DEPENDENT
+** ---------------------------------------------------------------------------------
+
+*ROCKFLUID
+
+** ======================================================================
+*RPT 1   ** Curves for foam with gas into surfactant brine (higher MRF)   
+** ======================================================================
+
+*SWT 
+**  Sw        Krw      Krow
+** --------------------------------
+0.190000000  0.000000000  1.000000000 
+0.200000000  0.000600000  0.960000000  
+0.250000000  0.003200000  0.850000000  
+0.300000000  0.008000000  0.720000000  
+0.350000000  0.013000000  0.600000000  
+0.400000000  0.025400000  0.470000000 
+0.450000000  0.044000000  0.350000000  
+0.500000000  0.069800000  0.240000000  
+0.550000000  0.104000000  0.165000000 
+0.600000000  0.148000000  0.100000000 
+0.650000000  0.204000000  0.060000000   
+0.700000000  0.271000000  0.030000000
+0.750000000  0.352000000  0.015000000  
+0.800000000  0.447000000  0.005000000 
+0.850000000  0.559000000  0.000000000  
+0.900000000  0.687000000  0.000000000
+0.950000000  0.834000000  0.000000000 
+1.000000000  1.000000000  0.000000000 
+
+*SLT 
+**  Sl        Krg      Krog
+** --------------------------------
+0.190000000  1.000000000  0.000000000    
+0.200000000  0.950000000  0.000600000
+0.250000000  0.840000000  0.003200000  
+0.300000000  0.720000000  0.008000000 
+0.350000000  0.600000000  0.013000000  
+0.400000000  0.470000000  0.025400000  
+0.450000000  0.350000000  0.044000000  
+0.500000000  0.240000000  0.069800000
+0.550000000  0.165000000  0.104000000
+0.600000000  0.093000000  0.148000000 
+0.650000000  0.075000000  0.204000000
+0.700000000  0.045000000  0.271000000
+0.750000000  0.027000000  0.352000000
+0.800000000  0.020000000  0.447000000  
+0.850000000  0.010000000  0.559000000 
+0.900000000  0.005000000  0.687000000  
+0.950000000  0.000000000  0.834000000
+1.000000000  0.000000000  1.000000000 
+
+** ADSORPTION DATA
+** ---------------
+*ADSCOMP 'SURFACT' WATER ** Data for revesible aqueous surfactant adsorption.
+*ADMAXT 1.088  ** gmole surf/m3 PV - 0.05 mg surf/g rock ** 54.4
+*ADSLANG *TEMP
+   85.    130E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 85
+   121.   129E+04    0    2.4E+04 **Langmuir Concentration Coefficient at T = 121
+
+
+
+** =========== INITIAL CONDITIONS ===================
+
+*INITIAL
+
+*TEMP *CON 100. 
+
+*VERTICAL *DEPTH_AVE  **Gravity Equilibrium calculation
+*REFPRES 30000        **kPa - 300 bar
+*REFDEPTH 2500.125
+*DWOC 2700.
+*DGOC 2400.
+
+*MFRAC_WAT 'WATER' *CON 1
+
+*MFRAC_OIL 'OIL'   *CON 0.598
+*MFRAC_OIL 'GAS'   *CON 0.402
+
+*MFRAC_GAS 'GAS'   *CON 1  
+
+
+
+** ============ NUMERICAL CONTROL ====================
+
+*NUMERICAL            
+
+*TFORM *ZT
+*ISOTHERMAL
+*NORM
+*PRESS 400 *ZO 0.2  *ZNCG 0.2  *ZAQ 0.2
+
+
+
+** ===================== Recurrent Data ==================
+
+*RUN
+
+*TIME 0
+
+*DTWELL 1
+
+*WELL 1 'WI1' *VERT 1 1
+*INJECTOR *MOBWEIGHT 'WI1'
+*INCOMP  *WATER 1.0 0 0 0
+*OPERATE *STW 600.0
+*OPERATE *BHP 38000.
+** Well Geometry for the Injector
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERFV    *GEO 'WI1'
+      1:20   1.0
+
+*WELL 2  'P' 
+*PRODUCER 'P'
+*OPERATE *STO 1000
+*OPERATE *STG 190167
+** Well Geometry for the Producer
+**              RADIUS    GEOFAC   WFRAC   SKIN
+*GEOMETRY *K     0.108    0.249    1.0     2.0
+*PERF    *GEO 'P'
+ 20  1      1   1  flow-to 'SURFACE'  
+ 20  1      2   1  flow-to 1
+ 20  1      3   1  flow-to 2
+ 20  1      4   1  flow-to 3
+ 20  1      5   1  flow-to 4
+ 20  1      6   1  flow-to 5
+ 20  1      7   1  flow-to 6
+ 20  1      8   1  flow-to 7
+ 20  1      9   1  flow-to 8
+ 20  1     10   1  flow-to 9
+ 20  1     11   1  flow-to 10
+ 20  1     12   1  flow-to 11
+ 20  1     13   1  flow-to 12
+ 20  1     14   1  flow-to 13
+ 20  1     15   1  flow-to 14
+ 20  1     16   1  flow-to 15
+ 20  1     17   1  flow-to 16
+ 20  1     18   1  flow-to 17
+ 20  1     19   1  flow-to 18
+ 20  1     20   1  flow-to 19
+ 19  1      4   1  flow-to 4
+ 18  1      4   1  flow-to 21
+ 17  1      4   1  flow-to 22
+ 16  1      4   1  flow-to 23
+ 15  1      4   1  flow-to 24
+ 19  1     13   1  flow-to 13
+ 18  1     13   1  flow-to 26
+ 17  1     13   1  flow-to 27
+ 16  1     13   1  flow-to 28
+ 15  1     13   1  flow-to 29
+
+HEAD-METHOD 'WI1' 'P' 
+*GRAV-FRIC
+
+
+*OPERATE-HIST 'P' *RSV   **Producer operates in history-matching mode
+
+*TIME 500
+
+   *ALTER-HIST 'P'
+      1000  190167       **Values correspond to *OPERATE
+
+*TIME 700
+
+  *OPERATE-HIST 'P' OFF
+  *SKIN-TUNER 'P'  *BHP 20800   **Calculate/apply skin-tuner to match the given BHP
+                                **with the historic rates
+
+*TIME 800
+
+*TIME 1000

@@ -1,0 +1,11 @@
+** This example shows how to modify the attributes of each column in a
+** table.  Here, the precision of the gas rate column is changed from the
+** default value.
+
+*FILES      'mxdrm005.sr3'
+
+*TABLE-FOR   *WELLS 'W-1' 'W-2' 'W-3'
+   *COLUMN-FOR  *PARAMETERS 'Gas Rate SC' *PRECISION 8 *WIDTH 16
+   *COLUMN-FOR  *PARAMETERS 'Oil Rate SC' 'Water Rate SC'
+*TABLE-END
+

@@ -1,0 +1,329 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    A caustic-polymer flood on a laboratory scale is simulated.
+**  This illustrates the synergistic effect of a combined process
+**  (Burk, SPEJ Res. Eng., Feb 1987, p 9.) without the additional
+**  effects of macroscopic sweep efficiency.
+
+**  Special Features:
+
+**  1)  Effect of caustic (NA/OH) ion exchange (equilibrium adsorption)
+**      on caustic propagation - Bunge and Radke (SPEJ, Dec 1982).
+
+**  2)  Effect of caustic concentration on w/o interfacial tension;  for
+**      explanation of observed IFT minimum see Wasan, SPEJ, Aug 1983.
+
+**  3)  Effect of nonreversible polymer trapping on polymer propagation.
+**      Polymer blockage also contributes to mobility alteration.
+
+**  4)  Polymer effects on aqueous phase viscosity modelled by nonlinear
+**      component viscosity mixing rule.
+
+**  5)  Injection sequence uses viscosity spike and graded viscosity drive
+**      to minimize viscous fingering of water drive into polymer bank
+**      (Claridge, SPEJ, Oct 1978).
+
+**  6)  Capillary number interpolation of relative permeability sets
+**      describes residual oil mobilization.  Synergism is a result
+**      of polymer modification to viscous forces and caustic effects
+**      on interfacial tension.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 12'
+*title2 'Caustic-Polymer Lab Run'
+
+*inunit  lab except 1 0  ** days instead of hrs
+             except 2 2  ** deg F instead of deg C
+
+*outunit lab except 1 0  ** days instead of hrs
+             except 2 2  ** deg F instead of deg C
+
+*outprn *grid pres sw so w visw kro krw ift capn
+              ph    adspcmp  ** special adsorption component (in ph)
+              mass  adsorp   ** adsorption component (in mass)
+              ppm   visccmp  ** special adsorption component (in ppm)
+
+*outsrf *grid pres sw so ift capn velcapn oilpot
+              ph    adspcmp  ** special adsorption component (in ph)
+              mass  adsorp   ** adsorption component (in mass)
+              ppm   viswcom  ** special adsorption component (in ppm)
+
+*outprn *well wellcomp
+*outprn *iter newton
+
+*outsrf *well mass component all
+
+*wrst 100
+*wprn *grid 100
+*wprn *iter 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 19 1 1  ** One-dimensional grid
+
+*di *con 0.4  
+*dj *con 2.216  
+*dk *con 2.216
+
+*por *con 0.164  
+*permi *con 150  
+*permj *equalsi  
+*permk *equalsi
+
+*end-grid
+*prpor 101.1
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 4 4 4 3   ** Three aqueous and one oleic components
+
+*compname  'WATER'  'POLYMER'    'NAOH'   'DEAD OIL'
+**          -----    --------   --------   --------
+*cmm        0.018       10        0.04      0.456
+*molden   0.055555     1e-4     0.027397   0.002022   ** 1000 kg/m3
+*pcrit       2000      2000       2000       2000
+*tcrit       300       300        300        300
+*avisc      0.826       20        0.826      18.3
+
+rangecheck off
+*solid_den 'POLYMER' 2.7397    0 0  ** mass density is 0.27397*10
+rangecheck on
+*solid_den 'NAOH'    0.0109588 0 0  ** mass density is 0.27397*0.04
+
+*vsmixcomp 'POLYMER'
+*vsmixendp 0 4e-6      ** nonlinear mixing of polymer viscosity
+*vsmixfunc 0 .075 .16 .25 .35 .45 .56 .67 .78 .89 1
+
+**  Zero K values for aqueous components
+*kvtablim 101.3 202.6  60 160
+*kvtable 'WATER'
+    0    0
+    0    0
+*kvtable 'POLYMER'
+    0    0
+    0    0
+*kvtable 'NAOH'
+    0    0
+    0    0
+
+** Reference conditions
+*prsr 101.1
+*temr 60
+*psurf 101.1
+*tsurf 60
+
+*rockfluid
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**     Interpolation between 2 sets: high versus low IFT situations.
+**  Capillary number interpolation option is based on aqueous NAOH
+**  IFT specified at 2 temperatures and 6 NAOH concentrations.
+**  Note that IFT goes through a minimum.
+
+*intcomp 'NAOH' water
+*intlog
+
+*ifttable    ** aq mole frac      IFT
+                    0.0            13
+                    0.00003        0.3
+                    0.00006        0.07
+                    0.00015        0.005
+                    0.0003         0.1
+                    0.003          8
+
+**  Set #1:  High IFT, corresponding to no NAOH
+**  -------------------------------------------
+
+*krintrp 1
+
+*dtrapw -4.5  ** critical capillary number for detrapping to begin
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.235     0.          1.
+    0.25      0.00025     0.729
+    0.3       0.002       0.512
+    0.35      0.00675     0.343
+    0.4       0.016       0.216
+    0.45      0.03125     0.125
+    0.5       0.054       0.064
+    0.55      0.08575     0.027
+    0.6       0.128       0.008
+    0.65      0.18225     0.001
+    0.7       0.25        0.
+    0.75      0.33        0.
+    0.8       0.415       0.
+    0.85      0.515       0.
+    0.9       0.635       0.
+    1.        1.          0.
+
+*slt  *noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29      0.7         0.
+    0.6       0.37121     0.362
+    0.95      0.          1.
+
+
+**  Set #2:  Low IFT, corresponding to high NAOH concentration
+**  ----------------------------------------------------------
+
+*krintrp 2 copy 1 1    ** copy from first set, then overwrite
+
+*dtrapw -3  ** critical capillary number for full NAOH effect
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.235     0.          1.
+    0.25      0.00025     0.98
+    0.3       0.002       0.91
+    0.35      0.00675     0.85
+    0.4       0.016       0.78
+    0.45      0.0355      0.715
+    0.5       0.054       0.65
+    0.55      0.08575     0.58
+    0.6       0.128       0.52
+    0.65      0.18225     0.45
+    0.7       0.25        0.38
+    0.75      0.33        0.32
+    0.8       0.415       0.255
+    0.85      0.515       0.198
+    0.9       0.635       0.125
+    1.        1.          0.
+
+*slt  *noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.29      0.7         0.
+    0.6       0.37121     0.362
+    1.00      0.          1.
+
+
+**  Adsorption Data
+**  ---------------
+
+*adscomp 'POLYMER' water   **Data for irreversible aqueous polymer adsorption
+*admaxt 5.42e-8
+*adrt 5.42e-8
+*rrft 1.2
+*adslang 0.261 0 5.e6   ** Langmuir concentration coefficients
+
+*adscomp 'NAOH' water        ** Data for reversible aqueous NaOH adsorption
+*admaxt 6.8e-5   ** no mobility effect
+*adslang 0.68 0 10000   ** Langmuir concentration coefficients
+
+*initial
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*pres *con 101.3
+*sw *con .64    ** So by difference
+*temp *con 60
+*mfrac_wat 'WATER' *con 1
+
+*numerical
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*tform zt
+*isothermal
+
+*newtoncyc 10
+*dtmax .025
+
+*rangecheck off
+*norm      press 100    zaq .4     zo .4     zncg .4
+*converge  press 0.1  zaq 1.e-8  zo .0001
+*rangecheck on
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .0025   ** One pore volume is 0.25 day
+
+   well 1 'INJTR'      ** Well list
+   well 2 'PRODN'
+
+   producer 'PRODN'
+   operate bhp 101.3
+   geometry j .11 .3687 1 0  ** rw,cc,ff,ss
+   perf geo 'PRODN'
+               **  i j k
+                  19 1 1  1.0
+
+   injector 'INJTR'
+      incomp water .9959963 3.7e-6 .005 0   ** Polymer-caustic slug injected (15 cp)
+   ** incomp water .995996  4.0e-6 .005 0   ** Another slug to try
+   ** incomp water .9999963 3.7e-6 .000 0   **         "
+   ** incomp water .995     0      .005 0   **         "
+   operate stw 24.6
+   perf 'INJTR'
+           ** i j k  wi
+              1 1 1 1.1
+
+time .0625
+
+   dtwell .0025  
+   injector 'INJTR'
+   incomp water .999996  4e-6    0 0  ** Polymer spike injected (20 cp)
+   operate stw 24.6
+
+time .125
+
+   dtwell .0025  
+   injector 'INJTR'
+   incomp water .9999968 3.2e-6  0 0  ** Decreasing polymer slug injected (10 cp)
+   operate stw 24.6
+
+time .1875
+
+   dtwell .0025  
+   injector 'INJTR'
+   incomp water .9999975 2.56e-6 0 0  ** Decreasing polymer slug injected (5 cp)
+   operate stw 24.6
+
+time .25
+
+   dtwell .0025  
+   injector 'INJTR'
+   incomp water 1        0       0 0  ** Pure water drive
+   operate stw 24.6
+
+time .5
+time .75
+stop

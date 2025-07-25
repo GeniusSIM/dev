@@ -1,0 +1,165 @@
+               WELLS AND WELL MANAGEMENT
+               -------------------------
+
+
+
+Templates in the Wells and Well Management (WWM) directory:
+
+GMWWM001.DAT -- 2D Miscible Flood with Group Well Control
+GMWWM002.DAT -- Model with Tubing Head Pressure Correlation
+GMWWM003.DAT -- Model with Tubing Head Pressure Table
+GMWWM004.DAT -- Wasson Fluid with Injected Water; AUTOLAYER Control
+GMWWM005.DAT -- 2D Miscible Flood with Group Control and AUTODRILL
+GMWWM006.DAT -- Wasson Fluid with Injected Water; AUTOLAYER Control (modified)
+GMWWM007.DAT -- Wasson Fluid with Injected Water; AUTOWELL Control
+GMWWM008.DAT -- Wasson Fluid with Injected Water; RECOMPLETE Control
+GMWWM009.DAT -- Wasson Fluid with Injected Water; WORKOVER Control
+GMWWM010.DAT -- Wasson Fluid with Injected Water using Penalty GOR
+GMWWM011.DAT -- CO2 Pattern Flood; Base Case for Gas Lift Cases (following)
+GMWWM012.DAT -- CO2 Pattern Flood with Gas Lift Starting on Rates
+GMWWM013.DAT -- CO2 Pattern Flood with Alternate Gas Lift Optimization
+GMWWM014.DAT -- CO2 Pattern Flood with Gas Lift and Group Controls
+GMWWM015.DAT -- CO2 Pattern Flood with GLR-Based Gas Lift Control
+GMWWM016.DAT -- CO2 Pattern Flood with Rate Based Gas Lift Control
+GMWWM017.DAT -- CO2 Pattern Flood with Gas Lift Optimization and Monitoring
+GMWWM018.DAT -- Two Dimensional Miscible Flood with Recycling (No Group Control)
+GMWWM019.DAT -- Two Dimensional Miscible Flood with Dry Gas Recycling
+GMWWM020.DAT -- Two Dimensional Miscible Flood with AUTODRILL/OPEN
+GMWWM021.DAT -- Two Dimensional Miscible Flood with Nested Group Control
+GMWWM022.DAT -- Reference Case for On-Time Fraction Test Comparisons
+GMWWM023.DAT -- Use of Non-Unit On-Time Fractions
+GMWWM024.DAT -- Comparison for Flexible Separator Input Format
+GMWWM025.DAT -- Comparison for Flexible Separator Input Format
+GMWWM026.DAT -- Intermediate Liquid stream from EOS separator
+GMWWM027.DAT -- Gas Plant Separator
+GMWWM028.DAT -- Guide Rate Apportionment for Gas Stream
+GMWWM029.DAT -- 2-D Miscible Flood With Group Control and AUTODRILL
+GMWWM030.DAT -- Introducing Group Structure After Start of Run
+GMWWM031.DAT -- Test of STL constraint.
+GMWWM032.DAT -- Test of *PTUBE *CONDENSATE.
+GMWWM033.DAT -- Crossflowing Producer.
+GMWWM034.DAT -- Crossflowing Injector.
+GMWWM035.DAT -- Time Step Repeat due to Well Constraint Violation.
+GMWWM036.DAT -- Companion to GMWWM035.DAT -- Manual Constraint Change.
+GMWWM037.DAT -- Test 0f *WORKOVER-DATA.
+GMWWM038.DAT -- Steady-state backflowing water injector.
+GMWWM039.DAT -- Well wet gas controls.
+GMWWM040.DAT -- Group wet gas controls.
+GMWWM041.DAT -- Restart of GMWWM040.DAT -- restart of group target.
+GMWWM042.DAT -- Backflow monitor with AUTOLAYER action.
+GMWWM043.DAT -- Deviated Layer input and completion in null block.
+GMWWM044.DAT -- SHUTALL group action and expanded *PERF format.
+GMWWM045.DAT -- Perforation in multiply refined and hybrid gridblocks.
+GMWWM046.DAT -- Multilateral Well with Head Calculation.
+GMWWM047.DAT -- Horizontal Well with Head Calculation.
+GMWWM048.DAT -- Undulating Well with Head Calculation.
+GMWWM049.DAT -- Base Case for *TURB, *QUAD, and *PSEUDOP tests
+GMWWM050.DAT -- Test of *QUAD layer gas productivity modification
+GMWWM051.DAT -- Test of *PSEUDOP layer gas productivity modification
+GMWWM052.DAT -- Test of *TURB layer gas productivity modification
+GMWWM053.DAT -- Test of *TURB and *QUAD productivity modifications
+GMWWM054.DAT -- Test of *TURB & *PSEUDOP productivity modifications
+GMWWM055.DAT -- Test of Injector BHG constraint
+GMWWM056.DAT -- Test of Gas Phase Voidage Replacement
+GMWWM057.DAT -- Dry Gas Recycling with Production from Named Group
+GMWWM058.DAT -- Dry Gas Recycling with Make-up Gas
+GMWWM059.DAT -- Dry Gas Recycling with Fuel and Sales Requirements
+GMWWM060.DAT -- Dry Gas Recycling with Water Recycling and Make-up
+GMWWM061.DAT -- Specified Reference Depth for Wells
+GMWWM062.DAT -- Base case for pumped-off well modelling.
+GMWWM063.DAT -- Modelling pumped-off producer.
+GMWWM064.DAT -- Tubing Head Pressure Correlation using *WHYCRTB Speedup.
+GMWWM065.DAT -- Reporting Group Test.
+GMWWM066.DAT -- BHF Group Production Target.
+GMWWM067.DAT -- Head Iteration.
+GMWWM068.DAT -- Simultaneous BHP-Head Initialization.
+GMWWM069.DAT -- MAXGAS Group Monitor Shutting High-GOR Wells
+GMWWM070.DAT -- MAXSTW Group Monitor Shutting High-WCUT Wells
+GMWWM071.DAT -- Production Manifold on STO Rate Constraint
+GMWWM072.DAT -- Production Manifold on Manifold Pressure Target
+GMWWM073.DAT -- Production Manifold on Surface Pressure Target
+GMWWM074.DAT -- Production Manifold Constraint Switch
+GMWWM075.DAT -- Gas Injection Manifold on recycling Rate Target
+GMWWM076.DAT -- Gas Injection Manifold on Manifold Pressure Target
+GMWWM077.DAT -- Water Injection Manifold on Manifold Pressure Target
+GMWWM078.DAT -- Water Injection Manifold on Platform Pressure Target
+GMWWM079.DAT -- WELL before OPERATE and WLISTSHUT
+GMWWM080.DAT –- Group Ontime
+GMWWM081.DAT -- Fluid Redistribution with MODELSHUT
+GMWWM082.DAT -- Drawdown Constraints DWA/DWB/DWN
+GMWWM083.DAT -- Priority Apportionment
+GMWWM084.DAT -- New Voidage Replacement options
+GMWWM085.DAT -- 2-D Miscible Flood With AUTODRILL ON
+GMWWM086.DAT -- 2-D Miscible Flood With AUTODRILL STO
+GMWWM087.DAT -- Group Control - Production Voidage Replacement
+GMWWM088.DAT -- Group Control - Re-production of Injected Stream
+GMWWM089.DAT -- Group Control - Injection Voidage Makeup
+GMWWM090.DAT -- Group Control - Pressure Maintenance by Injection
+GMWWM091.DAT -- Group Control - Pressure Maintenance (gas rate limit)
+GMWWM092.DAT -- Production Manifold on Surface Pressure Target
+GMWWM093.DAT -- Layer lumping option and its use within Trigger
+GMWWM094.DAT -- Layer lumping option for injection voidage makeup
+GMWWM095.DAT -- Pressure maintenance with reference volume replacement (VREFP)
+GMWWM096.DAT -- Output of well PI's for plotting.
+GMWWM097.DAT -- Demonstrate usage of *SHUTLAYER1.
+GMWWM098.DAT -- Test BHF initialization with TURB/QUAD.
+GMWWM099.DAT -- Use of control lump setting in shutting/reopening wells and
+                Modifying well PI through the use of control lump setting factors.
+GMWWM100.DAT –- Use DRILLT to specify minimum time interval between
+                drilling wells due to AUTODRILL actions
+GMWWM101.DAT -- Test use of *OPERATE-HIST/*ALTER-HIST
+GMWWM102.DAT -- Demonstrate use of WCUTBACK constraint option.
+
+GMWWM103.DAT -- Priortization of drilling que by ranking algorithm based on
+                product of oil rate and oil in place (*DRILLQ *IPPDRNINP).
+GMWWM104.DAT -- Companion template to gmwwm103. The wells are assigned priority 
+                on the drill queue based on the IPP (instanteneous production 
+                potential).
+GMWWM105.DAT -- Illustrate the ability to blend in a user-defined drilling 
+                priority list with the IPP (instanteneous production potential)
+                based ranking algorithm.
+GMWWM106.DAT -- Use of keywords *INCOMPWL and *WCURRCN, to reset hydrocarbon
+                injector fluid composition; and application of primary well 
+                constraint at all times without the usual switching to the most 
+                restrictive constraint. With *WCURRCN The well is shutin if 
+                primary constraint is not met.
+GMWWM107.DAT -- Use of *PWELLBORE *MODEL for wellbore hydraulics. For 
+                comparison with results of gmwwm108 that uses *PWELLBORE *TABLE
+                with enthalpy as fourth variable.
+GMWWM108.DAT -- The wellbore correlation is converted to thermal PTUBE1 
+                with enthalpy as the 4th variable. The calculated of WHP 
+                is within 2-3 % of companion template gmwwm107 that uses 
+                *MODEL instead of *TABLE, at a considerable saving in computation
+                time. 
+GMWWM109.DAT -- Group target apportionment with *INGUIDE, with potentials at 
+                different BHP.
+GMWWM110.DAT -- Input simplification for LAYER LUMP specification.
+GMWWM111.DAT -- Demonstrate use of *WELGEO keyword for specifying well geometry
+                parameters.               
+GMWWM112.DAT -- Wellbore Instability Monitoring via *WHYSTAB and *RATSTAB.
+GMWWM113.DAT -- Demonstrate use of the General Form of Perforation Input.
+GMWWM114.DAT -- Demonstrate Use of *WIRANGE and *WELPRN for Auto-Thresholding 
+                of Well Indices.
+GMWWM115.DAT -- Frictional Head Calculations with Hydraulic Radius.
+GMWWM116.DAT -- Use of Hydaulic tables for calculating well head temperature.
+GMWWM117.DAT -- Demonstrate use of individual well-layer control actions.
+GMWWM118.DAT -- Demonstrate use of *SKIN-TUNER keyword for matching BHP.
+GMWWM119.DAT -- Illustrates the use of well-head temperature table via 
+                *PTUBE1 to calculate the producer's tubing-head temperature
+                for *WHT constraint.
+GMWWM120.DAT -- Illustrates the time-step repeat after group constraint is
+                violated in group production controls based upon wet gas
+                production rates.
+GMWWM121.DAT -- Prevent rate instability by using *RATSTAB in *PTUBE1 table
+GMWWM122.DAT -- Test input of well D factor and re-specification of skin.
+
+GMWWM123.DAT -- Use of *WELLIST and *ACT-DEFAULT keywords.
+
+GMWWM124.DAT -- Group Injection Controls on Total Fluid Rate.
+
+GMWWM125.DAT -- Group Control with Aquifer Influx.
+
+GMWWM126.DAT -- Group on-time fraction and Group Target Apportionment using *INGUIDE
+
+GMWWM127.DAT -- Use of Grid-independent Well Option.
+GMWWM128.DAT -- Use of Grid-Independent Well with recurrent grid refinement.

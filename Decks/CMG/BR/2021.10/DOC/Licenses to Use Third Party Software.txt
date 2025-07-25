@@ -1,0 +1,274 @@
+Computer Modelling Group Ltd. meets the licensing requirements for 
+the following software:
+
+******************************************************************
+
+Software: curl, libcurl
+
+Copyright - License 
+
+Curl and libcurl are true Open Source/Free Software and meet all
+definitions as such. It means that you are free to modify and
+redistribute all contents of the curl distributed archives. You
+may also freely use curl and libcurl in your commercial projects.
+ 
+Curl and libcurl are licensed under a MIT/X derivate license, see
+below. 
+
+There are other computer-related projects using the name curl as
+well. For details, check out our position on the curl name issue.
+ 
+The curl license 
+
+COPYRIGHT AND PERMISSION NOTICE
+ 
+Copyright (c) 1996 - 2016, Daniel Stenberg, daniel@haxx.se, and
+many contributors, see the THANKS file.
+ 
+All rights reserved.
+ 
+Permission to use, copy, modify, and distribute this software for
+any purpose with or without fee is hereby granted, provided that
+the above copyright notice and this permission notice appear in
+all copies.
+ 
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT OF THIRD PARTY RIGHTS. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+Except as contained in this notice, the name of a copyright holder
+shall not be used in advertising or otherwise to promote the sale,
+use or other dealings in this Software without prior written
+authorization of the copyright holder.
+
+******************************************************************
+
+Software: PNPOLY algorithm:
+
+Copyright (c) 1970-2003, Wm. Randolph Franklin 
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+1. Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimers. 
+2. Redistributions in binary form must reproduce the above copyright
+notice in the documentation and/or other materials provided with the
+distribution. 
+3. The name of W. Randolph Franklin may not be used to endorse or
+promote products derived from this Software without specific prior
+written permission. 
+
+******************************************************************
+
+Softare: AHA-SOFT 16x16 Free Toolbar Icons
+
+License Agreement
+
+You are free:
+
+    * to Share — to copy, distribute and transmit the work
+    * to Remix — to adapt the work
+ 
+Under the following conditions:
+
+      Attribution — You must attribute the work in the manner specified
+      by the author or licensor (but not in any way that suggests that
+      they endorse you or your use of the work).
+
+      Attribute this work:
+      Information
+      What does "Attribute this work" mean?
+      The page you came from contained embedded licensing metadata,
+      including how the creator wishes to be attributed for re-use.
+      You can use the HTML here to cite the work. Doing so will also
+      include metadata on your page so that others can find the
+      original work as well.
+
+With the understanding that:
+
+    * Waiver — Any of the above conditions can be waived if you get
+      permission from the copyright holder.
+    * Other Rights — In no way are any of the following rights affected
+      by the license:
+          o Your fair dealing or fair use rights;
+          o Apart from the remix rights granted under this license, the
+            author's moral rights;
+          o Rights other persons may have either in the work itself or
+            in how the work is used, such as publicity or privacy rights.
+    * Notice — For any reuse or distribution, you must make clear to
+      others the license terms of this work. The best way to do this is
+      with a link to this web page.
+
+If you have any questions regarding copyright or licensing, including
+whether another license is required for icon use within products,
+please contact us here: http://www.aha-soft.com/support.htm
+
+You can find a full text of this license agreement here:
+http://creativecommons.org/licenses/by/3.0/us/
+
+If you have any questions regarding copyright or licensing,
+including whether another license is required for icon use
+within products, please contact us here: www.aha-soft.com/support.htm 
+
+Product page: http://www.small-icons.com/stock-icons/16x16-free-toolbar-icons.htm
+
+Icon Design Service
+
+We can design custom icons for you. Please find the basic information
+about ordering icons, pricing and the portfolio here:
+www.aha-soft.com/customdev/design.htm
+
+Notice
+Web-site small-icons.com belongs to Aha-Soft.
+
+Support page: http://www.aha-soft.com/support.htm
+
+Copyright © 2009 Aha-Soft. All rights reserved. 
+
+*******************************************************************************
+
+Software: Hypodermic C++ IOC Container
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Hypodermic Project
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+*******************************************************************************
+
+Software: SQLite Embedded SQL Database Engine
+
+SQLite Is Public Domain
+
+All of the code and documentation in SQLite has been dedicated to the public
+domain by the authors. All code authors, and representatives of the companies
+they work for, have signed affidavits dedicating their contributions to the
+public domain and originals of those signed affidavits are stored in a firesafe
+at the main offices of Hwaci. Anyone is free to copy, modify, publish, use,
+compile, sell, or distribute the original SQLite code, either in source code
+form or as a compiled binary, for any purpose, commercial or non-commercial,
+and by any means.
+
+The previous paragraph applies to the deliverable code and documentation in
+SQLite - those parts of the SQLite library that you actually bundle and ship
+with a larger application. Some scripts used as part of the build process
+(for example the "configure" scripts generated by autoconf) might fall under
+other open-source licenses. Nothing from these build scripts ever reaches the
+final deliverable SQLite library, however, and so the licenses associated with
+those scripts should not be a factor in assessing your rights to copy and use
+the SQLite library.
+
+All of the deliverable code in SQLite has been written from scratch. No code
+has been taken from other projects or from the open internet. Every line of
+code can be traced back to its original author, and all of those authors have
+public domain dedications on file. So the SQLite code base is clean and is
+uncontaminated with licensed code from other projects.
+
+Obtaining A License To Use SQLite
+
+Even though SQLite is in the public domain and does not require a license,
+some users want to obtain a license anyway. Some reasons for obtaining a
+license include:
+
+    - Your company desires warranty of title and indemnity against claims of
+      copyright infringement.
+    - You are using SQLite in a jurisdiction that does not recognize the
+      public domain.
+    - You are using SQLite in a jurisdiction that does not recognize the right
+      of an author to dedicate their work to the public domain.
+    - You want to hold a tangible legal document as evidence that you have the
+      legal right to use and distribute SQLite.
+    - Your legal department tells you that you have to purchase a license.
+
+If you feel like you really need to purchase a license for SQLite, Hwaci, the
+company that employs the architect and principal developers of SQLite, will
+sell you one. All proceeds from the sale of SQLite licenses are used to fund
+further improvements to SQLite.
+
+Contributed Code
+
+In order to keep SQLite completely free and unencumbered by copyright, all new
+contributors to the SQLite code base are asked to dedicate their contributions
+to the public domain. If you want to send a patch or enhancement for possible
+inclusion in the SQLite source tree, please accompany the patch with the
+following statement:
+
+    The author or authors of this code dedicate any and all copyright interest
+    in this code to the public domain. We make this dedication for the benefit
+    of the public at large and to the detriment of our heirs and successors. We
+    intend this dedication to be an overt act of relinquishment in perpetuity
+    of all present and future rights to this code under copyright law. 
+
+We are not able to accept patches or changes to SQLite that are not accompanied
+by a statement such as the above. In addition, if you make changes or
+enhancements as an employee, then a simple statement such as the above is
+insufficient. You must also send by surface mail a copyright release signed by
+a company officer. A signed original of the copyright release should be mailed
+to:
+
+    Hwaci
+    6200 Maple Cove Lane
+    Charlotte, NC 28269
+    USA 
+
+A template copyright release is available in PDF or HTML. You can use this
+release to make future changes. 
+
+*******************************************************************************
+
+Software: CrashRpt
+
+Copyright (c) 2003, The CrashRpt Project Authors.
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, 
+are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice, this 
+      list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above copyright notice, 
+      this list of conditions and the following disclaimer in the documentation 
+      and/or other materials provided with the distribution.
+
+    * Neither the name of the author nor the names of its contributors 
+      may be used to endorse or promote products derived from this software without 
+      specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY 
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, 
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED 
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, 
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT 
+OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

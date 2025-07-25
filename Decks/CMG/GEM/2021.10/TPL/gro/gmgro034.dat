@@ -1,0 +1,245 @@
+   ******************************************************************************
+   ** gmgro034.dat:  Separate Reservoirs Connected via DFNs                    **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   gmgro034.dat                                                             **
+   **                                                                                  **
+   ** MODEL:  21x1x15       Reservoirs Communicating via DFNs                          **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a vertical cross-section problem consisting of two disconnected          **
+   ** reservoirs, communicating only through two DFN systems in nulled grid blocks.    **
+   **                                                                                  **
+   ** Illustate use of *CTYPE-DF for DFN that uses a different compaction table        **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+   *RESULTS *SIMULATOR *GEM
+
+   *TITLE1    'Testing of Dicrete Fracture Network'
+   *TITLE2    'Drawdown constraints'
+   *TITLE3    'Vertical Cross-Section'
+
+   *INUNIT    *FIELD
+
+   *WPRN  *WELL 1
+   *WPRN  *GRID *TIME
+
+   *OUTSRF  *GRID *SO *SG *SW  *PRES *PERM *POROS
+   *OUTSRF *SPECIAL *PRES  4 1 7 *DS 1
+                    *PRES  4 1 7
+                    *PRES 18 1 8 *DS 1
+                    *PRES 18 1 9
+                    *PERMI  4 1 7
+                    *PERMI  4 1 7 *DS 1
+                    *PERMI 18 1 8 *DS 1
+
+
+   *WSRF  *WELL 1
+
+
+   **************************************************************************
+   ** Reservoir description Section
+   **************************************************************************
+
+   *GRID *CART    21    1   15   ** This is an x-z cross sectional problem
+
+   *KDIR *DOWN
+
+   *DI *CON  90.0
+   *DJ *CON  2400.0
+   *DK *CON  24.0
+
+
+   *PAYDEPTH *KVAR  9000 9024 9048 9072 9096 9120 9144 9168 9192 9216 9240 9264 9288 9312 9336
+
+
+   *POR  *CON 0.12
+         *MOD 1:21 1:1 8 = 0
+
+   *PRPOR 3600.0                 ** Rock compressibility and
+   *CPOR  4.0E-6                 ** reference pressure
+
+   *PERMI *CON 600.0
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI * 0.10
+
+   ** Insert transmissibility barriers in the middle
+   *TRANSK  IJK 1:21  1   8   0
+
+
+      *CROCKTYPE 1
+         *CROCKTAB
+      **$     press  por_mult  hor_perm_mult  ver_perm_mult
+           500 0.9967
+          2000 0.9972
+          3500 0.9977
+          5000 0.9982
+          7500 0.9987
+          8000 0.9992
+          9500 0.9997
+         10000 1.0000
+
+      *CROCKTYPE 2
+        *CROCKTAB
+         ** press   por.mult  perm.mult (hor)
+
+          14.7     0.940441    0.95
+          100.0    0.943000    0.95
+          200.0    0.946000    0.95
+          500.0    0.955000    0.96
+          1000.    0.970000    0.97
+          3000.    1.030000    1.00
+          3500.    1.090000    1.50
+          3550     1.091       1.55
+          3600     1.092       1.65
+          3650     1.095       1.80
+          4000     1.096       1.90
+          5000.    1.150000    2.00
+          10000.   1.240000    2.10
+          20000.   1.540000    2.20
+
+   *CTYPE *CON 1
+
+   *BEGIN_DFN 'dfn001' *CMG  2 ** DFNs serve as communicators
+     *PERM-DF *ALL 1000 1000
+     *APER-DF *ALL 0.1 0.1
+     *CTYPE-DF *ALL 2 2
+     *VERTEX
+          315      0   9132
+          315   2400   9132
+          315   2400   9204
+          315      0   9204
+
+         1585      0   9132
+         1585   2400   9132
+         1585   2400   9204
+         1585      0   9204
+   *END_DFN
+
+   **************************************************************************
+   ** Component Properties Section
+   **************************************************************************
+
+   *MODEL *PR
+   *NC 6 6
+   *COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+   *TRES  160.0
+   *PHASEID *DEN
+   *HCFLAG       0         0         0         0         0         0
+   *PCRIT    45.44     41.94     29.73     20.69     13.61     11.02
+   *VCRIT 0.099800  0.200500  0.369800  0.629700    1.0423    1.3412
+   *TCRIT    190.6     369.8     507.4     617.7     705.6     766.7
+   *AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+   *MW       16.04     44.10     86.18    142.29    206.00    282.00
+   *BIN         0.
+              2*0.
+              3*0.
+              0.05     0.005      2*0.
+              0.05     0.005      3*0.
+   *RHOW    1571.10
+   *CW      3.3E-06
+   *REFPW   14.6960
+   *VISW    0.70
+
+
+   **************************************************************************
+   **Rock-fluid Property Section
+   **************************************************************************
+
+   *ROCKFLUID
+   *RPT
+
+   *KROIL *STONE1
+
+   *SWT
+   **   sw    krw    krow    pcow
+      0.22    0.0    1.0     7.0
+      0.30    0.07   0.4     4.0
+      0.40    0.15   0.125   3.0
+      0.50    0.24   0.0649  2.5
+      0.60    0.33   0.0048  2.0
+      0.80    0.65   0.0     1.0
+      0.90    0.83   0.0     0.5
+      1.00    1.0    0.0     0.0
+
+   *SLT
+   **   sl     krg    krog     pcog
+      0.22    1.0     0.0      3.9
+      0.30    0.8125  0.0      3.5
+      0.40    0.5     0.0      3.0
+      0.50    0.42    0.0      2.5
+      0.60    0.34    0.0      2.0
+      0.70    0.24    0.02     1.5
+      0.80    0.1     0.1      1.0
+      0.90    0.022   0.33     0.5
+      0.96    0.0     0.6      0.2
+      1.0     0.0     1.0      0.0
+
+
+   **************************************************************************
+   ** Initial Conditions Section
+   **************************************************************************
+
+   *INITIAL
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+   *REFPRES  3600.0
+   *REFDEPTH 9120.0
+   *DWOC     9370.0
+   *DGOC     9070.0
+   *ZOIL  0.50  0.03  0.07  0.20  0.15  0.05
+   *ZGAS  0.50  0.03  0.07  0.20  0.15  0.05
+
+   **************************************************************************
+   ** Numerical Control Section
+   **************************************************************************
+
+   *NUMERICAL
+   *ADTSC *ALLOW *CONVERGE_MAXRES
+   *ADTSC *ALLOW *DTMAX
+   *CONVERGE *MAXRES 1.E-05
+   *DTMAX 100.
+
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+
+   *RUN
+   *DATE 1994 01 01
+   *DTWELL   0.025
+
+   *WELL 1 'Producer 1'
+   *WELL 2 'Injector 1'
+
+   *PRODUCER 1                 ** Main producer
+   *OPERATE *MIN *BHP 3600.00
+
+   *INJECTOR 2                 ** Main water injector
+   *INCOMP *WATER
+   *OPERATE *MAX *STW 5000.00
+
+
+   *GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+   *PERF *GEO 1
+    11  1  6    1.0
+    11  1  5    1.0
+
+   *PERF *GEO 2
+    11 1 11     2.0
+    11 1 12     1.0
+    11 1 13     1.0
+
+
+   *TIME 1000.0
+   *TARGET  *DWA  'Injector 1'     ** Switch to average drawdown
+           50.0
+
+
+   *TIME 5000.0
+   *STOP

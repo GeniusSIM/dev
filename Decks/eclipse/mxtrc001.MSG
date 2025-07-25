@@ -1,0 +1,100 @@
+<eclipse>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 10208
+</message>
+<message source="eclrun" date="" time="0">
+Simulation has finished.
+</message>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 10208
+</message>
+<message source="eclrun" date="" time="0">
+Simulation has finished.
+</message>
+<message source="eclrun" date="" time="0">
+Executing ECLIPSE on pc system with x86_64 architecture named DESKTOP-02LNK6S
+</message>
+<message source="eclrun" date="" time="0">
+Process ID is 10208
+</message>
+<warning date="1/1/0" time="0.00000000000000">
+ SPURIOUS DATA BEFORE RESULTS  KEYWORD                                   
+    *************************************************************        
+    ** mxtrc001.dat:    Tracking injection fluid by a tracer             
+    *************************************************************        
+    *************************************************************        
+    **                                                                   
+    ** FILE:                 MXTRC001.DAT                                
+    **                                                                   
+    ** MODEL:  201x1x1 Grid                                              
+    *************************************************************        
+</warning>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD RESULTS  MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<warning date="1/1/0" time="0.00000000000000">
+ SPURIOUS DATA BEFORE END      KEYWORD                                   
+    *************************************************************        
+    ** I/O Control Section                                               
+    *************************************************************        
+    *TITLE1                                                              
+    'IMEX Tracer Template #001'                                          
+    *TITLE2                                                              
+    'Minimal Required Data Input for Tracer'                             
+    *TITLE3                                                              
+ *STOP                                                                   
+</warning>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+ Stop limit reached on error      outputs
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ THE KEYWORD END      MAY NOT BE SPECIFIED BEFORE                        
+ THE RUNSPEC RECORD HAS BEEN READ                                        
+</error>
+<error date="1/1/0" time="0.00000000000000">
+ RUN STOPPED BECAUSE NUMBER OF   ERRORS                                  
+ EXCEEDS MAXIMUM PERMITTED VALUE (    10).                               
+ SEE MESSAGES KEYWORD                                                    
+</error>
+</eclipse>

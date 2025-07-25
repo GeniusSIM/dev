@@ -1,0 +1,54 @@
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .05
+
+   well 1 'INJECTOR'
+   injector 'INJECTOR'
+   incomp gas 0 0 0 .79 .21  ** air injection
+   tinjw 70
+   pinjw 3000
+   operate stg .554
+   perf 'INJECTOR' ** i  j  k  wi(gas)
+                      1  1 12   5.54
+
+   well 2 'PRODUCER'
+   producer 'PRODUCER'
+   operate bhp 2014.7
+   monitor temp 600 stop
+   geometry k 1 1 1 0  ** Linear pressure drop at tube end
+   perf tube-end 'PRODUCER'  ** i  j  k
+                  1  1  1   1.0
+
+   heatr ijk 1 1 12  200      ** Use external heaters to raise the temperature
+
+time .25
+         outsrf grid none
+time .5
+         heatr con 0      ** Shut off external heaters
+time 5
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 10
+         outsrf grid none
+time 15
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 20
+         outsrf grid none
+time 25
+time 30
+         outsrf grid pres sw so sg temp y x w solconc obhloss
+                     masdenw masdeno  masdeng pcow pcog visw viso visg
+                     krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+                     cmpviso cmpvisg cchloss
+time 40
+stop
+

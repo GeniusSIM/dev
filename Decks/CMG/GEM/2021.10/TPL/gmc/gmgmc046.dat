@@ -1,0 +1,257 @@
+RESULTS SIMULATOR GEM
+
+*****************************************************************************
+** Template (gmgmc046.dat):  CARTESIAN GRID DEFORMATION                    **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  GMGMC046.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+**         ELASTIC MODEL                                  11X11X5 CARTESIAN GRID    **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL-THERMAL OPTION IN GEM              **
+**                                                                                  **
+**   The purpose of this problem is:                                                **
+**   To show the effect of pressure boundary on the surface between geomechanics    **
+**   domain and reservoir region in which there is no geomechanics grid.            **
+**   Keyword BCDOMAIN is used to assign the pressure boundary                       **
+**                                                                                  **
+**   This model will not run in iso-thermal mode since the grid blocks in the       **
+**   geomechanics domain will become null.                                          **
+**                                                                                  **    
+**   p/T data written by prior simulation run is used for geomech calculations.     **
+**   Keyword *SEEKPARENT *OFF is used to disable, seeking of parent files.          **
+**                                                                                  ** 
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*FILENAMES *INDEX-IN 'gmgmc044.irf'
+
+*TITLE1 'GEM Geomechanics Template #46'
+*TITLE2 'Use GEOPOSTPRO for one-way Geomech'
+
+*INUNIT  *FIELD
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*WPRN *GRID 1 
+*OUTPRN *GRID *VPOROSGEO *VDISPL *PRES *TEMP
+
+*OUTSRF *GRID *VPOROSGEO *PRES *YOUNG *POISSON *VDISPL 
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *TEMP
+              *YLDSTATE
+              
+*OUTSRF *WELL    *PRES      6,6,1
+                 *STRESEFF  6,6,1
+                 *STRNEPL   6,6,1
+                 *VPOROSGEO 6,6,1
+                 
+*SEEKPARENT *OFF ** Do not look for p/T data in parent sr2 files. 
+                 ** Use only the specified sr2 input file set.
+
+*WRST 0
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 11 11 5
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DTOP  121*5000 
+
+*POR  *CON 0.0
+   *MOD   4:8  4:8   1:3  = 1
+
+*PERMI *CON 1e-6
+   *MOD   4:9  4:9   1:3  = 1500
+*PERMJ *EQUALSI * 1.
+*PERMK *EQUALSI * 1.
+
+*HEAT-LOSS *BOTTOM-TOP-BOUNDARY
+*HLPROP 165.0 0.25 2.0
+
+*CROCKTYPE 1
+  **ROCK HEAT CAPACITY [BTU/(LB F)]
+  *CP-ROCK 0.25
+  **THERMAL CONDUCTIVITY OF ROCK AND FLUIDS [BTU/(HR LB F)]
+  *THCONR0 2.0
+  *CCPOR  1.8570E-6
+  *CPRPOR 3000
+
+*END-GRID
+
+*CTPOR 5.33E-06
+*TRPOR 60.
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL   *PR
+*NC    3    3
+*TRES      150.
+*COMPNAME
+           'N2 toC2'      'C3 toC6'      'C7+'
+*SG         3.7928828E-01  6.0907296E-01  8.7840000E-01
+*TB        -1.5268795E+02  8.7777971E+01  6.0313700E+02
+*PCRIT      4.6869005E+01  4.3304910E+01  2.3034095E+01
+*VCRIT      1.1164927E-01  2.7365675E-01  8.7440000E-01
+*TCRIT      2.4273732E+02  4.4311506E+02  7.8153500E+02
+*AC         5.0405471E-02  2.1230953E-01  6.5669700E-01
+*MW         2.3001315E+01  6.4722032E+01  2.0121879E+02
+*HCFLAG     0              0              0
+*BIN
+            1.3257354E-02
+            6.6914825E-02  2.2103952E-02
+*VSHIFT     0.0000000E+00  0.0000000E+00 -2.2688164E-02
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1233366E-01  2.7555373E-01  8.7440000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      8.5230044E+01  2.0255970E+02  6.1070000E+02
+*ENTHCOEF
+           -3.2738190E+00  4.2790506E-01 -1.7061029E-04  3.2598996E-07
+           -1.2600434E-10  1.6784286E-14
+            1.1065928E+01  4.5341983E-02  2.8508839E-04  2.2258360E-08
+           -3.3969246E-11  5.6137115E-15
+            0.0000000E+00 -4.3022200E-02  4.1297400E-04 -6.2546600E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*VISW 1.0
+*CW 3.5E-06
+*REFPW 3000
+*DENWS 62.7
+*THERMAL *ON
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+*RPT
+
+*SWT   
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL
+*REFPRES  3035.
+*REFDEPTH 5000.
+*DWOC 6000.
+*ZOIL 0.2047  0.2494  0.5459
+*TEMPER *CON 150.
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*NORM *PRESS 145.
+*NORM *SATUR  0.15 
+*NORM *TEMP 1.0
+*MAXCHANGE *PRESS 200.
+*MAXCHANGE *SATUR  0.8
+*MAXCHANGE *TEMP 50.
+
+*NORTH 100
+*ITERMAX 200
+
+*DTMAX  20.
+*DTMIN 1.E-06
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH              ** Main keyword for using geomechanics module              
+*GEOM3D               ** Using 3D finite elements
+*GCOUPLING 0          ** One way coupling
+*GEOPOSTPRO 25  90    ** Post processing run for geomechanics
+*GEOPOSTINPUT *SR2    ** Use restart recors of prior run to get p/T
+*SOLVERG *AIMSOL
+*NITERGEO 300         ** Max number of iterations for convergence
+*ELASTMOD 5.5e4       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.3       ** Poisson's ratio
+*COHESION  1E10
+*THEXPCOEF  1e-6
+
+
+*STRESS3D 0 0 0 0 0 0   ** Initial stress
+
+*GEODOMAIN  *IJK         ** Geomechanics domain
+   1:11   1:3    1:5
+   1:11   9:11   1:5
+   1:3    1:11   1:5
+   9:11   1:11   1:5
+   1:11   1:11   4:5
+
+*BCDOMAIN  *IJK          ** Pressure boundary on geomechanics domain
+  3:9    3:9   1:5
+  
+*PRESCBC3D               ** Bottom of reservoir is fixed
+  IJK  1:11  1:11  5
+       5:8   01:03   0.0
+       
+** ===================RECURRENT DATA ================
+
+*RUN
+
+*DATE 1961 01 01
+
+   *DTWELL 0.001
+   *WELL 1 'prod1'  
+   *PRODUCER 'prod1'
+   *OPERATE *MAX *STO 15000
+   *OPERATE *MIN *BHP 100
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'prod1'
+       6  6  1:3  1.0
+   
+*DATE 1962 06 01
+*DATE 1963 01 01
+*DATE 1964 01 01
+*DATE 1965 01 01
+
+*STOP

@@ -1,0 +1,430 @@
+
+*****************************************************************************
+** Template (stflu004.dat): Dry Combustion Tube Experiment with 2 Waters   **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STFLU004.DAT                                                             **
+**                                                                                  **
+** MODEL:  7 COMPONENTS (2 WATER; 2 OILS; 2 GASES; 1 SOLID)  1X1X12 CARTESIAN GRID  **  
+**         FOUR REACTIONS (CRACKING; 2 OIL BURNING; COKE BURNING)   FIELD UNITS     **
+**         ORIGINAL AND COMBUSTION WATERS ARE TREATED SEPARATELY                    **
+**                                                                                  **
+** USAGE:  SIMULATION OF FORWARD DRY COMBUSTION IN A VERTICAL TUBE                  **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    Forward dry combustion in a 1-d vertical tube is simulated.                   **
+**  Air is injected at the top of the tube at a constant rate.  Fluids              **
+**  are produced at the bottom of the tube at constant back-pressure.               **
+**  This data set is based on Test Bed No. 1, but the water produced by             **
+**  combustion is modelled as a separate component.                                 **
+**                                                                                  **
+**  Special Features:                                                               **
+**                                                                                  **
+**  1)  Two water components:  insitu water and combustion water.                   **
+**                                                                                  **
+**  2)  Three hydrocarbon components (two liquid and one solid) and                 **
+**      two non-condensible gases (oxygen & inert gases)                            **
+**                                                                                  **
+**  3)  Four chemical reactions:                                                    **
+**      (a) cracking of heavy oil to light oil and coke,                            **
+**      (b) heavy oil burning,                                                      **
+**      (c) light oil burning,                                                      **
+**      (d) coke burning.                                                           **
+**      Burning produces water and CO+CO2 mixture (CO2/CO=1.2).                     **
+**                                                                                  **
+**  4)  High initial pressure (2014.7 psia).                                        **
+**                                                                                  **
+**  5)  Injection end heated externally from 100 to 700 F.                          **
+**                                                                                  **
+**  6)  Simulation stops when producing end reaches 600 F.                          **
+**                                                                                  **
+**  7)  Both liquid phases disappear in each grid block.                            **
+**                                                                                  **
+**  8)  Comprehensive simulation results file produced.                             **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 10'
+*TITLE2 'Dry Combustion Tube Experiment'
+*TITLE3 'Test Bed No.1 with Original and Combustion Water Separate'
+
+*INUNIT *FIELD *EXCEPT  1 1  ** hrs instead of days
+               *EXCEPT 11 1  ** ft3 instead of bbl
+
+*OUTPRN *GRID PRES SW SO SG TEMP *Y *X *W *SOLCONC *OBHLOSS *VISO cchloss
+*OUTPRN *WELL *ALL
+*WRST 300
+*WPRN *GRID 300
+*WPRN *ITER 300
+
+*WPRN SECTOR 1
+*WSRF SECTOR 1
+
+*OUTSRF WELL COMPONENT ALL MOLE MASS
+
+*OUTSRF *GRID *PRES *SW *SO *SG *TEMP *Y *X *W *SOLCONC *OBHLOSS
+            *MASDENW *MASDENO  *MASDENG *PCOW *PCOG *VISW *VISO *VISG
+            *KRW *KRO *KRG *KVALYW *KVALYX *CMPDENW *CMPDENO *CMPVISW
+            *CMPVISO *CMPVISG *CCHLOSS
+
+outsrf special blockvar temp 1,1,2
+               blockvar temp 1,1,6
+               blockvar temp 1,1,10
+               blockvar sw 1,1,6
+               blockvar solconc 1,1,6 'COKE'
+               blockvar y 1,1,6 'OXYGEN'
+               blockvar kro 1,1,6
+               avgvar temp             ** average T in tube
+               maxvar solconc 'COKE'   ** max coke conc in tube
+               matbal reaction 'COMB WAT'
+               matbal reaction 'HEVY OIL'
+               matbal reaction energy  ** net reaction oxygen
+               cchloss                 ** net cum heat from heaters
+               tfront 400              ** 400 deg front position
+               tfront 800              ** 800 deg front position
+               tfront 800 backward     ** 800 deg backward front position
+               volfrac 'PRODUCER' 'ORIG WAT' water
+               volfrac 'PRODUCER' 'COMB WAT' water
+               volfrac 'PRODUCER' 'HEVY OIL' oil
+               volfrac 'PRODUCER' 'LITE OIL' oil
+               volfrac 'PRODUCER' 'INRT GAS' gas
+               volfrac 'PRODUCER' 'OXYGEN' gas
+               massfrac 'PRODUCER' 'ORIG WAT' water
+               massfrac 'PRODUCER' 'COMB WAT' water
+               massfrac 'PRODUCER' 'HEVY OIL' oil
+               massfrac 'PRODUCER' 'LITE OIL' oil
+               massfrac 'PRODUCER' 'INRT GAS' gas
+               massfrac 'PRODUCER' 'OXYGEN' gas
+               molefrac 'PRODUCER' 'ORIG WAT' water
+               molefrac 'PRODUCER' 'COMB WAT' water
+               molefrac 'PRODUCER' 'HEVY OIL' oil
+               molefrac 'PRODUCER' 'LITE OIL' oil
+               molefrac 'PRODUCER' 'INRT GAS' gas
+               molefrac 'PRODUCER' 'OXYGEN' gas
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 1 1 12  ** 12 blocks in the K direction (normal vertical)
+
+**  Tube I.D. = 2.17 inches.  Cross-sectional area is pi*(d/2)**2
+**  = 0.02568 ft2 = L*L.  so equivalent block side is L = 0.1602 ft.
+**  Total tube length is 2.646 ft;  block = 2.646/12 = .22048 ft
+*DI *CON 0.1602
+*DJ *CON 0.1602
+*DK *CON 0.22048
+
+*POR *CON 0.4142
+
+*PERMI *CON 12700
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+
+*ROCKCP 35.02
+*THCONR 1
+*THCONW 0.36
+*THCONO 0.077
+*THCONG 0.0833
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 7 6 4 2   ** Number of noncondensible gases is numy-numx = 2
+                 ** Number of solid components is ncomp-numy = 1
+                 ** Number of water components is numw = 2
+
+*COMPNAME 'ORIG WAT' 'COMB WAT' 'HEVY OIL' 'LITE OIL' 'INRT GAS'  'OXYGEN' 'COKE'
+**         --------   -------    --------   --------   --------   -------- ------
+*cmm          18         18        675       156.7       40.8       32       13
+*PCRIT       3155       3155       120       305.7       500        730
+*TCRIT       705.7      705.7     1138       651.7      -232       -181
+
+*AVG       8.822e-6   8.822e-6   3.926e-6   2.166e-6   2.1267e-4  2.196e-4
+*BVG         1.116      1.116     1.102      0.943      0.702      0.721
+*AVISC      .00752     .00752    4.02e-4    4.02e-4
+*BVISC     2492.75    2492.75     6121.6     6121.6
+
+*CPG1         0          0       -8.14       -1.89      7.44       6.713
+*CPG2         0          0       0.549      0.1275     -0.0018    -4.883e-7
+*CPG3         0          0       -1.68e-4   -3.9e-5     1.975e-6   1.287e-6
+*CPG4         0          0       1.98e-8     4.6e-9    -4.78e-10  -4.36e-10
+*HVR          0          0        12198       1917
+*EV           0          0        0.38        0.38
+
+*MOLDEN     3.466      3.466      0.0914     0.3195    ** LBMOLE/FT3
+*CP          3e-6       3e-6       5e-6       5e-6
+*CT1        1.2e-4     1.2e-4    1.496e-4   2.839e-4
+**                                61.69       50.07       LB/FT3
+**                                11.6        44.8        API
+
+*SOLID_DEN 'COKE' 57.2 0 0
+*SOLID_CP  'COKE' 4.06 0
+
+
+** Reactions
+** ---------
+
+** Note:  Inert gas is 80% CO2 and 20% CO, so Mw = 40.8
+
+** Cracking:  heavy oil -> light oil + coke (50/50 by mass)
+
+*STOREAC      0          0          1          0          0          0        0
+*stoprod      0          0          0        2.154        0          0      25.96
+*FREQFAC 4.167e5
+*eact 27000
+*renth 40000
+
+
+** Light oil burning:  light oil + o2 -> water + inert gas + energy
+
+*STOREAC      0          0          0          1          0        14.06      0
+*STOPROD      0        6.58         0          0        11.96        0        0
+*FREQFAC 3.020e10
+*eact 59450
+*renth 2.9075e6
+
+
+** Heavy oil burning:  heavy oil + o2 -> water + inert gas + energy
+
+*STOREAC      0          0          1          0          0        60.55      0
+*STOPROD      0        28.34        0          0        51.53        0        0
+*FREQFAC 3.020E10
+*EACT 59450
+*RENTH 1.2525E7
+
+
+** Coke oil burning:  coke oil + o2 -> water + inert gas + energy
+
+*STOREAC      0          0          0          0          0        1.18       1
+*STOPROD      0        0.55         0          0          1          0        0
+*FREQFAC 416.7
+*eact 25200
+*renth 2.25e5
+
+
+**   K Value Tables
+**      for pressures 1915 to 2115 psi by 100 psi intervals
+**      for temperatures 77 to 1777 F by 50 deg intervals
+*KVTABLIM 1915 2115 77 1777
+
+*KVTABLE 'HEVY OIL'
+** 1915 psi  2015 psi  2116 psi
+   2.51e-9   2.39e-9   2.39e-9   **    77 F
+   2.23e-8   2.12e-8   2.12e-8   **   127 F
+   1.54e-7   1.46e-7   1.46e-7   **   177 F
+   8.50e-7   8.08e-7   8.08e-7   **   227 F
+   3.91e-6   3.72e-6   3.72e-6   **   277 F
+   2.63e-5   2.50e-5   2.50e-5   **   327 F
+   8.42e-5   8.00e-5   8.00e-5   **   377 F
+   2.42e-4   2.30e-4   2.30e-4   **   427 F
+   4.10e-4   3.90e-4   3.90e-4   **   477 F
+   5.89e-4   5.60e-4   5.60e-4   **   527 F
+   8.84e-4   8.40e-4   8.40e-4   **   577 F
+   0.00166   0.00158   0.00158   **   627 F
+   0.00284   0.0027    0.0027    **   677 F
+   0.00389   0.0037    0.0037    **   727 F
+   0.00558   0.0053    0.0053    **   777 F
+   0.00768   0.0073    0.0073    **   827 F
+   0.0105    0.01      0.01      **   877 F
+   0.0179    0.017     0.017     **   927 F
+   0.0179    0.017     0.017     **   977 F
+   0.0179    0.017     0.017     **  1027 F
+   0.0179    0.017     0.017     **  1077 F
+   0.0179    0.017     0.017     **  1127 F
+   0.0179    0.017     0.017     **  1177 F
+   0.0179    0.017     0.017     **  1227 F
+   0.0179    0.017     0.017     **  1277 F
+   0.0179    0.017     0.017     **  1327 F
+   0.0179    0.017     0.017     **  1377 F
+   0.0179    0.017     0.017     **  1427 F
+   0.0179    0.017     0.017     **  1477 F
+   0.0179    0.017     0.017     **  1527 F
+   0.0179    0.017     0.017     **  1577 F
+   0.0179    0.017     0.017     **  1627 F
+   0.0179    0.017     0.017     **  1677 F
+   0.0179    0.017     0.017     **  1727 F
+   0.0179    0.017     0.017     **  1777 F
+
+*KVTABLE 'LITE OIL'
+** 1915 psi  2015 psi  2116 psi
+   1.54e-4   1.46e-4   1.46e-4   **    77 F
+   4.80e-4   4.56e-4   4.56e-4   **   127 F
+   0.00128   0.00122   0.00122   **   177 F
+   0.00304   0.00289   0.00289   **   227 F
+   0.00648   0.00616   0.00616   **   277 F
+   0.0126    0.012     0.012     **   327 F
+   0.0179    0.017     0.017     **   377 F
+   0.0231    0.022     0.022     **   427 F
+   0.0295    0.028     0.028     **   477 F
+   0.0347    0.033     0.033     **   527 F
+   0.04      0.038     0.038     **   577 F
+   0.0452    0.043     0.043     **   627 F
+   0.0505    0.048     0.048     **   677 F
+   0.0568    0.054     0.054     **   727 F
+   0.0631    0.06      0.06      **   777 F
+   0.0694    0.066     0.066     **   827 F
+   0.0768    0.073     0.073     **   877 F
+   0.0884    0.084     0.084     **   927 F
+   0.0884    0.084     0.084     **   977 F
+   0.0884    0.084     0.084     **  1027 F
+   0.0884    0.084     0.084     **  1077 F
+   0.0884    0.084     0.084     **  1127 F
+   0.0884    0.084     0.084     **  1177 F
+   0.0884    0.084     0.084     **  1227 F
+   0.0884    0.084     0.084     **  1277 F
+   0.0884    0.084     0.084     **  1327 F
+   0.0884    0.084     0.084     **  1377 F
+   0.0884    0.084     0.084     **  1427 F
+   0.0884    0.084     0.084     **  1477 F
+   0.0884    0.084     0.084     **  1527 F
+   0.0884    0.084     0.084     **  1577 F
+   0.0884    0.084     0.084     **  1627 F
+   0.0884    0.084     0.084     **  1677 F
+   0.0884    0.084     0.084     **  1727 F
+   0.0884    0.084     0.084     **  1777 F
+
+**  Reference conditions
+*PRSR 14.7
+*TEMR 77
+*PSURF 14.65
+*TSURF 62
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+    0.1        0.0        0.9
+    0.25       0.004      0.6
+    0.44       0.024      0.28
+    0.56       0.072      0.144
+    0.672      0.168      0.048
+    0.752      0.256      0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    -------
+    0.21       0.784      0.0
+    0.32       0.448      0.01
+    0.4        0.288      0.024
+    0.472      0.184      0.052
+    0.58       0.086      0.152
+    0.68       0.024      0.272
+    0.832      0.006      0.448
+    0.872      0.0        0.9
+
+**  Override critical saturations on table
+*SWR 0.25
+*SORW 0.25
+*SGR 0.12
+*SORG 0.2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*PRES *CON 2014.7     ** high initial pressure
+
+*SW *CON 0.178
+*SO *CON 0.654        ** initial gas saturation is 0.168
+
+*TEMP *CON 100.
+
+** Gas in tube is air (79% N2 & 21% O2)
+*MFRAC_GAS 'INRT GAS' *CON 0.79
+*MFRAC_GAS 'OXYGEN'   *CON 0.21
+
+*MFRAC_OIL 'HEVY OIL' *CON 0.256
+*MFRAC_OIL 'LITE OIL' *CON 0.744
+
+*mfrac_wat 'ORIG WAT' *con 1
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL .05
+
+
+   *WELL 1 'INJECTOR'
+   *INJECTOR 'INJECTOR'
+   *INCOMP GAS 0 0 0 0 .79 .21  ** AIR INJECTION
+   *TINJW 70
+   *PINJW 10000
+   *OPERATE STG .554
+   *PERF 'INJECTOR'  ** i  j  k  wi(gas)
+              1  1 12   5.54
+
+   *WELL 2 'PRODUCER'
+   *PRODUCER 'PRODUCER'
+   *OPERATE *BHP 2014.7
+   *MONITOR *TEMP 600 *STOP
+   *GEOMETRY K 1 1 1 0  ** Linear pressure drop at tube end
+   *PERF TUBE-END 'PRODUCER'   ** i  j  k
+                  1  1  1    1.0
+
+   *HEATR *IJK 1 1 12  200      ** Use external heaters to raise the temperature
+
+*TIME .25
+         *OUTSRF *GRID *NONE
+*TIME .5
+         *HEATR *CON 0      ** sHUT OFF EXTERNAL HEATERS
+*TIME 5
+         OUTSRF GRID *PRES *SW *SO *SG *TEMP *Y *X *W *SOLCONC *OBHLOSS
+                     *MASDENW *MASDENO  *MASDENG *PCOW *PCOG *VISW *VISO *VISG
+                     *KRW *KRO *KRG *KVALYW *KVALYX *CMPDENW *CMPDENO *CMPVISW
+                     *CMPVISO *CMPVISG *CCHLOSS
+*TIME 10
+         *OUTSRF *GRID *NONE
+*TIME 15
+         *OUTSRF *GRID *PRES *SW *SO *SG *TEMP *Y *X *W *SOLCONC *OBHLOSS
+                     *MASDENW *MASDENO  *MASDENG *PCOW *PCOG *VISW *VISO *VISG
+                     *KRW *KRO *KRG *KVALYW *KVALYX *CMPDENW *CMPDENO *CMPVISW
+                     *CMPVISO *CMPVISG *CCHLOSS
+*TIME 20
+         *OUTSRF *GRID *NONE
+*TIME 25
+*TIME 30
+         *OUTSRF *GRID *PRES *SW *SO *SG *TEMP *Y *X *W *SOLCONC *OBHLOSS
+                     *MASDENW *MASDENO  *MASDENG *PCOW *PCOG *VISW *VISO *VISG
+                     *KRW *KRO *KRG *KVALYW *KVALYX *CMPDENW *CMPDENO *CMPVISW
+                     *CMPVISO *CMPVISG *CCHLOSS
+*TIME 40
+*STOP

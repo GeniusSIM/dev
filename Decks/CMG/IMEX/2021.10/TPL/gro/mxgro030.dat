@@ -1,0 +1,178 @@
+   ******************************************************************************
+   ** mxgro030.dat:            Discrete Fracture Network                       **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXGRO030.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  40x24x1                Discrete Fracture Network      UPWARD LAYERING    **
+   **         OIL-WATER TWO PHASES   LAYER-CTRL                     FIELD UNIT         **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** A Cartesian grid 40x24x1, oil-water two phase model. A pair of water injectors   **
+   ** injecting fluid into the complex DFN system with perforations open only in DFN.  **
+   ** The DFN information (appears like a CMG logo) is input directly using the        **
+   ** standard FAB format.                                                             **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section
+   ********************************************************************************
+   *TITLE1 'Discrete Fracture Network'
+   *TITLE2 'IMEX DFN Template #1'
+
+   *INUNIT *FIELD
+   *WSRF   *GRID   10
+   *WSRF   *WELL   10
+   *OUTSRF *GRID   *SO *SW *PRES
+  
+
+   ********************************************************************************
+   ** Reservoir Description Section
+   ********************************************************************************
+
+   *GRID *CART  40  24  1         ** Regular grid, areal problem with 
+                                  ** 20 blocks in the I direction and j
+                                  ** direction.  Only 1 block thick.
+   *CONVERT-TO-CORNER-POINT 
+
+   *DI *CON 25.0                  ** Dimensions are constant in I and J
+   *DJ *CON 25.0                  ** directions.  The reservoir is 100.00
+   *DK *CON 100.0                 ** feet thick.
+
+   *PAYDEPTH  960*50 
+   
+   *POR *CON   0.1392
+
+   *PRPOR  15.0              ** Compressibilities for the rock and 
+   *CPOR   3.0E-6            ** the fracture are the same and 
+ 
+   *PERMI *CON  0.1         ** Permeability for the rock.
+   *PERMJ *CON  0.1
+   *PERMK *CON  0.1
+ 
+   REFINE 1:40 1:20 1:1 INTO 2 2 1
+
+   *BEGIN_DFN 'cmg_logo' FAB
+      *INCLUDE 'mxgro030.fab'
+   *END_DFN
+
+
+                                                  
+   ********************************************************************************
+   ** Component Properties section
+   ********************************************************************************
+   *MODEL *OILWATER                ** Two phase, water-oil problem.
+
+   *PVT
+   ** p    rs      bo     eg    vo     vg
+    900.0  0.0   1.32300  847.460 0.55   0.015
+
+   *DENSITY *OIL   58.0
+   *DENSITY *GAS    1.0
+   *DENSITY *WATER 62.4
+ 
+   *CO       1.3130E-5
+   *CVO      0.0
+   *BWI      1.0
+   *CW       3.50E-6                                           
+   *REFPW   15.0
+   *VWI      0.8
+   *CVW      0.0      
+                                                          
+
+   ********************************************************************************
+   ** Rock-fluid Properties Section
+   ********************************************************************************
+   *ROCKFLUID
+   *RPT  1
+   *SWT
+   **  Sw    krw       krow       Pcow
+     0.08    0.0       0.589      13.360
+     0.10    0.004172  0.477      12.395
+     0.20    0.0264    0.141       8.036
+     0.30    0.0492    0.0277      4.496
+     0.40    0.0723    0.002314    1.859
+     0.50    0.0957    1.0740E-5   0.274
+     0.549   0.1072    0.0         0.0
+     1.00    0.1072    0.0         0.0   
+
+
+   ********************************************************************************
+   ** Initial Condition Section
+   ********************************************************************************
+   *INITIAL
+
+   *USER_INPUT 
+   *PRES   *CON  1479.0
+   *SO     *CON  0.99
+   *PB     *CON  15.0   
+
+
+   ********************************************************************************
+   ** Numerical Methods Control Section
+   ********************************************************************************
+   *NUMERICAL
+   *AUTOTUNE
+
+
+   *TRACER
+   ********************************************************************************
+   ** Tracer Section                                                             **
+   ********************************************************************************
+   *TRCR-INJECTORS          ** Add tracers to all injectors
+   *TRCR-FIMPL ON
+
+
+   ********************************************************************************
+   ** Well Data Section
+   ********************************************************************************
+
+   *RUN 
+   *DATE 1994 01 01                              
+
+   *WELL 1 'WINJ1'
+   *WELL 2 'WINJ2'
+   *WELL 3 'PROD'
+
+   *INJECTOR  1
+   *INCOMP *WATER
+   *OPERATE *MAX *STW    500.0
+   *OPERATE *MAX *BHP  50000.0
+
+   *INJECTOR  2
+   *INCOMP *WATER
+   *OPERATE *MAX *STW    100.0
+   *OPERATE *MAX *BHP  50000.0
+
+   *PRODUCER 3
+   *OPERATE *MAX *STL    500.0
+   *OPERATE *MIN *BHP     15.0
+ 
+   *GEOMETRY *I  0.25    0.34    1.0    0.0 
+   *PERF  GEOA 1
+   ** if     jf     kf     ff
+      1:40   14      1  / 1:2 1 1    1.0
+   
+
+   *GEOMETRY *j  0.25    0.34    1.0    0.0 
+   *PERF  GEOA 2
+   ** if     jf     kf     ff
+      20     2:6    1    / 1 1:2 1  1.0
+
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF  GEOA 3
+   ** if     jf     kf     ff
+      40     24     1      1.0
+
+   *LAYER-CTRL NDF 1 *CLOSE
+   *LAYER-CTRL NDF 2 *CLOSE
+
+   *TIME 1200.0
+   *STOP

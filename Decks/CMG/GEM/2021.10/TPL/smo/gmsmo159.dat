@@ -1,0 +1,352 @@
+
+**--------------------------------------------------------------------**
+** GMSMO159.DAT:  Surface Complexation Modeling of a Slim Tube        **
+**                Experiment                                          **
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO159.DAT                                                **
+**                                                                    **
+** MODEL: VARI 300x1x1 GRID     SLIM-TUBE WATER     2 COMPONENTS      **
+**        SURFACE COMPLEXATION  INJECTION           SI UNITS          **
+**        WITH ZETA POTENTIAL   WITH IONS                             **
+**        DEPENDENT KR'S                                              **
+**                                                                    **
+**--------------------------------------------------------------------**
+**  This data set models surface complexation reactions in a slim     **
+**  tube experiment.                                                  **
+**  After:  SPE-193815-MS                                             **
+**          ( Adedapo, Sarma, and Nghiem, 2019 SPE Reservoir          **
+**            Simulation Conference, Galveston, TX, 10–11 April )     **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'Surface Complexation'
+*TITLE2 'Data Set 5, Slim Tube'
+*TITLE3 'After SPE-193815'
+
+*INUNIT SI
+
+WSRF WELL 1
+WSRF GRID 1
+OUTSRF GRID DENG DENO DENW DPORMNR MINERAL 'Calcite' MOLALITY 'Ca++' MOLALITY 'Cl-' MOLALITY 'HCO3-' MOLALITY 'Mg++' MOLALITY 'H+'
+            MOLALITY 'Na+' MOLALITY 'SO4--' PH PRES SATP SG SIG SO SW TEMP VISG MOLALITY 'MgSO4' W 'SO4--' ADS 'SO4--' EQVSCX '>CO3Ca+'
+            VISW KRINTER MOLALITY 'NaSO4-' MOLALITY 'MgHCO3+' LSATINDM 'Calcite' W 'Mg++' W 'Ca++' EQVSCX '>CO3Mg+' *RFO *RFG *RFW
+            MOLALITY 'CaCO3' MOLALITY 'MgCO3'SALIN MOLALITY 'CaHCO3+' MOLALITY 'NaHCO3' VISO EQVSCX '>CO3H' *SCHARGEDEN *SURFPOT
+            *EQVSCX '>CO3-' *EQVSCX '>CaOH' *MINERAL 'Dolomite' EQVSCX '>CaSO4-' EQVSCX '>CaOH2+' COULOMBIC
+DIM *MDGRID 60
+DIM *MDEXTR 100
+OUTSRF RES NONE
+OUTSRF WELL PSPLIT
+OUTSRF WELL MOLALITYWR 'Mg++'   'Producer'   MOLALITYWR 'CO3--'   'Injector'   MOLALITYWR 'CO3--'   'Producer'
+            MOLALITYWR 'H+'     'Producer'   MOLALITYWR 'Ca++'    'Producer'
+            MOLALITYWR 'Na+'    'Producer'   MOLALITYWR 'SO4--'   'Producer'   MOLALITYWR 'Cl-'     'Producer'   MOLALITYWR 'HCO3-'   'Producer'
+            MOLALITYWR 'CaSO4'  'Producer'   MOLALITYWR 'CaCO3'   'Producer'   MOLALITYWR 'MgCO3'   'Producer'   MOLALITYWR 'MgSO4'   'Producer'
+            MOLALITYWR 'NaSO4-' 'Producer'   MOLALITYWR 'MgHCO3+' 'Producer'   MOLALITYWR 'CaHCO3+' 'Producer'   MOLALITYWR 'NaHCO3'  'Producer'
+            MOLALITYWR 'HCO3-'  'Injector'   MOLALITYWR 'CaSO4'   'Injector'   MOLALITYWR 'CaCO3'   'Injector'   MOLALITYWR 'MgCO3'   'Injector'
+            MOLALITYWR 'MgSO4'  'Injector'   MOLALITYWR 'NaSO4-'  'Injector'   MOLALITYWR 'MgHCO3+' 'Injector'   MOLALITYWR 'CaHCO3+' 'Injector'
+            MOLALITYWR 'NaHCO3' 'Injector'   MOLALITYWR 'Mg++'    'Injector'   MOLALITYWR 'Ca++'    'Injector'   MOLALITYWR 'Na+'     'Injector'
+            MOLALITYWR 'SO4--'  'Injector'   MOLALITYWR 'Cl-'     'Injector'   MOLALITYWR 'HCO3-'   'Injector'   MOLALITYWR 'CaCl+'   'Injector'
+            MOLALITYWR 'MgCl+'  'Injector'   MOLALITYWR 'CaCl+'   'Producer'   MOLALITYWR 'MgCl+'   'Producer'   MOLALITYWR 'SCN-'    'Producer'
+            MOLALITYWR 'SCN-'   'Injector'   MOLALITYWR 'NaCO3-'  'Injector'   MOLALITYWR 'NaCO3-'  'Producer'   MOLALITYWR 'K+'      'Injector'
+            MOLALITYWR 'K+'     'Producer'
+            PH 1 1 1  DPORMNR 1 1 1  MINERAL 'Calcite' 1 1 1    MINERAL 'Dolomite' 1 1 1
+            VISWWR 'Injector'  DENWWR 'Injector'  SALINWWR 'Injector'   VISWWR 'Producer'   DENWWR 'Producer'    SALINWWR 'Producer'
+            KRINTER 100 1 1
+            EQVSCX '>CO3Ca+'  100 1 1  EQVSCX '>CO3Mg+'   100 1 1  EQVSCX '>CO3H'     100 1 1
+            EQVSCX '>CaSO4-'  100 1 1  EQVSCX '>CaOH2+'   100 1 1
+            EQVSCX '>CO3-'    100 1 1  EQVSCX '>CaOH'     100 1 1
+            SCHARGEDEN        100 1 1  SURFPOT            100 1 1  COULOMBIC 1 1 1  ZETAPOT 1 1 1
+*WPRN GRID 0
+*OUTPRN GRID NONE
+*OUTPRN *RES *ALL
+*OUTSRF *RES *ALL
+*OUTPRN WELL AQPHASEPROP  ** Print aqueous-stream component properties for the wells
+*WRST 0
+
+** ***************************************************************************
+** Definition of fundamental cartesian grid
+** ***************************************************************************
+*GRID *VARI 300 1 1
+*KDIR *DOWN
+*DI  *CON 0.000163667
+*DJ  *CON 0.0334993789752
+*DK  *CON 0.0334993789752
+*DTOP 300*304.8
+*POR   *CON 0.247
+*PERMI *CON 2.7
+*PERMJ *EQUALSI
+*PERMK  *EQUALSI
+*CPOR    1.E-08
+*PRPOR   101.5
+
+**-------------------------------------FLUID PROPERTY DATA--------------
+MODEL PR
+NC 2 2
+TRES 20
+COMPNAME
+'CO2'          'Oil'
+*SG         8.1800000E-01  9.0900000E-01
+*TB        -7.8450000E+01  4.5485000E+02
+*PCRIT      7.2800000E+01  9.8800000E+00
+*VCRIT      9.4000000E-02  1.4380000E+00
+*TCRIT      3.0420000E+02  8.8000000E+02
+*AC         2.2500000E-01  1.1026340E+00
+*MW         4.4010000E+01  4.0400000E+02
+*HCFLAG     0              0
+*BIN
+1.1500000E-01
+*VSHIFT     0.0000000E+00  2.2629039E-01
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.3030000E+00  7.3282304E-03  1.6319004E+00
+4.1384000E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      7.8000000E+01  9.3444480E+02
+
+*SOLUBILITY
+*HENRY-CORR-CO2
+*VINFINITY  3.6870544E-02  6.9810229E-01
+*YAQU-RATE-CUTOFF
+1.0E-4 100.0
+
+
+*AQUEOUS-DENSITY  *LINEAR
+*AQUEOUS-VISCOSITY  *KESTIN
+
+DER-CHEM-EQUIL NUMERICAL
+DER-REACT-RATE NUMERICAL
+ACTIVITY-MODEL B-DOT
+SALINITY-CALC ON
+RF_EXPONENT 3.0
+RFCALC POWER
+*NC-AQUEOUS 22
+*COMPNAME-AQUEOUS
+'H+' 'Ca++' 'SO4--' 'Mg++' 'Na+' 'Cl-' 'K+' 'SCN-' 'HCO3-' 'OH-' 'CaSO4' 'MgSO4' 'NaSO4-' 'CaCO3' 'MgHCO3+' 'MgCO3' 'CaHCO3+' 'NaHCO3' 'CaCl+' 'MgCl+' 'CO3--' 'NaCO3-'
+*MW-AQUEOUS
+1.0079 40.08 96.0576 24.305 22.9898 35.453 39.0983 58.078 61.0171 17.0073 136.138 120.363 119.047 100.089 85.3221 84.3142 101.097 84.0069 75.533 59.758 60.0092 82.9990
+
+*ION-SIZE-AQUEOUS
+9 6 4 8 4 3 3 3.5 4.5 3.5 4 4 4 4 4 4 5.2 4 4 4 4.5 4
+*CHARGE-AQUEOUS
+1 2 -2 2 1 -1 1 -1 -1 -1 0 0 -1 0 1 0 1 0 1 1 -2 -1
+NC-MINERAL 2
+COMPNAME-MINERAL
+'Calcite' 'Dolomite'
+MW-MINERAL
+100.089 184.403
+MASSDENSITY-MINERAL
+2709.95 2864.96
+
+*CRDAMP-ALL
+
+*REACTION-CHEM 'CO2' + 'H2O' =  'H+' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST -6.383
+*REACTION-CHEM   'H2O'  =  'H+'  + 'OH-'
+    *LOG-CHEM-EQUIL-CONST -14.165
+*REACTION-CHEM    'CaSO4' =  'Ca++' +  'SO4--'
+    *LOG-CHEM-EQUIL-CONST -2.145
+*REACTION-CHEM     'MgSO4' =  'Mg++' +  'SO4--'
+    *LOG-CHEM-EQUIL-CONST -2.246
+*REACTION-CHEM     'NaSO4-' =  'Na+' +  'SO4--'
+    *LOG-CHEM-EQUIL-CONST -0.946
+*REACTION-CHEM     'CaCO3' + 'H+' =  'Ca++' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST 7.197
+*REACTION-CHEM     'MgHCO3+' =  'HCO3-' +  'Mg++'
+    *LOG-CHEM-EQUIL-CONST -1.059
+*REACTION-CHEM     'MgCO3' + 'H+' =  'Mg++' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST 7.403
+*REACTION-CHEM     'CaHCO3+' =  'Ca++' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST -1.131
+*REACTION-CHEM     'NaHCO3' =  'Na+' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST -0.196
+*REACTION-CHEM     'CaCl+' =  'Ca++' +  'Cl-'
+    *LOG-CHEM-EQUIL-CONST 0.680
+*REACTION-CHEM     'MgCl+' =  'Mg++' +  'Cl-'
+    *LOG-CHEM-EQUIL-CONST 0.106
+*REACTION-CHEM     'H+' + 'CO3--' = 'HCO3-'
+    *LOG-CHEM-EQUIL-CONST 10.397
+*REACTION-CHEM     'NaCO3-' + 'H+' =  'Na+' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST 9.795
+
+*REACTION-RATE  'Calcite'+  'H+' =  'Ca++' +  'HCO3-'
+    *LOG-CHEM-EQUIL-CONST 1.903
+    *SPEC-REACT-SURFACE-AREA 5000
+    *ACTIVATION-ENERGY 14393
+    *LOG-TST-RATE-CONSTANT -5.81
+    *REF-TEMP-RATE-CONST 25
+
+*REACTION-RATE  'Dolomite'+ 2 'H+' =  'Ca++' + 2 'HCO3-' +  'Mg++'
+   *LOG-CHEM-EQUIL-CONST 2.655
+   *SPEC-REACT-SURFACE-AREA 100000
+   *ACTIVATION-ENERGY 103051
+   *LOG-TST-RATE-CONSTANT -14.50
+   *REF-TEMP-RATE-CONST 25
+
+*ACTIVCOEF-SOL *ON    ** Activity coefficient for soluble hydrocarbon
+*EQUIL-REACT-RATE ON
+*CHEM-EQUIL-SET ON
+
+**DIFFUSION COEFFICIENT IN cm2/s
+**'H+'   'Ca++'  'SO4--'   'Mg++'  'Na+'    'Cl-'    'K+'  'SCN-'
+*DIFFC-AQU 3*1E-08  3E-06   1E-08    6E-06   3*1E-08 1E-08 14*1E-08
+
+**-------------------------SCX-------------------------
+*NC-SCX 7
+*COMPNAME-SCX
+'>CO3Ca+'  '>CO3Mg+'  '>CO3H' '>CaSO4-'  '>CaOH2+' '>CO3-' '>CaOH'
+*SCX-COMP-VALENCE
+1 1 0 -1 1 -1 0
+
+*COMPNAME-SCX-MASTER
+'>CO3H' '>CaOH2+'
+
+*SCX-AREA
+785885.5      **0.29m2/kg
+
+*REACTION-SCX '>CO3Ca+' + 'H+' = '>CO3H' + 'Ca++'
+*SCX-LOGK-VALUE
+ 25 1.25
+
+*REACTION-SCX '>CO3Mg+' + 'H+' = '>CO3H' + 'Mg++'
+*SCX-LOGK-VALUE
+ 25 1.5
+
+*REACTION-SCX '>CaSO4-' + 'H2O' = '>CaOH2+' + 'SO4--'
+*SCX-LOGK-VALUE
+ 25 -1.5
+*REACTION-SCX '>CO3H'  = '>CO3-' + 'H+'
+*SCX-LOGK-VALUE
+ 25 -5.1
+ 100 -5.1
+
+*REACTION-SCX '>CaOH' + 'H+'  = '>CaOH2+'
+*SCX-LOGK-VALUE
+ 25 14.5
+
+*DER-SCX ANALYTICAL
+
+**-------------------------------------ROCK FLUID DATA------------------
+*ROCKFLUID
+*RPT 1
+*SWT
+**Sw   krw      krow     (Pcow)
+0.000000  0.000000  0.000000  0.000000
+0.050000  0.000000  0.000000  0.000000
+0.100000  0.000000  0.000000  0.000000
+0.150000  0.000001  0.000000  0.000000
+0.200000  0.000003  0.000000  0.000000
+0.250000  0.000011  0.000000  0.000000
+0.300000  0.000030  0.000000  0.000000
+0.350000  0.000071  0.000000  0.000000
+0.400000  0.000149  0.000000  0.000000
+0.450000  0.000288  0.000000  0.000000
+0.500000  0.000519  0.000000  0.000000
+0.550000  0.000884  0.000000  0.000000
+0.600000  0.001438  0.000000  0.000000
+0.650000  0.002250  0.000000  0.000000
+0.700000  0.003405  0.000000  0.000000
+0.750000  0.005007  0.000000  0.000000
+0.800000  0.007182  0.000000  0.000000
+0.850000  0.010079  0.000000  0.000000
+0.900000  0.013873  0.000000  0.000000
+0.950000  0.018768  0.000000  0.000000
+1.000000  0.045000  0.000000  0.000000
+
+*SGT
+**Sl   krg      krog     (Pcog)
+0.000000  0.000000  0.000000  0.000000
+0.050000  0.000008  0.000000  0.000000
+0.100000  0.000680  0.000000  0.000000
+0.150000  0.002330  0.000000  0.000000
+0.200000  0.005610  0.000000  0.000000
+0.250000  0.011140  0.000000  0.000000
+0.300000  0.019610  0.000000  0.000000
+0.350000  0.031740  0.000000  0.000000
+0.400000  0.048370  0.000000  0.000000
+0.450000  0.070420  0.000000  0.000000
+0.500000  0.098940  0.000000  0.000000
+0.550000  0.136180  0.000000  0.000000
+0.600000  0.180650  0.000000  0.000000
+0.650000  0.232750  0.000000  0.000000
+0.700000  0.307520  0.000000  0.000000
+0.750000  0.395200  0.000000  0.000000
+0.800000  0.506570  0.000000  0.000000
+0.850000  0.655620  0.000000  0.000000
+0.900000  0.954430  0.000000  0.000000
+0.950000  0.977220  0.000000  0.000000
+1.000000  1.000000  0.000000  0.000000
+
+*RTYPE   *CON      1
+*SCX-CAPACITY '>CO3H' *CON 11.93514319   **gmol eq. of surf comp./m3 of block
+*SCX-CAPACITY '>CaOH2+' *CON 11.93514319
+**11.9351 = (Surface Site (gmol/m2) * specific Surface Area (m2/m3) * (1-por)/por
+
+**-------------------------------------INITIAL RESERVOIR CONDITION------
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_GAS
+*ZOIL    0.001 0.999
+*ZGAS    0.001 0.999
+*REFDEPTH   304.8
+*REFPRES    699.82
+*DWGC    100.
+*SWOC    0.9999
+
+
+*MOLALITY-AQUEOUS
+**'H+'    'Ca++' 'SO4--'   'Mg++'  'Na+'    'Cl-'    'K+'  'SCN-'  'HCO3-'  'OH-'    'CaSO4' 'MgSO4' 'NaSO4-' 'CaCO3' 'MgHCO3+' 'MgCO3' 'CaHCO3+' 'NaHCO3'   'CaCl+'   'MgCl+'  'CO3--'   'NaCO3-'
+4.963d-09 1d-09   1d-09    1d-09  5.71d-01 5.71e-01  1d-09  1d-09  1d-09  2.567d-06  1d-09   1d-09   1d-09    1d-09    1d-09    1d-09    1d-09    1d-09      1d-09     1d-09    1d-09     1d-09
+
+
+VOLUMEFRACTION-MINERAL
+0.6918564 0.06099
+
+
+**-------------------------------------NUMERICAL METHOD-----------------
+NUMERICAL
+DTMIN 1e-008
+DTMAX 1e-3
+ITERCER 3
+
+**-------------------------------------WELL DATA------------------------
+RUN
+DATE 2018 1 1
+DTWELL 1.E-05
+AIMSET CON 3
+
+**-----------------------------SW INJECTION------------------------------
+WELL  'Injector'   ** Water(and ions) injector
+INJECTOR 'Injector'
+** ------- 1 to Nc -------** **----------- 1 to Nc_aqu ---------------------------**0.06665 0.033326476
+**'H+'   'Ca++'   'SO4--'  'Mg++'    'Na+'     'Cl-'      'K+'    'SCN-'    'HCO3-'   'OH-'     'CaSO4'    'MgSO4'   'NaSO4-'   'CaCO3'    'MgHCO3+'  'MgCO3'    'CaHCO3+'   'NaHCO3'   'CaCl+'    'MgCl+'    'CO3--'   'NaCO3-'
+INCOMP  AQUEOUS  0  0    4.961e-09 1.265E-02  1d-09  1.15E-02 5.040e-01 5.541e-01  1.3E-02  1.30E-02   1d-09  2.575e-06    1d-09      1d-09     1d-09       1d-09      1d-09     1d-09      1d-09       1d-09    3.467e-04   1.503e-03    1d-09     1d-09
+OPERATE  MAX  BHW  0.00014  CONT REPEAT
+**OPERATE  MAX  BHP  1799.53  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.0030  0.37  1.0  0.0
+PERF      *SLIMTUBE  'Injector'
+** UBA             ff          Status  Connection
+1 1 1         1.0  OPEN    FLOW-FROM  'SURFACE'
+
+
+WELL  'Producer'    ** Producer on BHP constraint
+PRODUCER 'Producer'
+OPERATE  MIN  BHP  689.476  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.0030  0.37  1.0  0.0
+PERF      *SLIMTUBE  'Producer'
+** UBA              ff          Status  Connection
+300 1 1         1.0  OPEN    FLOW-TO  'SURFACE'
+
+*SHUTIN 'Injector'
+*SHUTIN 'Producer'
+
+DATE 2018 01 1.02
+*OPEN  'Injector'
+*OPEN  'Producer'
+
+DATE 2018 01 1.22
+
+STOP

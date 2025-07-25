@@ -1,0 +1,269 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**  This data set illustrates the use of *WPLYFAC option.
+
+
+
+**  ================  INPUT/OUTPUT CONTROL  =========================
+
+RESULTS SIMULATOR STARS
+
+INTERRUPT *STOP
+
+TITLE1 'STARS Fluid Model Template #73'
+TITLE2 'Verify/Illustrate *WPLYFAC with Shear Thinning'
+
+INUNIT SI
+
+WRST 50
+WSRF WELL 1
+WSRF GRID TIME
+WSRF SECTOR TIME
+WPRN ITER 1
+
+OUTPRN GRID NONE
+OUTPRN RES NONE
+
+OUTSRF WELL LAYER ALL
+OUTSRF GRID ALL VELOCRC 
+OUTSRF WELL COMPONENT ALL
+
+
+
+** ============== GRID AND RESERVOIR DEFINITIONS ====================
+
+
+GRID CART 30 30 3
+
+KDIR DOWN
+
+DI CON 5
+DJ CON 5
+DK CON 5
+
+DTOP
+900*2504.6
+
+POR CON        0.2
+
+PERMI KVAR       100 10 200
+PERMJ EQUALSI
+PERMK CON 50 
+
+END-GRID
+
+ROCKTYPE 1
+PRPOR 24580
+CPOR 6.82E-07
+
+
+
+** ===================  FLUID DEFINITIONS  ==========================
+
+MODEL 3 3 3 2
+
+COMPNAME 'Water' 'Poly' 'Oil'
+CMM        0       8     0.100
+PCRIT      0       0     0 
+TCRIT      0       0     0
+MASSDEN    1033    1033  924 
+CP         3.94e-7 3.94e-7 1.0e-5 
+AVISC      0.851   100   3.2
+BVISC      0       0      0
+
+VSMIXCOMP 'Poly'
+VSMIXENDP 0 1.5e-006 
+VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+
+SHEARTHIN 0.7	0.001
+
+
+
+** ===================  ROCK-FLUID PROPERTIES  ======================
+
+ROCKFLUID
+
+RPT 1
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW  Pcow
+**  ----      -------    ------- -----
+     0.19      0.000000  1.00000  5.91
+     0.20      0.000159  0.95162  5.40
+     0.22      0.001149  0.85959  4.91
+     0.24      0.002881  0.77370  4.45
+     0.26      0.005279  0.66373  4.02
+     0.28      0.008299  0.61947  3.62
+     0.30      0.011909  0.55070  3.24
+     0.32      0.016087  0.48723   2.89
+     0.34      0.020813  0.42882   2.56
+     0.36      0.026073  0.37529   2.26
+     0.38      0.031852  0.32640   1.98
+     0.40      0.038139  0.28196   1.73
+     0.42      0.044925  0.24174   1.50
+     0.44      0.052200  0.20555   1.28
+     0.46      0.059956  0.17316   1.09
+     0.48      0.068186  0.14436   0.92
+     0.50      0.076883  0.11895   0.77
+     0.52      0.086041  0.09671   0.63
+     0.54      0.095654  0.07743   0.51
+     0.56      0.105716  0.06090   0.40
+     0.58      0.116224  0.04691   0.31
+     0.60      0.127172  0.03524   0.24
+     0.62      0.138555  0.02569   0.17
+**     0.64      0.150370  0.01804   0.14
+     0.66      0.162613  0.01208   0.1
+**     0.68      0.175280  0.00761   0.0
+     0.70      0.188367  0.00440   0.0
+**     0.72      0.201872  0.00225   0.0
+     0.74      0.215791  0.00095   0.0
+     0.76      0.230120  0.00028   0.0
+     0.80      0.260000  0.00000   0.0
+
+
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.29      0.4200    0.000
+                   0.32      0.36898   0.00179
+                   0.34      0.33737   0.00496
+                   0.36      0.30762   0.00972
+                   0.38      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   1.00000
+
+ADSCOMP 'Poly' WATER
+ADSPHBLK W
+ADSTABLE
+**Porosity 0.2494
+**     Mole Fraction  Adsorbed moles per unit pore volume
+                    0                                    0
+     		5.0e-008                        	0.01
+      		1.5e-006                         	0.02
+
+ADMAXT 0.02
+ADRT 0.02
+PORFT 1
+RRFT 1
+
+
+
+** =================  INITIAL CONDITIONS  ===========================
+
+INITIAL
+
+**VERTICAL DEPTH_AVE
+PRES CON 26717
+SW   *CON  0.65    
+MFRAC_WAT 'Water' CON   1
+MFRAC_OIL 'Oil' CON     1
+
+
+
+** =================  NUMERICAL CONTROL  ============================
+
+NUMERICAL
+
+DTMIN 1e-8
+
+NORTH 100
+ITERMAX 100
+
+ISOTHERMAL
+TFORM ZT
+
+NEWTONCYC 8
+
+AIM OFF
+
+
+
+** =================  RECURRENT DATA  ===============================
+
+RUN
+
+TIME 0.0
+
+DTWELL 0.00001
+GROUP 'GRP1' ATTACHTO 'FIELD'
+
+*WELL 'INJ1' *ATTACHTO 'GRP1'
+**TINJW  25.0
+INJECTOR MOBWEIGHT IMPLICIT 'INJ1'
+INCOMP  WATER  1.0  0.0 0.0
+OPERATE  MAX  STW  300  CONT REPEAT
+OPERATE  MAX BHP  50000.0  CONT REPEAT
+*XFLOW-MODEL 'INJ1' *FULLY-MIXED
+**          rad  geofac  wfrac  skin
+GEOMETRY  K  0.045  0.249  1.0  0.0
+      PERF      GEOA  'INJ1'
+** UBA              ff          Status  Connection  
+    15 15 1          1.0  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    15 15 2          1.0  OPEN    **FLOW-FROM  'SURFACE'  REFLAYER
+    15 15 3          1.0  OPEN    **FLOW-FROM  'SURFACE'  REFLAYER
+
+*WPLYFAC 'INJ1'
+    0.7
+
+TIME 1
+DTWELL 0.00001
+**TINJW  25.0
+INJECTOR MOBWEIGHT IMPLICIT 'INJ1'
+INCOMP  WATER  9.999985E-01  1.5e-006 0.0
+OPERATE  MAX  STW  300  CONT REPEAT
+OPERATE  BHP  50000.0  CONT REPEAT
+
+TIME 4
+DTWELL 0.00001
+**TINJW  25.0
+INJECTOR MOBWEIGHT IMPLICIT 'INJ1'
+INCOMP  WATER  9.999985E-01  1.5e-006 0.0
+OPERATE  MAX  STW  300  CONT REPEAT
+OPERATE  MAX BHP  70000.0  CONT REPEAT
+
+TIME 5
+
+DTWELL 0.00001
+INJECTOR MOBWEIGHT IMPLICIT 'INJ1'
+INCOMP  WATER  9.999985E-01  1.5e-006 0.0
+OPERATE  MAX  STW  300.0  CONT REPEAT
+OPERATE  MAX BHP  100000.0  CONT REPEAT
+
+TIME 10
+STOP
+
+*TIME 15
+
+*STOP

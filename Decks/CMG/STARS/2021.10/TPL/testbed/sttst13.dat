@@ -1,0 +1,457 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    A secondary surfactant flood into a North Sea reservoir is
+**  simulated.  Injection of cold water into the initially hot reservoir
+**  results in a reverse temperature gradient.  A surfactant slug is
+**  followed by several years of water injection.
+
+**  Special Features:
+
+**  1)  The reservoir contains a light oil sandwiched between a gas cap
+**      and an aquifer.
+
+**  2)  The effects of gas cusping and water coning are reduced by
+**      transmissibilty multipliers.
+
+**  3)  Block area and volume modifiers reduce a rectangular grid to
+**      the desired shape in the areal plane.
+
+**  4)  Surfactant effects on residual oil detrapping and wettability
+**      are modelled by interpolating between relative permeability
+**      sets, according to a capillary number which depends on
+**      temperature and surfactant concentration.
+
+**  5)  Composition-dependent K values describe multiple-contact water-oil
+**      miscibility according to concentration of water-based surfactant.
+
+**  6)  Adsorption of surfactant affects its availability and propagation.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'STARS Test Bed No. 13'
+title2 'Surfactant Flooding in the North Sea'
+
+inunit field  except  2 1  ** deg C instead of deg F
+              except  7 0  ** kg instead of lb
+              except  8 0  ** gmol instead of lbmol
+              except 11 1  ** ft3 instead of bbl
+
+** Additional information on mechanisms obtained from special printouts
+outprn grid pres sw so sg temp x w obhloss adsorp
+            masdeno masdeng masdenw krinter ift
+            masfr adspcmp  ** special adsorption composition, in mass fraction
+outprn well all
+wrst 100
+wprn grid 100
+wprn iter 100
+
+outsrf well component all
+outsrf grid pres sw so sg temp
+            masdeno masdeng masdenw krinter ift
+            masfr adspcmp  ** special adsorption composition, in mass fraction
+            llkvcmp        ** *LIQLIQKV *KVKEYCOMP component composition
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*grid *cart 9 1 4   ** Cross-sectional 9x4 grid.  Geometry in the
+                    ** I-J plane will be modified to get desired shape.
+
+di con 256.25
+dj con 2306.7
+dk kvar 170 75 79 35
+
+** Trim grid to 1/8 element of a five-spot pattern
+
+vamod 1  0.02778    0.11111  0.0  0.02778
+vamod 2  0.22222    0.33333  0.0  0.22222    0.11111  0.0  0.0
+vamod 3  0.44444    0.55556  0.0  0.44444    0.33333  0.0  0.0
+vamod 4  0.66667    0.77778  0.0  0.66667    0.55556  0.0  0.0
+vamod 5  0.83333    0.77778  0.0  0.83333    0.77778  0.0  0.0
+vamod 6  0.66667    0.55556  0.0  0.66667    0.77778  0.0  0.0
+vamod 7  0.44444    0.33333  0.0  0.44444    0.55556  0.0  0.0
+vamod 8  0.22222    0.11111  0.0  0.22222    0.33333  0.0  0.0
+vamod 9  0.02778    0.0      0.0  0.02778    0.11111  0.0  0.0
+
+vatype all   1 2 3 4 5 6 7 8 9
+             1 2 3 4 5 6 7 8 9
+             1 2 3 4 5 6 7 8 9
+             1 2 3 4 5 6 7 8 9
+
+por con .126
+
+permi kvar 226 327 327 41
+permj equalsi
+permk kvar 23 33 33 4
+
+end-grid
+
+prpor 3600
+rockcp 63
+thconr 43.2
+thconw 43.2
+thcono 43.2
+thcong 43.2
+
+** Because of cold water injection, heat flows in from over/underburden
+hlossprop overbur 63 43.2 underbur 63 43.2
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 4 4 4     ** North Sea light oil
+
+compname   'WATER'   'CHEM'    'OIL'    'GAS'
+**         -------  -------    -----    -----
+cmm         0.018     0.43      0.1     0.028
+molden      1566     65.56     204.1     730
+cp          3e-6      3e-6     1e-6     1e-6
+ct1        2.33e-4  2.33e-4    1e-4     1e-4
+pcrit       3200      632       453     492.4
+tcrit        374      134       175      -147
+
+cpl1          0      0.2417   0.2417   0.008815
+
+rangecheck off
+solid_den 'CHEM' 28190.8 0 0
+rangecheck on
+solid_cp 'CHEM' 0.016112889 0    ** (17 J/gmole-C) * ( 1 Btu / 1055.056 J )
+
+*watphase
+*visctable
+**   Temp
+      5       0       50        2.24     2.24
+     93.3     0       10        0.8      0.8
+     200      0       10        0.8      0.8
+
+*oilphase
+*visctable
+**   Temp
+      5       1.5     50        2.24     2.24
+     93.3     0.3     10        0.8      0.8
+     200      0.3     10        0.8      0.8
+*liqphase
+
+prsr 14.65
+temr 15
+psurf 14.65
+tsurf 15
+
+
+gasliqkv          ** The following are gas-liquid K values
+
+kvtablim  580 4640  5 100
+
+kvtable 'WATER'   ** Want no water in gas phase (override default)
+8*0
+8*0
+
+kvtable 'GAS'
+1.733  1.27   1.049  0.918  0.785  0.757  0.705  0.685
+3.895  2.944  2.437  2.132  1.825  1.759  1.639  1.592
+
+
+liqliqkv   ** The following are the liquid-liquid K values at 5 concentrations
+
+kvtablim  3000 6000  5 100
+kvkeycomp 'CHEM' global 0 0.008
+
+kvtable 'WATER'         ** Each component has a P-T dependent table at
+   keycomp              ** the following values of z(CHEM):
+      2*0.
+      2*0.              **  0.0  0.002  0.004  0.006  0.008
+   keycomp
+      2*7e-4
+      2*7e-4
+   keycomp
+      2*0.0037
+      2*0.0037
+   keycomp
+      2*0.0125
+      2*0.0125
+   keycomp
+      2*0.0398
+      2*0.0398
+
+kvtable 'CHEM'
+   keycomp
+      2*0.1
+      2*0.1
+   keycomp
+      2*0.1458
+      2*0.1458
+   keycomp
+      2*0.1741
+      2*0.1741
+   keycomp
+      2*0.2204
+      2*0.2204
+   keycomp
+      2*0.3025
+      2*0.3025
+
+kvtable 'OIL'
+   keycomp
+      2*1e-4
+      2*1e-4
+   keycomp
+      2*0.0314
+      2*0.0314
+   keycomp
+      2*0.1214
+      2*0.1214
+   keycomp
+      2*0.259
+      2*0.259
+   keycomp
+      2*0.433
+      2*0.433
+
+kvtable 'GAS'
+   keycomp
+      2*1e-4
+      2*1e-4
+   keycomp
+      2*0.0314
+      2*0.0314
+   keycomp
+      2*0.1214
+      2*0.1214
+   keycomp
+      2*0.259
+      2*0.259
+   keycomp
+      2*0.433
+      2*0.433
+
+** Since component CHEM's w/o K value is less than 1, the default *SURFLASH
+** assumes all CHEM's SR2 reporting is in the oil phase.  Force CHEM's
+** surface phase to be water to match the injection.
+surflash w w o g
+
+
+
+*rockfluid
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**  Interpolation between 2 sets:  high versus low IFT situations.
+
+intcomp 'CHEM' oil
+intlin   ** Linear interpolation of X(surfactant)
+
+ifttable   ** Surfactant chosen to work best at initial reservoir T
+
+temp 5        ** 5 deg C Table
+
+**       oil mole frac      IFT
+**       -------------    --------
+             0.            30
+             0.0005         3
+             0.001          0.3
+             0.002          0.03
+             0.003          0.003
+             0.004          0.003
+
+temp 95       ** 95 deg C Table
+
+**       oil mole frac      IFT
+**       -------------    --------
+             0.            10
+             0.0005         1
+             0.001          0.1
+             0.002          0.01
+             0.003          0.001
+             0.004          0.001
+
+
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+
+krintrp 1
+
+dtrapw -4
+dtrapn -4.222  ** Critical cap num for detrapping to begin
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.22       0.         0.893
+    0.3        0.09       0.721
+    0.4        0.202      0.439
+    0.5        0.33       0.234
+    0.6        0.556      0.05
+    0.65       0.65       0.
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.4        0.35       0.
+    0.5        0.287      0.179
+    0.6        0.225      0.357
+    0.7        0.162      0.536
+    0.8        0.1        0.714
+    0.96       0.         0.893
+
+
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+
+krintrp 2
+
+dtrapw -1.68
+dtrapn -2.222  ** Critical cap num for complete detrapping
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.0         0.0       1.
+    0.1         0.1       0.9
+    0.2         0.2       0.8
+    0.3         0.3       0.7
+    0.4         0.4       0.6
+    0.5         0.5       0.5
+    0.6         0.6       0.4
+    0.7         0.7       0.3
+    0.8         0.8       0.2
+    0.9         0.9       0.1
+    1.          1.0       0.
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.0         1.        0.
+    0.1         0.9       0.1
+    0.2         0.8       0.2
+    0.3         0.7       0.3
+    0.4         0.6       0.4
+    0.5         0.5       0.5
+    0.6         0.4       0.6
+    0.7         0.3       0.7
+    0.8         0.2       0.8
+    0.9         0.1       0.9
+    1.          0.        1.
+
+
+**  Adsorption Data
+**  ---------------
+
+adscomp 'CHEM' water   ** Reversible adsorption of aqueous surfactant
+adslang temp      ** Langmuir isotherms at 2 tempertures
+  5  20 0 1000
+ 95   2 0 1000
+admaxt .02   ** No flow modications from adsorption
+
+*initial
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+** Automatic static vertical equilibrium
+vertical depth_ave
+refpres 3994.3
+refblock 1 1 4
+
+** Oil reservoir has gas cap above and aquifer below
+sw kvar 1 .22 .22 .22
+so kvar 0 .78 .78 0
+
+temp con 93.3
+mfrac_gas 'GAS' con 1
+mfrac_oil 'OIL'  con .4
+mfrac_oil 'GAS'  con .6
+
+*numerical
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+sdegree 2
+tform zt
+dtmax 61
+
+norm      press 150  zo .1    temp 50  zncg .1    zaq .1
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1
+
+   transk ijk 1:9 1 1 .01   ** Isolate aquifer from pay zone
+   transk ijk 1:9 1 3 .01   ** Isolate gascap from pay zone
+   ** transk con .01        ** Vert trans reduced in all layers
+
+   well 1 'In-1' vert 1 1
+   well 2 'Pr-1' vert 9 1
+
+   producer 'Pr-1'
+   operate stl 8768
+   ** operate stl 4384
+   operate min bhp 3400
+   geometry  k  .25 .249 1 0  ** rw cc ff ss
+   perfv geo 'Pr-1'
+               **  k  fh
+                  2:3 .5
+
+   injector 'In-1'
+   incomp water .99614 .00386 0 0  ** Surfactant slug
+   ** Change previous line to test pure water injection
+   tinjw 5     ** Cold water injection
+   operate stw 8768 
+   ** operate stw 4384 
+   perfv 'In-1'
+            **  k    wi
+                2  .06797
+                3  .0716
+
+time 365
+time 730
+
+   dtwell 1
+
+   ** Change composition of injected aqueous phase of last well mentioned
+   injector 'In-1'
+   incomp water 1 0 0 0  ** No surfactant in injected water
+   tinjw 5     ** Cold water injection
+   operate stw 8768 
+
+time 1095
+time 1460
+time 1825
+time 2190
+time 2555
+time 2920
+time 3285
+time 3650
+stop

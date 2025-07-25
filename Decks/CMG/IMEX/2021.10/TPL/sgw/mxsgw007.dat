@@ -1,0 +1,901 @@
+********************************************************************************
+** mxsgw007.dat: iSegWells: Compressors on DHS primary leg of producers       **
+********************************************************************************
+********************************************************************************
+**                                                                            **
+** FILE:   MXSGW007.DAT                                                       **
+**                                                                            **
+** MODEL:  53x53x5  DHS PRIMARY LEG COMPRESSORS                               **
+**                                                                            **
+********************************************************************************
+**                                                                            **
+** This template is based on a 53x53x5 variable thinkness, variable depth     **
+** grid oil production problem. There are nine wells, 4 conventional water    **
+** injectors and 5 iSegWell producers.  Each producer has a down hole         **
+** separator which sends local gas to surface with no compression; each       **
+** primary leg has a compressor to send the produced fluid to the surface.    **
+** in different layers.                                                       **
+**                                                                            **
+**                                                                            **
+** Provenance : \shared\welman.lib\segwell\IMEX QA\multiple_comp1.dat         **
+**                                                                            **
+********************************************************************************
+********************************************************************************
+** CONTACT: CMG (403)531-1300; 282-6495 (fax); support@cmgl.ca  (Internet)    **
+********************************************************************************
+RESULTS SIMULATOR IMEX
+
+*TITLE1
+'iSegWell'
+*TITLE2
+'Compressors'
+*TITLE3
+'on Primary'
+
+*INUNIT *SI
+*OUTUNIT *SI 
+
+**turn off output (except for well output to sr2)
+outprn res none
+outprn tables none
+wprn well 1
+outprn well all
+wprn grid 0
+wprn sector 0
+wsrf well 1
+wsrf grid 1
+outsrf grid all
+outsrf res none
+wsrf sector 1
+
+wprn iter matrix
+
+** (53+(52*0)) X (53+(52*0)) X 5 = 53 X 53 x 05 = 14,045 blocks
+
+GRID VARI 53 53 5 
+KDIR DOWN
+DI CON 15.
+DJ CON 15.
+DK CON 10.0 
+DTOP 
+	 2809*1000.
+NULL CON 1.
+PINCHOUTARRAY CON 1.
+POR CON 0.15
+PERMI CON 100.
+PERMJ CON 100.
+PERMK CON 10.
+CPOR  MATRIX   1.5E-07
+PRPOR MATRIX   3.E+04
+
+** modify corner and side block volumes
+volmod con 1.0
+       mod    2:52   1:1   1:5 * 0.5
+              2:52  53:53  1:5 * 0.5
+              1:1    2:52  1:5 * 0.5
+             53:53   2:52  1:5 * 0.5
+
+              1:1    1:1   1:5 * 0.25
+             53:53  53:53  1:5 * 0.25
+             53:53   1:1   1:5 * 0.25
+              1:1   53:53  1:5 * 0.25
+
+** modify all edge transmissibilities
+transi con 1.0
+       mod    1:53   1:1   1:5 * 0.5
+              1:53  53:53  1:5 * 0.5
+
+transj con 1.0
+       mod    1:1    1:53  1:5 * 0.5
+             53:53   1:53  1:5 * 0.5
+
+transk con 1.0
+       mod    1:1    1:1   1:5 * 0.25
+             53:53  53:53  1:5 * 0.25
+              1:1   53:53  1:5 * 0.25
+             53:53   1:1   1:5 * 0.25
+
+              2:52   1:1   1:5 * 0.5
+              2:52  53:53  1:5 * 0.5
+              1:1    2:52  1:5 * 0.5
+             53:53   2:52  1:5 * 0.5
+
+MODEL *BLACKOIL
+**$ OilGas Table 'Table A'
+*TRES     60.
+*PVT *EG 1
+**  P        Rs       Bo       EG       VisO     VisG     
+    101.33         0.71      1.0364   0.871505  5.673     0.011412
+    1761.24        7.43      1.0513   15.73017  4.2675    0.011704
+    3421.15       15.67     1.0703    31.7557   3.2897    0.01211 
+    5081.06       24.75     1.0919    49.0205   2.6404    0.01259 
+    6740.97       34.44     1.1158    67.5237   2.1919    0.013135
+    8400.88       44.63     1.1416    87.132    1.8684    0.013743
+    1.00608E+04   55.24     1.1692    107.5276  1.626     0.014414
+    1.17207E+04   66.2      1.1985    128.2087  1.4387    0.01515 
+    1.338062E+04  77.48     1.2293    148.582   1.29      0.015953
+    1.504053E+04  89.05     1.2616    168.1063  1.1694    0.016828
+    1.670044E+04  100.89    1.2952    186.4024  1.0699    0.017779
+    1.836035E+04  112.96    1.3301    203.276   0.9863    0.018811
+    2.002027E+04  125.25    1.3663    218.6816  0.9153    0.01993 
+    2.16802E+04   137.76    1.4037    232.671   0.8541    0.021142
+    2.33401E+04   150.46    1.4422    245.35    0.801     0.022455
+    2.5E+04       163.35    1.4819    256.846   0.7544    0.023876
+    3.2E+04       219.52    1.6605    295.177   0.6081    0.031281
+    3.9E+04       278.28    1.8561    322.497   0.5119    0.041647
+    4.6E+04       339.24    2.067     343.317   0.4437    0.056222
+    5.3E+04       402.12    2.2919    360.028   0.3929    0.076834
+    6.E+04        466.73    2.5299    373.9594  0.3534    0.106168
+*DENSITY *OIL 880.
+*DENSITY *GAS 0.97776
+*DENSITY *WATER 995.856
+*CO       1.985708E-06
+*CVO      0
+*BWI      1.003712
+*CW       4.03771E-07
+*REFPW    3.E+04
+*VWI      0.507059
+*CVW      0
+
+
+*ROCKFLUID
+
+*RPT 1 
+*SWT 
+0.200000  0.000000      1.000000    0.000000   
+0.234375  0.0009765625  0.87890625  0.000000   
+0.268750  0.00390625    0.765625    0.000000   
+0.303125  0.0087890625  0.66015625  0.000000   
+0.337500  0.015625      0.562500    0.000000   
+0.371875  0.0244140625  0.47265625  0.000000   
+0.406250  0.03515625    0.390625    0.000000   
+0.440625  0.0478515625  0.31640625  0.000000   
+0.475000  0.062500      0.250000    0.000000   
+0.509375  0.0791015625  0.19140625  0.000000   
+0.543750  0.09765625    0.140625    0.000000   
+0.578125  0.1181640625  0.09765625  0.000000   
+0.612500  0.140625      0.062500    0.000000   
+0.646875  0.1650390625  0.03515625  0.000000   
+0.681250  0.19140625    0.015625    0.000000   
+0.715625  0.2197265625  0.00390625  0.000000   
+0.750000  0.250000      0.000000    0.000000   
+
+*SLT 
+0.450000  1.000000   0.000000   0.000000   
+0.481250  0.8789063  0.0039062  0.000000   
+0.512500  0.765625   0.015625   0.000000   
+0.543750  0.6601563  0.0351563  0.000000   
+0.575000  0.562500   0.062500   0.000000   
+0.606250  0.4726563  0.0976563  0.000000   
+0.637500  0.390625   0.140625   0.000000   
+0.668750  0.3164063  0.1914063  0.000000   
+0.700000  0.250000   0.250000   0.000000   
+0.731250  0.1914063  0.3164063  0.000000   
+0.762500  0.140625   0.390625   0.000000   
+0.793750  0.0976563  0.4726563  0.000000   
+0.825000  0.062500   0.562500   0.000000   
+0.856250  0.0351563  0.6601563  0.000000   
+0.887500  0.015625   0.765625   0.000000   
+0.918750  0.0039063  0.8789063  0.000000   
+0.975000  0.000000   1.000000   0.000000   
+
+*KROIL *STONE2 *SWSG
+
+*INITIAL
+*VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+*GASZONE *NOOIL
+*REFDEPTH 1000.
+*REFPRES 3.E+04
+*DWOC 1049.
+*DGOC 800.
+PB CON 2.5E+04
+RESULTS SECTION NUMERICAL
+*NUMERICAL
+
+MAXSTEPS 30
+
+DTMAX 30.0 
+PRECC 5.E-4
+NORM SATUR 0.10
+ITERMAX 150 
+NORTH   150 
+CONVERGE MAXRES 0.10
+
+RUN
+
+DATE 2002 03 31.
+
+DTWELL 0.50
+
+** Injectors
+WELL 1 VERT   1   1 
+WELL 2 VERT   1  53
+WELL 3 VERT  53   1
+WELL 4 VERT  53  53
+
+INJECTOR MOBWEIGHT 1:4 
+INCOMP WATER 
+OPERATE MAX STW  100. CONT
+GEOMETRY K 0.0762 0.37 1. 0.
+PERFV GEOA   1:4   ** Injectors are conventional wells -- have perf lines
+ 3:3 0.25
+** 1/4 injecting wells
+ALTER 1:4
+      25.00
+
+** Producers -- the 5 producers are iSegWells - no perf lines
+WELL 5
+WELL 6
+WELL 7
+WELL 8
+WELL 9
+PRODUCER 5:9
+PWELLBORE *ISEGWELL
+OPERATE MAX STO  100. CONT
+OPERATE MIN WHP  5000. CONT
+MONITOR WHYSTAB SHUTIN
+
+** producer x=y =397.5, z = 1020-1030 at perfs
+
+HEADITER    '*' ITERATIVE
+BHPHEADINIT '*' COMBINED
+
+** iSegWell Keywords
+** =======================
+
+** iSegWell Keywords Independent of Well-site
+** ================================================
+
+WB-PDMETHOD 'wbpmeth1'
+BEGIN 
+ *TYPE homogeneous
+ *IRADIUS 0.0762
+ *RROUGH  0.0
+ *SFCTENS 30.0
+END
+
+TE-PDMETHOD 'TBE-meth1'
+CONST 0.5
+
+TS-PDMETHOD 'tspmeth1'
+BEGIN
+ *TYPE homogeneous
+ *IRADIUS 0.0381
+ *RROUGH  0.0000
+ *SFCTENS 30.0
+END
+
+WIMETHOD 'wimeth1'
+BEGIN
+ TYPE *SGEOA 1.0
+ SGRADIUS 0.0762
+END
+
+WIMETHOD 'wimeth0.5'
+BEGIN
+ TYPE *SGEOA 0.5
+ SGRADIUS 0.0762
+END
+
+WIMETHOD 'wimeth0.25'
+BEGIN
+ TYPE *SGEOA 0.25
+ SGRADIUS 0.0762
+END
+
+TS-EQPMETHOD 'Pump-PDM'
+PUMP PUMP1 7500
+
+*TS-EQPMETHOD 'compmeth1'
+**                  maxboost   efficiency
+ *COMPRESSOR *COMP1 4000.       0.70
+
+DHS-TABLE 'dhs-table' ** This DHS table sends all the local liquid to the primary leg
+BEGIN                 ** and all local gas to the secondary leg  
+   OIL   1. 0. 0.
+   GAS   0. 1. 0.
+   WATER 1. 0. 0.
+END
+
+DHS-PDMETHOD 'dhs-pd'
+CONST 2.0
+
+TO-PDMETHOD 'to-pd' 
+CONST 0.0
+
+
+** iSegWell Keywords Dependent on Well-site
+** ================================================
+
+WELLSITE 'WS-  1'
+BRANCH   'Main-WS-  1' *CONNECT-TO 'WS-  1' *AT 0.0
+BEGIN
+    397.50       397.50          0.00          0.00
+    397.50       397.50       1030.00       1030.00
+END
+
+PACKERS 'Main-WS-  1'
+BEGIN
+   30.
+  100.
+  945.
+END
+
+WB-PDPOINTS 'Main-WS-  1'
+BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   1030.00      'wbpmeth1' 'wbpmeth1'
+END
+
+WIPOINTS 'Main-WS-  1'
+BEGIN
+      0.00    'wimeth1'
+   1030.00    'wimeth1'
+END
+
+*WB-PFINTVLS 'Main-WS-  1'
+*BEGIN
+   1020. 1030.
+*END
+
+*WB-BLOCKBDYS 'Main-WS-  1'
+*BEGIN
+   27 27 3   397.50  397.50 1020.00 1020.00  397.50  397.50 1030.00 1030.00
+*END
+
+TSTRING 'Main-WS-TS-Well-  1'  
+START-AT 'Main-WS-  1'      0.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  1'    950.0  *OPEN 'TBE-meth1'
+
+TS-PDPOINTS 'Main-WS-TS-Well-  1'
+BEGIN
+    0.00 'tspmeth1' 'tspmeth1'
+  950.00 'tspmeth1' 'tspmeth1'
+END
+
+TSTRING 'Main-WS-TS2-Well-  1'  
+START-AT 'Main-WS-  1'     50.0  *OPEN 'TBE-meth1'  ** Bypass gas rejoins primary stream here
+END-AT   'Main-WS-  1'    920.0  *OPEN 'TBE-meth1'
+
+TOPENS 'Main-WS-TS-Well-  1' 
+BEGIN
+     40.0 FLOWPORT OPEN 'to-pd' 
+END
+
+TS-PDPOINTS 'Main-WS-TS2-Well-  1'
+BEGIN
+    50.0 'tspmeth1' 'tspmeth1'
+  920.00 'tspmeth1' 'tspmeth1'
+END
+
+*TS-EQPT 'Main-WS-TS-Well-  1'
+*BEGIN
+  60. *COMPRESSOR 'compmeth1' 'ZERO' -1  ** Compressor is on the main tubing string of the well
+*END
+
+*TS-EQSETTING
+*BEGIN
+  COMPRESSOR 'Main-WS-TS-Well-  1' 60.  6000. ** power, HP
+*END
+
+
+DWNHSEP 'Main-WS-TS-Well-  1' 920.0
+BEGIN
+  TABLE 'dhs-table' 
+  PDROP 'dhs-pd'
+  OUTLET2 'Main-WS-TS2-Well-  1'
+  OUTLET3 'Main-WS-TS-Well-  1'
+END
+
+
+WELLSITE 'WS-  2'
+BRANCH   'Main-WS-  2' *CONNECT-TO 'WS-  2' *AT 0.0
+BEGIN
+    397.50       397.50          0.00          0.00
+    397.50       397.50       1030.00       1030.00
+END
+
+PACKERS 'Main-WS-  2'
+BEGIN
+   30.
+  100.
+  945.
+END
+
+WB-PDPOINTS 'Main-WS-  2'
+BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   1030.00      'wbpmeth1' 'wbpmeth1'
+END
+
+WIPOINTS 'Main-WS-  2'
+BEGIN
+      0.00    'wimeth1'
+   1030.00    'wimeth1'
+END
+
+*WB-PFINTVLS 'Main-WS-  2'
+*BEGIN
+   1020. 1030.
+*END
+
+*WB-BLOCKBDYS 'Main-WS-  2'
+*BEGIN
+   25 27 3   397.50  397.50 1020.00 1020.00  397.50  397.50 1030.00 1030.00
+*END
+
+TSTRING 'Main-WS-TS-Well-  2'  
+START-AT 'Main-WS-  2'      0.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  2'    950.0  *OPEN 'TBE-meth1'
+
+TS-PDPOINTS 'Main-WS-TS-Well-  2'
+BEGIN
+    0.00 'tspmeth1' 'tspmeth1'
+  950.00 'tspmeth1' 'tspmeth1'
+END
+
+TSTRING 'Main-WS-TS2-Well-  2'  
+START-AT 'Main-WS-  2'     50.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  2'    920.0  *OPEN 'TBE-meth1'
+
+TOPENS 'Main-WS-TS-Well-  2' 
+BEGIN
+     40.0 FLOWPORT OPEN 'to-pd' 
+END
+
+TS-PDPOINTS 'Main-WS-TS2-Well-  2'
+BEGIN
+    50.0 'tspmeth1' 'tspmeth1'
+  920.00 'tspmeth1' 'tspmeth1'
+END
+
+*TS-EQPT 'Main-WS-TS-Well-  2'
+*BEGIN
+  60. *COMPRESSOR 'compmeth1' 'ZERO' -1 ** Compressor is on the main tubing string of the well
+*END
+
+*TS-EQSETTING
+*BEGIN
+  COMPRESSOR 'Main-WS-TS-Well-  2' 60.  6000. ** power, HP
+*END
+
+DWNHSEP 'Main-WS-TS-Well-  2' 920.0
+BEGIN
+  TABLE 'dhs-table' 
+  PDROP 'dhs-pd'
+  OUTLET2 'Main-WS-TS2-Well-  2'
+  OUTLET3 'Main-WS-TS-Well-  2'
+END
+
+WELLSITE 'WS-  3'
+BRANCH   'Main-WS-  3' *CONNECT-TO 'WS-  3' *AT 0.0
+BEGIN
+    397.50       397.50          0.00          0.00
+    397.50       397.50       1030.00       1030.00
+END
+
+PACKERS 'Main-WS-  3'
+BEGIN
+   30.
+  100.
+  945.
+END
+
+WB-PDPOINTS 'Main-WS-  3'
+BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   1030.00      'wbpmeth1' 'wbpmeth1'
+END
+
+WIPOINTS 'Main-WS-  3'
+BEGIN
+      0.00    'wimeth1'
+   1030.00    'wimeth1'
+END
+
+*WB-PFINTVLS 'Main-WS-  3'
+*BEGIN
+   1020. 1030.
+*END
+
+*WB-BLOCKBDYS 'Main-WS-  3'
+*BEGIN
+   29 27 3   397.50  397.50 1020.00 1020.00  397.50  397.50 1030.00 1030.00
+*END
+
+TSTRING 'Main-WS-TS-Well-  3'  
+START-AT 'Main-WS-  3'      0.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  3'    950.0  *OPEN 'TBE-meth1'
+
+TS-PDPOINTS 'Main-WS-TS-Well-  3'
+BEGIN
+    0.00 'tspmeth1' 'tspmeth1'
+  950.00 'tspmeth1' 'tspmeth1'
+END
+
+TSTRING 'Main-WS-TS2-Well-  3'  
+START-AT 'Main-WS-  3'     50.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  3'    920.0  *OPEN 'TBE-meth1'
+
+TOPENS 'Main-WS-TS-Well-  3' 
+BEGIN
+     40.0 FLOWPORT OPEN 'to-pd' 
+END
+
+TS-PDPOINTS 'Main-WS-TS2-Well-  3'
+BEGIN
+    50.0 'tspmeth1' 'tspmeth1'
+  920.00 'tspmeth1' 'tspmeth1'
+END
+
+*TS-EQPT 'Main-WS-TS-Well-  3'
+*BEGIN
+  60. *COMPRESSOR 'compmeth1' 'ZERO' -1 ** Compressor is on the main tubing string of the well
+*END
+
+*TS-EQSETTING
+*BEGIN
+  COMPRESSOR 'Main-WS-TS-Well-  3' 60.  6000. ** power, HP
+*END
+
+DWNHSEP 'Main-WS-TS-Well-  3' 920.0
+BEGIN
+  TABLE 'dhs-table' 
+  PDROP 'dhs-pd'
+  OUTLET2 'Main-WS-TS2-Well-  3'
+  OUTLET3 'Main-WS-TS-Well-  3'
+END
+
+WELLSITE 'WS-  4'
+BRANCH   'Main-WS-  4' *CONNECT-TO 'WS-  4' *AT 0.0
+BEGIN
+    397.50       397.50          0.00          0.00
+    397.50       397.50       1030.00       1030.00
+END
+
+PACKERS 'Main-WS-  4'
+BEGIN
+   30.
+  100.
+  945.
+END
+
+WB-PDPOINTS 'Main-WS-  4'
+BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   1030.00      'wbpmeth1' 'wbpmeth1'
+END
+
+WIPOINTS 'Main-WS-  4'
+BEGIN
+      0.00    'wimeth1'
+   1030.00    'wimeth1'
+END
+
+*WB-PFINTVLS 'Main-WS-  4'
+*BEGIN
+   1020. 1030.
+*END
+
+*WB-BLOCKBDYS 'Main-WS-  4'
+*BEGIN
+   27 25 3   397.50  397.50 1020.00 1020.00  397.50  397.50 1030.00 1030.00
+*END
+
+TSTRING 'Main-WS-TS-Well-  4'  
+START-AT 'Main-WS-  4'      0.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  4'    950.0  *OPEN 'TBE-meth1'
+
+TS-PDPOINTS 'Main-WS-TS-Well-  4'
+BEGIN
+    0.00 'tspmeth1' 'tspmeth1'
+  950.00 'tspmeth1' 'tspmeth1'
+END
+
+TSTRING 'Main-WS-TS2-Well-  4'  
+START-AT 'Main-WS-  4'     50.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  4'    920.0  *OPEN 'TBE-meth1'
+
+TOPENS 'Main-WS-TS-Well-  4' 
+BEGIN
+     40.0 FLOWPORT OPEN 'to-pd' 
+END
+
+TS-PDPOINTS 'Main-WS-TS2-Well-  4'
+BEGIN
+    50.0 'tspmeth1' 'tspmeth1'
+  920.00 'tspmeth1' 'tspmeth1'
+END
+
+*TS-EQPT 'Main-WS-TS-Well-  4'
+*BEGIN
+  60. *COMPRESSOR 'compmeth1' 'ZERO' -1   ** Compressor is on the main tubing string of the well
+*END
+
+*TS-EQSETTING
+*BEGIN
+  COMPRESSOR 'Main-WS-TS-Well-  4' 60.  6000. ** power, HP
+*END
+
+DWNHSEP 'Main-WS-TS-Well-  4' 920.0
+BEGIN
+  TABLE 'dhs-table' 
+  PDROP 'dhs-pd'
+  OUTLET2 'Main-WS-TS2-Well-  4'
+  OUTLET3 'Main-WS-TS-Well-  4'
+END
+
+WELLSITE 'WS-  5'
+BRANCH   'Main-WS-  5' *CONNECT-TO 'WS-  5' *AT 0.0
+BEGIN
+    397.50       397.50          0.00          0.00
+    397.50       397.50       1030.00       1030.00
+END
+
+PACKERS 'Main-WS-  5'
+BEGIN
+   30.
+  100.
+  945.
+END
+
+WB-PDPOINTS 'Main-WS-  5'
+BEGIN
+      0.00      'wbpmeth1' 'wbpmeth1'
+   1030.00      'wbpmeth1' 'wbpmeth1'
+END
+
+WIPOINTS 'Main-WS-  5'
+BEGIN
+      0.00    'wimeth1'
+   1030.00    'wimeth1'
+END
+
+*WB-PFINTVLS 'Main-WS-  5'
+*BEGIN
+   1020. 1030.
+*END
+
+*WB-BLOCKBDYS 'Main-WS-  5'
+*BEGIN
+   27 29 3   397.50  397.50 1020.00 1020.00  397.50  397.50 1030.00 1030.00
+*END
+
+TSTRING 'Main-WS-TS-Well-  5'  
+START-AT 'Main-WS-  5'      0.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  5'    950.0  *OPEN 'TBE-meth1'
+
+TS-PDPOINTS 'Main-WS-TS-Well-  5'
+BEGIN
+    0.00 'tspmeth1' 'tspmeth1'
+  950.00 'tspmeth1' 'tspmeth1'
+END
+
+TSTRING 'Main-WS-TS2-Well-  5'  
+START-AT 'Main-WS-  5'     50.0  *OPEN 'TBE-meth1'
+END-AT   'Main-WS-  5'    920.0  *OPEN 'TBE-meth1'
+
+TOPENS 'Main-WS-TS-Well-  5' 
+BEGIN
+     40.0 FLOWPORT OPEN 'to-pd' 
+END
+
+TS-PDPOINTS 'Main-WS-TS2-Well-  5'
+BEGIN
+    50.0 'tspmeth1' 'tspmeth1'
+  920.00 'tspmeth1' 'tspmeth1'
+END
+*TS-EQPT 'Main-WS-TS-Well-  5'
+*BEGIN
+  60. *COMPRESSOR 'compmeth1' 'ZERO' -1  ** Compressor is on the main tubing string of the well
+*END
+
+*TS-EQSETTING
+*BEGIN
+  COMPRESSOR 'Main-WS-TS-Well-  5' 60.  6000. ** power, HP
+*END
+
+DWNHSEP 'Main-WS-TS-Well-  5' 920.0
+BEGIN
+  TABLE 'dhs-table' 
+  PDROP 'dhs-pd'
+  OUTLET2 'Main-WS-TS2-Well-  5'
+  OUTLET3 'Main-WS-TS-Well-  5'
+END
+
+*SGWASSIGN 'SGW-Main-WS-TS-Well-  1' *TO  5
+*SGWASSIGN 'SGW-Main-WS-TS-Well-  2' *TO  6
+*SGWASSIGN 'SGW-Main-WS-TS-Well-  3' *TO  7
+*SGWASSIGN 'SGW-Main-WS-TS-Well-  4' *TO  8
+*SGWASSIGN 'SGW-Main-WS-TS-Well-  5' *TO  9
+
+sginfo 1
+
+DATE 2002 05 31.
+
+DATE 2002 07 31.
+
+DATE 2002 09 30.
+
+DATE 2002 11 30.
+
+DATE 2003 01 31.
+
+DATE 2003 03 31.
+
+DATE 2003 05 31.
+
+DATE 2003 07 31.
+
+DATE 2003 09 30.
+
+DATE 2003 11 30.
+
+DATE 2004 01 31.
+
+DATE 2004 03 31.
+
+DATE 2004 05 31.
+
+DATE 2004 07 31.
+
+DATE 2004 09 30.
+
+DATE 2004 11 30.
+
+DATE 2005 01 31.
+
+DATE 2005 03 31.
+
+DATE 2005 05 31.
+
+DATE 2005 07 31.
+
+DATE 2005 09 30.
+
+DATE 2005 11 30.
+
+DATE 2006 01 31.
+
+DATE 2006 03 31.
+
+DATE 2006 05 31.
+
+DATE 2006 07 31.
+
+DATE 2006 09 30.
+
+DATE 2006 11 30.
+
+DATE 2007 01 31.
+
+DATE 2007 03 31.
+
+DATE 2007 05 31.
+
+DATE 2007 07 31.
+
+DATE 2007 09 30.
+
+DATE 2007 11 30.
+
+DATE 2008 01 31.
+
+DATE 2008 03 31.
+
+DATE 2008 05 31.
+
+DATE 2008 07 31.
+
+DATE 2008 09 30.
+
+DATE 2008 11 30.
+
+DATE 2009 01 31.
+
+DATE 2009 03 31.
+
+**STOP
+
+DATE 2009 05 31.
+
+DATE 2009 07 31.
+
+DATE 2009 09 30.
+
+DATE 2009 11 30.
+
+DATE 2010 01 31.
+
+DATE 2010 03 31.
+
+**STOP
+
+DATE 2010 05 31.
+
+DATE 2010 07 31.
+
+DATE 2010 09 30.
+
+DATE 2010 11 30.
+
+DATE 2011 01 31.
+
+DATE 2011 03 31.
+
+DATE 2011 05 31.
+
+DATE 2011 07 31.
+
+DATE 2011 09 30.
+
+DATE 2011 11 30.
+
+DATE 2012 01 31.
+
+DATE 2012 03 31.
+
+**STOP
+
+DATE 2012 05 31.
+
+DATE 2012 07 31.
+
+DATE 2012 09 30.
+
+DATE 2012 11 30.
+
+DATE 2013 01 31.
+
+DATE 2013 03 31.
+
+DATE 2013 05 31.
+
+DATE 2013 07 31.
+
+DATE 2013 09 30.
+
+DATE 2013 11 30.
+
+DATE 2014 01 31.
+
+DATE 2014 03 31.
+
+DATE 2014 05 31.
+
+DATE 2014 07 31.
+
+DATE 2014 09 30.
+
+DATE 2014 11 30.
+
+DATE 2015 01 31.
+
+DATE 2015 03 31.
+
+DATE 2015 05 31.
+
+DATE 2015 07 31.
+
+DATE 2015 09 30.
+
+DATE 2015 11 30.
+
+DATE 2016 01 31.
+
+DATE 2016 03 31.
+
+DATE 2016 05 31.
+
+DATE 2016 07 31.
+
+DATE 2016 09 30.
+
+DATE 2016 11 30.
+
+DATE 2017 01 31.
+
+DATE 2017 03 31.
+
+STOP
+

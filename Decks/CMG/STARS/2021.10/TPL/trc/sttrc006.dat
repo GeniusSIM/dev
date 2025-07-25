@@ -1,0 +1,293 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    This template demonstrates the application of passive tracer options.
+
+**    Aquifer tracer, defined with *TRCR-AQUIFER, is associated with 'AqfrWat'.
+**    The associated component for aquifer tracer must be the aqueous component defined
+**    by *AQFRCOMP in order to track the aquifer flux.
+**
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Tracer Template #6'
+*title2 'Test/Illustrate Aquifer Tracer'
+*title3 'Based on STSMO014'
+
+inunit field   ** output same as input
+
+outprn grid pres sw so sg temp w aqwatrate aqwatcum
+outprn well all
+wprn grid 200
+wprn iter 200
+
+outsrf grid pres sw so sg temp y w moldenw fporos aqwatcum aqwatrate trrmol
+
+aqstat on
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid radial 15 1 4  rw 0    ** Zero inner radius matches previous treatment
+
+**  Radial blocks:  small near well;  outer block is large
+di ivar 3 13*10 25
+
+dj con 360  **  Full circle
+
+dk kvar 25 25 20 10
+
+por con 0.3
+permi kvar 2000 1000 500 2000
+permj equalsi
+permk equalsi  / 2
+
+aquifer boundary
+AQMETHOD carter-tracy
+aqgeom radial finite
+AQPROP  0.0  0.3  1e3  78.0 1.0 3.0 
+aqcomp 3.5095E-04
+hfprop 35.0 24.0 
+aqleak on
+
+aqfunc
+ 0.52  0.627
+ 0.54  0.636
+ 0.56  0.645
+ 0.60  0.662
+ 0.65  0.683
+ 0.70  0.703
+ 0.75  0.721
+ 0.80  0.740
+ 0.85  0.758
+ 0.90  0.776
+ 0.95  0.791
+ 1.0   0.806
+ 1.2   0.865
+ 1.4   0.920
+ 1.6  0.973
+ 2.0  1.076
+ 3.0  1.228
+ 4.0  1.578
+ 5.0  1.828
+aqfunc-ext at200
+
+end-grid
+
+cpor 5e-4
+prpor 75
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+**hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 4 4 4 3   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname      'OrigWat'  'AqfrWat'  'InjtWat'   'OIL'
+**              -----      -----      -----    -------
+     cmm        18.02      18.02      18.02      600
+     pcrit      3206.2     3206.2     3206.2      0        ** These four properties
+     tcrit      705.4      705.4      705.4       0        ** are for the gas phase.
+     avg        1.13e-5    1.13e-5    1.13e-5     0        ** The dead oil component does
+     bvg        1.075      1.075      1.075       0        ** not appear in the gas phase.
+
+     molden     0          0          0        0.10113
+     cp         0          0          0        5.e-6
+     ct1        0          0          0        3.8e-4
+
+     cpl1       0          0          0        300
+
+visctable
+
+**     Temp
+         75     0          0          0        5780
+        100     0          0          0        1380
+        150     0          0          0         187
+        200     0          0          0          47
+        250     0          0          0          17.4
+        300     0          0          0           8.5
+        350     0          0          0           5.2
+        500     0          0          0           2.5
+
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+aqfrcomp 'AqfrWat'
+
+
+*NTRCR 1
+*TRCRNAME 'TRC-AQU'
+*TRCR-ASSOC 
+** associate_component associated_tracer
+'AqfrWat' 'TRC-AQU'
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+    1.0      1.0         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.142015    0.0
+    0.57     0.131232    0.00079
+    0.60     0.115599    0.004938
+    0.62     0.105551    0.009679
+    0.65     0.091061    0.019753
+    0.67     0.081805    0.028444
+    0.70     0.068557    0.044444
+    0.72     0.060169    0.057086
+    0.75     0.048291    0.079012
+    0.77     0.04087     0.095605
+    0.80     0.030544    0.123457
+    0.83     0.021273    0.154864
+    0.85     0.015743    0.177778
+    0.87     0.010799    0.202272
+    0.90     0.004665    0.241975
+    0.92     0.001649    0.27042
+    0.94     0.0         0.300444
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+** Automatic static vertical equilibrium
+vertical depth_ave
+refpres 75
+refblock 1 1 4
+
+sw con 0.5   ** So by difference, since Sg = 0
+   mod 14:15 1 1:4 = 1.0
+temp con 125
+mfrac_wat 'OrigWat' con 1
+   mod 14:15 1 1:4 = 0
+mfrac_wat 'AqfrWat' con 0
+   mod 14:15 1 1:4 = 1
+
+*TRCR-AQUIFER
+** Aq.Number    Tracer.Name Tracer.Concentration
+    1       'TRC-AQU'       1.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+dtmax 90
+sorder redblack
+
+norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25
+
+   dtwell .02
+
+   **  The injection and production phases of the single cycling well
+   **  will be treated as two distinct wells which are in the same
+   **  location but are never active at the same time.  In the well data
+   **  below, both wells are defined immediately, but the producer is
+   **  shut in, to be activated for the drawdown.
+
+
+   well 1 'Injector 1' vert 1 1
+   well 2 'Producer 1' vert 1 1
+
+   **  CYCLE NO. 1  -  INJECTION
+
+   injector mobweight 'Injector 1'
+   incomp  water 0 0 1 0
+   tinjw 450
+   qual .7
+   operate     bhp 1000   ** Starting BHP is 1000 psi
+   operate max stw  600   ** Maximum water rate is 600 BPD
+   perfv 'Injector 1'
+           **  k  wi = 0.007082 *k * h / ln(0.5 * re / rw)
+               4  78095.371 **88
+               3  39037.686 **44
+               2  97594.214 **110
+               1 195188.43  **220
+
+   producer 'Producer 1'
+   operate     stl 1000   ** Starting liquid rate is 1000 BPD
+   operate min bhp   17   ** Minimum BHP is 17 psi
+   geometry k  .3 .5 1 0 ** rw cc ff ss
+   perfv geo 'Producer 1'
+               **  k
+                   4  1.0
+                   3  1.0
+                   2  1.0
+                   1  1.0
+
+   ** Cycle No. 1  -  Injection
+
+   shutin 'Producer 1'    ** Turn off producer
+
+time 10
+
+   dtwell 1
+
+   **  CYCLE NO. 1  -  SOAK
+
+   shutin 'Injector 1'    ** Turn off injector
+
+time 17
+
+   dtwell .2
+
+   **  CYCLE NO. 1  -  PRODUCTION
+
+   open 'Producer 1'      ** Turn on producer
+
+time 365
+stop

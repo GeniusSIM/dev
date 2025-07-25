@@ -1,0 +1,276 @@
+   *****************************************************************************
+   ** Template (mxgmc074.dat):  3D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC074.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         CAP MODEL                                        6X6X10  CARTESIAN GRID  **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **       Changing Young's modulus in the hardening cap via the keyword *GCAPMOD.    **
+   **       Considered as a triaxial test - Only a quarter of block is examined.       **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #074'
+*TITLE2
+   "Verify/Illustrate *GCAPMOD Changing Young's Modulus in Hardening Cap"
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*WPRN *GRID 1 
+*OUTPRN *GRID *PRES
+
+*OUTSRF *GRID *POROS *PRES *YOUNG *POISSON *VDISPL *VERDSPLGEO
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *STRAINVOL *YLDSTATE
+
+*OUTSRF *SPECIAL 6 6 1 *VERDSPLGEO
+*OUTSRF *SPECIAL 6 6 1 *STRESEFF
+*OUTSRF *SPECIAL 6 6 1 *STRNEPL
+*OUTSRF *SPECIAL 6 6 1 *STRAINVOL
+
+*OUTSRF *SPECIAL 1 1 1 *VERDSPLGEO
+*OUTSRF *SPECIAL 1 1 1 *STRESEFF
+*OUTSRF *SPECIAL 1 1 1 *STRNEPL
+*OUTSRF *SPECIAL 1 1 1 *STRAINVOL
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 6 6 10
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+   *MOD  1:6   1:6   1:5  = 0.0001
+
+*PERMI *CON 15000.0
+  *mod  1:6    1:6   1:5   = 1.0e-6  
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 1.0
+
+*PRPOR 3000
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      0.00000   165.000   1.01200   169.490   1.17000 0.0130000
+     5000.000   335.000   1.02550   338.980   1.14000 0.0135000
+    
+
+   *DENSITY *OIL     45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER   63.02
+   *CO               1.0E-5        ** Oil compressibility
+   *CVO              0.0           ** Viscosity dependence on oil compressibility
+   *BWI              1.0           ** Water formation volume factor
+   *CW               0.0           ** Water compressibility
+   *REFPW            14.7          ** Reference pressure
+   *VWI              0.5366        ** Water viscosity at reference pressure
+   *CVW              0.0           ** Pressure dependence on water compressibility      
+
+*TRES 150
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*VERTICAL DEPTH_AVE
+*REFPRES 3035
+*REFDEPTH 5000
+*DGOC 3500
+*DWOC 3600
+*PB *CON 0.0
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  1E-2
+
+*NORM      *PRESS 200
+*CONVERGE  *PRESS 0.1
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH              ** Main keyword for using geomechanics module              
+
+*GEOM3D               ** Using 3D finite elements
+*SOLVERG *AIMSOL
+*GCOUPLING 0
+
+*NITERGEO 500         ** Max number of iterations for convergence
+*GCAPMODEL 1          ** Cap model 1
+*ELASTMOD 1.5e4       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.30      ** Poisson's ratio
+*FRICANGLE 30.0       ** Friction angle (degrees)
+*COHESION 14.5        ** Cohesion (PSI)
+*GCAPR 2.0E0          ** Aspect ratio
+*GCAPD 3E-4           ** Parameter D (1/PSI)
+*GCAPW 0.001          ** Parameter W
+*GCAPLOC 45.0         ** Initial hardening parameter
+*GCAPTEN -200         ** Tension cut-off (PSI)
+*GCINCRMT 2           ** Number of strain divisions for convergence
+*GCAPMOD              
+
+*STRESS3D 0 0 0 0 0 0
+*PRESCBC3D          ** Prescribed Boundary for quarter of a block
+  *IJK  1:6  1:6  10
+      5:8  03  0.0
+  *IJK  1:6  1   1:10
+     1:2  02  0.0
+     5:6  02  0.0
+  *IJK  1  1:6  1:10
+     1  01  0.0
+     4  01  0.0
+     5  01  0.0
+     8  01  0.0
+      
+*DLOADBC3D                 ** Applying pressure around the surface of the block
+   *IJK 6  1:6   1:10
+        2  3  6  7   10.0
+   *IJK 1:6  6   1:10
+        3  4  7  8   10.0
+   
+
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 0.001
+
+TIME 0.001
+
+  *DLOADBC3D
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+TIME 0.002
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+TIME 0.003
+
+  *DLOADBC3D
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+TIME 0.004
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.005
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   10.0
+        
+TIME 0.006
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.007
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.008
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.009
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.010
+
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+        
+TIME 0.011
+
+*STOP

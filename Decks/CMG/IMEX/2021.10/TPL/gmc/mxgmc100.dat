@@ -1,0 +1,228 @@
+   *****************************************************************************
+   ** Template (mxgmc100.dat):  3D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC100.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  NO WELL                                          SI UNITS                **
+   **         Linear Elastic Model                             5x15x10 CARTESIAN GRID  **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **        Illustrate how the Skempton's effect to an undrained condition            **
+   **        Skempton's effect can only be observed when a sudden load is applied to a **
+   **        surface of reservoir. This load will cause changes in pore pressure       **
+   **        and in porosity. Compressive load causes an increase in pore pressure     **
+   **        and tensile load cause a decrease in pore pressure.                       **
+   **        Mandel-Cryer's effect is a phenomenon of pore pressure increasing higher  **
+   **        than its initial value after the Skempton's effect when the fluid is      **
+   **        withdrawn.                                                                **
+   **        Besides, in order to solve such a problem, *GCOUPLING 3 and number of     **
+   **        coupling iterations are used.                                             **
+   **        The number of coupling iterations (*NCOUPLING) can be any large positive  **
+   **        interger. The convergence of coupling is controlled by the tolerance      **
+   **        given in the data; for instance, *GPTOLMUL.                               **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   "IMEX Geomechanics Template # 100"
+*TITLE2
+   "Skempton and Mandel-Cryer Effects"
+
+*INUNIT *SI
+
+*WPRN *GRID *TIME
+*OUTPRN *GRID *PRES
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+*OUTSRF *WELL *LAYER *ALL
+
+*OUTSRF *GRID  *PRES *SW *MASDENW *VISW *POROS
+
+*OUTSRF *SPECIAL 3 3 1 *PRES
+*OUTSRF *SPECIAL 3 3 1 *POROS
+*OUTSRF *SPECIAL 3 3 1 *MASDENW
+*OUTSRF *SPECIAL 3 3 1 *VISW
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 5 5 10
+
+*DI *CON 100.0
+*DJ *CON 100.0
+*DK *CON 100.0
+
+*KDIR *DOWN
+
+*DTOP  25*0.0
+
+**  0 = null block, 1 = active block
+*NULL *CON  1
+
+*POR *CON 0.25
+
+*PERMI  *CON 1.0
+*PERMJ  *EQUALSI
+*PERMK  *EQUALSI
+
+*CPOR 2.31E-6
+*PRPOR 101.325
+
+**  ==============  FLUID MODEL =================
+
+*MODEL *OILWATER
+
+   *PVT
+   **    p        rs       bo         eg      viso       visg
+      0.00000   33.000   1.01200   169.490   1.17000   0.0130000
+    34000.000   70.000   1.02550   338.980   1.14000   0.0135000
+
+
+   *DENSITY *OIL     900.0
+   *DENSITY *GAS     0.05
+   *DENSITY *WATER   1000.
+   *CO               0.145E-5
+   *CVO              0.0
+   *BWI              1.0
+   *CW               4.348e-07
+   *REFPW            100
+   *VWI              1.0
+   *CVW              0.0
+
+   *TRES 37.0
+
+**  ==============  ROCK-FLUID DATA  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+**   Sw        Krw        Krow
+**  ----     --------    -------
+     0.0       0.0        1.0
+     1.0       1.0        0.0
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_OIL *FINE_INTG
+
+*DWOC 0.0
+*REFDEPTH 0.0
+*REFPRES 200.0
+
+*PB *CON  14.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMIN 1.E-10
+*NCUTS 30
+
+*NORTH 300
+*ITERMAX 300
+*PIVOT *ON
+*SDEGREE *GAUSS
+*PRECC 1.E-5
+
+*NEWTONCYC 30
+*CONVERGE *MAXRES 1.E-6
+*NORM *PRESS 5000.0
+
+*AIM *OFF
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+*GEOM3D
+*GEOGRID *GCART  5 5 10
+
+*GCOUPLING 3
+*NCOUPLING 100
+
+*NOCOUPERM
+*GPTOLMUL 0.1
+*GCFACTOR 1
+
+*GEOROCK 1
+   *MOHRCOUL
+   *POISSRATIO 0.3
+   *ELASTMOD 2.031E6       ** 14GPa shale Youngs modulus converted into psi
+   *BIOTSCOEF 0.68
+   *COHESION 1.E6          ** For elasticity
+
+*GEOROCK 2
+   *MOHRCOUL
+   *POISSRATIO 0.2
+   *ELASTMOD 1.16E6        ** 8GPa sand Youngs modulus converted into psi
+   *BIOTSCOEF 0.88
+   *COHESION 1.E6          ** For elasticity
+
+** Geomech domain
+*GDI  *GCON 100.0
+*GDJ  *GCON 100.0
+*GDK  *GCON 100.0
+
+*GOUTSRF *GGRID *PRES *STRAINVOL *SAFACTOR
+
+*GEODEPTH  *GTOP 1 1 1   0.0
+
+** Constrain the host grid in full (*ALL) or part (*IJK)
+*RCONBT *ALL ** On the bottom
+*RCONLF *ALL ** On the left
+*RCONRT *ALL ** On the right
+*RCONBK *ALL ** On the back
+*RCONFT *ALL ** On the front
+
+*GEOTYPE   *IJK
+**         i      j     k        rocktype
+           1:5    1:5   1:10     2
+
+** Initial effective stress gradient in the reservoir
+**             Sxx     Syy      Szz      Sxy    Syz    Sxz
+*STRESSGRAD3D -0.24    -0.24    -0.56    0.0    0.0    0.0    ** kPa/m
+
+*GOUTSRF  *GGRID *ALL
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*DATE 2006 06 17
+
+   *AIMSET *CON 1
+   *DTMAX 0.01
+   *DTWELL 1.E-9
+
+*TIME 7.000000E-05
+*TIME 7.500000E-05
+*TIME 9.500000E-05
+*TIME 1.425000E-04
+*TIME 6.950000E-04
+*TIME 0.1
+*TIME 0.10001
+
+   *DLOADBC3D
+   *IJK 1:5 1:5 1    ** top
+   ** node1 node2 node3 node4 load
+      1     2     3     4     10000.0     ** kN/m2
+
+*TIME 1.0
+*STOP
+

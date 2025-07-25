@@ -1,0 +1,199 @@
+   ******************************************************************************
+   ** mxsmo083.dat:        Recurrent CTYPE for Rock Compressibility            **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO083.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  3x3x1         CTYPE Rock Compressibility changes       GAS INJECTION     **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** Two CTYPEs of compressibility model are defined and switched between during the  **
+   ** run.  The *REFCURR keyword updates the reference porosity and pressure at the    **
+   ** time when the second CCPOR is applied. (Based on mxsmo061)                       **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Recurrent CTYPE for Rock Compressibility'
+   *TITLE2
+   'Update reference values'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   10
+   *WPRN   *GRID   1
+
+   *OUTPRN *WELL   *BRIEF
+
+   *WSRF   *GRID   2
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID *PRES PERM POROS TRMMF
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 3   3    1
+
+   *DI *CON 1000.0
+   *DJ *CON 1000.0
+   *DK *KVAR
+    50.0
+
+   *DEPTH 1 1 1 8400.0
+
+   *POR *CON 0.3
+
+   *CPOR   3.0E-6
+   *PRPOR 14.7
+
+   *PERMI *KVAR
+      100
+   *PERMJ *KVAR
+      100
+   *PERMK *KVAR
+       20.0
+
+   CROCKTYPE 1
+   *REFCURR
+   *CCPOR   3.0E-6
+   *CPRPOR 14.7
+
+   CROCKTYPE 2
+   *CCPOR   5.0E-6
+
+**$ Property: Rock Compaction Set Num  Max: 2  Min: 1
+   CTYPE CON 1
+
+   *MODEL *BLACKOIL           
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+** Note : The above PVT data violates the total hydrocarbon compressibility check. To correct,
+** you could either change rs value at p=5014.7 from 1618 to 1600 or to change the last bo entry 
+** from 2.357 to 2.352.  Other possibilities could be equally appllied. The above corrections 
+** were tested and they have insignificant effects. 
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow
+    0.1200000    0.0   1.0
+    0.8200000    0.1   0.0
+
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0   
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    4014.7
+   *REFDEPTH   8400.
+   *REFPRES    4800.
+   *DWOC       9500.
+   *DGOC       7000.
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX         10.
+   *MAXSTEPS      100
+   *NORM *PRESS  1000.0
+   *NORM *SATUR     0.20
+   *AIM  *THRESH    0.25 .25
+   converge maxres 0.01
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 04 22
+   *DTWELL 1.0
+                     
+   *WELL 1  'Injector'
+
+   *INJECTOR  *UNWEIGHT  1
+   *INCOMP    *GAS
+   *OPERATE   *MAX  *STG  1.0E+8
+   *OPERATE   *MAX  *BHP  20000.0
+   *XFLOW-MODEL 1 ZERO-FLOW
+   *PERF 1 
+   ** if     jf     kf     wi 
+      1      1      1      1.0E+5
+
+   *WELL 2  'Producer'
+
+   *PRODUCER  2
+   *OPERATE *MAX  *STO 20000.0
+   *OPERATE *MIN  *BHP  1000.0
+   *MONITOR *MIN  *STO  1000.0  *STOP
+   *MONITOR *BACKFLOW           *STOP
+   *MONITOR *GOR       24000.0  *STOP
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff
+        3     3     1     1.0
+
+   *TIME 20
+   *CTYPE CON 2   ** change rock compressibility, and update the reference porosity and pressure to the current values
+   *TIME 60
+   *STOP

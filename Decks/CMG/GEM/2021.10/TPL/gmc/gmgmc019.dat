@@ -1,0 +1,316 @@
+*****************************************************************************
+** Template (gmgmc019.dat):  Coupling Geomechanics Module to GEM           **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc019.dat                                                             **
+**                                                                                  **
+** MODEL:  SINGLE COMPLETION WELLS                          SI UNITS                **
+**         Linear elastic model                             10X10X1 CARTESIAN GRID  **
+**                                                                                  **
+** USAGE: Point loads on nodal element                                              **
+**        Unit of load is SI                                                        **
+**                                                                                  **
+** Purposes:                                                                        **
+**        Illustrate how the Skempton's effect to an undrained condition            **
+**        Illustrate Mandel-Cryer's effect to a drained condition                   **
+**        Skempton's effect can only be observed when a sudden load is applied to a **
+**        surface of reservoir. This load will cause changes in pore pressure       **
+**        and in porosity. Compressive load causes an increase in pore pressure     **
+**        and tensile load cause a decrease in pore pressure.                       **
+**        Mandel-Cryer's effect is a phenomenon of pore pressure increasing higher  **
+**        than its initial value after the Skempton's effect when the fluid is      **
+**        withdrawn.                                                                **
+**        Besides, in order to solve such a problem, GCOUPLING 3 and number of      **
+**        coupling iterations are used.                                             **
+**        The number of coupling iterations (NCOUPLING) can be any large positive   **
+**        interger. The convergence of coupling is controlled by the tolerance      **
+**        given in the data; for instance, STRESSTOL.                               **
+**        Output total normal stresses (TSTRESI TSTRESJ TSTRESK)                    **
+**                                                                                  **
+**        The only component CO2 is used as a TRACE component to facilitate         ** 
+**        injection and production of water only from the model.                    **  
+**************************************************************************************
+** After stars stgeo039.dat
+RESULTS SIMULATOR GEM
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+*TITLE1 'GEM Geomechanics Template #19'
+*TITLE2 'Skempton and Mandel-Cryer Effects'
+
+*INUNIT *SI
+*OUTPRN *GRID *IMPL *PRES *POROS *W 'CO2'
+*OUTPRN *WELL *ALL
+*WPRN *ITER *ALL
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM *TIME
+*OUTSRF *WELL *LAYER *ALL
+
+*OUTSRF *GRID *PRES *W 'CO2' *POROS
+             *STRESI *STRESJ *STRESK *VDISPL *STRESSH *STRESMXP *STRESEFF
+             *VELOCRC *STRAINI *STRAINJ *STRAINK *STRAINSH *STRNMXP *VPOROSGEO *VPOROSTGEO
+             *STRESSM *TSTRESI *TSTRESJ *TSTRESK
+
+WRST TIME
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 10 10 1
+*KDIR *DOWN
+
+*DI *IVAR  10*1  
+*DJ *JVAR  10*1.0
+*DK *CON   1.0
+
+*POR *CON 0.2
+
+*PERMI *CON 100.
+*PERMJ *EQUALSI 
+*PERMK *CON 100.
+
+*CPOR 0.0   
+*PRPOR 101.325 
+
+
+**  ==============  COMPONENT PROPERTIES  ======================
+*MODEL   *PR
+*NC    1    1
+*TRES        37.000
+*COMPNAME
+           'CO2'
+*SG         8.1800000E-01
+*TB        -7.8450000E+01
+*PCRIT      7.2800000E+01
+*VCRIT      9.4000000E-02
+*TCRIT      3.0420000E+02
+*AC         2.2500000E-01
+*MW         4.4010000E+01
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.4000000E-02
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      7.8000000E+01
+*BIN 
+
+*ENTHCOEF
+            4.7780500E+00  1.1443300E-01  1.0113200E-04 -2.6494000E-08
+            3.4706000E-12 -1.3140000E-16
+
+
+*VISW 1.
+*REFPW 101.325
+*DENW 1000.
+*DENWS 1000.
+*CW  4.348e-07
+*TRACE-COMP 1
+*DERIVATIVEMETHOD *NUMERALL
+
+**  ==============  ROCK-FLUID DATA  ======================
+
+*ROCKFLUID
+
+*RPT 1
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+     0.0       0.0        1.0
+     1.0       1.0        0.0
+ 
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+     0.1      1.00        0.0
+     1.0      0.00        1.0
+
+**  ==============  INITIAL CONDITIONS  ======================
+*INITIAL
+*USER_INPUT
+*PRES *CON 101.325
+*TEMPER *CON 37.
+*SW *CON 0.999999
+*ZGLOBAL *CON 1.
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+*DTMIN 1.E-10
+*NORM *PRESS 40.
+*MAXCHANGE *PRESS 5000.
+*NORTH 80
+*ITERMAX 100
+*CONVERGE *HC 1.E-05
+*CONVERGE *WATER 1.E-05
+*CONVERGE *PRESS 1.E-06
+*CONVERGE *MAXRES 1.E-12
+*PRECC 1E-9
+
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH
+
+*GEOM3D
+
+*GCOUPLING 3          ** Coupling type # 3
+*NCOUPLING 100        ** Number of coupling iterations
+*GPTOLMUL 0.1         ** pressure tolerence in porosity formula
+
+*STRESSTOL 1e-2       ** stress tolerence for coupling iteration
+
+*NITERGEO 150         ** maximum number for geomechanis convergence
+
+*ELASTMOD 1.0E5       ** Young's modulus
+*POISSRATIO 0.2       ** Poisson's ratio
+*COHESION 1e9        ** prevent failure
+
+*STRESS3D     0. 0. 0. 0. 0.0  0.0
+
+ *PRESCBC3D
+   *IJK    1:10  1:10    1   ** plane strain
+    1:8       03     0.0
+   *IJK    1:1  1:10    1:1  ** left side
+    1       01     0
+    4       01     0
+    5       01     0.0
+    8       01     0.0
+
+  *IJK    1:10   10   1      ** symmetry boundary condition
+    3:4     02     0.0
+    7:8     02     0.0
+
+*PLOADBC3D                   ** point load   
+*IJK  1:10  1:1   1
+    1    0.0  101.325   0.0
+    2    0.0  101.325   0.0
+    5    0.0  101.325   0.0
+    6    0.0  101.325   0.0
+
+**  ==============  RECURRENT DATA  ======================
+*RUN
+*DATE 2006 06 17
+  *DTWELL 1.E-05
+     
+   *WELL 1 'Producer 1' 
+   *PRODUCER 1
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 1 
+   **i j k
+     10 1 1:1 1
+
+   *WELL 2 'Producer 2' 
+   *PRODUCER 2
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 2 
+   **i j k
+     10 2 1:1 1 
+
+   *WELL 3 'Producer 3' 
+   *PRODUCER 3
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 3 
+   **i j k
+     10 3 1:1 1 
+
+   *WELL 4 'Producer 4' 
+   *PRODUCER 4
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *k 0.05 0.363 0.5 0
+   *PERF *GEO 4 
+   **i j k
+     10 4 1:1 1 
+
+   *WELL 5 'Producer 5' 
+   *PRODUCER 5
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 5 
+   **i j k
+     10 5 1:1 1 
+
+   *WELL 6 'Producer 6' 
+   *PRODUCER 6
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 6 
+   **i j k
+     10 6 1:1 1 
+
+   *WELL 7 'Producer 7' 
+   *PRODUCER 7
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 7 
+   **i j k
+     10 7 1:1 1
+
+   *WELL 8 'Producer 8' 
+   *PRODUCER 8
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 8 
+   **i j k
+     10 8 1:1 1 
+
+   *WELL 9 'Producer 9' 
+   *PRODUCER 9
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 9 
+   **i j k
+     10 9 1:1 1 
+
+   *WELL 10 'Producer 10' 
+   *PRODUCER 10
+   *OPERATE *MIN *BHP 101.325  ** resting pressure
+   *GEOMETRY *K 0.05 0.363 0.5 0
+   *PERF *GEO 10 
+   **i j k
+     10 10 1:1 1 
+
+   *TIME 7.E-05
+   
+   *TIME 35.E-05
+   
+   *TIME 70.E-05 ** 1 min
+   
+   *TIME 140.E-05
+   
+   *TIME 280.E-05 
+   
+   *TIME 420.E-05 
+   
+   *TIME 560.E-05
+   
+   *TIME 700.E-05
+   
+   *TIME 840.E-05 
+   
+   *TIME 980.E-05 
+   
+   *TIME 1120.E-05 
+   
+   *TIME 1260.E-05 
+   
+   *TIME 1400.E-05 
+   
+   *TIME 2800.E-05
+   
+   *TIME 4200.E-05
+   
+   *TIME 5600.E-05
+   
+   *TIME 7000.E-05 ** 100 min
+
+   *STOP
+
+
+  

@@ -1,0 +1,331 @@
+
+
+**                       OVERVIEW
+**                       ========
+
+**  Verify and illustrate the modified Killough method for hysteresis of relative
+**  permeability of non-wetting oil, wetting water and gas.  Also modelled is
+**  hysteresis of oil-gas capillary pressure.  Keywords *HYS_CFRACTNW, *HYS_TRAPNW,
+**  *HYS_CFRACTG and *HYS_TRAPNW control the phase trapping and scanning-curve
+**  slope.  This case is based on STSMO015.
+
+**  Several special histories allow you to see the effect of hysteresis
+**  on water, oil and gas relative permeabilities.  To see the gas phase
+**  hysteresis in block (1,1,2), plot "KRG 1,1,2" on the Y axis versus
+**  "SG 1,1,2 on the X axis.  You can also plot "KRW 1,1,1" and "KRO 1,1,1"
+**  on the X axis versus "SW 1,1,1" on the Y axis.
+
+**  Since oil is the middle phase, KRO is a complex combination of all
+**  the two-phase rel perms.  A better indicator of the hysteresis of the
+**  water and oil phases is to plot "RPWT 1,1,1" and "RPNW 1,1,1" on the Y
+**  axis versus "SW 1,1,1" on the X axis.  This shows the intermediate
+**  water-oil two-phase values which experience hysteresis more directly
+**  than KRO.  This plot shows that each rel perm response is confined
+**  between its respective drainage and imbibition curves.
+
+**  These rel perm hysteresis curves look best when there are many time points.
+**  In this data set *NORM data was adjusted to increase the total number of time
+**  steps significantly, a practise that is not recommended for production runs.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 71'
+*title2 'Verify/Illustrate *KILLOUGH_MOD, *HYS_CFRACTNW, *HYS_TRAPNW'
+*title3 'Based on STSMO015'
+
+*inunit  si except 2 0   ** deg K instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+*outunit si except 1 2   ** minutes instead of days
+            except 2 2   ** deg F instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+            except 11 3  ** cm3 instead of m3
+            except 13 3  ** cm3 instead of m3
+  
+ *outprn *grid sw so sg krw kro krg pres pcog
+ *outprn *well *all  
+ *outsrf special blockvar pres 1,1,2
+                 blockvar pres 4,2,3
+                 blockvar pres 2,2,4
+                 blockvar so 1,1,1 
+                 blockvar so 1,1,2
+                 blockvar so 4,2,3
+                 blockvar so 2,2,4
+                 blockvar sw 1,1,1
+                 blockvar sw 1,1,2
+                 blockvar sw 4,2,3
+                 blockvar sw 2,2,4
+                 blockvar sg 1,1,2
+                 blockvar sg 4,2,3
+                 blockvar sg 2,2,4
+                 blockvar krg 1,1,2
+                 blockvar krg 4,2,3
+                 blockvar krg 2,2,4
+                 blockvar krw 1,1,1
+                 blockvar krw 1,1,2
+                 blockvar krw 4,2,3
+                 blockvar krw 2,2,4
+                 blockvar kro 1,1,1
+                 blockvar kro 1,1,2
+                 blockvar kro 4,2,3
+                 blockvar kro 2,2,4
+                 blockvar pcog 1,1,2
+                 blockvar pcog 4,2,3
+                 blockvar pcog 2,2,4
+                 blockvar rpwt 1,1,1
+                 blockvar rpnw 1,1,1
+*outsrf grid  pcog pres
+  
+wrst
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 5 3 4
+
+**  The triangular area of 1/8 of five-spot pattern is covered with a
+**  5x3 grid with grid lines parallel to the injector-producer line.
+**  These blocks are trimmed using block modifiers.
+**  In addition, a point-distributed grid is required in order to put
+**  grid nodes on the injector-producer line.  To do this, an oversized
+**  grid is specified, and then trimmed back using block modifiers.
+
+**  The interwell distance is divided into 6 equal segments, requiring
+**  NI = 7.  The 1/8 blocks containing the wells are lumped into the
+**  adjacent blocks, so NI = 5 instead.  The third corner at j = 4 is a
+**  1/4 block and is lumped into the adjacent block, giving NJ = 3.
+
+**  The 1/4 five-spot pattern is 1 ft square.  The interwell distance is
+**  1.414 ft = 0.431 m, giving a block size of 0.431/6 = 0.07184 m.
+
+**  Pay thickness is 6.4 " = 0.16256 m = four 0.04064 m blocks.
+
+*di *con 0.07184
+*dj *con 0.07184
+*dk *con 0.04064
+
+*por *con 0.3063
+*permi *con 2.122e2
+*permj *equalsi
+*permk *equalsi
+
+*end-grid
+
+*cpor 4.4e-7
+*rockcp 2.589e6
+*thconr 1.496e5
+*thconw 1.496e5
+*thcono 1.496e5
+*thcong 1.496e5
+*hlossprop overbur  2.683e6 1.047e6
+           underbur 2.683e6 1.047e6
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm            0.01802      0.5
+*idealgas
+*tcrit           647.35     617.6
+*molden          55500     1924.6
+*cp              4.5e-7     7.3e-7
+*ct1             8.8e-4     7.2e-4
+
+*avg           2.722e-16      0
+*bvg             1.075        0
+
+*cpg1              0          0
+*cpl1              0        1047
+*hvapr             0        5580
+
+*visctable
+
+**      Temp
+       297.0   1.078e-11  6.6898e-8
+       310.9   7.928e-12  1.5972e-8
+       338.7   4.977e-12  2.1643e-9
+       366.5   3.565e-12  5.440e-10
+       394.3   2.662e-12  2.014e-10
+       422.0   2.107e-12  9.838e-11
+       449.8   1.892e-12  6.019e-11
+       533.2   1.464e-12  2.894e-11
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+   0.130000   0.000000   1.000000
+   0.180692   0.000001   0.909378
+   0.231385   0.000018   0.820157
+   0.282077   0.000143   0.732440
+   0.332769   0.000617   0.646350
+   0.383462   0.001915   0.562030
+   0.434154   0.004830   0.479662
+   0.484846   0.010560   0.399469
+   0.535538   0.020795   0.321744
+   0.586231   0.037802   0.246887
+   0.636923   0.064520   0.175477
+   0.687615   0.104649   0.108452
+   0.738308   0.162735   0.047640
+   0.789000   0.244272   0.000000
+   0.839692   0.355784   0.000000
+   0.890385   0.504926   0.000000
+   0.941077   0.700571   0.000000
+   1.000000   1.000000   0.000000
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcogd     pcogi
+**  -----     ------    ------    ------    -------
+
+    0.200     0.17      0.0       0.69       0.69
+    0.395     0.112     0.0294    0.5218     0.4243
+    0.433     0.1022    0.0461    0.489      0.3725
+    0.515     0.0855    0.0883    0.4183     0.2608
+    0.569     0.0761    0.1172    0.3717     0.1872
+    0.614     0.0654    0.1433    0.3329     0.1259
+    0.663     0.05      0.1764    0.2907     0.0592
+    0.719     0.0372    0.217     0.2424    -0.0171
+    0.750     0.0285    0.2255    0.2156    -0.0594
+    0.805     0.0195    0.2919    0.1682    -0.0594
+    0.850     0.0121    0.3373    0.1294    -0.0594
+    0.899     0.0026    0.5169    0.0871    -0.0594
+    1.0       0.0       1.0       0.0       -0.0594
+
+*hys_kro *KILLOUGH_MOD *hyexo 2.0 *hyexw 2.0
+
+*swti
+** sw       krowi     krwi 
+   0.13      1.0      0.0      
+   0.20      0.66     0.002    
+   0.25      0.43     0.004    
+   0.30      0.256    0.006    
+   0.35      0.12     0.008    
+   0.40      0.03     0.013    
+   0.45      0.01     0.022    
+   0.4595    0.0      0.024    
+*HYS_CFACTNW 0.5
+*HYS_TRAPNW 0.2
+
+*hys_krg *KILLOUGH *hyexg 1.5 
+*slti   
+**   Sli        Krgi   
+    0.200     0.17      
+    0.395     int     
+    0.433     int   
+    0.515     int   
+    0.52      int
+    0.75      0.0
+*HYS_CFACTG 0.4
+*HYS_TRAPG 0.1
+
+*hys_pcog *epsog 0.1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+*pres *con 482.6
+
+*sw *con 0.3     ** So by difference, since Sg = 0
+
+*temp *con 296.9
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*sdegree gauss
+
+
+
+*run
+
+**  ==============  RECURRENT DATA  ======================
+
+time 0
+
+   dtwell 1e-4
+
+   ** Injection specification
+   well 1 'STEAM INJT' vert 1 1
+   injector 'STEAM INJT'
+   tinjw 468.5
+   qual .697  ** Wet steam at 69.7 % quality
+   incomp water  1.0  0.0
+   operate stw .053      ** Condensed steam equivalent
+   perfv 'STEAM INJT'   **  k   wi
+               1:2 1e-4    ** Inject into two layers
+
+   ** Production specification
+   well 2 'PRODUCER' vert 5 1
+   producer 'PRODUCER'
+   operate bhp 482.6
+   geometry  **  rw    cc    ff  ss
+             k  .0016 .307  .125   0
+   perfv *geo 'PRODUCER'
+   1:4  1.0
+
+   well 3 'OIL INJT' vert 1 1
+   injector 'OIL INJT'
+   tinjw 468.5
+   pinjw 500
+   incomp oil  0.0  1.0
+   operate sto .033      ** Condensed steam equivalent
+   perfv 'OIL INJT'   **  k   wi
+               1:2 1e-4    ** Inject into two layers
+
+   shutin 'OIL INJT'
+
+time .0069444
+time 0.034722
+
+   shutin 'STEAM INJT'
+   open 'OIL INJT'
+
+time 0.0365
+
+   shutin 'OIL INJT'
+   open 'STEAM INJT'
+
+time .08
+
+   shutin 'STEAM INJT'
+   open 'OIL INJT'
+
+time .1389
+dtwell 0.001
+   alter 'STEAM INJT' 'OIL INJT'
+            0.063       0.0
+
+time 0.2
+
+   shutin 'STEAM INJT'
+
+time 0.3
+stop

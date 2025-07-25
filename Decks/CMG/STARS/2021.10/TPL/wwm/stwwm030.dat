@@ -1,0 +1,493 @@
+
+*****************************************************************************
+** Template  (stwwm030.dat): Disc. Wells in SAGD with Pump                 **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  ** 
+** FILE :  STWWM030.DAT                                                             **
+**                                                                                  **
+** MODEL:  DUAL HORIZONRAL WELL GRAVITY DRAINAGE                                    **
+**         FLEXIBLE WELLBORE HORIZONTAL WELL OPTIONS                                ** 
+**         PUMP USED TO LIFT FLUID                                                  **
+**                                                                                  ** 
+** USAGE:  ILLUSTRATES FLEXIBLE WELLBORE WITH PUMPED PRODUCER                       **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       This data set illustrates the use of PUMP option in conjunction with a     **
+**       horizontal well in a SAGD configuration.                                   **
+**       The data is based on Test Bed #69.                                         **
+**                                                                                  ** 
+**       The problem is a gravity drainage 2 horizontal wells, with water and       **
+**       a dead oil.  A coarse three-dimensional Cartesian gris is employed.        **
+**                                                                                  **
+**       Features:                                                                  **
+**                                                                                  **
+**       1)  Multi-segment horizontal well modelled by the FlexWell                 **
+**           technique. Circulating wells for injector are illustrated              **
+**           as well as PUMP control for the producer when *PHWELLBORE keyword is   **
+**           used.                                                                  **
+**           The PUMP option is usefull when wellhead temperature needs to be known **
+**           and the producing fluid can not flow naturally.                        **
+**           PUMP location is shown in the output *PHWELLBORE table as LP when a    **
+**           well is slanted or DP when is drilled vertically.                      **
+**                                                                                  **
+**       2)  *PHWELLBORE with a specified number of wellbore sections. This is      **
+**           useful when wellbore fluid changes phase and/or composition very fast. **
+**           Increased number of sections will capture the change better.           **
+**                                                                                  **
+**       3)  Converted from Discretized Wellbore to Flexible Wellbore (Aug 2016).   **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Well Management Template No. 30'
+*title2 'Semi-Analytical Wellbore Heatloss with PUMP option'
+*title3 'Based on STTST69'
+
+*INUNIT *SI
+
+*MAXERROR  1
+*WRST time  
+*WPRN *SECTOR  *TIME  
+*WPRN *GRID  1  
+*WPRN *ITER 1
+*OUTPRN *WELL *WELLCOMP
+*OUTPRN *GRID *TEMP *SG  
+*PRNTORIEN 2 0
+
+*OUTPRN *ITER *NEWTON
+*WSRF *SECTOR  *TIME 
+*WSRF *GRID *TIME 
+*OUTSRF *GRID *TEMP *PRES *SG *SO *SW *X *Y *VISO
+*OUTSRF *WELL *PHWELL
+*OUTPRN *RES *ALL
+
+*OUTSRF *SPECIAL *WOR 'injan'  INST 
+                 *WOR 'injan'  CUM 
+                 *SOR 'injtb' 'injan'  INST 
+                 *SOR 'injtb' 'injan'  CUM 
+                 *OBHLOSS
+                  blockvar  temp  1,2,3
+                  stmqual  'injtb'
+
+
+
+** ===================  GRID DATA  ==============
+
+GRID CART 11 10 10
+
+KDIR UP
+DI CON 2
+DJ JVAR 
+300. 100. 100. 100. 100. 100. 100. 100. 100. 300. 
+DK KVAR 
+1. 1. 1. 1. 1. 2. 2. 2. 2. 2. 
+
+VAMOD 2 0.5 1 0.5 0.5  ** Trimmed side blocks
+VATYPE IVAR 
+           2            1            1            1            1            1 
+           1            1            1            1            2
+
+DEPTH TOP 1 1 10 280.0
+
+POR CON 0.34
+
+PERMI CON 2200
+
+PERMJ EQUALSI 
+
+PERMK EQUALSI  * 0.8
+
+END-GRID
+
+PRPOR    1000
+ROCKTYPE 1
+   CPOR   7.E-06
+   ROCKCP 2.35E+06
+   THCONR 6.6E+05
+   THCONW 5.34E+04
+   THCONO 1.15E+04
+   THCONG 5.50E+03
+   HLOSSPROP OVERBUR  2.35E+06 1.728E+05
+             UNDERBUR 2.35E+06 1.728E+05
+
+THTYPE  CON 1
+THTYPE_FLX  1
+THTYPE_SAM  1      
+
+
+
+** ===================  COMPONENT PROPERTIES  ==============
+
+*MODEL 3 3 3
+
+*COMPNAME   'WATER' 'BITUMEN'  'CH4'
+*KV1        0.0      0.00       3.191E+04
+*KV4        0.0      0.00      -3.307E+01
+*KV5        0.0      0.00      -2.771E+01
+*CMM        0.0      0.48       0.01604 
+*PCRIT      0.0      1.36E+3    4.6E+3 
+*TCRIT      0.0      624.65    -82.55
+*MOLDEN     0.0      2045.8     3.75E+4
+*CP         0.0      5.5e-7     5.5e-7
+*CT1        0.0      8.000E-04  8.000E-04
+
+*VISCTABLE 
+**  Temp
+10	0.0   5000000       200
+20	0.0   371535.2291	93.32543008
+30	0.0   85113.80382	46.08
+40	0.0   23442.28815	26.30267992
+50	0.0   8028	        12.58925412
+60	0.0   3073	        8.16
+70	0.0   1415.4	    5.623413252
+80	0.0   680.6	        4
+100	0.0   212.6	        2.454708916
+125	0.0   70.94	        1.659586907
+150	0.0   30.92	        1.230268771
+175	0.0   16.35	        0.912010839
+200	0.0   9.96	        0.831763771
+225	0.0   6.787	        0.758577575
+250	0.0   4.999	        0.72443596
+275	0.0   3.73	        0.68
+300	0.0   3	            0.616595002
+350	0.0   2.570395783 	0.588843655
+400	0.0   2.398832919	0.562341325
+
+
+
+** ===================  ROCK-FLUID DATA  ==============
+
+*ROCKFLUID
+
+*RPT 1 
+*SWT 
+**  Sw        Krw      Krow
+** --------------------------------
+0.190000000  0.000000000  1.000000000 
+0.200000000  0.000600000  0.960000000  
+0.250000000  0.003200000  0.850000000  
+0.300000000  0.008000000  0.720000000  
+0.350000000  0.013000000  0.600000000  
+0.400000000  0.025400000  0.470000000 
+0.450000000  0.044000000  0.350000000  
+0.500000000  0.069800000  0.240000000  
+0.550000000  0.104000000  0.165000000 
+0.600000000  0.148000000  0.100000000 
+0.650000000  0.204000000  0.060000000   
+0.700000000  0.271000000  0.030000000
+0.750000000  0.352000000  0.015000000  
+0.800000000  0.447000000  0.005000000 
+0.850000000  0.559000000  0.000000000  
+0.900000000  0.687000000  0.000000000
+0.950000000  0.834000000  0.000000000 
+1.000000000  1.000000000  0.000000000 
+
+*SLT 
+**  Sl        Krg      Krog
+** --------------------------------
+0.190000000  1.000000000  0.000000000    
+0.200000000  0.950000000  0.000600000
+0.250000000  0.840000000  0.003200000  
+0.300000000  0.720000000  0.008000000 
+0.350000000  0.600000000  0.013000000  
+0.400000000  0.470000000  0.025400000  
+0.450000000  0.350000000  0.044000000  
+0.500000000  0.240000000  0.069800000
+0.550000000  0.165000000  0.104000000
+0.600000000  0.093000000  0.148000000 
+0.650000000  0.075000000  0.204000000
+0.700000000  0.045000000  0.271000000
+0.750000000  0.027000000  0.352000000
+0.800000000  0.020000000  0.447000000  
+0.850000000  0.010000000  0.559000000 
+0.900000000  0.005000000  0.687000000  
+0.950000000  0.000000000  0.834000000
+1.000000000  0.000000000  1.000000000 
+
+
+
+** =================  INITIAL CONDITIONS  ====================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+*REFPRES 1340
+*REFDEPTH 280
+
+TEMP CON 10
+
+MFRAC_OIL 'BITUMEN' CON 0.95 
+MFRAC_OIL 'CH4'     CON 0.05 
+
+
+
+** =================  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMAX 15 	
+*NORM *PRESS 400  *TEMP 60 SATUR 0.3  Y 0.3  X  0.3  W  0.3
+north 50
+*ITERMAX 50
+*AIM STAB
+
+*upstream klevel
+
+
+
+** =================  RECURRENT DATA  ======================
+
+RUN
+
+TIME  0.0
+
+*DTWELL 0.01
+
+*WELL 1 'injtb'   *FRAC 0.5 
+INJECTOR MOBWEIGHT EXPLICIT 'injtb'
+PHWELLBORE  SAMODEL
+  DEPTH                 290.5       ** (m)
+  WLENGTH               415.0       ** (m)
+  RTUBIN                0.0635      ** (m)
+  RCASIN                0.14        ** (m)
+  RHOLE                 0.3         ** (m)
+  SURFACE_TEMP          10.0        ** (C)
+  number-of-divisions  	20
+INCOMP  WATER  1.0  0.0  0.0
+TINJW  	224.0
+QUAL  	0.9
+OPERATE  MAX  WHP  2500.0  CONT REPEAT
+OPERATE  MAX  STW  400.0  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  J  0.11  0.229  1.0  0.0
+  PERF_FLX       GEO  'injtb'
+** UBA             ff          Status  Connection  
+    1 2 5         1.0  CLOSED    FLOW-FROM  'SURFACE'  REFLAYER
+    1 3 5         1.0  CLOSED    FLOW-FROM  1
+    1 4 5         1.0  CLOSED    FLOW-FROM  2
+    1 5 5         1.0  CLOSED    FLOW-FROM  3
+    1 6 5         1.0  CLOSED    FLOW-FROM  4
+    1 7 5         1.0  CLOSED    FLOW-FROM  5
+    1 8 5         1.0  CLOSED    FLOW-FROM  6
+    1 9 5         1.0  OPEN    FLOW-FROM  7
+
+
+WELL  'injan'  FRAC  0.5
+PRODUCER 'injan'
+PHWELLBORE  SAMODEL
+  DEPTH                 290.5       ** (m)
+  WLENGTH               415.0       ** (m)
+  RTUBIN                0.0635      ** (m)
+  RCASIN                0.14        ** (m)
+  RHOLE                 0.3         ** (m)
+  SURFACE_TEMP          10.0        ** (C)
+  number-of-divisions   20
+OPERATE  MAX  STL  500.0  CONT REPEAT
+OPERATE  MIN  BHP  2480.0  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  J  0.11  0.229  1.0  0.0
+  PERF_FLX       GEO  'injan'
+** UBA             ff          Status  Connection  
+    1 2 5         1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    1 3 5         1.0  OPEN    FLOW-TO  1
+    1 4 5         1.0  OPEN    FLOW-TO  2
+    1 5 5         1.0  OPEN    FLOW-TO  3
+    1 6 5         1.0  OPEN    FLOW-TO  4
+    1 7 5         1.0  OPEN    FLOW-TO  5
+    1 8 5         1.0  OPEN    FLOW-TO  6
+    1 9 5         1.0  OPEN    FLOW-TO  7
+ 
+FLX_WELLBORE 'FlexWell-1' ATTACHTO 'injan' 'injtb'
+	SOLID_BLOCK OFF
+	ANNULUS ATTACHTO 'injan'
+		TUBULARS CONSTANT
+			ID 0.28
+			OD 0.281
+	WALL_CP 3.63e+006
+	WALL_HCN 3.888e+006
+	CEMENT_HEAT_PROP 1.848e+006 118400
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+	TUBING ATTACHTO 'injtb'
+		TUBULARS CONSTANT
+			ID 0.127
+			OD 0.128
+	WALL_CP 3.63e+006
+	WALL_HCN 3.888e+006
+	INSULATION_HEAT_PROP 3283 16800
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  100
+
+
+
+WELL 3 'prdtb'  FRAC  0.5
+INJECTOR MOBWEIGHT EXPLICIT 'prdtb'
+phwellbore 		samodel
+	rtubin 		  0.0635
+	depth  		  293.5
+	wlength  	  415.0
+	rcasin 		  0.14
+	rhole  		  0.3  
+	surface_temp  10.0
+	pump_depth    290.
+INCOMP  WATER  1.0  0.0  0.0 
+TINJW  	224.0
+QUAL   	0.9
+OPERATE  MAX  BHP  2500.0  CONT REPEAT
+OPERATE  MAX  STW  400.0  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  J  0.11  0.229  1.0  0.0
+  PERF_FLX       GEO  'prdtb'
+** UBA             ff          Status  Connection  
+    1 2 2         1.0  CLOSED    FLOW-FROM  'SURFACE'  REFLAYER
+    1 3 2         1.0  CLOSED    FLOW-FROM  1
+    1 4 2         1.0  CLOSED    FLOW-FROM  2
+    1 5 2         1.0  CLOSED    FLOW-FROM  3
+    1 6 2         1.0  CLOSED    FLOW-FROM  4
+    1 7 2         1.0  CLOSED    FLOW-FROM  5
+    1 8 2         1.0  CLOSED    FLOW-FROM  6
+    1 9 2         1.0  OPEN    FLOW-FROM  7
+
+
+WELL 4 'prdan'  FRAC  0.5
+PRODUCER 'prdan'
+phwellbore 		samodel
+	rtubin 		  0.0635
+	depth  		  293.5
+	wlength  	  415.0
+	rcasin 		  0.14
+	rhole  		  0.3  
+	surface_temp  10.0
+	pump_depth    290.
+OPERATE  MAX  STL  500.0  CONT REPEAT
+OPERATE  MIN  BHP  2480.0  CONT REPEAT
+**          rad  geofac  wfrac  skin
+GEOMETRY  J  0.11  0.229  1.0  0.0
+  PERF_FLX       GEO  'prdan'
+** UBA             ff          Status  Connection  
+    1 2 2         1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    1 3 2         1.0  OPEN    FLOW-TO  1
+    1 4 2         1.0  OPEN    FLOW-TO  2
+    1 5 2         1.0  OPEN    FLOW-TO  3
+    1 6 2         1.0  OPEN    FLOW-TO  4
+    1 7 2         1.0  OPEN    FLOW-TO  5
+    1 8 2         1.0  OPEN    FLOW-TO  6
+    1 9 2         1.0  OPEN    FLOW-TO  7
+ 
+FLX_WELLBORE 'FlexWell-2' ATTACHTO 'prdan' 'prdtb'
+	SOLID_BLOCK OFF
+	ANNULUS ATTACHTO 'prdan'
+		TUBULARS CONSTANT
+			ID 0.28
+			OD 0.281
+	WALL_CP 3.63e+006
+	WALL_HCN 3.888e+006
+	CEMENT_HEAT_PROP 1.848e+006 118400
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  10000
+	TUBING ATTACHTO 'prdtb'
+		TUBULARS CONSTANT
+			ID 0.127
+			OD 0.128
+	WALL_CP 3.63e+006
+	WALL_HCN 3.888e+006
+	INSULATION_HEAT_PROP 3283 16800
+	REL_ROUGH  0.0001
+	MAX_NUSSELT  100
+ 
+REPORTING-GROUP 'FlexWell: FlexWell-1'
+    'injan' 'injtb'
+    1.0  1.0
+REPORTING-GROUP 'FlexWell: FlexWell-2'
+    'prdan' 'prdtb'
+    1.0  1.0
+
+
+saminfo 1
+
+ 
+*TIME   30.0
+*TIME   60.0
+*TIME   80.0
+*dtwell  0.1
+
+shutin 'injan' 'prdtb'  
+
+shutin 'prdan'
+
+
+WELL  5   'producer'  FRAC  0.5
+PRODUCER 'producer'
+phwellbore 		samodel
+	rtubin 		  0.0635
+	depth  		  293.5
+	wlength  	  415.0
+	rcasin 		  0.14
+	rhole  		  0.3  
+	surface_temp  10.0
+	pump_depth    290.
+	PUMP-power    15000.
+*OPERATE *MIN *BHP 900.
+*OPERATE *MAX *STL 500.
+operate max steam 5.0
+**          rad  geofac  wfrac  skin
+GEOMETRY  J  0.11  0.229  1.0  0.0
+  PERF_FLX       GEO  'producer'
+** UBA             ff          Status  Connection  
+    1 2 2         1.0  CLOSED    FLOW-FROM  'SURFACE'  REFLAYER
+    1 3 2         1.0  CLOSED    FLOW-FROM  1
+    1 4 2         1.0  CLOSED    FLOW-FROM  2
+    1 5 2         1.0  CLOSED    FLOW-FROM  3
+    1 6 2         1.0  CLOSED    FLOW-FROM  4
+    1 7 2         1.0  CLOSED    FLOW-FROM  5
+    1 8 2         1.0  CLOSED    FLOW-FROM  6
+    1 9 2         1.0  OPEN    	 FLOW-FROM  7
+
+
+REPLACE 'prdtb' 'producer' IN 'FlexWell-2'
+
+
+
+time 100.0
+stop
+RESULTS FLEXWELL BEGIN
+RESULTS FLEXWELL FLEXWELL_NAME 'FlexWell-1'
+RESULTS FLEXWELL AUTO_COMPLETE_PERFS 'YES'
+RESULTS FLEXWELL TUBING_WELL_NAME 'injtb' SELECTED_ANNULUS_COMPLETION_BRANCH 'Annulus Main Branch ending with UBA [1,9,5]   :   1901-01-01'
+RESULTS FLEXWELL END
+
+RESULTS FLEXWELL BEGIN
+RESULTS FLEXWELL FLEXWELL_NAME 'FlexWell-2'
+RESULTS FLEXWELL AUTO_COMPLETE_PERFS 'YES'
+RESULTS FLEXWELL TUBING_WELL_NAME 'prdtb' SELECTED_ANNULUS_COMPLETION_BRANCH 'Annulus Main Branch ending with UBA [1,9,2]   :   1901-01-01'
+RESULTS FLEXWELL END
+
+RESULTS SPEC 'Permeability J'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 'REGION_WHOLEGRID'
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 0 1           
+RESULTS SPEC SPECKEEPMOD 'YES'
+RESULTS SPEC STOP
+
+
+RESULTS SPEC 'Permeability K'  
+RESULTS SPEC SPECNOTCALCVAL -99999      
+RESULTS SPEC REGION 'All Layers (Whole Grid)'
+RESULTS SPEC REGIONTYPE 'REGION_WHOLEGRID'
+RESULTS SPEC LAYERNUMB 0
+RESULTS SPEC PORTYPE 1
+RESULTS SPEC EQUALSI 1 0.8         
+RESULTS SPEC SPECKEEPMOD 'YES'
+RESULTS SPEC STOP
+

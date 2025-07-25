@@ -1,0 +1,305 @@
+** -------------------------------------------------------------------**
+** GMFRR016.DAT: Use of *DYNAGRID in a Dual Porosity Models           **
+** -------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMFRR016.DAT                                                **
+**                                                                    **
+** MODEL:  VARI 26x20x7 GRID     4  COMPONENTS    FRACTURED RESERVOIR **
+**         FIELD UNITS                                                **
+** -------------------------------------------------------------------**
+**                                                                    **
+**        Using keywords,                                             **
+**        a) *BLOCKGROUP & *REFINE *INNERWIDTH to create complex      **
+**           fractures, and                                           **
+**        b) *PLNRFRAC_TEMPLATE & *PLNRFRAC to create planar          **
+**           fractures.                                               **
+**        c) Use of keywords in templates from rockfluid section      **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+**        Dyngrid feature in a dual porosity model                    **
+**                                                                    **
+** -------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'Hydraulic Fracture with Planar Template'
+*TITLE2 'Use of Dynagrid in Dual Porosity Models'
+
+*INUNIT FIELD
+
+*WSRF *WELL 1
+*WSRF *GRID *TIME
+*OUTSRF GRID *PRES *SG *SW 
+*OUTSRF *RES *ALL
+
+** *WRST 0
+*WPRN *GRID 0
+*OUTPRN *GRID *NONE
+*OUTPRN *RES *NONE
+
+**$  Distance units: ft
+RESULTS XOFFSET         448.2182
+RESULTS YOFFSET        1248.5595
+
+**$  (DEGREES)
+RESULTS ROTATION          33.8399  **  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 -1.0 1.0
+
+** ---------  Definition of fundamental cartesian grid ------------------------
+*GRID *VARI 26 20 7
+*KDIR *DOWN
+*DI *IVAR    26*50.526
+*DJ *JVAR    20*46.0219
+*DK *KVAR     7*60
+
+*DTOP      520*3380
+*DUALPERM 
+*SHAPE *K-AV2 
+
+*POR FRACTURE CON       8E-05
+*POR MATRIX CON          0.03
+
+*PERMI *MATRIX *CON      0.01
+*PERMJ *MATRIX *CON      0.01
+*PERMK *MATRIX *CON      0.01
+
+*PERMI *FRACTURE *CON    4E-04
+*PERMJ *FRACTURE *CON    4E-04
+*PERMK *FRACTURE *CON    8E-04
+
+*DJFRAC *CON     25
+*DIFRAC *CON     25
+*DKFRAC *CON      0
+
+*PRPOR FRACTURE 1500
+*PRPOR MATRIX 1500
+*CPOR FRACTURE 1e-6
+*CPOR MATRIX 1e-6
+
+*PLNRFRAC_TEMPLATE 'Template (Well-1 - Frac 1)'
+   *PLNR_REFINE *INTO  7 7 1
+      *BWHLEN 350
+      *JDIR
+      *INNERWIDTH 4
+      *LAYERSUP 1
+      *LAYERSDOWN 2
+   *PERMI *MATRIX *FZ 5
+   *PERMJ *MATRIX *FZ 5
+   *PERMK *MATRIX *FZ 5
+      
+   *RTYPE  *MATRIX *FZ 2
+   *BSWCON  *MATRIX *FZ 0.01
+   *BSWCRIT *MATRIX *FZ 0.01
+   *BKRWIRO *MATRIX *FZ 0.5
+*END_TEMPLATE
+
+*PLNRFRAC_TEMPLATE 'Template (Well-1 - Frac 1a)'
+   *PLNR_REFINE *INTO  7 7 1
+      *BWHLEN 350
+      *JDIR
+      *INNERWIDTH 4
+      *LAYERSUP 4
+      *LAYERSDOWN 5
+   *PERMI *MATRIX *FZ 5
+   *PERMJ *MATRIX *FZ 5
+   *PERMK *MATRIX *FZ 5
+      
+   *RTYPE  *MATRIX *FZ 2
+   *BSWCON  *MATRIX *FZ 0.01
+   *BSWCRIT *MATRIX *FZ 0.01
+   *BKRWIRO *MATRIX *FZ 0.5
+*END_TEMPLATE
+
+
+*PLNRFRAC 'Template (Well-1 - Frac 1)'  7,11,3 *BG_NAME 'Well-1 - Frac_1'
+*PLNRFRAC 'Template (Well-1 - Frac 1)' 11,11,3 *BG_NAME 'Well-1 - Frac_2'
+*PLNRFRAC 'Template (Well-1 - Frac 1)' 15,11,3 *BG_NAME 'Well-1 - Frac_3'
+
+     
+** ---------------- Fluid Model ------------------------------
+** PVT UNITS CONSISTENT WITH *INUNIT *FIELD
+
+*MODEL   *PR
+*NC    4    4
+*TRES        120.2
+*PVC3        1.2
+*COMPNAME
+           'N2'           'C1'           'C2'           'C3'
+*SG         8.0900000E-01  3.0000000E-01  3.5600000E-01  5.0700000E-01
+*TB        -320.35        -258.61         -127.57       -43.69
+*PCRIT      3.3500000E+01  4.5400000E+01  4.8200000E+01  4.1900000E+01
+*VCRIT      8.9500000E-02  9.9000000E-02  1.4800000E-01  2.0300000E-01
+*TCRIT      1.2620000E+02  1.9060000E+02  3.0540000E+02  3.6980000E+02
+*AC         4.0000000E-02  8.0000000E-03  9.8000000E-02  1.5200000E-01
+*MW         2.8013000E+01  1.6043000E+01  3.0070000E+01  4.4097000E+01
+*HCFLAG     0              0              0              0
+*BIN
+            3.1000000E-02
+            4.2000000E-02  2.6890022E-03
+            9.1000000E-02  8.5370405E-03  1.6620489E-03
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      8.9500000E-02  9.9000000E-02  1.4800000E-01  2.0300000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      4.1000000E+01  7.7000000E+01  1.0800000E+02  1.5030000E+02
+
+*REFPW   4015.00
+*DENW    60.8143
+*DENWS   60.8143
+*CW      0.2952E-05
+*VISW    0.3457
+
+** ----------------------- Rock Fluid ---------------------------------------
+ROCKFLUID
+
+*RPT 1
+**$        Sw       krw     krow      pcow
+*SWT
+          0.2         0      1.0      1.0
+       0.2375      0.00     *INT      *INT
+        0.275    0.0125     *INT      *INT
+       0.3125  0.028125     *INT      *INT
+         0.35      0.05     *INT      *INT
+       0.3875  0.078125     *INT      *INT
+        0.425    0.1125     *INT      *INT  
+       0.4625  0.153125     *INT      *INT  
+          0.5       0.2     *INT      *INT  
+       0.5375  0.253125     *INT      *INT  
+        0.575    0.3125     *INT      *INT  
+       0.6125  0.378125     *INT      *INT  
+         0.65      0.45     *INT      *INT  
+       0.6875  0.528125     *INT      *INT  
+        0.725    0.6125     *INT      *INT  
+       0.7625  0.703125      0.0      *INT
+       1.0000       0.8      0.0      0.0
+**$        Sl       krg     krog 
+*SLT
+         0.20       0.8     0.0
+      0.29375  0.703125     0.0
+       0.3375    0.6125     *INT  
+      0.38125  0.528125     *INT  
+        0.425      0.45     *INT  
+      0.46875  0.378125     *INT  
+       0.5125    0.3125     *INT  
+      0.55625  0.253125     *INT  
+          0.6       0.2     *INT  
+      0.64375  0.153125     *INT  
+       0.6875    0.1125     *INT  
+      0.73125  0.078125     *INT  
+        0.775      0.05     *INT  
+      0.81875  0.028125     *INT  
+       0.8625    0.0125     *INT  
+      0.90625         0     *INT
+         0.95         0     1.0
+RPT 2
+**$        Sw       krw     krow      pcow
+*SWT
+         0.00         0      1.0      
+       1.0000       0.2      0.0 
+       
+**$        Sl       krg     krog 
+*SLT
+         0.0        1.0      0.0
+         1.00         0      1.0
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+        
+*BSWCON  *MATRIX   *CON 0.20
+*BSWCRIT *MATRIX   *CON 0.2375
+*BSWCON  *FRACTURE *CON 0.01
+*BSWCRIT *FRACTURE *CON 0.01
+*BKRWIRO *FRACTURE *CON 0.3
+         
+** ------------------ Initialization data -------------------
+*INITIAL
+
+*VERTICAL *DEPTH_AVE *WATER_GAS *EQUIL *NOTRANZONE
+
+*REFDEPTH   3380          
+*REFPRES    2800
+*DWGC       3900
+*ZGAS       0.004  0.978  0.011  0.007
+
+** ----------------------- Numerical ----------------------------------
+*NUMERICAL
+  *DTMIN 1E-08
+  *DTMAX 15.0
+  *NORM *GMOLAR 0.8
+  *AIM *STAB *AND-THRESH 1 0.001
+
+  *NORTH   100
+  *ITERMAX 100
+  **MAXSTEPS 20
+** --------------------- Recurrent data -------------------------------
+*RUN
+*DATE 2000 1 1
+*DTWELL 0.0001
+
+**$
+*WELL  'Well-1'
+*PRODUCER 'Well-1'
+*OPERATE  *MAX  *STG  5.E+06  *CONT *REPEAT
+*OPERATE  *MIN  *BHP  500.  *CONT *REPEAT
+**       dir  rad  geofac  wfrac  skin
+*GEOMETRY  *I  0.25  0.37  1.0  0.0
+*PERF  *GEOA  'Well-1'
+** UBA               ff   Status  Connection  
+    5 11 3            MT  1.0  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    6 11 3            MT  1.0  OPEN    FLOW-TO  1
+    7 11 3 / 1 4 1    MT  1.0  OPEN    FLOW-TO  2
+    7 11 3 / 2 4 1    MT  1.0  OPEN    FLOW-TO  3
+    7 11 3 / 3 4 1    MT  1.0  OPEN    FLOW-TO  4
+    7 11 3 / 4 4 1    MT  1.0  OPEN    FLOW-TO  5
+    7 11 3 / 5 4 1    MT  1.0  OPEN    FLOW-TO  6
+    7 11 3 / 6 4 1    MT  1.0  OPEN    FLOW-TO  7
+    7 11 3 / 7 4 1    MT  1.0  OPEN    FLOW-TO  8
+    8 11 3            MT  1.0  OPEN    FLOW-TO  9
+    9 11 3            MT  1.0  OPEN    FLOW-TO  10
+    10 11 3           MT  1.0  OPEN    FLOW-TO  11
+    11 11 3 / 1 4 1   MT  1.0  OPEN    FLOW-TO  12
+    11 11 3 / 2 4 1   MT  1.0  OPEN    FLOW-TO  13
+    11 11 3 / 3 4 1   MT  1.0  OPEN    FLOW-TO  14
+    11 11 3 / 4 4 1   MT  1.0  OPEN    FLOW-TO  15
+    11 11 3 / 5 4 1   MT  1.0  OPEN    FLOW-TO  16
+    11 11 3 / 6 4 1   MT  1.0  OPEN    FLOW-TO  17
+    11 11 3 / 7 4 1   MT  1.0  OPEN    FLOW-TO  18
+    12 11 3           MT  1.0  OPEN    FLOW-TO  19
+    13 11 3           MT  1.0  OPEN    FLOW-TO  20
+    14 11 3           MT  1.0  OPEN    FLOW-TO  21
+    15 11 3 / 1 4 1   MT  1.0  OPEN    FLOW-TO  22
+    15 11 3 / 2 4 1   MT  1.0  OPEN    FLOW-TO  23
+    15 11 3 / 3 4 1   MT  1.0  OPEN    FLOW-TO  24
+    15 11 3 / 4 4 1   MT  1.0  OPEN    FLOW-TO  25
+    15 11 3 / 5 4 1   MT  1.0  OPEN    FLOW-TO  26
+    15 11 3 / 6 4 1   MT  1.0  OPEN    FLOW-TO  27
+    15 11 3 / 7 4 1   MT  1.0  OPEN    FLOW-TO  28
+    16 11 3           MT  1.0  OPEN    FLOW-TO  29
+    17 11 3           MT  1.0  OPEN    FLOW-TO  30
+    18 11 3           MT  1.0  OPEN    FLOW-TO  31
+    19 11 3           MT  1.0  OPEN    FLOW-TO  32
+    20 11 3           MT  1.0  OPEN    FLOW-TO  33
+
+*DATE 2000 1 2
+
+*DYNAGRID *AMALGAMATE INTO 2 2 1
+1:4 1:20 1:7
+21:26 1:20 1:7
+
+*DATE 2000 1  3
+*DATE 2000 1  4
+*DATE 2000 1  5
+*DATE 2000 1  6
+*WRST *TNEXT
+*DATE 2000 1  7
+
+*DATE 2000 1  8
+*DATE 2000 1  9
+*STOP

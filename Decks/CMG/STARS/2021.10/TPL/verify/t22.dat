@@ -1,0 +1,211 @@
+
+
+**                       OVERVIEW
+**                       ========
+**
+** Cyclic Steam Stimulation
+**
+** Dead Oil (Aberfeldy Properties) and Water
+**
+** This run is of a 5 x 5 x 1 coarse grid with a lgr
+** block around a well located in the middle column of blocks.
+** The cylindrical grid has 4 radial and 1 Z refinements.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title2 'NEAR WELL PHENOMENA CASE 1 - HYBRID'
+
+*inunit  field
+*outunit field
+
+*outprn *grid pres sw so sg temp y
+*outprn *well *all
+*outprn *iter newton
+*wprn *grid 300
+*wprn *iter 1
+
+outsrf grid  pres sw so sg temp
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 2 2 1
+*ninepoint ij
+
+*refine 2  2  1   *into  2  2   1
+
+*di ivar  20 40
+*dj jvar  20 40
+*dk *con 20
+
+*por *con 0.35
+*permi *con 2000.0
+*permj *equalsi
+*permk *equalsi * 0.5
+
+*end-grid
+
+*cpor 1.0e-4
+*rockcp 33.0
+*thconr 42.24
+*thconw 42.24
+*thcono 42.24
+*thcong 42.24
+**hlossprop overbur  33.0   35.28
+**           underbur 33.0   35.28
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm            18.02      600.0
+*pcrit         3206.2       0           ** flag for ideal gas
+*tcrit          705.4        0
+*molden            0        0.10113
+*cp                0       5.0e-6
+*ct1               0       5.0E-4
+
+*prsr 14.7
+*temr 74.0
+*tsurf 60.0
+
+*avg           1.13e-5      0
+*bvg             1.075        0
+
+*cpl1              0          300
+*cpl2              0           0
+*hvr               0           0
+*ev                0           0
+
+*visctable
+
+**      Temp
+  74.00000       0.0  1275.000
+   100.000       0.0   380.000
+   150.000       0.0    91.200
+   200.000       0.0    28.800
+   250.000       0.0    13.5
+   300.000       0.0     7.9
+   350.000       0.0     5.2
+   500.000       0.0     2.0
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+   0.2   0.0    0.8475   0.0
+   0.25  0.0045 0.71     0.0
+   0.3   0.01   0.6      0.0
+   0.35  0.02   0.51     0.0
+   0.4   0.03   0.43     0.0
+   0.45  0.04   0.355    0.0
+   0.5   0.05   0.287    0.0
+   0.6   0.075  0.16     0.0
+   0.65  0.09   0.1175   0.0
+   0.7   0.105  0.057    0.0
+   0.75  0.12   0.02     0.0
+   0.79  0.135  0.0      0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+     0.285   0.127    0.0    0.0
+     0.35    0.105    0.015  0.0
+     0.4     0.09     0.025  0.0
+     0.45    0.073    0.037  0.0
+     0.5     0.06     0.05   0.0
+     0.55    0.045    0.065  0.0
+     0.6     0.035    0.085  0.0
+     0.65    0.027    0.1175 0.0
+     0.7     0.02     0.137  0.0
+     0.75    0.015    0.175  0.0
+     0.8     0.012    0.225  0.0
+     0.85    0.007    0.29   0.0
+     0.9     0.0      0.39   0.0
+     1.0     0.0      0.8475 0.0
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*pres *con 200.0
+*sw   *con 0.2   ** So by difference, since Sg = 0
+*temp *con 74.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*maxsteps 1
+*sdegree 2
+
+*norm     press 200 satur 0.2   temp 180  y 0.2   x 0.2
+
+
+*run
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1e-2
+
+   well 1 'STEAM INJT'
+   well 2 'PRODUCER'
+
+   injector  mobweight 'STEAM INJT'   ** Injection specification
+   incomp  water  1.0  0.0
+   tinjw 480
+   qual .7  ** Wet steam at 70 % quality
+   operate     stw 120.0     ** Condensed steam equivalent
+   operate max bhp 750.0
+   perf 'STEAM INJT'
+           **  UBA                wi
+               2 2 1  /  2  2  1  484223.64 ** 545.8
+
+   producer 'PRODUCER'              ** Production specification
+   operate     stl 100.0
+   operate min bhp 17.0
+   perf 'PRODUCER'
+           **  UBA                wi
+               2 2 1  /  2  2  1  484223.64 ** 545.8
+
+   shutin 'PRODUCER'
+
+time 10.0
+
+   shutin 'STEAM INJT'
+
+time 17.0
+
+   open 'PRODUCER'
+
+time 150.0
+stop

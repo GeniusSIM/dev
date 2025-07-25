@@ -1,0 +1,313 @@
+
+*****************************************************************************
+** Template (stsmo003.dat): Cyclic Steam Process with Radial Aquifer       **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+**                                                                                  **
+** FILE :  STSMO003.DAT                                                             **
+**                                                                                  **
+** MODEL:  MODIFIED CYCLIC STEAM PROCESS        FIELD UNITS    7X1X4 RADIAL GRID    **  
+**         FINITE RADIAL AQUIFER REPLACES OUTER GRID BLOCKS                         **
+**                                                                                  **
+** USAGE:  MODELS THE IMPACT OF A FINITE RADIAL AQUIFER ON CYCLIC STEAM PROCESS     **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       This data set is for a hypothetical reservoir surrounded by a radial       **
+**       aquifer of finite extent, the same thickness as the pay zone.              **
+**                                                                                  **
+**       This data was derived from problem 1A of the fourth SPE comparative        **
+**       solution project.  The original grid had 13 radial blocks.  In this        **
+**       data set the outer 7 grid blocks have been replaced by a finite            **
+**       thermal aquifer, starting from the outside of radial block #6.             **
+**       Only one cycle of steam injection is done, since more injection            **
+**       might result in steam appearance in the aquifer zone.                      **
+**                                                                                  **
+**       Features:                                                                  **
+**       1)  Thermal aquifer in horizontal radial grid mode.                        **
+**       2)  Two-dimensional cross-sectional r-z coordinates.                       **
+**       3)  Distinct permeability layering.                                        **
+**       4)  Black-oil type treatment of fluids.                                    **
+**       5)  Sharp changes in oil viscosity occur at the steam front                **
+**           (487 cp at 125 F to 2.5 cp at 450 F).                                  **
+**       6)  Automatic initial vertical equilibrium calculation.                    **
+**       7)  Multi-layer well with additional injection and production              **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 24'
+*TITLE2 'Fourth SPE Comparative Solution Project, Problem 1A'
+*TITLE3 'Test Bed No. 6 with Outer Radial Blocks as Aquifer Model'
+
+*INUNIT *FIELD   ** output same as input
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y *OBHLOSS *KRW *KRO
+*OUTPRN *WELL *ALL
+*WPRN *GRID 200
+*WPRN *ITER 200
+
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP
+
+*OUTSRF *SPECIAL *AQFRTOT *WATER *RATE
+                 *AQFRTOT *WATER *CUM
+                 *AQFRTOT *HEAT  *RATE
+                 *AQFRTOT *HEAT  *CUM
+
+*AQSTAT *ON
+
+*WRST
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 7 1 4  *RW 0    ** Zero inner radius matches previous treatment
+
+**  Radial blocks:  small near well;  outer block is large
+*DI *IVAR 3 5*10 25
+
+*DJ *CON 360  **  Full circle
+
+*DK *KVAR 25 25 20 10
+
+*POR *CON 0.3
+*PERMI *KVAR 2000 1000 500 2000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  / 2
+*AQUIFER *BOUNDARY
+*AQMETHOD *CARTER-TRACY
+*AQGEOM *RADIAL *FINITE
+*AQPROP  0.0  0.3  1E3  78.0 1.0 3.0 
+*AQVISC 0.6
+*AQCOMP 3.5095E-04
+*HFPROP 35.0 24.0 
+*AQLEAK *ON
+
+*AQFUNC
+ 0.52  0.627
+ 0.54  0.636
+ 0.56  0.645
+ 0.60  0.662
+ 0.65  0.683
+ 0.70  0.703
+ 0.75  0.721
+ 0.80  0.740
+ 0.85  0.758
+ 0.90  0.776
+ 0.95  0.791
+ 1.0   0.806
+ 1.2   0.865
+ 1.4   0.920
+ 1.6  0.973
+ 2.0  1.076
+ 3.0  1.228
+ 4.0  1.578
+ 5.0  1.828
+
+*END-GRID
+
+*CPOR 5E-4
+*PRPOR 75
+*ROCKCP 35
+*THCONR 24
+*THCONW 24
+*THCONO 24
+*THCONG 24
+**HLOSSPROP  *OVERBUR 35 24  *UNDERBUR 35 24
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+*COMPNAME       'Water'    'OIL'
+**              -----    -------
+     *CMM        18.02      600
+     *PCRIT      3206.2      0        ** These four properties
+     *TCRIT      705.4       0        ** are for the gas phase.
+     *AVG        1.13e-5     0        ** The dead oil component does
+     *BVG        1.075       0        ** not appear in the gas phase.
+
+     *MOLDEN     0        0.10113
+     *CP         0        5.e-6
+     *CT1        0        3.8e-4
+
+     *CPL1       0        300
+
+*VISCTABLE
+
+**     Temp
+         75     0        5780
+        100     0        1380
+        150     0         187
+        200     0          47
+        250     0          17.4
+        300     0           8.5
+        350     0           5.2
+        500     0           2.5
+
+*PRSR 14.7
+*TEMR 60
+*PSURF 14.7
+*TSURF 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+    1.0      1.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.142015    0.0
+    0.57     0.131232    0.00079
+    0.60     0.115599    0.004938
+    0.62     0.105551    0.009679
+    0.65     0.091061    0.019753
+    0.67     0.081805    0.028444
+    0.70     0.068557    0.044444
+    0.72     0.060169    0.057086
+    0.75     0.048291    0.079012
+    0.77     0.04087     0.095605
+    0.80     0.030544    0.123457
+    0.83     0.021273    0.154864
+    0.85     0.015743    0.177778
+    0.87     0.010799    0.202272
+    0.90     0.004665    0.241975
+    0.92     0.001649    0.27042
+    0.94     0.0         0.300444
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+** Automatic static vertical equilibrium
+*VERTICAL *DEPTH_AVE
+*REFPRES 75
+*REFBLOCK 1 1 4
+
+*SW *CON 0.5   ** So by difference, since Sg = 0
+    *MOD 7 1 1:4 = 1.0
+*TEMP *CON 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+*DTMAX 90
+*SDEGREE *GAUSS
+*SORDER *REDBLACK
+
+*NORM     *PRESS 200  *SATUR 0.2   *TEMP 180  *Y 0.2   *X 0.2
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*DATE 1973 9 25
+
+   *DTWELL .02
+
+   **  The injection and production phases of the single cycling well
+   **  will be treated as two distinct wells which are in the same
+   **  location but are never active at the same time.  In the well data
+   **  below, both wells are defined immediately, but the producer is
+   **  shut in, to be activated for the drawdown.
+
+
+   *WELL 1 'Injector 1' *VERT 1 1
+   *WELL 2 'Producer 1' *VERT 1 1
+
+   **  CYCLE NO. 1  -  INJECTION
+
+   *INJECTOR *MOBWEIGHT 'Injector 1'
+   *INCOMP  WATER  1.0  0.0
+   *TINJW 450
+   *QUAL .7   
+   *OPERATE      *BHP   1000   ** Starting BHP is 1000 psi
+   *OPERATE *MAX *STW    600   ** Maximum water rate is 600 BPD
+   *PERFV 'Injector 1'  **  k  wi = 0.007082 *k * h / ln(0.5 * re / rw)
+                4  78095.371 **88
+                3  39037.686 **44
+                2  97594.214 **110
+                1 195188.43  **220
+
+   *PRODUCER 'Producer 1'
+   *OPERATE     *STL     1000  ** Starting liquid rate is 1000 BPD
+   *OPERATE *MIN *BHP    17    ** Minimum BHP is 17 psi
+   *GEOMETRY K .3 .5 1 0 ** RW CC FF SS
+   *PERFV *GEO 'Producer 1'  **  k
+                     4  1.0
+                     3  1.0
+                     2  1.0
+                     1  1.0
+
+   ** Cycle No. 1  -  Injection
+
+   *shutin 'Producer 1'    ** Turn off producer
+
+*TIME 10
+
+   *DTWELL 7
+
+   **  CYCLE NO. 1  -  SOAK
+
+   *SHUTIN 'Injector 1'    ** Turn off injector
+
+*TIME 17
+
+   *DTWELL .2
+
+   **  CYCLE NO. 1  -  PRODUCTION
+
+   *OPEN 'Producer 1'      ** Turn on producer
+
+*TIME 365
+*STOP
+

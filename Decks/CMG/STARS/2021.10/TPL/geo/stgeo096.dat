@@ -1,0 +1,231 @@
+RESULTS SIMULATOR STARS
+
+*****************************************************************************
+** Template (stgeo096.dat):  Illustrate Anisotropic Properties             **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGEO096.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE-WELL CYLCING                              FIELD UNITS             **
+**         BASED ON STTST06                                 13X10X10 RADIAL GRID    **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL-THERMAL OPTION IN STARS            **
+**                                                                                  **
+** Purposes: Anisotropic rock is illustrated by different Young's moduli and        **
+**           Poisson's ratios for each grid block.                                  **
+**           Output: Shear modulus on 3 planes: IJ, JK and IK                       **
+**                                                                                  **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #96'
+*title2 'Anisotropic Rock - Thermal'
+*title3 'Geomechanics-Dependent Permeability'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y x w solconc obhloss viso visg
+*outprn *well *all
+
+*wprn *grid time  
+*wprn *iter time
+*wsrf *grid 1
+*wsrf *griddeform 1
+
+outsrf grid  pres so sg temp vporos young permi permj permk
+             verdsplpor verdsplgeo vdispl stresi stresj stresk
+             stressh stresmxp streseff strainvol yldstate angleradgr
+             shearmodij shearmodjk shearmodik youngi youngj youngk thexpcoefi thexpcoefj thexpcoefk
+
+outsrf special  
+               blockvar shearmodij 10  9  2
+               blockvar poissonij  10  9  2 
+               blockvar youngk     10  9  2               
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 13 10 10 *rw 0
+
+**  Radial blocks:  small near well;  outer block is large
+*di *ivar  3 10*10 40 120
+
+*dj *con 36 **  Full circle
+
+*dk *kvar 20 25 10 10 5 5 5 10 30  20
+*kdir down
+
+*POR KVAR
+   0.01  0.01  0.2 0.3  0.25  0.25 0.28  0.31 0.01 0.01
+
+*permi *kvar 100  100 100 2000 1000 500 2000 2000 100 100
+*permj *equalsi
+*permk *equalsi  / 2
+
+*end-grid
+
+*cpor 5e-6
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+*hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'Water'    'OIL'
+**               -----    -------
+     *cmm        18.02      600
+     *pcrit      3206.2      0        ** These four properties
+     *tcrit      705.4       0        ** are for the gas phase.
+     *avg        1.13e-5     0        ** The dead oil component does
+     *bvg        1.075       0        ** not appear in the gas phase.
+
+     *molden     0        0.10113
+     *cp         0        5.e-6
+     *ct1        0        3.8e-4
+
+     *cpl1       0        300
+
+*visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         700     0           2.5
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+** Automatic static vertical equilibrium
+**vertical *depth_ave
+**refpres 100
+**refdepth 100
+*pres *con 100
+*temp *con 125
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*sdegree gauss
+*dtmax 100.0
+
+*norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+
+**=================== GEOMECHANIC SECTION ====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+*GEOM3D           ** 3D Finite elements
+*GCOUPLING 0
+
+**  Linear anisotropic elastic rock
+
+   *ELASTMODI     2.5E5
+   *ELASTMODJ     2.5E5
+   *ELASTMODK     1.5E5
+   *POISSRATIOIJ  0.3
+   *POISSRATIOIK  0.3
+   *POISSRATIOJK  0.3
+   *COHESION      100000
+   *THEXPCOEFI    1.0E-5   ** Linear thermal expansion coefficient in I direction
+   *THEXPCOEFJ    1.2E-5   ** Linear thermal expansion coefficient in J direction
+   *THEXPCOEFK    1.3E-5   ** Linear thermal expansion coefficient in K direction
+
+** Initial stresses: sigmaxx  sigmayy  sigmazz  sigmaxy  sigmayz  sigmaxz
+*STRESS3D  0.0   0.0  0.0  0.0  0.0   0.0
+*DLOADBC3D                 ** Applying pressure on the surface of the block
+   IJK   1:13  1:10  1:1
+   1 2 3 4  100.0
+
+
+*MAGNIFYDK 10
+        
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 1973 9 25.5
+   *DTWELL 0.001
+
+   *WELL 'inj1'
+
+Time 0.001
+
+Time 0.002
+STOP

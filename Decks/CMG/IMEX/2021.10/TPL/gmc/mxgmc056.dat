@@ -1,0 +1,292 @@
+   *****************************************************************************
+   ** Template (mxgmc056.dat):  2D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC056.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         Mohr-Coulomb model                  RESERVOIR    31x1x2 RADIAL GRID      **
+   **                                             GEOGRID      31x1x12 RADIAL GRID     **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **        Based on the test bed MXGMC038.dat, this example illustrates the use of   **
+   **        *GEOGRID for 2D radial grid.  In this example, there are 2 layers for the **
+   **        reservoir and 12 layers for geomechanics.  Note the location of stress    **
+   **        unloading at layers 6 and 7 which correspond to perforated well layers    **
+   **        1 and 2.                                                                  **
+   **        In addition, a prescribed boundary condition is applied to the bottom     **
+   **        layer 12.                                                                 **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #056'
+*TITLE2
+   'Infinite Mohr-Coulomb Medium, Dilation Angle, Over/Underburden'
+
+*INUNIT *FIELD  
+*OUTUNIT *FIELD  
+
+*WPRN *GRID *TIME
+*OUTPRN *GRID *PRES
+*OUTPRN *WELL *ALL
+
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+
+*OUTSRF GRID POROS PRES STRAINI STRAINJ STRAINK 
+            STRAINSH STRESEFF STRESI STRESJ STRESK STRESSH STRNEPL
+            VDISPL STRAINVOL YLDSTATE
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *RADIAL 31 1 2  RW 3.28
+
+*DI *IVAR
+0.04  
+0.21648
+0.238128
+0.2619408
+0.28813488
+0.316948368
+0.348643205
+0.383507525
+0.421858278
+0.464044106
+0.510448516
+0.561493368
+0.617642705
+0.679406975
+0.747347672
+0.82208244
+0.904290684
+0.994719752
+1.094191727
+1.2036109
+1.32397199
+1.456369189
+1.602006108
+1.762206719
+1.938427391
+2.13227013
+2.345497143
+2.580046857
+2.838051543
+3.121856697
+3.434042367
+
+*DJ *CON 360
+*DK *CON 3.28 
+*KDIR DOWN
+
+*DEPTH 1 1 1 1.64
+
+*POR *CON .3
+
+*PERMI *CON 1000.
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*PRPOR 3000
+*CPOR  1.8570E-6
+
+
+*MODEL *GASWATER     
+
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+
+*TRES 64
+
+*PVTG  *ZG
+** p     zg       visg
+  14.7   1.0      .02
+   400   1.0      .02
+   800   1.0      .02
+  1200   1.0      .02
+  1600   1.0      .02
+  2000   1.0      .02
+  2400   1.0      .02
+  2800   1.0      .02
+  3200   1.0      .02
+  3600   1.0      .02
+  4000   1.0      .02
+  9000   1.0      .02
+  
+*GRAVITY *GAS     0.818
+*DENSITY *WATER  63.021
+*BWI   1.0034
+*CW    3.0E-6
+*REFPW 3600
+*VWI   0.96
+*CVW   0.0
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+SWT
+**$        Sw         krw      
+          0.2           0     
+      0.24375  0.00149536   
+       0.2875  0.00598145   
+      0.33125   0.0134583  
+        0.375   0.0239258  
+      0.41875    0.037384   
+       0.4625    0.053833   
+      0.50625   0.0732727   
+         0.55   0.0957031   
+      0.59375    0.121124  
+       0.6375    0.149536 
+      0.68125    0.180939  
+        0.725    0.215332   
+      0.76875    0.252716   
+       0.8125    0.293091   
+      0.85625    0.336456 
+          0.9    0.382812         
+         0.95    0.439453          
+            1         0.5           
+
+SGT
+**$        Sg         krg     
+            0           0   
+      0.04375  0.00299072    
+      0.13125   0.0269165  
+        0.175   0.0478516      
+      0.21875   0.0747681   
+       0.2625    0.107666   
+      0.30625    0.146545    
+         0.35    0.191406      
+      0.39375    0.242249   
+       0.4375    0.299072    
+      0.48125    0.361877   
+        0.525    0.430664     
+      0.56875    0.505432  
+       0.6125    0.586182    
+      0.65625    0.672913  
+          0.7    0.765625           
+         0.75    0.878906           
+          0.8           1  
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *CON 1470.
+*SW *CON 1.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMAX  0.1
+*AIM *STAB
+
+*NORM     *PRESS 145.0
+*NORM     *SATUR .05
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+** GEOGRID IS USED
+*GEOGRID GRADIAL  31 1 12
+
+*GDI *GIVAR
+0.04  
+0.21648
+0.238128
+0.2619408
+0.28813488
+0.316948368
+0.348643205
+0.383507525
+0.421858278
+0.464044106
+0.510448516
+0.561493368
+0.617642705
+0.679406975
+0.747347672
+0.82208244
+0.904290684
+0.994719752
+1.094191727
+1.2036109
+1.32397199
+1.456369189
+1.602006108
+1.762206719
+1.938427391
+2.13227013
+2.345497143
+2.580046857
+2.838051543
+3.121856697
+3.434042367
+
+*GDJ *GCON 360
+*GDK *GKVAR   5*1.0  2*3.28  5*1.0
+*GTRANSLK  -5.0            ** Translation in the K direction
+
+*SOLVERG AIMSOLN           ** Solver for nonassociated flow rule
+*GCOUPLING 0               ** One way coupling
+*GCFACTOR 0
+*ELASTMOD 9.83e5           ** Young's modulus
+*POISSRATIO 0.21           ** Poisson's ratio
+*COHESION 500.38           ** Cohesion
+*FRICANGLE 30              ** Friction angle
+*DILANGLE 0.0              ** dilation angle  
+*NITERGEO  300             ** Maximum iteration for convergence
+*WRADIUS 3.28              ** Well radius
+                           ** By default: Mohr-Coulomb model is used
+*NINCS 2                   ** divide a large load into small even loads
+
+*STRESS    4351. 4351. 0. 4351.   ** Initial stress
+
+*PRESCBC                          ** Prescribed boundary conditions
+  *IJK   1:31   1   1             ** Top constrained
+     1:2   02   0.0
+  *IJK   1:31   1 12              ** Bottom constrained
+     3:4   02   0.0
+
+*UNLOADSTR 6:7  4351              ** Unload stress
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 2005 1 1
+
+*DTWELL 1.e-2
+
+   *WELL 1 'prod1'
+   *PRODUCER 'prod1'
+   *OPERATE *MAX *STL 1E-3
+   *OPERATE *MIN *BHP 1470.
+   *PERF 'prod1'  ** i j k wi
+              1 1 1:2 1 
+TIME 0.01
+
+   *SHUTIN 1
+   
+TIME 1
+
+STOP

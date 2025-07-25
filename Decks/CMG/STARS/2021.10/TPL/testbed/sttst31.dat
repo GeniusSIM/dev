@@ -1,0 +1,307 @@
+
+
+**                       OVERVIEW
+**                       ========
+
+**  This data set is prepeared from a paper SPE 16008
+**  presented at the 9th SPE symposium on resrvoir simulation,
+**  in San Antonio, Feb. 1987.
+**  Water-oil capillary pressure is used in the matrix.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'STARS Test Bed No. 31'
+title2 'Natural Fractures Modelled with the VR Option'
+
+inunit field
+
+outprn grid pres sw so sg temp
+outprn well all
+outprn res all
+wprn grid 400
+wrst 50
+wprn iter 400
+
+outsrf well  downhole
+
+outsrf grid  pres sw so sg temp
+
+outsrf special blockvar temp 1,1,1 mt
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 13 6 5
+
+**  The triangular area of 1/8 of five-spot pattern is covered with a
+**  13x6 grid with grid lines parallel to the injector-producer line.
+**  These blocks are trimmed using block modifiers.
+**  In addition, a point-distributed grid is required in order to put
+**  grid nodes on the injector-producer line.  To do this, an oversized
+**  grid is specified, and then trimmed back using block modifiers.
+
+di con 25
+dj con 25
+dk con 30
+
+vamod 2     .5      .5   1.   .5
+vamod 3     .125    .5   0.   .125
+vamod 4     .5      1.   0.   .5       0.   1.   0.
+vamod 5     .5      0.   0.   .5       1.   1.   0.
+vamod 6     1.25    1.   0.   1.25     1.   1.   0.
+
+vatype all    3 2 2 2 2 2 2 2 2 2 2 2 3
+              0 4 1 1 1 1 1 1 1 1 1 5 0
+              0 0 4 1 1 1 1 1 1 1 5 0 0
+              0 0 0 4 1 1 1 1 1 5 0 0 0
+              0 0 0 0 4 1 1 1 5 0 0 0 0
+              0 0 0 0 0 4 6 5 0 0 0 0 0
+
+              3 2 2 2 2 2 2 2 2 2 2 2 3
+              0 4 1 1 1 1 1 1 1 1 1 5 0
+              0 0 4 1 1 1 1 1 1 1 5 0 0
+              0 0 0 4 1 1 1 1 1 5 0 0 0
+              0 0 0 0 4 1 1 1 5 0 0 0 0
+              0 0 0 0 0 4 6 5 0 0 0 0 0
+
+              3 2 2 2 2 2 2 2 2 2 2 2 3
+              0 4 1 1 1 1 1 1 1 1 1 5 0
+              0 0 4 1 1 1 1 1 1 1 5 0 0
+              0 0 0 4 1 1 1 1 1 5 0 0 0
+              0 0 0 0 4 1 1 1 5 0 0 0 0
+              0 0 0 0 0 4 6 5 0 0 0 0 0
+
+              3 2 2 2 2 2 2 2 2 2 2 2 3
+              0 4 1 1 1 1 1 1 1 1 1 5 0
+              0 0 4 1 1 1 1 1 1 1 5 0 0
+              0 0 0 4 1 1 1 1 1 5 0 0 0
+              0 0 0 0 4 1 1 1 5 0 0 0 0
+              0 0 0 0 0 4 6 5 0 0 0 0 0
+ 
+              3 2 2 2 2 2 2 2 2 2 2 2 3
+              0 4 1 1 1 1 1 1 1 1 1 5 0
+              0 0 4 1 1 1 1 1 1 1 5 0 0
+              0 0 0 4 1 1 1 1 1 5 0 0 0
+              0 0 0 0 4 1 1 1 5 0 0 0 0
+              0 0 0 0 0 4 6 5 0 0 0 0 0
+
+**  Matrix is divided into 3 sub-matrices, the top and bottom
+**  sub-matrix are the same size, fracture volume fraction is 0.015
+
+subdomain 3
+fracvol .3 .4 .3
+difrac con 8.86200  
+djfrac equalsi   
+dkfrac con  10
+
+** Fracture is considered as a high permeability region and contains rock (formation)
+frfrac con 0.015
+forminfrac con 0.1
+
+por matrix   con 0.25            ** Effective porosity
+por fracture con 0.35
+
+permi matrix   con .5          ** Effective permeability
+permi fracture con 10000
+permj matrix   con .5          ** Effective permeability
+permj fracture con 10000
+permk matrix   con .5          ** Effective permeability
+permk fracture con 10000
+
+*end-grid
+
+** Intrinsic formation properties
+cpor 5.5e-6
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop overbur 35 24 underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2                    **  Water and dead oil
+
+compname     'WATER'    'DEAD OIL'
+**           -------    ----------
+cmm           18.02        600
+molden          0         0.1011
+cp              0          5e-6
+ct1             0         3.8e-4
+pcrit         3208         125
+tcrit          705        1217.6
+cpg1            0          150
+cpl1            0          300
+hvapr           0         5580
+
+visctable
+**   Temp
+     75         0          5780
+    100         0          1380
+    150         0           187
+    200         0            47
+    250         0          17.4
+    300         0           8.5
+    350         0           5.2
+    500         0           2.5
+    700         0           1.2
+
+
+** Reference conditions
+prsr 14.7
+temr 120
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**    Sw         Krw          Krow        Pcow
+**  ------      ------       ------       ----
+    0.27        0.0           1.0           24
+    0.4397      0.0476        0.99           6
+    0.51        0.0952        0.80           3
+    0.56        0.1428        0.60           2
+    0.62        0.1905        0.40         1.5
+    0.65        0.2381        0.30         1.2
+    0.68        0.2857        0.20         0.0
+    0.7151      0.3333        0.10         0.0
+    0.80        0.50          0.0          0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----       -------       ------
+    0.47        0.505         0.0
+    0.569       0.50          0.005
+    0.61        0.45          0.01
+    0.63        0.40          0.02
+    0.65        0.35          0.03
+    0.68        0.30          0.04
+    0.71        0.25          0.06
+    0.74        0.20          0.08
+    0.78        0.15          0.13
+    0.83        0.10          0.19
+    0.87        0.05          0.30
+    0.97        0.0           0.68
+    1.0         0.0           1.0
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0         1.0
+    1.0        1.0         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0         0.0
+    1.0        0.0         1.0
+
+krtype matrix   con 1
+krtype fracture con 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+**   Initial pressure is set to 75 psi in the layer No. 5 - fracture blocks
+**   Fracture blocks in other layers and all matrix blocks will have pressure
+**   assigned according to gravity.
+*VERTICAL *DEPTH_AVE
+refpres 75
+refblock 1 1 5
+
+sw matrix   con 0.275
+sw fracture con 1e-4
+
+temp matrix   con 120
+temp fracture con 120
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+sdegree 1
+sorder rcmrb
+upstream klevel
+
+norm      press 200  satur  .1   temp 100  y .1    x .1
+
+
+** Pre-eliminate well #2 to match 95.00 result.  Non-pre-elimination
+** gives more iterations which are not desired but not unexpected
+** from this run.
+maxlaypre 5
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .001
+
+   well 1 ' INJT'    vert 1 1
+   well 2 'PRODUCER' vert 13 1
+
+   injector ' INJT'
+   incomp  water  1.0  0.0
+   tinjw 653
+   qual .75
+   operate     stw 173             **  Starting water rate
+   operate max bhp 1935            **  Maximum BHP
+   perfv ' INJT'
+           **  k  wi = 0.007082 *k * h / ln(0.5 * re / rw)
+               3  5
+               2  5                **  Inject into 3 layers at once
+               1  5
+
+   producer 'PRODUCER'
+   operate     bhp    17           **  Starting BHP
+   operate max bhl    173          **  Maximum downhole liquid rate
+   perfv 'PRODUCER'
+           **  k  wi
+               5  9936.8654 
+               4  9936.8654
+               3  9939.8654        **  Produce from 5 layers at once
+               2  9936.8654
+               1  9936.8654
+
+time 130
+time 290
+*stop

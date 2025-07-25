@@ -1,0 +1,95 @@
+          1  1
+EOREC:     0 stwwm095.LSresolve
+
+         CMG_LINK_FILE_VERSION  2
+         
+         *WELL  1  "INJTR"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   145023.041785  0.0  199.4802  4.08177  399219  0
+         *HYDROCARBON_COMPOSITION_MOLE_FRACTION
+          1.0  0.0
+
+         *WELL  2  "PRODN"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   4800.02   182.043473  23.848568  0.0  165144  0
+         
+         DATECURR  1901-01-01.5
+         DTIMENEXT  31
+EOREC:     0 stwwm095.LDresolve
+
+          2  1
+EOREC:     1 stwwm095.LSresolve
+
+         CMG_LINK_FILE_VERSION  2
+         
+         *WELL  1  "INJTR"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   145023.041785  0.0  199.4802  4.08177  399219  0
+         *HYDROCARBON_COMPOSITION_MOLE_FRACTION
+          1.0  0.0
+
+         *WELL  2  "PRODN"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   4800.02   182.043473  23.848568  0.0  165144  0
+         
+         DATECURR   1901-02-01.5
+         DTIMENEXT  28
+EOREC:     1 stwwm095.LDresolve
+
+          3  1
+EOREC:     2 stwwm095.LSresolve
+
+         CMG_LINK_FILE_VERSION  2
+         
+         *WELL  1  "INJTR"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   145023.041785  0.0  199.4802  4.08177  399219  0
+         *HYDROCARBON_COMPOSITION_MOLE_FRACTION
+          1.0  0.0
+
+         *WELL  2  "PRODN"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   4800.02   182.043473  23.848568  0.0  165144  0
+         
+         DATECURR  1901-03-01.5
+         DTIMENEXT  31
+EOREC:     2 stwwm095.LDresolve
+
+           4  1
+EOREC:     3 stwwm095.LSresolve
+
+         CMG_LINK_FILE_VERSION  2
+         
+         *WELL  1  "INJTR"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   145023.041785  0.0  199.4802  4.08177  399219  0
+         *HYDROCARBON_COMPOSITION_MOLE_FRACTION
+          1.0  0.0
+
+         *WELL  2  "PRODN"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   4800.02   182.043473  23.848568  0.0  165144  0
+         
+         DATECURR  1901-04-01.5
+         DTIMENEXT  30
+EOREC:     3 stwwm095.LDresolve
+
+
+           5  9
+EOREC:    4 stwwm095.LSresolve
+
+         CMG_LINK_FILE_VERSION  2
+         
+         *WELL  1  "INJTR"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   145023.041785  0.0  199.4802  4.08177  399219  0
+         *HYDROCARBON_COMPOSITION_MOLE_FRACTION
+          1.0  0.0
+
+         *WELL  2  "PRODN"  OPEN   1
+         *FLUIDTEMP  600.0
+         *SETPOINT   4800.02   182.043473  23.848568  0.0  165144  0
+         
+         DATECURR  1901-05-01.5
+         DTIMENEXT  31
+EOREC:   4 stwwm095.LDresolve

@@ -1,0 +1,164 @@
+   ******************************************************************************
+   ** mxspr004.dat:                 Lab Miscible Flood Model                   **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSPR004.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x1                 PSEUDO-MISCIBLE FLOOD                   LAB UNIT **      
+   **         LAB UNIT                                                                 ** 
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** Five spot experiment,10 x 10 grid  model, See  J.W. Lacey, J.E. Faris, and  F.H. **
+   ** Brinkman, "Effect of Bank Size on Oil Recovery in the  High-Pressure  Gas-Driven **
+   ** LPG-Bank Process", JPT, August,1961. This dataset uses LAB units.                **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1    
+   'Lab Miscible Flood Experiment'
+   *TITLE2
+   'Lacey, Faris, and Brinkman, J.P.T., August, 1961'
+   *TITLE3
+   'Todd & Longstaff Model'
+
+
+   *WPRN   *GRID *TIME
+   *WPRN   *WELL *TIME
+   *OUTPRN *WELL *ALL
+   *OUTPRN *GRID *SO *SS *PRES      
+
+   *WSRF   *GRID   0
+   *WSRF   *WELL   10
+
+   *INUNIT *LAB
+
+   *GRID  *CART 10 10  1 
+   *********************************************************************************
+   **SECTION: RESERVOIR DESCRIPTION:                                              **
+   *********************************************************************************
+
+   *DI    *CON  2.2860     ** cm
+   *DJ    *CON  2.2860     ** cm
+   *DK    *CON  1.2700     ** cm
+
+   *DEPTH 1 1 1 1.0
+
+   *POR   *CON  0.2000
+   *PERMI *CON  10000.     ** md
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI
+
+   *CPOR        5.0000E-6 
+   *PRPOR   10788.0            ** kPa
+
+
+   *MODEL *MISCG
+   *********************************************************************************
+   **SECTION: PVT DATA:                                                           **
+   *********************************************************************************
+   *PVT
+   **  p(kPa)   rs        bo        eg     viso(mPa-s)      visg(mPa-s)
+     101.325    0.0       1.0       1.0       1.0        0.024390244    
+   11788.0   1.0d-1   1.000001  1.000001  0.999999       0.024390243   
+
+   *PVTS                                                  
+   **  p(kPa)    rss      es        viss(mPa-s)    omgos
+     101.325     0.0     1.0        0.024390244  0.687
+   11788.0       0.0    1.0000001  0.024390243   0.687 
+
+   *DENSITY *OIL      0.800    ** g/cm3
+   *DENSITY *GAS      0.00122  ** g/cm3
+   *DENSITY *WATER    1.000    ** g/cm3
+   *DENSITY *SOLVENT  0.050    ** g/cm3
+
+   *BWI         1.00000 
+   *CW          3.3000E-6
+   *CO          0.0
+   *CVO         0.0
+   *REFPW     101.325
+   *VWI         0.700          ** mPa-s
+   *CVW         0.0
+   *GORINT      0.0
+   *OMEGASG     0.780
+   *MINSS       0.2   
+
+
+   *ROCKFLUID
+   *********************************************************************************
+   ** Rock-Fluid Property Section                                                 **
+   *********************************************************************************
+   *RPT 1
+   *SWT
+   **   sw   krw    krow
+       0.0   0.0     1.0
+       0.8   0.8     0.0
+       1.0   1.0     0.0
+   *SLT
+   **   sl   krg    krog   Pcog
+       0.0   1.0     0.0    0.0
+       1.0   0.0     1.0    0.0
+   
+
+   *INITIAL
+   *********************************************************************************
+   ** Initial Conditions                                                          **
+   *********************************************************************************
+   *USER_INPUT
+   *PRES     *CON 10788.      ** kPa
+   *PB       *CON 1000.       ** kPa
+   *PBS      *CON 10788.      ** kPa
+   *SW       *CON 0.0
+   *SO       *CON 1.0   
+
+
+   *NUMERICAL
+   *********************************************************************************
+   ** Numerical Control Section                                                   **
+   *********************************************************************************
+                     
+   *DTMAX  0.5184                 ** minutes
+
+   *RUN
+   *********************************************************************************
+   ** Well and Recurrent Data Section                                             **
+   *********************************************************************************
+   *DATE    1995  11  1
+   *DTWELL  0.01728     ** minutes   
+
+   **AIMSET *CON 0       ** Set all blocks Explicit (except well blocks).   
+   
+   *WELL 1 'Injector'
+   *INJECTOR *MOBWEIGHT 1
+   *INCOMP  *SOLVENT
+   *OPERATE *MAX *STS  5.7025   ** cm3/min = 8.21160E-3 m3/D
+   *OPERATE *MAX *BHP  100000 **kpa
+
+   **                  RW,   CC,   WF,  SS
+   *GEOMETRY  *K  2.286E-01 0.34   1.0  0.0   
+
+   *PERF *GEO 1
+   ** i  j  k  ff
+      1  1  1  1.0
+
+   *WELL 2 'Producer'
+   *PRODUCER 2
+   *OPERATE *MIN *BHP 10787.0        ** kPa
+   *MONITOR *GOR  10000.0     *STOP
+   *MONITOR *WCUT 0.8330002   *STOP  
+   **                  RW,    CC,   WF,  SS
+   *GEOMETRY  *K  2.286E-01  0.34   1.0  0.0
+   *PERF *GEO 2
+   **  i  j  k  ff
+      10 10  1  1.0
+
+   *TIME  4.655232     ** minutes = 3.2328E-3 days
+   *TIME 13.965696     ** minutes = 9.6984E-3 days
+   *TIME 23.276160     ** minutes = 1.6164E-2 days
+   *TIME 37.241856     ** minutes = 2.5862E-2 days
+   *STOP

@@ -1,0 +1,11 @@
+** This example shows how to obtain the gas, oil and water rates at surface
+** conditions for wells 'W-1', 'W-2' and 'W-3'.  This example will produce 
+** three tables each containing four columns. The first column contains the 
+** time since the beginning of the simulation run.
+
+*FILES      'mxdrm005.sr3'
+
+*TABLE-FOR   *WELLS 'W-1' 'W-2' 'W-3'
+   *COLUMN-FOR  *PARAMETERS 'Gas Rate SC' 'Oil Rate SC' 'Water Rate SC'
+*TABLE-END
+

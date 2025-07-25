@@ -1,0 +1,329 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**  This test problem describes a preformed foam injection run
+**  (from SPE/DOE paper 17357)
+
+**  Special Features:
+
+**    1)  Lamella concentration effects (lamella is
+**        surfactant containing water existing in the
+**        gas phase as a dispersed component)
+**    2)  Chevron experiment 2: insitu foam generation
+**    3)  Foam mobility reduction due to
+**          -high viscosity of lamella component in gas
+**          -resistance factor of trapped lamella
+**    4)  Assumes adsorption equilibrium between trapped
+**        and flowing lamella
+**    5)  Run illustrates insitu foam generation modelling
+**        with two parameter rate expression describing
+**        initial to upper limit (shutoff) generation
+**           kinetics of lamella formation:
+**            -requires surfactant to form foam
+**            -maximum lamella concentration set by ratio
+**             of first two rate constants
+**    6)  Decay of foam lamella (slow) has a minor effect
+**        on observed pressure drop across the core
+**    7)  Lamella density foam parameters based on an
+**        assumed lamella size (and shape) of 1.0e-10 cm3
+**        (further simulation details in CMG report 90.08.T)
+**
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 27'
+*title2 'One-Dimensional Foam Propagation'
+*title3 'CHEVRON Experiment #2'
+
+*inunit  lab except 3 1  ** psi instead of kPa
+             except 6 1  ** darcy instead of millidarcy
+
+*outprn *grid pres sw sg so y w visg krg kro krw rfg
+              visw moldenw moldeno moldeng
+              frcflow adsorp
+              ppm adspcmp  ** special adsorption component (in ppm)
+
+*outprn *well wellcomp
+*outprn *iter newton
+
+*wrst 500
+*wprn *grid 500
+*wprn *iter 1
+
+outsrf well  component all
+outsrf grid  pres sw so sg temp adsorp
+             ppm adspcmp  ** special adsorption component (in ppm)
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 1 1 24  ** One-dimensional grid
+
+*di *con 2.215  
+*dj *con 2.215  
+*dk *con 2.54
+
+*por *con 0.30 
+*permi *con 2.6  
+*permj *equalsi  
+*permk *equalsi
+*end-grid
+*prpor 800.0
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 5 5 3 2   ** Two aqueous and two noncondensible gas components
+
+*compname  'WATER' 'SURFACT'    'OIL_A'      'N2'    'LAMELLA'
+**          -----   --------   --------   --------   --------
+*cmm        0.018     0.430       0.209      0.028       0.018
+*molden       0.0   0.00233     0.00426
+*pcrit     3140.0     144.0       214.0      480.0       480.0
+*tcrit      374.0     527.0       434.0     -147.0      -147.0
+
+*rangecheck *off
+*solid_den 'SURFACT' 0.16469  0 0  ** mass density based on 0.383 gmole/cm3
+*solid_den 'LAMELLA' 0.006894 0 0  **               "
+*rangecheck *on
+
+**  lamella component viscosity gives large foam mobility reduction
+**  value used is muo*(vr/v)**0.39 with vr=590m/day and v=90m/day
+**  here muo (lamella density value) can be related to Chevron's Ag
+*avg        0.042     0.042       0.042      0.042       250.0
+*bvg          0.0       0.0         0.0        0.0         0.0
+
+*visctable
+
+**      Temp
+          60     0.    10.000      5.500
+
+**  Zero K values for all condensible components
+
+*kvtablim 101.3 3001.3  10 300
+*kvtable 'WATER'
+    0    0
+    0    0
+*kvtable 'SURFACT'
+    0    0
+    0    0
+*kvtable  'OIL_A'
+    0    0
+    0    0
+
+** Reference conditions
+*prsr 500.0
+*temr 21
+*psurf 500.0
+*tsurf 21.0
+
+**  reaction describes initial lamella creation: water + surfactant->lamella
+**  stoichiometry defines lamella as water plus surfactant in gas
+**  stoichiometry uses surfactant critical micelle concentration
+
+*storeac    1         4.30e-5     0          1          0
+*stoprod    0         2.15e-5     0          1          1
+*rorder     0            1        0          1          0
+*freqfac  2.08e+5     ** value chosen has units of (moles surf)-1 * (min)-1
+                      ** equiv to Chevron's initial rate of 6.25e+8 cm-3 min-1
+**freqfac  2.08e+4     ** value for decreased generation rate
+**freqfac  2.08e+6     ** value for increased generation rate
+*eact 0
+*renth 0
+*o2conc
+
+**  reaction 2 describes upper limit to foam creation at steady state
+**  this upper limit is defined by the ratio freqfac1/freqfac2
+**  stoichiometry defines lamella as water plus surfactant in gas
+**  stoichiometry uses surfactant critical micelle concentration
+
+*storeac    0         2.15e-5     0          0          2
+*stoprod    1         4.30e-5     0          0          1
+*freqfac  1.72e+6     ** value gives upper limit to foam creation via ratio
+                      ** actual steady state value is 0.012 mole fr lamella
+                      ** equiv to Chevron's steady state value of 2.0e+7 cm-3
+**freqfac  1.72e+5     ** value for decreased generation rate but same SS
+**freqfac  1.72e+7     ** value for increased generation rate but same SS
+*eact 0
+*renth 0
+*o2conc
+
+**  reaction describes lamella decay: lamella->water + surfactant
+**  stoichiometry defines lamella as water plus surfactant in gas
+**  stoichiometry uses surfactant critical micelle concentration
+**  first order decay rate of 0.125 (min)-1 at vgas=90m/day
+
+*storeac    0            0        0          0          2
+*stoprod    1         2.15e-5     0          0          1
+*freqfac  0.125
+*eact 0
+*renth 0
+*o2conc
+
+
+*rockfluid
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**  Set #1:
+**  This simulation does not incorporate foam mobility reduction
+**  in relative permeability effects -however the assumed curves
+**  still influence observed pressure drops in the presence of foam
+**  ---------------------------------------------------------------
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+ 0.2400000       0.0 0.6500000
+ 0.2600000 0.0090000 0.4470000
+ 0.2800000 0.0160000 0.3260000
+ 0.3000000 0.0230000 0.2470000
+ 0.3500000 0.0330000 0.1920000
+ 0.4000000 0.0460000 0.1430000
+ 0.4500000 0.0600000 0.0910000
+ 0.5000000 0.0800000 0.0580000
+ 0.5500000 0.0990000 0.0360000
+ 0.6000000 0.1090000 0.0190000
+ 0.6500000 0.1200000 0.0100000
+ 0.7000000 0.1320000 0.0050000
+ 0.7500000 0.1470000 0.0020000
+ 0.8000000 0.2040000       0.0
+ 0.8500000 0.4030000       0.0
+ 0.9000000 0.6020000       0.0
+ 0.9500000 0.8010000       0.0
+   1.00000   1.00000       0.0
+
+*slt  *noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+ 0.2400000 0.9510000       0.0
+ 0.2700000 0.5220000 0.0020000
+ 0.3000000 0.4320000 0.0090000
+ 0.3500000 0.3480000 0.0190000
+ 0.4000000 0.3210000 0.0320000
+ 0.4500000 0.2880000 0.0470000
+ 0.5000000 0.2610000 0.0640000
+ 0.6000000 0.1980000 0.0980000
+ 0.6500000 0.1500000 0.1200000
+ 0.7000000 0.1200000 0.1410000
+ 0.7500000 0.0810000 0.1560000
+ 0.8000000 0.0600000 0.1950000
+ 0.8500000 0.0100000 0.2360000
+ 0.9000000 0.0060000 0.3560000
+ 0.9500000 0.0030000 0.4990000
+   1.00000       0.0 0.6500000
+
+**  Override critical saturations on table
+*swr 0.35
+*sorw 0.20
+*sgr 0.00
+*sorg 0.59
+*krgcw 0.25
+
+**  Adsorption Data
+**  ---------------
+
+*adscomp 'SURFACT' water   **Data for reversible aqueous surfactant adsorption
+*admaxt 4.0e-7  ** no mobility effects
+*adslang *temp
+    120.0 8.41e-3 0 2.1e+4   ** Langmuir concentration coefficients at T=120
+    220.0 2.10e-4 0 2.1e+3   ** Langmuir concentration coefficients at T=220
+
+*adscomp 'LAMELLA' gas        ** Data for reversible aqueous lamella adsorption
+*admaxt 3.2e-4
+*rrft 6.7    ** Resistance factor is equivalent to Chevron's (Xf)-1
+*adslang 0.48 0 1500   ** Langmuir concentration coefficients independent of T
+
+
+*initial
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*pres *con 500.0
+*sw *con 1.00    ** So by difference
+*temp *con 21
+*mfrac_wat 'WATER'   *con 0.99958
+*mfrac_wat 'SURFACT' *con 0.00042
+
+
+*numerical
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*tform zt
+*isothermal
+
+*dtmax 2.0
+
+*rangecheck off
+*norm      press 10   zaq .4    zo .05   zncg .4
+*converge  press .01  zaq .001  zo .001  zncg .001
+*rangecheck on
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell .05
+
+   well 1 'INJTR'      ** Well list
+   well 2 'PRODN'
+   well 3 'INJGAS'
+
+   producer 'PRODN'
+   operate bhp 500.0
+   geometry k 1 1 1 0  ** Linear pressure drop
+   perf tube-end 'PRODN'
+              **  i j k
+                  1 1 1  1.0
+
+   injector 'INJTR'
+      incomp water .99958   4.2e-4  0               ** inj surfactant (1.0wt%)
+   operate stw  1.6
+
+   perf 'INJTR'
+           ** i j k  wi
+              1 1 24 19670                     ** inject liq vol frac .20
+
+   injector 'INJGAS'
+      incomp gas        0        0  0  1 0          ** no lamella injected
+   operate stg 6.4
+
+   perf 'INJGAS'
+           ** i j k  wi
+              1 1 24  78690 
+
+** Obtain printouts and results at the following times
+time   1
+time   5
+time  10
+time  20
+
+time  30.0
+stop

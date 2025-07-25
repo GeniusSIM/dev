@@ -1,0 +1,434 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  This data uses *NEXTSEG as the action of the first *OPERATE which
+**  is not the first operating condition.  This data set verifies the
+**  fix for Mantis #5805.
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+  
+title1 'Verification Run #95'
+title2 'Verify Operation of *NEXTSEG in first *OPERATE'
+
+INUNIT SI
+
+OUTSRF GRID MASDENO PRES SG SO SW TEMP VISO X Y Z
+OUTSRF SPECIAL SOR  'INJ-L' 'PRD-L' INST
+OUTSRF SPECIAL SOR  'INJ-L' 'PRD-L' CUM
+OUTSRF WELL COMPONENT ALL
+
+WPRN ITER TIME
+WPRN SECTOR TIME
+OUTPRN WELL ALL
+
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+RESULTS AXES-DIRECTIONS 1.0 1.0 1.0
+
+
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+
+GRID VARI 30 1 32
+
+KDIR DOWN
+
+DI IVAR 
+ 2*10 26*4 2*10
+DJ JVAR 
+ 100
+DK ALL
+ 960*1
+DTOP
+ 30*228
+
+NULL CON            1
+
+POR CON .2965 
+ 
+PERMI CON 4264
+PERMJ EQUALSI
+PERMK CON 852
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+END-GRID
+
+rocktype 1
+  
+cpor   14.0e-6         ** Effective formation (pore) compressibility (1/kPa)
+prpor  2000
+
+rockcp 2.60e6		** Rock heat capacity (J/m3-C)
+thconr 6.6e5	        ** Thermal conductivity of rock (J/m-day-C)
+thconw 5.35e4		** Thermal conductivity of water phase (J/m-day-C)
+thcono 1.15e4		** Thermal conductivity of oil phase (J/m-day-C)
+thcong 5000		** Thermal conductivity of gas phase (J/m-day-C)
+thconmix SIMPLE
+
+HLOSSPROP OVERBUR  2.60e6 1.51e5 
+          UNDERBUR 2.60e6 1.51e5 
+**$ Property: Thermal/rock Set Num  Max: 1  Min: 1
+THTYPE CON            1
+
+
+
+**  ==============  FLUID DEFINITIONS  ========================================================
+**$ Model and number of components
+
+MODEL 4 4 4 1
+
+** COMPONENT TYPES AND NAMES
+COMPNAME 'WATER' 'BITUMEN' 'CH4' 'C6H14' 
+**molecular mass[kg/gmol]
+CMM
+0.018 0.570 0.016 0.086 
+**critical pres.[kPa]
+PCRIT
+22048 999.06 4600 3289.01 
+**critical temp.[C]
+TCRIT
+374.2 702.85 -82.6 234.35 
+**ev=0.38 default
+** K-VALUE CORRELATION DATA
+**1st coef.of gas/liq.K_value[kPa]
+**KV1
+**0 1.0062e6 4.36376e5 1.0062e6 
+**2rd coef.of gas/liq.K_value[1/kPa]
+**KV2
+**0 0 0 0 
+**3rd coef.of gas/liq.K_value[]
+**KV3
+**0 0 0 0 
+**4th coef.of gas/liq.K_value[C]
+**KV4
+**0 -9697.55 -879.84 -2697.55 
+**5th coef.of gas/liq.K_value[C]
+**KV5
+**0 -264.37 -270.99 -224.37 
+
+ KV1       0.000E+0   9.007E+7   1.035E+6   3.106E+6   
+ KV2       0.000E+0   0.000E+0   0.000E+0   0.000E+0
+ KV3       0.000E+0   0.000E+0   0.000E+0   0.000E+0
+ KV4            0.0   -11135.4   -1032.2    -3476.6   
+ KV5           0.00    -273.15    -273.15    -273.15
+
+
+** Reference conditions
+PRSR 2000
+TEMR 10
+PSURF 100
+TSURF 15.
+**1st coef.of gas heat cap.[J/gmol-C]
+CPG1
+0 -20 19.251 -4.413 
+**2nd coef.of gas heat cap.[J/gmol-C^2]
+CPG2
+0 1.9 5.213e-2 .5820 
+**3st coef.of gas heat cap.[J/gmol-C^3]
+CPG3
+0 -1e-3 1.197e-5 -3.119e-4 
+**4th coef.of gas heat cap.[J/gmol-C^4]
+CPG4
+0 3e-7 -1.132e-8 6.494e-8 
+**vaporization enthalpy correl [J/gmol-C]
+HVR
+0 1500. 1556. 4143. 
+MOLDEN
+0 1.665E+03 1.963E+04 8383  **7718.6 
+**liquid compressibility[1/kPa]
+CP
+0 2.649E-07 3.713E-06 1.424E-06 
+**thermal expansion coef.[1/C]
+CT1
+0 1.316E-05 1.241E-03 1.455E-04 
+CT2
+0 5.869E-07 4.012E-06 2.842E-06 
+CPT
+0 1.623E-09 4.473E-06 1.257E-07 
+VISCTABLE
+**$      temp                                              
+          5.0         0  3833999.014  115.0417  0.360144548
+         10.0         0  1495005.955   98.0594  0.341460967
+         20.0         0  281441.5484   72.8797  0.308629295
+         30.0         0  67533.09238   55.6444  0.280821105
+         40.0         0  19813.12195   43.4958  0.257064062
+         50.0         0  6873.142857   34.7074  0.236607700
+         60.0         0   2743.68998   28.2014  0.218866010
+         70.0         0  1232.714048   23.2847  0.203376467
+         80.0         0  612.0882441   19.5001  0.189770371
+         90.0         0   330.846155   16.5380  0.177751103
+        100.0         0  192.2326638   14.1848  0.167077991
+        110.0         0  118.8045801   12.2898  0.157554194
+        120.0         0  77.40828834   10.7449  0.149017531
+        130.0         0  52.77586631    9.4712  0.141333443
+        140.0         0  37.41313014    8.4104  0.134389563
+        150.0         0  27.42970955    7.5185  0.128091487
+        160.0         0  20.70371866    6.7622  0.122359442
+        170.0         0   16.0260005    6.1158  0.117125659
+        180.0         0  12.68010324    5.5592  0.112332271
+        190.0         0  10.22644566    5.0768  0.107929629
+        200.0         0  8.386745526    4.6561  0.103874944
+        210.0         0  6.979795475    4.2870  0.100131175
+        220.0         0   5.88455458    3.9614  0.096666131
+        230.0         0  5.018281582    3.6728  0.093451727
+        240.0         0  4.323215123    3.4159  0.090463368
+        250.0         0  3.758251926    3.1860  0.087679441
+        260.0         0  3.293625416    2.9796  0.085080891
+        270.0         0  2.907429581    2.7935  0.082650864
+        280.0         0  2.583303157    2.6251  0.080374407
+        300.0         0  2.074598179       2.4  0.078000000
+
+
+
+  **  ==============  RELATIVE PERMEABILTIES  ======================
+  
+rockfluid
+  
+rpt 1 stone2	  **  -----------  good zone  ------------
+
+ SWT      ** KRW             KROW            
+0.1500     0.0000     0.9920
+0.2000     0.0000     0.9790
+0.2500     0.0004     0.9500
+0.3000     0.0012     0.7200
+0.3500     0.0029     0.6000
+0.4000     0.0057     0.4700
+0.4500     0.0098     0.3500
+0.5000     0.0156     0.2400
+0.5500     0.0233     0.1650
+0.6000     0.0331     0.1100
+0.6500     0.0456     0.0700
+0.7000     0.0606     0.0400
+0.7500     0.0787     0.0150
+0.8000     0.1000     0.0000
+0.8500     0.1251     0.0000
+0.9000     0.1537     0.0000
+0.9500     0.1866     0.0000
+1.0000     0.2237     0.0000
+
+
+ SLT      ** KRG             KROG            PCG
+0.1550   1.0000  0.0000
+0.2047   0.9500  0.0002
+0.2544   0.8400  0.0016
+0.3041   0.7200  0.0055
+0.3538   0.6000  0.0130
+0.4035   0.4700  0.0254
+0.4532   0.3500  0.0440
+0.5029   0.2400  0.0698
+0.5526   0.1650  0.1040
+0.6024   0.0930  0.1480
+0.6521   0.0750  0.2040
+0.7018   0.0450  0.2710
+0.7515   0.0270  0.3520
+0.8012   0.0200  0.4470
+0.8509   0.0100  0.5590
+0.9006   0.0050  0.6870
+0.9503   0.0000  0.8340
+1.0000   0.0000  0.9920
+
+
+KRTYPE CON            1
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+  
+INITIAL
+
+VERTICAL DEPTH_AVE
+
+refpres  1000.0
+REFDEPTH 228.5
+TEMP CON           10
+SO CON 		  .79 
+SG CON             0
+MFRAC_OIL 'CH4' CON         0.02
+MFRAC_OIL 'C6H14' CON         0.01
+MFRAC_OIL 'BITUMEN' CON         0.97
+MFRAC_WAT 'WATER' CON            1
+MFRAC_GAS 'CH4' CON            1
+
+
+
+**  ==============  NUMERICAL METHODS  ======================
+
+numerical
+DTMAX 5.0
+UPSTREAM *KLEVEL
+CONVERGE VARONLY 
+
+
+RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 2005 1 1
+DTWELL 0.01
+
+
+WELL  'INJ-L'  FRAC  1.
+INJECTOR MOBWEIGHT IMPLICIT 'INJ-L'
+INCOMP WATER 1.0 0. 0. 0.0 
+TINJW 205 
+QUAL  0.8
+OPERATE MAX BHP 2300 CONT REPEAT 
+GEOMETRY  J  0.11  0.249  1.  0.
+PERF  GEO  'INJ-L'
+**$ UBA      ff  Status  Connection  
+    15 1 25  1.  OPEN    FLOW-FROM  'SURFACE'
+
+WELL  'PRD-L'  FRAC  1.
+PRODUCER 'PRD-L'
+OPERATE  MAX  STEAM  5.  cont repeat 
+OPERATE  MIN  BHP  1500. NEXTSEG 
+PERF  GEO  'PRD-L'
+**$ UBA      ff  Status  Connection  
+    15 1 30  1.  OPEN    FLOW-TO  'SURFACE'
+**$
+
+
+UHTR IJK 
+  15:15      1:1      25:25    5E+009      
+  15:15      1:1      30:30    5E+009      
+
+TMPSET IJK 
+  15:15      1:1      25:25    185         
+  15:15      1:1      30:30    185
+         
+SHUTIN 'INJ-L'
+SHUTIN 'PRD-L'
+
+DATE 2005  2 1
+DATE 2005  3 1
+DATE 2005  4 1			** START SAGD
+DTWELL 0.01
+
+OPEN 'INJ-L'
+OPEN 'PRD-L'
+
+
+UHTR IJK 
+  15:15      1     25:25    0           
+  15:15      1     30:30    0           
+
+TMPSET IJK 
+  15:15      1     25:25    185         
+  15:15      1     30:30    185         
+
+DATE	2005	5	1
+WELL  'PRD-L'  FRAC  1.
+PRODUCER 'PRD-L'
+OPERATE  MIN  BHP  1700. cont repeat
+
+DATE	2005	6	1            
+DATE	2005	7	1 
+DATE	2005	8	1
+DATE	2005	9	1
+DATE	2005	10	1
+DATE	2006	2	1
+DATE	2006	3	1
+DATE	2006	4	1
+DATE	2006	5	1
+DATE	2006	6	1
+DATE	2006	7	1
+DATE	2006	8	1
+DATE	2006	9	1
+DATE	2006	10	1
+DATE	2006	11	1
+DATE	2006	12	1
+DATE	2007	1	1
+DATE	2007	2	1
+DATE	2007	3	1
+DATE	2007	4	1
+DATE	2007	5	1
+DATE	2007	6	1
+DATE	2007	7	1
+DATE	2007	8	1
+DATE	2007	9	1
+DATE	2007	10	1
+DATE	2007	11	1
+DATE	2007	12	1
+DATE	2008	1	1
+DATE	2008	2	1
+DATE	2008	3	1
+DATE	2008	4	1
+DATE	2008	5	1
+DATE	2008	6	1
+DATE	2008	7	1
+DATE	2008	8	1
+DATE	2008	9	1
+DATE	2008	10	1
+DATE	2008	11	1
+DATE	2008	12	1
+DATE	2009	1	1
+DATE	2009	2	1
+DATE	2009	3	1
+STOP
+DATE	2009	4	1
+DATE	2009	5	1
+DATE	2009	6	1
+DATE	2009	7	1
+DATE	2009	8	1
+DATE	2009	9	1
+DATE	2009	10	1
+DATE	2009	11	1
+DATE	2009	12	1
+DATE	2010	1	1
+DATE	2010	2	1
+DATE	2010	3	1
+DATE	2010	4	1
+DATE	2010	5	1
+DATE	2010	6	1
+DATE	2010	7	1
+DATE	2010	8	1
+DATE	2010	9	1
+DATE	2010	10	1
+DATE	2010	11	1
+DATE	2010	12	1
+DATE	2011	1	1
+DATE	2011	2	1
+DATE	2011	3	1
+DATE	2011	4	1
+DATE	2011	5	1
+DATE	2011	6	1
+DATE	2011	7	1
+DATE	2011	8	1
+DATE	2011	9	1
+DATE	2011	10	1
+DATE	2011	11	1
+DATE	2011	12	1
+DATE	2012	1	1
+DATE	2012	2	1
+DATE	2012	3	1
+DATE	2012	4	1
+DATE	2012	5	1
+DATE	2012	6	1
+DATE	2012	7	1
+DATE	2012	8	1
+DATE	2012	9	1
+DATE	2012	10	1
+DATE	2012	11	1
+DATE	2012	12	1
+DATE	2013	1	1
+DATE	2013	2	1
+DATE	2013	3	1
+DATE	2013	4	1
+
+STOP
+
+

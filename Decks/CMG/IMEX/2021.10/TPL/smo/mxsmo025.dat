@@ -1,0 +1,180 @@
+   ******************************************************************************
+   ** mxsmo025.dat:          Non Darcy Reservoir Flow Option                   **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSMO025.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10X10X1    2D Non Darcy Flow Test Model                                  **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** Uses NONDARCY FG1 paramaters for Gas and Water                                   **
+   ** Symmetric patern, velocity vectors can be used to check results.  Outputs        **
+   ** Resistance Factors and has a token non Darcy correction factor (1.001) to check  **
+   ** Output.  Large rate changes are made so that RFG changes during the run.         **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Non Darcy Velocity 2d Test Model'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   1
+   *WPRN   *GRID   1
+   *WPRN   *ITER   *BRIEF
+
+   *OUTPRN *WELL   *BRIEF
+   *OUTPRN *RES    *ALL
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *ALL
+
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *VELOCRC *FLUXRC *PCOW *PCOG *RFG 
+   *OUTSRF *RES    *ALL
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *VARI  10   10   1 
+                            
+   *DI *CON 32.80           
+   *DJ *CON 32.80           
+   *DK *CON 32.80                
+
+   *DEPTH 1 1 1 7424.0
+
+   *POR *CON 0.13           
+                
+   *CPOR   3.0E-6           
+   *PRPOR 3500              
+
+   *PERMI *CON 150.0                 
+   *PERMJ *CON 150.0                 
+   *PERMK *CON  15.0                 
+
+   *MODEL *GASWATER           
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   *PVTG
+   ** p          eg          visg
+     14.70000    6.00000  0.0080000
+      264.700   82.70000  0.0096000
+      514.700    159.000  0.0112000
+     1014.700    313.000  0.0140000
+     2014.700    620.000  0.0189000
+     2514.000    773.000  0.0208000
+     3014.700    926.000  0.0228000
+     4014.700   1233.000  0.0268000
+     5014.700   1541.000  0.0309000
+     9014.700   2591.000  0.0470000
+
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+   
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw    
+    0.000000     0.0  
+    1.000000     1.0       
+                               
+   *SLT
+   **  sl     krg     
+      0.00    1.0     
+      1.0     0.0       
+
+** NONDARCY KEYWORDS
+
+   *NONDARCY *FG1         
+ 
+   *NDARCYCOR *ALL
+    100*1.001
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_GAS ** Use vertical equilibrium calculation.
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    3500.           ** associated pressure.
+   *DWGC       9500.           ** Depth to gas-oil conttact            
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        30.         ** Maximum time step size
+   *MAXSTEPS      100          ** Maximum number of time steps
+   *NORM *PRESS  1000.0        ** Normal maximum pressure change per time step
+   *NORM *SATUR     0.20       ** Desired Saturation change per time step = 0.20
+   *AIM  *STAB *AND-THRESH     ** Use both stability threshhold switching criteria   
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 03 01
+   *DTWELL 1.0
+                     
+   *AIMWELL *WELLNN
+
+   *WELL 1  'Producer'
+   *PRODUCER  'Producer'               
+   *OPERATE *MIN  *BHP  3400.0         
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+
+   *PERF *GEO  'Producer'
+   ** if     jf     kf     ff                           
+      1      1      1     1.0      
+  
+   *WELL 2  'Injector'
+  
+   *injector  'Injector'               
+   incomp gas
+   *OPERATE *MAX  *STG 25.0e6         
+                                       
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+
+   *PERF *GEO  'Injector'
+   ** if      jf     kf     ff                           
+      10      10      1     1.0       
+
+   *DATE 1987 03 01
+    *ALTER 2
+          1e6
+   *DATE 1988 03 01
+    *ALTER 2
+          25e6
+   *DATE 1989 03 01
+    *ALTER 2
+          1e6
+   *DATE 1990 03 01
+    *ALTER 2
+          25e6
+   *DATE 1991 1 01
+   *STOP

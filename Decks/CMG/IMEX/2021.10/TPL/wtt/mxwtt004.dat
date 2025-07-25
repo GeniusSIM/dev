@@ -1,0 +1,262 @@
+   ******************************************************************************
+   ** mxwtt004.dat:       2D Cartesian Black-Oil Model for Well-Test Output    **
+   **                                                                          **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   mxwtt004.DAT                                                             **
+   ** MODEL:  75x75x1                                                                  **      
+   **         2D CARTESIAN BLACK-OIL MODEL FOR WELL-TEST OUTPUT                        ** 
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 75x75x1 2D Cartesian black-oil model to demonstrate the well-test      **
+   ** in hydraulic fractured wells following Gringarten approach.                      **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   ************************************************************************************** 
+   
+RESULTS SIMULATOR IMEX
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1 '2D Cartesian Black-Oil Model'
+*TITLE2 'Hydraulic Fracture Drawdown Test'
+*TITLE3 'xe / xf = 7'
+
+*INUNIT *FIELD   
+
+*WPRN   *WELL TIME
+*WPRN   *GRID 0
+*OUTPRN *GRID *PRES *SO *SW  *SG
+
+*WSRF   *GRID   1
+*WSRF   *WELL   1   
+*OUTSRF *WELL *DOWNHOLE
+*OUTSRF *GRID *PRES *SO *SW *SG *POROS *VISO *VISW *VISG *KRW *KRO *KRG *PERM *BO *EG *RFG
+
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *PRES
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *SO
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *SW
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *SG
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *POROS
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *VISO
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *VISW
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *VISG
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *KRO
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *KRW
+*OUTSRF *SPECIAL 38 38 1 / 12 12 1 *KRG
+
+*WSRF *WELL-TEST 1
+   'Producer' 500.  1
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 75 75 1
+KDIR DOWN
+
+REFINE 38:38 38 1 INTO 23 23 1
+
+DI IVAR 75*1000.0
+DI RG 38 38 1 IVAR
+   233.1650384 124.4331681 66.40623927 35.43901261 18.91273513 10.0931579 5.386414803 2.874567574 1.534070256 0.818687156 0.436908711
+   1.0 
+   0.436908711 0.818687156 1.534070256 2.874567574 5.386414803 10.0931579 18.91273513 35.43901261 66.40623927 124.4331681 233.1650384
+
+DJ JVAR 75*1000.0
+DJ RG 38 38 1 JVAR  
+   233.1650384 124.4331681 66.40623927 35.43901261 18.91273513 10.0931579 5.386414803 2.874567574 1.534070256 0.818687156 0.436908711
+   1.0 
+   0.436908711 0.818687156 1.534070256 2.874567574 5.386414803 10.0931579 18.91273513 35.43901261 66.40623927 124.4331681 233.1650384
+
+DK KVAR 82.0
+DTOP  5625*959
+
+*CPOR   4.0E-6            
+*PRPOR  3770.0              
+
+PERMI CON    1.0
+PERMI RG 38 38 1 JVAR 11*1.0 149940 11*1.0 
+PERMJ EQUALSI
+PERMK EQUALSI
+
+POR CON      0.  
+    MOD 35:41 35:41 1:1 = 0.120  **XE/XF = 7
+
+     
+**************************************************************************
+** Component Properties Section
+**************************************************************************
+
+*MODEL *BLACKOIL                ** Three phase - three equation
+
+*PVT 
+**    p        rs       bo         eg      viso     visg
+   400.000   125.000   1.01200   169.490   1.17000 0.0130000
+   800.000   335.000   1.02550   338.980   1.14000 0.0135000
+  1200.000   500.000   1.03800   510.200   1.11000 0.0140000
+  1600.000   665.000   1.05100   680.270   1.08000 0.0145000
+  2000.000   828.000   1.06300   847.460   1.06000 0.0150000
+  2400.000   985.000   1.07500  1020.400   1.03000 0.0155000
+  2800.000  1130.000   1.08700  1190.500   1.00000 0.0160000
+  3200.000  1270.000   1.09850  1351.400 0.9800000 0.0165000
+  3600.000  1390.000   1.11000  1538.500 0.9500000 0.0170000
+  4000.000  1500.000   1.12000  1694.900 0.9400002 0.0175000
+  4400.000  1600.000   1.13000  1851.900 0.9200000 0.0180000
+  4800.000  1676.000   1.14000  2040.800 0.9100000 0.0185000
+  5200.000  1750.000   1.14800  2222.200 0.9000000 0.0190000
+  5600.000  1810.000   1.15500  2381.000 0.8900000 0.0195000
+
+*DENSITY *OIL    45.0
+*DENSITY *GAS     0.0702
+*DENSITY *WATER  62.14
+*CO               1.0E-5        ** Oil compressibility
+*CVO              0.0           ** Viscosity dependence on oil compressibility
+*BWI              1.01420       ** Water formation volume factor
+*CW               3.0E-6        ** Water compressibility
+*REFPW            14.7          ** Reference pressure
+*VWI              0.96          ** Water viscosity at reference pressure
+*CVW              0.0           ** Pressure dependence on water compressibility
+
+**************************************************************************
+**Rock-fluid Property Section
+**************************************************************************
+
+*ROCKFLUID
+*RPT *DRAINAGE   
+
+*SWT                            ** Water-oil relative permeability table.
+**   sw    krw    krow   
+   0.2     0.0    1.0    
+   0.25    0.033  0.7    
+   0.30    0.066  0.4    
+   0.40    0.15   0.125  
+   0.50    0.24   0.0649 
+   0.60    0.33   0.0048 
+   0.70    0.49   0.0024 
+   0.80    0.66   0.0    
+   0.90    0.83   0.0    
+   0.95    0.915  0.0    
+   1.00    1.0    0.0    
+
+*SLT                            ** Liquid-gas relative permeability table.
+**   sl     krg    krog     
+   0.22    1.0     0.0      
+   0.30    0.8125  0.0      
+   0.40    0.5     0.0      
+   0.50    0.42    0.0      
+   0.60    0.34    0.0      
+   0.70    0.24    0.02     
+   0.80    0.1     0.1      
+   0.90    0.022   0.33     
+   0.96    0.0     0.6      
+   1.0     0.0     1.0      
+
+*RTYPE CON      1
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *BLOCK_CENTER     
+*PB CON      100
+*REFDEPTH   1000.          
+*REFPRES    3770.          
+*DWOC       2000.           
+*DGOC        500.          
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*AIM *OFF
+*DTMAX       30.
+*DTMIN       0.000000001
+*NORTH       80
+*ITERMAX     80
+*NORM *PRESS 10.0
+*NCUTS 12
+*SDEGREE 2
+*PRECC 1e-6
+*CONVERGE PRESS 1e-2
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2000 01 01
+*DTWELL 0.0000001
+
+WELL  'Producer'
+PRODUCER 'Producer'
+OPERATE  MAX  STO  219  STOP
+OPERATE  MIN  BHP  200.  STOP
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K 0.125  0.37  1.  0.
+PERF  GEOA 'Producer'
+**$ UBA                                              wi  Status  Connection  
+    38 38 1 / 12 12 1 1.0  OPEN    FLOW-TO  'SURFACE'
+
+AIMSET CON            1
+
+*DATE 2000 02 01
+*DATE 2000 03 01
+*DATE 2000 04 01
+*DATE 2000 05 01
+*DATE 2000 06 01
+*DATE 2000 07 01
+*DATE 2000 08 01
+*DATE 2000 09 01
+*DATE 2000 10 01
+*DATE 2000 11 01
+*DATE 2000 12 01
+*DATE 2001 01 01
+*DATE 2001 02 01
+*DATE 2001 03 01
+*DATE 2001 04 01
+*DATE 2001 05 01
+*DATE 2001 06 01
+*DATE 2001 07 01
+*DATE 2001 08 01
+*DATE 2001 09 01
+*DATE 2001 10 01
+*DATE 2001 11 01
+*DATE 2001 12 01
+*DATE 2002 01 01
+*DATE 2002 07 01
+*DATE 2003 01 01
+*DATE 2003 07 01
+*DATE 2004 01 01
+*DATE 2004 07 01
+*DATE 2005 01 01
+*DATE 2005 07 01
+*DATE 2006 01 01
+*DATE 2006 07 01
+*DATE 2007 01 01
+*DATE 2007 07 01
+*DATE 2008 01 01
+*DATE 2008 07 01
+*DATE 2009 01 01
+*DATE 2009 07 01
+*DATE 2010 01 01
+*DATE 2011 01 01
+*DATE 2012 01 01
+*DATE 2013 01 01
+*DATE 2014 01 01
+*DATE 2015 01 01
+*DATE 2016 01 01
+*DATE 2018 01 01
+*DATE 2020 01 01
+*DATE 2025 01 01
+*DATE 2030 01 01
+*DATE 2040 01 01
+*DATE 2050 01 01
+*DATE 2100 01 01
+*DATE 2200 01 01
+
+*STOP

@@ -1,0 +1,200 @@
+   ******************************************************************************
+   ** mxwwm005.dat:         Voidage Replacement And Lease Line Model           **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM005.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3          MODIFIED SPE 1        VOIDAGE REPLACEMENT GAS INJECTION **       
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** SPE 1 gas injection problem is modified to inject  gas  at  a  rate  that  would ** 
+   ** replace the voidage  at  desired  fractions.   Meanwhile,  Leaseline  option  is **
+   ** activated to generate production output based on each of the leases.             **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1
+   'Voidage replacement, lease-line option'
+   *TITLE2
+   '10x10x3 rectangular grid problem'
+
+   *INUNIT *FIELD
+
+   *WPRN   *WELL 10
+   *WPRN   *GRID 10
+
+   *OUTPRN *GRID *EXCEPT *SS  *SSPRES *WINFLUX  *DATUMPRES
+   *WSRF   *GRID 0
+   *WSRF   *WELL 1
+
+
+   ****************************************************************************
+   ** Reservoir Description Section
+   **************************************************************************
+   *GRID *CART  10   10    3       ** Rectangular grid with 10 grid blocks in 
+                                   ** I direction, 10 grid blocks in J 
+                                   ** direction and 3 layers in the K
+                                   ** direction.
+   *DI *CON  1000.0                ** Dimension of I direction blocks are
+                                   ** constant for each block (1000 ft).
+   *DJ *CON  1000.0                ** Dimension of J direction blocks are
+                                   ** constant for each block (1000 ft).
+   *DK *KVAR                       ** K direction dimensions are the same
+     50.0  30.0  20.0              ** within a layer but differ between layers.
+
+   *DEPTH  1 1 1 2000.0            ** Depth to center of first block, in bottom layer.   
+
+   *POR *CON 0.30                  ** Porosity is constant throughout.
+
+   *CPOR   3.0E-6                  ** Rock compressibility and
+   *PRPOR 14.7                     ** reference pressure.
+
+   *PERMI *KVAR                    ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0          ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                    ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0          ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                    ** that the first K layer is at bottom of the
+       20.0  200.0  200.0          ** reservoir.
+                
+   ** By specifying the sector and leaseline options you are requesting
+   ** special output for the areas indicated.                 
+   ** Each sector is defined here separately
+   **            name    i1:i2  j1:j2  k1:k2
+   *SECTOR  'South-West'  1:4    1:4    1:3
+            'South-East'  1:4    5:10   1:3
+   *SECTOR  'North-West'  5:10   1:4    1:3
+            'North-East'  5:10   5:10   1:3
+            'Total-Field' 1:10   1:10   1:3
+         
+   ** The leaseline is defined here as well.
+   **       caname i1:i2  j1:j2   k1:k2         
+   *LEASE   'LOO1'  5:5    1:10    1:3    *IDIR
+                                                                    
+
+   **************************************************************************
+   ** Component Property section
+   **************************************************************************
+   *MODEL *BLACKOIL                ** Three phase (three equations solved)
+       
+   *PVT
+   **   p        rs    bo       eg   viso       visg
+       14.7     1.0   1.06     6.0   1.04      0.0080
+      265.0    90.5   1.15    82.7   0.975     0.0096
+      515.0   180.0   1.21   159.0   0.910     0.0112
+     1015.0   371.0   1.30   313.0   0.830     0.0140
+     2015.0   636.0   1.43   620.0   0.6950002 0.0189
+     2515.0   775.0   1.50   773.0   0.641     0.0208
+     3015.0   930.0   1.57   926.0   0.594     0.0228
+     4015.0  1270.0   1.69  1233.0   0.510     0.0268
+     5015.0  1600.0   1.83  1541.0   0.449     0.0309
+     9015.0  2984.0   2.36  2591.0   0.203     0.0470   
+
+   *DENSITY *OIL         46.2
+   *DENSITY *GAS          0.0647
+   *DENSITY *WATER       62.2   
+
+   *CO       1.37E-5
+   *CVO      4.60E-5
+   *BWI      1.04
+   *CW       3.04E-6
+   *REFPW   14.7
+   *VWI      0.31
+   *CVW      0.0
+
+                                                                          
+   **************************************************************************
+   ** Rock-fluid Property Section
+   **************************************************************************
+   *ROCKFLUID
+   *RPT
+   *SWT                            ** Water-oil relative permeability table.
+   **    sw       krw      krow       
+        0.12      0.0      1.0
+        0.82      0.0      0.0 
+    
+   *SLT                            ** Liquid-gas relative permeability table.
+   **    sl       krg      krog    
+        0.12     0.984     0.0      
+        0.15     0.98      0.0      
+        0.3      0.9400002 0.0      
+        0.4      0.87      1.0E-4   
+        0.5      0.72      0.001    
+        0.55     0.6       0.01     
+        0.6      0.41      0.021    
+        0.7      0.19      0.09     
+        0.75     0.125     0.2      
+        0.8      0.075     0.35     
+        0.88     0.025     0.7      
+        0.95     0.005     0.98     
+        0.98     0.0       0.997    
+        0.999    0.0       1.0      
+        1.0      0.0       1.0      
+
+
+   **************************************************************************
+   ** Initial conditions Section
+   **************************************************************************
+   *INITIAL 
+   *USER_INPUT 
+   *PRES *CON 4800.0               ** Initial reservoir pressure, bubble
+   *PB   *CON 4015.0               ** point pressure, water and oil saturations
+   *SO   *CON    0.88              ** are all constant throughout.
+   *SW   *CON    0.12   
+
+
+   **************************************************************************
+   ** Numerical Control Section
+   **************************************************************************
+   *NUMERICAL
+   *DTMAX  250.0
+   *NORM *PRESS 1000.0
+   *NORM *SATUR    0.2
+   *AIM *THRESH   
+
+
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   *RUN
+   *DATE  1986 4  22
+   *DTWELL  1.00
+                         
+   *GROUP 'g1' *ATTACHTO 'field'   **Define gathering centre for voidage replacement.      
+
+   *WELL 1  'GAS INJECTOR'     *ATTACHTO 'g1'
+   *WELL 2  'PRODUCER'         *ATTACHTO 'g1'
+
+   *INJECTOR *MOBWEIGHT  1         ** Injector 1 matches the voidage from producer 2
+   *INCOMP  *GAS                   ** Gas is being injected.
+   *OPERATE *MAX  *STG  1.0E+8
+   *OPERATE *MAX  *BHP  27000.   
+
+   *PRODUCER 2
+   *OPERATE *MAX  *STO  20000.0
+   *OPERATE *MIN  *BHP   1000.0
+   *MONITOR *MIN  *STO   1000.0  *STOP
+   *MONITOR *GOR        20000.0  *STOP   
+
+   *PERF WI TURB 1
+   ** if     jf     kf     wi      Di
+      1      1      3    1.0E+5    1.0e-6
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25 0.34  1.0  0.0
+   *PERF *GEO 2                             
+   ** if     jf     kf     ff                         
+      10     10     1      1.0                  
+
+   *GCONI 'g1'      ** Specify voidage replacement.
+   *VREP *GAS 1.0
+   *APPOR-METHOD  *GASI  'g1'  *IP
+
+   *TIME 3650.000
+   *STOP

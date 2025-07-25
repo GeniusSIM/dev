@@ -1,0 +1,268 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  Illustrate and verify *DYNAGRID along with recurrent transmissibility
+**  multiplier changes.  Compare it with VERIFY65.
+
+**  *DYNAGRID *AMALGAMATE is specified at the start of the run, and*TRANSJ
+**   is modified later in the run.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Grid Option Template No. 68'
+*title2 '*DYNAGRID with Recurrent *TRANSx Changes'
+*title3 'Based on VERIFY65'
+
+inunit  si except 2 0   ** deg K instead of deg C
+           except 6 2   ** micro-m2 instead of md
+           except 9 0   ** kPa-day instead of cp
+outunit si except 2 2   ** deg F instead of deg C
+           except 6 2   ** micro-m2 instead of md
+           except 9 0   ** kPa-day instead of cp
+           except 11 3  ** cm3 instead of m3
+           except 13 3  ** cm3 instead of m3
+
+*outprn *grid pres temp
+*outprn *well *all
+*wrst
+*wprn *grid time
+*wprn *iter 1
+wsrf grid time
+outsrf grid all
+outsrf grid remove velocsc fluxsc velocrc fluxrc
+outsrf well downhole
+
+outsrf special blockvar temp 15,8,8
+outsrf special blockvar temp 14,7,5
+outsrf special blockvar temp 9,9,7
+
+outsrf special blockvar temp 13,8,1
+outsrf special blockvar pres 13,8,1
+outsrf special blockvar obhloss 13,8,1
+
+outsrf special blockvar temp 15,5,1
+outsrf special blockvar pres 15,5,1
+outsrf special blockvar obhloss 15,5,1 
+
+outsrf special blockvar temp 15,4,1
+outsrf special blockvar pres 15,4,1
+outsrf special blockvar aqwatcum 15,4,1
+               blockvar aqheatcum 15,4,1
+               blockvar aqwatrate 15,4,1
+               blockvar aqheatrate 15,4,1
+
+outsrf special blockvar temp 15,5,2
+outsrf special blockvar pres 15,5,2
+outsrf special blockvar aqwatcum 15,5,2
+               blockvar aqheatcum 15,5,2
+               blockvar aqwatrate 15,5,2
+               blockvar aqheatrate 15,5,2
+
+*aqstat on
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 15 9 8
+*kdir up
+
+*di con 0.0716
+*dj con 0.0716     
+*dk con 0.0605
+
+*por *kvar 2*0.30 2*0.31 2*0.32 2*0.33
+
+*permi *kvar 2*2.12e2 2*2.13e2 2*2.14e2 2*2.15e2
+  mod 1:5 2:3 3:4 = 1.5
+
+*permj *equalsi
+  mod 1:5 2:3 3:4 = 1.35
+
+*permk *equalsi
+  mod 1:5 2:3 3:4 = 1.15
+
+*transi con 1
+  mod 2:2 1:1 1:2 * 1.5
+      1:1 1:1 1:1 * 1.2
+      1:5 1:3 3:3 * 1.4
+*transj con 1
+  mod 2:2 1:1 3:4 * 2.0
+
+*null con 1
+  mod 3:5 4:4 1:2 = 0
+
+*netgross *kvar 
+  0.819 0.817 0.815 0.813 0.811 0.819 0.817 0.815
+  
+*aquifer region 15 3:5 1:2 jdir
+*AQMETHOD semi-analytical
+*aqgeom rectang infinite
+*AQPROP  0.0  0.3 0.9869  0.0 0.0 0.0
+*AQVISC 1.1574E-11
+*aqcomp 4.43E-07
+*aqleak *on
+*hfprop 2.589E+06 1.496E+05 
+
+*end-grid
+
+*rockcp 2.589e6
+*thconr 1.496e5
+*thconw 1.496e5
+*thcono 1.496e5
+*thcong 1.496e5
+*hlossprop overbur  2.683e6 1.047e6
+           underbur  2.683e6 1.047e6
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm            0.01802      0.5
+*idealgas
+*tcrit           647.35     617.6
+*molden          55500     1924.6
+*cp              4.5e-7     7.3e-7
+*ct1             8.8e-4     7.2e-4
+
+*avg           2.722e-16      0
+*bvg             1.075        0
+
+*cpg1              0          0
+*cpl1              0        1047
+*hvapr             0        5580
+
+*visctable
+
+**      Temp
+       297.0   1.078e-11  6.6898e-8
+       310.9   7.928e-12  1.5972e-8
+       338.7   4.977e-12  2.1643e-9
+       366.5   3.565e-12  5.440e-10
+       394.3   2.662e-12  2.014e-10
+       422.0   2.107e-12  9.838e-11
+       449.8   1.892e-12  6.019e-11
+       533.2   1.464e-12  2.894e-11
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.130      0.0        1.0
+    0.191      0.0051     0.999
+    0.250      0.0102     0.769
+    0.294      0.0168     0.7241
+    0.357      0.0275     0.6206
+    0.414      0.0424     0.504
+    0.490      0.0665     0.3714
+    0.577      0.097      0.3029
+    0.630      0.1148     0.1555
+    0.673      0.1259     0.0956
+    0.719      0.1381     0.0576
+    0.789      0.1636     0.0
+    1.0        1.0        0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+    0.200     0.17      0.0       0.69
+    0.395     0.112     0.0294    0.5218
+    0.433     0.1022    0.0461    0.489
+    0.515     0.0855    0.0883    0.4183
+    0.569     0.0761    0.1172    0.3717
+    0.614     0.0654    0.1433    0.3329
+    0.663     0.05      0.1764    0.2907
+    0.719     0.0372    0.217     0.2424
+    0.750     0.0285    0.2255    0.2156
+    0.805     0.0195    0.2919    0.1682
+    0.850     0.0121    0.3373    0.1294
+    0.899     0.0026    0.5169    0.0871
+    1.0       0.0       1.0       0.0
+
+*bswr ivar
+  0.110 0.111 0.112 0.113 0.114 0.115 0.116 0.117 0.118 0.119  
+  0.111 0.112 0.113 0.114 0.115 
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+*vertical *depth_ave
+*refpres 482.6
+*refblock 1 1 1
+*sw con 0.2
+
+*temp *con 296.9
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical  
+
+*norm     press 100 satur 0.4   temp 30  y 0.4   x 0.4
+
+
+
+*run
+
+**  ==============  RECURRENT DATA  ======================
+
+time 0
+
+   dtwell 1e-4
+
+   well 1 'STEAM INJT' 
+   injector 'STEAM INJT'   
+   tinjw 468.5
+   qual .697  
+   incomp  water  1.0   0.0
+   operate stw .053       
+   perf 'STEAM INJT'
+               14 8 1  1e-4   
+               14 8 2  1e-4 
+   well 2 'PRODUCER' 
+   producer 'PRODUCER' 
+   operate bhp 482.6
+   geometry k  .0016 .307 .125 0 
+   perf geo 'PRODUCER'
+               2 2 1   1.0     
+               2 2 2   1.0     
+
+   *transj IJK 10:10 6:6 6:6  2.5
+
+   *dynagrid-tsint 1
+   *dynagrid amalgamate  gmofrc 0.005 temper 0.03 into 3 3 2
+                                        1:15 1:9 3:8
+
+
+time .0069444
+time .01
+time 0.02
+time 0.03
+time 0.04
+time 0.05
+time 0.067568
+
+   *transj IJK 10:10 6:6 7:7  4.0
+
+time 0.069444
+time 0.1
+time 0.5
+
+stop

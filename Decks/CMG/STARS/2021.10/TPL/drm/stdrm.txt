@@ -1,0 +1,87 @@
+
+
+     STARS Data Files Illustrating "Drive Mechanisms"
+     ------------------------------------------------
+
+stdrm001.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+stdrm002.dat:
+  title1 'STARS Test Bed No. 2'
+  title2 'Wet Combustion Tube Experiment'
+  title3 'of Smith and Perkins'
+
+stdrm003.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stdrm004.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stdrm005.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stdrm006.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+stdrm007.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+stdrm008.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+stdrm009.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+stdrm010.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+stdrm011.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+stdrm012.dat:
+  title1 'STARS Test Bed No. 30'
+  title2 'Simple Gravity Drainage Process'
+  title3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+stdrm013.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A' "
+
+stdrm015.dat:
+  title1 'STARS Test Bed No. 37'
+  title2 'Sand Failure due to Pressure Drawdown'
+  title3 'Illustrating the Coupled Geomechanic-Thermal Option'
+
+stdrm016.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+stdrm017.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+stdrm019.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+stdrm020.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'

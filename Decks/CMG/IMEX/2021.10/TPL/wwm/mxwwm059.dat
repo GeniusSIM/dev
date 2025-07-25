@@ -1,0 +1,552 @@
+   ******************************************************************************
+   ** mxwwm059.dat:          Operating constraint in history-matching mode     **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXWWM059.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  10x10x3            MODIFIED SPE 1      *OPERATE-HIST      *ALTER-HIST    **      
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This data set is based on the First SPE Comparative Solution Project, a 10x10x3  **
+   ** grid gas injection problem. The production well is running in the history-       **
+   ** matching mode and the surface phase rate constraints (observed) will be converted**
+   ** to the reservior fluid rate constraint at the specified reference condtion.      **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300; 282-6495 (fax);  support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'Well operating in history-matching mode'
+
+   *TITLE2
+   'Testing well management keyword *OPERATE-HIST'
+
+   *INUNIT *FIELD              
+
+   *WPRN   *WELL   1
+   *OUTPRN *WELL   *BRIEF
+
+   *WSRF   *GRID   *TIME
+   *WSRF   *WELL   1
+   *OUTSRF *GRID   *SO *SG *PRES *BPP
+   *OUTSRF *WELL   *DOWNHOLE
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 10   10    3    ** 10 blocks in each the I (x) and J (y) directions.
+                               ** 3 layers in the K (z) direction.
+   *DI *CON 1000.0             ** I direction block dimensions constant at 1000 ft.
+   *DJ *CON 1000.0             ** J direction block dimensions constant at 1000 ft.
+   *DK *KVAR                   ** K direction block dimensions (layer thicknesses)
+    50.0 30.0 20.0             ** are 50 ft., 30 ft. and 20 ft. for the bottommost
+                               ** middle and uppermost layers, respectively.
+
+   *DEPTH 1 1 1 8400.0         ** Depth to center of first block, in bottom layer.
+
+   *POR *CON 0.3               ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   3.0E-6              ** Rock compressibility and
+   *PRPOR 14.7                 ** reference pressure.   
+
+   *PERMI *KVAR                ** Each of the I, J, and K permeabilities are
+      200.0   50.0  500.0      ** constant within each layer of the reservoir,
+   *PERMJ *KVAR                ** but vary from layer to layer. Hense the use
+      200.0   50.0  500.0      ** of *KVAR to input them layer by layer. Note
+   *PERMK *KVAR                ** that the first K layer is at bottom of the
+       20.0   40.0   60.0      ** reservoir.
+
+   *SECTOR 'ZONE-center' 4:7 4:7 1:3
+
+   *MODEL *BLACKOIL            ** Solve three equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1600.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *OIL    46.244
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410
+   *CW    2.9886E-6
+   *REFPW 14.7
+   *VWI   0.31
+   *CVW   0.0   
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    0.0   0.0     
+                            
+   *SLT
+   **  sl     krg        krog  
+      0.12    0.984       0.0 
+      0.15    0.98        0.0       
+      0.30    0.94        0.0       
+      0.40    0.87        1.0000E-4       
+      0.50    0.72        0.001
+      0.55    0.6         0.01
+      0.60    0.41        0.021
+      0.70    0.19        0.09
+      0.75    0.125       0.2
+      0.80    0.075       0.35
+      0.88    0.025       0.7
+      0.95    0.005       0.98
+      0.98    0.0         0.997
+      0.999   0.0         1.0
+      1.0     0.0         1.0
+
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS ** Use vertical equilibrium calculation.
+   *PB *CON    4014.7          ** buble point pressure
+   *REFDEPTH   8400.           ** Give a reference depth  and
+   *REFPRES    4800.           ** associated pressure.
+   *DWOC       9500.           ** Depth to water-oil contact
+   *DGOC       7000.           ** Depth to gas-oil conttact
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX        20.          ** Maximum time step size
+   *NORM *PRESS  1000.0        ** Normal maximum changes per time step
+   *NORM *SATUR     0.20
+   *AIM  *THRESH    0.25 .25   ** Use thresh hold switching criteria
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1986 01 01
+   *DTWELL 1.0
+                  
+   *WELL 1  'Injector'
+   *INJECTOR  *UNWEIGHT  1
+   *INCOMP *GAS
+   *OPERATE *MAX *STG   1.0E7   ** 1.0E8
+   *OPERATE *MAX *BHP 147000.0
+    
+   *PERF 1 
+   ** if     jf     kf     wi 
+      1      1      3      1.0E+5
+
+   *WELL 2 'Producer'
+   *PRODUCER  2
+   *OPERATE *MAX  *STO 10000.0
+   *OPERATE *MAX  *STG 12700000.0
+
+   ** Well geometry for the producer.
+   **            rad    geofac  wfrac   skin
+   *GEOMETRY *K  0.25    0.34    1.0    0.0 
+   *PERF *GEO 2
+   ** if     jf     kf     ff                         
+      10     10     1      1.0
+
+**Producer operates in history-matching mode
+   *OPERATE-HIST 2  *RSV  **(RSV|STO|STG|STW|OFF) ('Entire  Field')
+
+ *TIME  1.0000
+   ALTER-HIST 2
+     10000  12700000  **values correspond to *OPERATE
+
+ *TIME  6.0000
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  25.095
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  45.015
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  65.015
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  85.015
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  105.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  125.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  145.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  165.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  185.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  205.02
+   ALTER-HIST 2
+     10000  12700000
+
+ *TIME  225.02
+   ALTER-HIST 2
+     10000  12670000
+
+ *TIME  245.02
+   ALTER-HIST 2
+     10000  12615000
+
+ *TIME  265.02
+   ALTER-HIST 2
+     10000  12551000
+
+ *TIME  285.02
+   ALTER-HIST 2
+     10000  12485000
+
+ *TIME  305.02
+    ALTER-HIST 2
+      10000  12419000
+
+ *TIME  325.02
+   ALTER-HIST 2
+      10000  12353000
+
+ *TIME  345.02
+   ALTER-HIST 2
+      10000  12294000
+
+ *TIME  365.02
+   ALTER-HIST 2
+      10000  12299000
+
+ *TIME  385.02
+   ALTER-HIST 2
+      10000  12356000
+
+ *TIME  405.02
+   ALTER-HIST 2
+      10000  12435000
+
+ *TIME  425.02
+   ALTER-HIST 2
+      10000  12487000
+
+ *TIME  445.02
+   ALTER-HIST 2
+      10000  12523000
+
+ *TIME  465.02
+   ALTER-HIST 2
+      10000  12536000
+
+ *TIME  485.02
+   ALTER-HIST 2
+      10000  12528000
+
+ *TIME  505.02
+   ALTER-HIST 2
+      10000  12501000
+
+ *TIME  525.02
+   ALTER-HIST 2
+      10000  12459000
+
+ *TIME  545.02
+   ALTER-HIST 2
+      10000  12410000
+
+ *TIME  565.02
+   ALTER-HIST 2
+      10000  12358000
+
+ *TIME  585.02
+   ALTER-HIST 2
+      10000  12301000
+
+ *TIME  605.02
+   ALTER-HIST 2
+      10000  12249000
+
+ *TIME  625.02
+   ALTER-HIST 2
+      10000  12203000
+
+ *TIME  645.02
+   ALTER-HIST 2
+      10000  12162000
+
+ *TIME  665.02
+   ALTER-HIST 2
+      10000  12130000
+
+ *TIME  685.02
+   ALTER-HIST 2
+      10000  12105000
+
+ *TIME  705.02
+   ALTER-HIST 2
+      10000  12084000
+
+ *TIME  725.02
+   ALTER-HIST 2
+      10000  12103000
+
+ *TIME  745.02
+   ALTER-HIST 2
+      10000  12166000
+
+ *TIME  765.02
+   ALTER-HIST 2
+      10000  12279000
+
+ *TIME  785.02
+   ALTER-HIST 2
+      10000  12444000
+
+ *TIME  805.02
+   ALTER-HIST 2
+      10000  12650000
+
+ *TIME  825.02
+   ALTER-HIST 2
+      10000  12879000
+
+ *TIME  845.02
+   ALTER-HIST 2
+      10000  13104000
+
+ *TIME  865.02
+   ALTER-HIST 2
+      10000  13291000
+
+ *TIME  885.02
+   ALTER-HIST 2
+      10000  13448000
+
+ *TIME  905.02
+   ALTER-HIST 2
+      10000  13573000
+
+ *TIME  925.02
+   ALTER-HIST 2
+      10000  13672000
+
+ *TIME  945.02
+   ALTER-HIST 2
+      10000  13761000
+
+ *TIME  965.02
+   ALTER-HIST 2
+      10000  13850000
+
+ *TIME  985.02
+   ALTER-HIST 2
+      10000  13931000
+
+ *TIME  1005.0
+   ALTER-HIST 2
+      10000  14005000
+
+ *TIME  1025.0
+   ALTER-HIST 2
+      10000  14073000
+
+ *TIME  1045.0
+   ALTER-HIST 2
+      10000  14134000
+
+ *TIME  1065.0
+   ALTER-HIST 2
+      10000  14188000
+
+ *TIME  1085.0
+   ALTER-HIST 2
+      10000  14235000
+
+ *TIME  1105.0
+   ALTER-HIST 2
+      10000  14277000
+
+ *TIME  1125.0
+   ALTER-HIST 2
+      10000  14316000
+
+ *TIME  1145.0
+   ALTER-HIST 2
+      10000  14352000
+
+ *TIME  1165.0
+   ALTER-HIST 2
+      10000  14387000
+
+ *TIME  1185.0
+   ALTER-HIST 2
+      10000  14423000
+
+ *TIME  1205.0
+   ALTER-HIST 2
+      10000  14459000
+
+ *TIME  1225.0
+   ALTER-HIST 2
+      10000  14496000
+
+ *TIME  1245.0
+   ALTER-HIST 2
+      10000  14534000
+
+ *TIME  1265.0
+   ALTER-HIST 2
+      10000  14574000
+
+ *TIME  1285.0
+   ALTER-HIST 2
+      10000  14617000
+
+ *TIME  1305.0
+   ALTER-HIST 2
+      10000  14661000
+
+ *TIME  1325.0
+   ALTER-HIST 2
+      10000  14708000
+
+ *TIME  1345.0
+   ALTER-HIST 2
+      10000  14756000
+
+ *TIME  1365.0
+   ALTER-HIST 2
+      10000  14806000
+
+ *TIME  1385.0
+   ALTER-HIST 2
+      10000  14857000
+
+ *TIME  1405.0
+   ALTER-HIST 2
+      10000  14909000
+
+ *TIME  1425.0
+   ALTER-HIST 2
+      10000  14961000
+
+ *TIME  1445.0
+   ALTER-HIST 2
+      10000  15013000
+
+ *TIME  1465.0
+   ALTER-HIST 2
+      10000  15066000
+
+ *TIME  1485.0
+   ALTER-HIST 2
+      10000  15119000
+
+ *TIME  1505.0
+   ALTER-HIST 2
+      10000  15172000
+
+ *TIME  1525.0
+   ALTER-HIST 2
+      10000  15225000
+
+ *TIME  1545.0
+   ALTER-HIST 2
+      10000  15275000
+
+ *TIME  1565.0
+   ALTER-HIST 2
+      10000  15327000
+
+ *TIME  1585.0
+   ALTER-HIST 2
+      10000  15381000
+
+ *TIME  1605.0
+   ALTER-HIST 2
+      10000  15438000
+
+ *TIME  1625.0
+   ALTER-HIST 2
+      10000  15497000
+
+ *TIME  1645.0
+   ALTER-HIST 2
+      10000  15557000
+
+ *TIME  1665.0
+   ALTER-HIST 2
+      10000  15619000
+
+ *TIME  1685.0
+   ALTER-HIST 2
+      10000  15681000
+
+ *TIME  1705.0
+   ALTER-HIST 2
+      10000  15744000
+
+ *TIME  1725.0
+   ALTER-HIST 2
+      10000  15808000
+
+ *TIME  1745.0
+   ALTER-HIST 2
+      10000  15873000
+
+ *TIME  1765.0
+   ALTER-HIST 2
+      10000  15940000
+
+ *TIME  1785.0
+   ALTER-HIST 2
+      10000  16007000
+
+ *TIME  1805.0
+   ALTER-HIST 2
+      10000  16076000
+
+ *TIME  1825.0
+  *STOP

@@ -1,0 +1,294 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**      This data represents a modification of CIM paper 93-45.
+**  Bubbly oil flow is matched, accounting for both small
+**  mobile droplets of gas in oil (bubbly oil); larger trapped
+**  droplets of gas phase, and flowing discontinuous gas (oily
+**  foam. All aspects are features of the FOAMY OIL problem,
+**  seen in the primary cold production of heavy oil in Alberta.
+**
+**  Special Features:
+
+**  1)  Rock and rock-fluid properties of CIM paper are utilized
+**
+**  2)  Fluid properties of Maini et al paper are employed
+
+**  3) Three option for *RXEQFOR:  correlation, p-T table and
+**     p-T-composition table.
+
+**  4) Use *RXEQBASE to specify component whose gas mole fraction is
+**     used in Xequil formula.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'STARS Fluid Model Template #50'
+title2 'Verify/Illustrate *RXEQBASE with Foamy Oil'
+title3 'Based on STTST65'
+
+
+*inunit  si  except 6 1  ** darcy instead of millidarcy
+
+*outprn *grid pres sg so x viso krg kro 
+              volfr   visccmp  ** special visc component (in volfr)
+
+*outsrf *grid pres so sg  x viso
+              krg kro
+              volfr   visocom  ** special visc component (in volfr)
+
+*outsrf *well component all layer all
+*outprn *well all
+*outprn *iter *newton
+
+*wrst 300
+*wprn *grid 300
+*wprn *iter 1
+
+outprn res all
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 12 12 7   ** Cartesian one-dim grid
+
+*di *con 28.8   
+*dj *con 28.8  
+*dk *con 3
+
+*por *con 0.36
+*permi *con 7.5           ** Standard bed permeability
+**permi *con 3.0           ** Alterated bed permeability
+*permj *equalsi   
+*permk *equalsi * 0.5
+
+*end-grid
+
+*cpor 4.6e-5  
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 5 5 4 1   ** One aqueous and one condensible gas component
+
+*compname  'WATER'    'BUB'    'OIL_A'      'CH4'      'GAS'
+**          -----   --------   --------   --------   --------
+*cmm        0.018     0.016      0.209      0.016     0.016
+*molden       0.0     3.18e4    .475e4     3.18e4
+**cp            0.0      7e-2       1.e-6      7.e-6 
+*cp            0.0      7e-4       1.e-6      7.e-6 
+*gassyliq 'BUB'   ** Use gas-like compressibility
+*pcrit     3140.0     480.0       214.0      480.0     480.0
+*tcrit      374.0     -147.0       434.0     -147.0    -147.0
+
+*visctable
+
+**      Temp
+          20     0.    10.000       10000     3.40
+         200     0.    10.000       10000     3.40  
+
+*vsmixcomp 'BUB'
+*vsmixendp 0 1      ** nonlinear mixing of viscosity for printout
+**vsmixfunc 0 .075 .16 .25 .35 .45 .56 .67 .78 .89 1
+
+
+**  Zero K values for all condensible components
+
+*kvtablim 125 8000  23 24
+*kvtable 'WATER'
+    0    0
+    0    0
+*kvtable 'BUB'
+    1e-6    1e-6 
+    1e-6    1e-6
+*kvtable  'OIL_A' 
+    0  0
+    0  0
+
+*kvtable  'CH4'
+**  232.77  8.722
+**  232.77  8.722 
+    1e-6    1e-6
+    1e-6    1e-6
+
+** Reference conditions
+*prsr 4830.0
+*temr 23
+*psurf 100.0
+*tsurf 23
+*surflash w g o g g
+
+**  reaction describes reversible bubble creation:
+**  stoichiometry defines bubble as converted dispersed component
+
+*storeac    0            0        0          1       0  
+*stoprod    0            1        0          0       0  
+*rphase     0            2        0          2       0 
+*rorder     0            0        0          1       0 
+*freqfac  2.0e-0     ** value chosen has unit of (min)-1    
+**freqfac  2.0e+3     ** value chosen has unit of (min)-1    
+*eact 0
+*renth 0 
+*rxeqfor 'CH4'   4.213e+4  0  0  0  0  ** Specify K value
+*rxeqbase 'GAS'  ** Xequil = Y(GAS) / K
+
+** The following is an alternative form for *RXEQFOR (gives same answer).
+** *rxeqfor 'CH4' *kvtable
+**       337.04  5.26625
+**       337.04  5.26625
+
+** The following is an alternative form for *RXEQFOR (gives same answer).
+** *kvkeycomp 'CH4' *x 0 0.15
+** *rxeqfor 'CH4' *kvtable
+**       *keycomp  ** x = 0
+**          337.04  5.26625
+**          337.04  5.26625
+**       *keycomp  ** x = 0.05
+**          337.04  5.26625
+**          337.04  5.26625
+**       *keycomp  ** x = 0.1
+**          337.04  5.26625
+**          337.04  5.26625
+**       *keycomp  ** x = 0.15
+**          337.04  5.26625
+**          337.04  5.26625
+
+**  reaction describes irreversible transfer to gas
+
+*storeac    0            1        0          0       0  
+*stoprod    0            0        0          0       1  
+*rphase     0            2        0          0       3 
+*rorder     0            1        0          0       0 
+*freqfac  2.0e-3     ** value chosen has unit of (min)-1    
+**freqfac  2.0e+2     ** value chosen has unit of (min)-1    
+*eact 0
+*renth 0
+*o2conc
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+**  This simulation incorporates foam mobility reduction in
+**  relative permeability effects which are region dependent.
+**  ---------------------------------------------------------------
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow       Pcow
+**   --         ---       ----       ----
+  0.0250     0.0000     1.0000     0.0000
+  0.2500     0.0000     1.0000     0.0000
+  0.3700     0.0100     0.3910     0.0000
+  0.5338     0.0200     0.2420     0.0000
+  0.5912     0.0500     0.0547     0.0000
+  0.6500     0.1200     0.0000     0.0000
+  1.0000     1.0000     0.0000     0.0000
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog       Pcgo
+**   --         ---       ----       ----
+  0.2500     0.5000     0.0000     0.0000
+  0.3634     0.4560     0.0160     0.0000
+  0.4432     0.3510     0.0500     0.0000
+  0.5163     0.2543     0.1000     0.0000
+  0.5923     0.1843     0.1500     0.0000
+  0.6697     0.1227     0.2200     0.0000
+  0.7457     0.0817     0.3000     0.0000
+  0.8216     0.0467     0.4400     0.0000
+  0.8975     0.0290     0.6000     0.0000
+  0.9428     0.0113     0.8400     0.0000
+  0.9589     0.0043     0.9300     0.0000
+  0.9650     0.0010     0.9700     0.0000
+  0.9700     0.0001     0.9900     0.0000
+  0.9750     0.0000     1.0000     0.0000
+
+**  Override critical saturations on table
+
+*krgcw 0.500
+sgr 0.025
+*krocw 1.0
+**krgcw 0.500  sgr 0.25 *krocw 1.0
+
+
+*initial
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+** Automatic static vertical equilibrium
+**vertical depth_ave
+**refpres 4830
+**refblock 1 1 3
+*pres *con 4830.0
+*sw   *con 0.20       
+*temp *con 23          
+*mfrac_oil 'OIL_A' *con 0.8853
+*mfrac_oil 'CH4'   *con 0.1147
+
+
+*numerical
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*tform zt
+*isothermal
+
+*dtmax 30.0
+
+*norm      press 250    zaq .4     zo .05     zncg .4
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1.0 
+
+
+   well 1 'PRODN' frac 0.25      ** Well list
+
+   producer 'PRODN'
+   operate bhp 250.0
+   operate max stg 3000
+   geometry j  .127 .2488 1 0  ** rw cc ff ss
+   perf geo 'PRODN'
+                 ** i  j   k  wi
+                   12 7:12 4    1.0
+
+
+** Obtain printouts and results at the following times
+time    1
+**time    2
+**time    3
+**time    4
+time    5
+**time    6 stop
+time   30
+time   90
+time  180 
+time  365 
+time  730 
+time 1095 
+time 1460 
+time 1825
+stop

@@ -1,0 +1,26 @@
+             POLYMER OPTION
+             --------------
+
+
+
+Templates in the Polymer Option (PLM) directory:
+
+GMPLM001.DAT -- Polymer slug injection in a light oil reservoir
+GMPLM002.DAT -- Water injection in a light oil reservoir. A companion dataset
+                to gmplm001.dat for comparison.
+GMPLM003.DAT -- Polymer injection with degradation effects
+GMPLM004.DAT -- Use of Arrhenius reaction in modeling polymer degradation
+
+GMPLM005.DAT -- Polymer injection with shear effects -- velocity vs. viscosity table.
+GMPLM006.DAT -- Polymer injection with shear effects -- shear rate vs. viscosity table.
+GMPLM007.DAT -- Polymer injection with shear effects -- use of *IMPLICIT-SHEAR.
+
+GMPLM008.DAT -- Polymer injection with well polymer viscosity reduction
+
+GMPLM009.DAT -- Gel formation by polymer and crosslinker
+
+GMPLM010.DAT -- Polymer injection with shear effects including well shear -- shear thinning.
+GMPLM011.DAT -- Polymer injection with shear effects including well shear -- shear thickening.
+
+GMPLM012.DAT -- Polymer Injection with Shear Modelling - SHAERTHCKT
+GMPLM013.DAT -- Polymer Injection with Shear Modelling - SHEARTHICK

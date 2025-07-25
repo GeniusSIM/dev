@@ -1,0 +1,195 @@
+
+
+**  Butler 2D VAPEX process is simulated
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 5'
+*title2 'Vapex with 2D Corner-Point Grid (*DI, *DJ & *ZCORN)'
+
+*inunit  lab
+*outprn *grid pres so sg  temp x viso kro krg
+              rfg rfo  masdeno masdeng
+*outsrf *grid pres sw so x viso rfg rfo
+*outprn *well wellcomp
+*outprn *iter *tss **newton
+*outsrf *well downhole  **mass **comp
+*wrst 10
+*wprn *grid 10
+*wprn *iter 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+** actual size is 66.3x3.45x18.6
+
+*grid *corner 15 1 5
+*kdir *down          ** Two-dimensional grid
+
+*di *con 4.736
+*dj *con 3.45
+**dk *con 4.65
+*zcorn
+         60*0.0        60*4.65      ** k=1
+         60*4.65       60*9.3       ** k=2
+         60*9.3        60*13.95     ** k=3
+         60*13.95      60*18.6      ** k=4
+         60*18.6       60*23.25     ** k=5
+
+
+*por *con 0.391
+
+*permi *con 1150e3
+*permj *equalsi
+*permk *equalsi
+
+
+*vamod   2  0.5   1.0  0.5   0.5   **blocks along vertical sides
+*vamod   3  0.5   0.5  0.5   1.0   **blocks along horizontal  sides
+*vamod   4  0.25  0.5  0.25  0.5   **corner blocks
+
+*vatype con 1
+*mod    2:14   1   1  = 3
+        2:14   1   5  = 3
+        1      1  2:4 = 2
+        15     1  2:4 = 2
+        1      1   1  = 4
+        15     1   1  = 4
+        1      1   5  = 4
+        15     1   5  = 4
+
+*end-grid
+
+*prpor 915
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 4 4 4    ** One aqueous and three oleic components
+
+*compname  'WATER'  'LLOYD_O'  'ASPHALT'  'PROPANE'
+**          -----    --------   --------   --------
+*cmm          0        .450       .600       .0441     **MW oil 473.4
+*molden       0     2.04e-3   1.6e-3          0.01151  **0.0150   ** oil .972 g/cm3; prop .892 g/cm3
+*cp           0    1.944e-7   1.944e-7    1.151e-6
+*pcrit        0        1000       1000        4246
+*tcrit        0         500        500       96.65
+*cpl1         0      1015.0     1015.0        89.3
+*ev           0           0          0           0
+*hvr          0           0          0     14960.0
+
+** K VALUE CORRELATIONS
+*KV1        0          0          0       1.459E6
+*KV2        0          0          0          0
+*KV3        1.0e-06    1.0e-06  1.0e-06        0
+*KV4        0          0          0      -2.548E3
+*KV5        0     0          0       -331.3
+
+** initial oil mu = 10000 cp (upgraded oil 2000 cp)
+*AVISC      0.0      2.0E3      6.045E7        2.6       ** 26.0
+
+** Reference conditions
+*prsr 101.3
+*temr 20
+*psurf 101.3
+*tsurf 20
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+*swt                                               **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.05       0.0        0.95
+    1.0        1.0        0.0
+
+*slt  **noswc   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.05       0.95        0.0
+    1.0        0.0         0.95
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+*pres *con 847.2                   ** 689kPa gauge + 88kPa barometric p; Psat=838kPa
+*sw *con .001                      ** So by difference
+*temp *con 21
+** actual asph content is 15.6 wt %
+*mfrac_oil 'LLOYD_O' con 0.844
+*mfrac_oil 'ASPHALT' con 0.156
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*dtmax 2.5
+*upstream klevel
+
+*rangecheck off
+*norm      press 200  satur 0.2  temp 10   x 0.2  y 0.2
+*converge  press 0.2  satur 0.02  temp 0.5  x  0.002  y 0.002
+*rangecheck on
+
+**  ==============  RECURRENT DATA  ======================
+
+*run
+
+*time 0
+
+   dtwell 0.01 **1.0
+
+   well 1 'INJTR'      ** Well list
+   well 2 'PRODN'
+
+   producer 'PRODN'
+   operate min bhp 100.0
+   operate max bhg 5.0
+   operate max bhl 10.6
+   geometry j .11 .3687 1 0  ** rw,cc,ff,ss
+   perf 'PRODN'
+               **  i j k
+                   1 1 5  5066e3
+
+   injector mobweight 'INJTR'
+   incomp gas    .0     0    .0     1.
+   tinjw 21.0
+   operate bhp 848.2
+   perf 'INJTR'
+           ** i j k  wi
+             15 1 1 5066e3
+
+*time 10.0
+   producer 'PRODN'
+   operate max bhl 10.6
+   operate max bhg 50.0
+
+*time 13.0
+*time 25.0
+** *time 46.0
+** *time 66.0
+** *time 100
+** *time 140
+** *time 200
+** *time 260
+** *time 319
+** *time 397
+** *time 480
+** *time 540
+*stop

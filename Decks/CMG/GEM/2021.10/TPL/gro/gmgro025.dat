@@ -1,0 +1,310 @@
+**--------------------------------------------------------------------**
+** GMGRO025.DAT: *PTHRESH-IREGN *PLASTIC option                       **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMGRO025.DAT                                               **
+**                                                                    **
+** MODEL:  CART 20x1x10  GRID     7 COMPONENTS   FRACTURED RESERVOIR  **
+**         SUBDOMAIN DUAL-PERMEABILITY METHOD    SI UNITS             **
+**         uses *TRANSF and *PTHRESH-IREGN                            **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This is a Subdomain-Dual Perm model with two initialization        **
+** regions. It is designed to demonstrate how  hydraulic connection   **
+** is established between the two regions after pressure              **
+** difference exceeds a given threshold value, which is specified     **
+** using keyword *PTHRESH-IREGN *PLASTIC in rock-fluid section.       **
+**                                                                    **
+** The hydraulic communication is permanent once it is established.   **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+   *RESULTS *SIMULATOR *GEM
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+   'GEM Grid Option Template No. 25'
+   *TITLE2
+   'Pressure threshold across two INIT regions'
+   *TITLE3
+   '*PTHRESH-IREGN *PLASTIC'
+
+   *INUNIT *FIELD              
+   *DIARY *WELL-INFO
+   *WPRN   *GRID   0
+   *WRST 0
+
+   *OUTPRN *RES    *ALL
+   *WSRF   *WELL   1
+   **WSRF   *GRID   1
+   *OUTSRF *GRID   *SO *SG *SW *PRES *VELOCRC
+   
+
+   *GRID *CART  20  1  10
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************   
+
+   *KDIR *DOWN
+                         
+   *DI *CON 200.0
+   *DJ *CON 100.0
+   *DK *CON 50.0
+
+   *SUBDOMAIN 6
+   **MINC 6
+   **DUALPOR
+   **DUALPERM
+
+   *FRACVOL 0.1 0.2 0.2 0.2 0.2 0.1
+   *TRANSD *CON 0.5         **Activate SDDK
+   *SHAPE *GK
+
+   *DIFRAC *KVAR 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0
+   *DJFRAC *KVAR 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0
+   *DKFRAC *KVAR 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0 50.0
+
+   *DEPTH 1 1 1 2000.0         ** Depth to center of first block, in bottom layer.
+
+   *POR *FRACTURE *CON 0.01
+   *POR *MATRIX   *CON 0.29
+                   
+   *CPOR  *FRACTURE 3.5E-6
+   *PRPOR *FRACTURE 4500.0  
+   *CPOR  *MATRIX   3.5E-6
+   *PRPOR *MATRIX   4500.0  
+
+   *PERMI *FRACTURE *KVAR  10.0 10.0 10.0 10.0 90.0 90.0 20.0 20.0 20.0 20.0
+   *PERMJ *FRACTURE *KVAR  10.0 10.0 10.0 10.0 90.0 90.0 20.0 20.0 20.0 20.0
+   *PERMK *FRACTURE *KVAR  10.0 10.0 10.0 10.0 90.0 90.0 20.0 20.0 20.0 20.0 
+   *TRANSI *FRACTURE *CON  1.0
+   *TRANSJ *FRACTURE *CON  1.0
+   *TRANSK *FRACTURE *CON  0.1
+
+   *PERMI *MATRIX *CON   1.0
+   *PERMJ *MATRIX *CON   1.0
+   *PERMK *MATRIX *CON   1.0
+
+   *TRANSI *MATRIX *CON  1.0
+   *TRANSJ *MATRIX *CON  1.0
+   *TRANSK *MATRIX *CON  1.0
+
+   *TRANSFER 0
+
+   
+   *MODEL   *PR
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *NC    7    7
+   *TRES       131.000
+   *COMPNAME
+              'N2 toC1'      'CO2toC3'      'IC4toFC6'     'HYP01'
+              'HYP02'        'HYP03'        'HYP04'
+   *SG         3.1834625E-01  4.4782382E-01  6.2157005E-01  7.3685010E-01
+               7.9524225E-01  8.6397133E-01  9.3533588E-01
+   *TB        -2.6198063E+02 -7.7878623E+01  7.0789447E+01  2.4115836E+02
+               4.7944220E+02  7.8559840E+02  1.0993777E+03
+   *PCRIT      4.4780432E+01  4.4494465E+01  3.5005708E+01  2.7333933E+01
+               1.7059227E+01  9.9296147E+00  8.3804500E+00
+   *VCRIT      9.8473116E-02  1.7954913E-01  2.8943106E-01  4.4112344E-01
+               7.8534851E-01  1.3915022E+00  2.0134132E+00
+   *TCRIT      1.8692040E+02  3.4519852E+02  4.5396815E+02  6.3155028E+02
+               7.6009283E+02  9.0954468E+02  9.2747522E+02
+   *AC         9.7470040E-03  1.3051016E-01  2.2228654E-01  3.2402976E-01
+               5.8240437E-01  1.0030132E+00  1.3458076E+00
+   *MW         1.6696489E+01  3.8428813E+01  6.8356387E+01  1.0822859E+02
+               1.9007926E+02  3.5058483E+02  6.3000000E+02
+   *HCFLAG     0              0              0              0
+               0              0              0
+   *BIN
+               3.4957979E-03
+               1.1177604E-02  2.2116480E-03
+               2.1405337E-02  7.7955863E-03  1.7236100E-03
+               4.0270385E-02  2.0743158E-02  9.5967491E-03  3.2244184E-03
+               6.3947799E-02  3.9208653E-02  2.3423660E-02  1.2672519E-02
+               3.1712383E-03
+               8.1526665E-02  5.3826719E-02  3.5319364E-02  2.1931648E-02
+               8.5453939E-03  1.3252837E-03
+   *VSHIFT    -2.0011000E-01  1.0457000E-01  4.3820000E-02  1.0808576E-01
+               8.2151719E-02  2.8911932E-01  3.4081672E-01
+   *VISCOR *HZYT
+   *MIXVC      1.0549800E+00
+   *VISVC      1.3140652E-01  1.8028442E-01  2.9017578E-01  3.5290000E-01
+               9.5098485E-01  1.8008441E+00  2.4161000E+00
+   *VISCOEFF   1.0230000E-01  2.3364000E-02  6.3517677E-02 -4.8909600E-02
+               9.6494383E-03
+   *OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+               4.5723553E-01  4.5723553E-01  4.5723553E-01
+   *OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+               7.7796074E-02  7.7796074E-02  7.7796074E-02
+   *PCHOR      7.5034621E+01  1.3288172E+02  2.1271893E+02  3.1240882E+02
+               5.2306973E+02  8.5058761E+02  1.1503200E+03
+   *ENTHCOEF
+              -5.3140728E+00  5.4784602E-01 -2.6831869E-04  3.9529640E-07
+              -1.4432228E-10  1.8514656E-14
+              -1.0088521E+00  2.1715951E-01  2.2404370E-05  2.7472319E-07
+              -1.2992228E-10  1.9307679E-14
+               1.8751496E+01 -5.4183344E-05  3.5580249E-04 -6.2958351E-08
+              -4.8780369E-13  8.2987058E-16
+               0.0000000E+00 -3.1648874E-02  4.2054383E-04 -6.1214250E-08
+               0.0000000E+00  0.0000000E+00
+               0.0000000E+00 -7.9589998E-03  4.0288302E-04 -5.5459041E-08
+               0.0000000E+00  0.0000000E+00
+               0.0000000E+00  2.4978952E-03  3.9614008E-04 -5.3103236E-08
+               0.0000000E+00  0.0000000E+00
+               0.0000000E+00  1.9039229E-03  3.9421946E-04 -5.2992514E-08
+               0.0000000E+00  0.0000000E+00
+
+   ** Water phase properties
+    *DENW 65.0
+    *REFPW 14.70
+    *CW    3.500E-06
+    *VISW  0.3500
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw      krw       krow           pcow
+    0.2000000       0.0 1.0000000      1.00
+    0.2500000 0.0050000 0.8600000      0.50
+    0.3000000 0.0100000 0.7230000      0.30
+    0.3500000 0.0200000 0.6000000      0.15
+    0.4000000 0.0300000 0.4920000      0.00
+    0.4500000 0.0450000 0.3920000     -0.20
+    0.5000000 0.0600000 0.3040000     -1.20
+    0.6000000 0.1100000 0.1540000     -4.00
+    0.7000000 0.1800000 0.0420000    -10.00
+    0.7500000 0.2300000 0.0000000    -40.00   
+
+   *SLT
+   **  sl        krg       krog         pcog
+    0.4500000    0.4200        0.0      2.024 
+    0.5000000    0.3100    0.02800      1.337 
+    0.6000000    0.1900    0.11000      0.760 
+    0.7000000    0.1030    0.25000      0.603 
+    0.8000000    0.0500    0.45000      0.498 
+    0.9000000    0.0150    0.70000      0.446 
+    0.9500000    0.0075    0.85000      0.420
+    0.9750000    0.0025    0.92500      0.406
+    1.0000000    0.0000    1.00000      0.393    
+
+   *RPT 2
+   *SWT
+   ** sw      krw       krow   
+    0.0000000 0.0000000 1.0000000
+    0.2000000 0.2000000 0.8000000
+    0.5000000 0.5000000 0.5000000
+    0.7000000 0.7000000 0.3000000
+    1.0000000 1.0000000 0.0000000
+                               
+   *SLT
+   **  sl     krg       krog  
+    0.0000000 1.0000000 0.0000000
+    0.5000000 0.5000000 0.5000000
+    1.0000000 0.0000000 1.0000000   
+
+   *RTYPE *FRACTURE *CON 2
+   *RTYPE *MATRIX   *CON 1
+
+   *SD_REINF *CON 0.25       **SDDK reinfriltration
+
+   *PTHRESH-IREGN *PLASTIC
+   1 2 160 **100
+   2 1 160 **100
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL *BLOCK_CENTER *WATER_OIL
+
+   *NREGIONS 2
+   
+   *ITYPE *IJK
+   1:10  1 1:10 1
+   11:20 1 1:10 2
+
+   *REFDEPTH   2000. 2000.          ** Give a reference depth  and
+   *REFPRES    6000. 6000.          ** associated pressure.
+   *DWOC       6000. 6000.          ** Depth to water-oil contact
+
+   *SEPARATOR  94.7 72.0
+               14.7 60.0
+
+   *ZGLOBALC  'N2 toC1'    *FRACTURE *CON 6.2594E-01
+   *ZGLOBALC  'CO2toC3'    *FRACTURE *CON 9.0320E-02
+   *ZGLOBALC  'IC4toFC6'   *FRACTURE *CON 6.3020E-02
+   *ZGLOBALC  'HYP01'      *FRACTURE *CON 6.3850E-02
+   *ZGLOBALC  'HYP02'      *FRACTURE *CON 7.8950E-02
+   *ZGLOBALC  'HYP03'      *FRACTURE *CON 5.5060E-02
+   *ZGLOBALC  'HYP04'      *FRACTURE *CON 2.2860E-02
+
+   *ZGLOBALC  'N2 toC1'    *MATRIX *CON 6.2594E-01
+   *ZGLOBALC  'CO2toC3'    *MATRIX *CON 9.0320E-02
+   *ZGLOBALC  'IC4toFC6'   *MATRIX *CON 6.3020E-02
+   *ZGLOBALC  'HYP01'      *MATRIX *CON 6.3850E-02
+   *ZGLOBALC  'HYP02'      *MATRIX *CON 7.8950E-02
+   *ZGLOBALC  'HYP03'      *MATRIX *CON 5.5060E-02
+   *ZGLOBALC  'HYP04'      *MATRIX *CON 2.2860E-02
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX   31 
+   *NORM *SATUR 0.15
+   *NORM *GMOLAR 0.05
+   *MAXCHANGE *SATUR 0.9
+   *MAXCHANGE *GMOLAR 0.9
+   
+   *AIM *STAB *AND-THRESH 1 0.01
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 1989 07 05
+   *DTWELL 0.001   
+
+   *WELL 1  'PRODUCER'
+   *PRODUCER  1                        ** Define the type of well 1.
+   *OPERATE  *MIN  *BHP 6120.0         ** Operating on a pressure specification. 
+
+   *WELL 2  'INJECTOR'
+   *INJECTOR  2                        ** Define the type of well 1.
+   *INCOMP *WATER
+   *OPERATE  *MAX  *BHP 6200.0         ** Operating on a pressure specification.
+
+   *PERF 1 
+   ** if     jf     kf     wi
+     20      1      1:10   177.462
+     
+   *PERF 2 
+   ** if     jf     kf     wi 
+     1       1      1:10   177.462
+
+
+   *AIMSET *FRACTURE *CON 1
+   *AIMSET *MATRIX   *CON 0
+
+   *TIME   365.0
+   *TIME   730.0
+   *TIME  1095.0
+   *TIME  1460.0
+   *TIME  1825.0
+   *TIME  2190.0
+   *TIME  2555.0
+   *TIME  2920.0
+   *TIME  3285.0
+   *TIME  3650.0
+   *STOP

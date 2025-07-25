@@ -1,0 +1,248 @@
+   *****************************************************************************
+   ** Template (mxgmc055.dat):  3D CARTESIAN GRID                             **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC055.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         RESERVOIR REGION                                 11X11X10 CARTESIAN GRID **
+   **         GEOMECHANICS REGION                              48x48x26 CARTESIAN GRID **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **   The purpose of this problem is to demostrate how the dual grids are used.      **
+   **   Features:                                                                      **
+   **     Translation is applied to geomechanical grids so that reservoir region is    **
+   **       located at the middle of the entire field.                                 **
+   **     The reservoir region is soft whereas its surrounding rock is hard.           **
+   **     There is no flow calculation in the surrounding region of the reservoir.     **
+   **     Local refined grids are used in the reservoir.                               **
+   **                                                                                  **
+   **   This problem is based on the problem 1 in SPE 79709 by Dean et al.             **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+   
+RESULTS SIMULATOR IMEX
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*TITLE1
+   'IMEX Geomechanics Template #055'
+*TITLE2
+   'Dean Problem #1, Reservoir Embedded in Geomechanics Region'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID 10
+*OUTPRN *GRID *PRES
+
+*WSRF *GRIDDEFORM  2
+*WSRF *GRID 2
+*OUTSRF *GRID *POROS *PRES *YOUNG *POISSON *VDISPL *STRESSH
+              *STRESI *STRESJ *STRESK *STRESEFF *VPOROSGEO
+
+*OUTSRF *SPECIAL 6 6 1 *PRES
+*OUTSRF *SPECIAL 6 6 1 *POROS
+*OUTSRF *SPECIAL 6 6 1 *VPOROSGEO
+*OUTSRF *SPECIAL 6 6 1 *STRESMNP
+*OUTSRF *SPECIAL 6 6 1 *STRESMXP                 
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+GRID CART 11 11 10
+
+DI CON 200
+DJ CON 200
+DK CON 20
+
+KDIR DOWN
+
+REFINE  6:6  6:6 1:10   into  9  9  1
+*DEPTH 1 1 1 5000
+
+*POR  *CON 0.20
+
+*PERMI *CON 50.0
+*PERMJ *EQUALSI * 1.00
+*PERMK *CON 5.0
+
+*PRPOR 300
+*CPOR  1.8570E-6 
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT
+      ** p              rs      bo          eg    viso     visg
+          14.700   1.00000   1.06200   6.00000   1.04000 0.0080000
+         264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+         514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+        1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+        2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+        2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+        3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+        4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+        5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+        9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0 
+
+*TRES 150
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+*RPT 1
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    2000.7  
+     
+   *REFDEPTH   5000.
+   *REFPRES    3035.     
+   *DWOC       6500.
+   *DGOC       4000.
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  20.0
+
+*NORM     *PRESS 250.0
+*CONVERGE *PRESS 10.0
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH           ** geomechanics main keyword
+*GEOM3D
+
+*GCOUPLING 2
+*CALIB_POR
+*GCFACTOR 1.0
+*GPTOLMUL 0.1
+
+GEOGRID GCART  48 48 26
+*GDI  *GIVAR   4*100  40*55   4*100
+*GDJ  *GJVAR   4*100  40*55   4*100
+*GDK  *GKVAR   5*500  400  15*20   2*40  3*100
+
+*GTRANSLI -400.0        ** Translation along the I direction
+*GTRANSLJ -400.0        ** Translation along the J direction
+
+*GEODEPTH  GTOP 1 1 1   2000
+
+** Note: The yielding stress has a high value to avoid plastics occuring.
+** Young modulus   Poisson's ratio   Yielding stress
+
+*GEOROCK 1
+*ELASTMOD 1.0e4            ** Young's modulus
+*POISSRATIO .30            ** Poisson's ratio
+*COHESION 100000000       ** Yield stress
+
+*GEOROCK 2
+*ELASTMOD 1.0e6            ** Young's modulus
+*POISSRATIO .30            ** Poisson's ratio
+*COHESION 100000000       ** Yield stress
+
+*GEOTYPE   ijk
+**         i      j       k    rocktype
+           1:48    1:48   1:26      2     
+           5:44    5:44   11:21     1 
+
+*STRESS3D 4000 4000 6000 0.0 0.0 0.0
+*STRESSGRAD3D -0.49345 -0.49345 -0.9869 0.0 0.0 0.0
+
+*GOUTSRF  GGRID *YOUNG *POISSON *VDISPL *STRESI *STRESJ *STRESK
+
+
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 0.05
+
+   *WELL 1 'prod1'
+   *PRODUCER 'prod1'
+   *OPERATE *MAX *STO 5000
+   *OPERATE *MIN *BHP 100
+   *GEOMETRY *K  0.25 0.249 1.0 0.0
+   *PERF *GEO 'prod1'
+       6  6  1  / 5 5 1  1.0
+       6  6  2  / 5 5 1  1.0
+       6  6  3  / 5 5 1  1.0
+       6  6  4  / 5 5 1  1.0
+       6  6  5  / 5 5 1  1.0
+       6  6  6  / 5 5 1  1.0
+       6  6  7  / 5 5 1  1.0
+       6  6  8  / 5 5 1  1.0
+       6  6  9  / 5 5 1  1.0
+       6  6  10 / 5 5 1  1.0
+
+*TIME 3
+*STOP
+
+*TIME 300
+*STOP

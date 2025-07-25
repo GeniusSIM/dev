@@ -1,0 +1,19 @@
+** This example shows how to use Results Report to prepare data for an
+** economic analysis package.
+
+*FILES      'mxdrm005.sr3'
+
+*LINES-PER-PAGE  5000      ** Don't have any page breaks in the table
+*TABLE-WIDTH      300      ** Produce a wide table
+*NO-BLANKS                 ** Always put a value (placeholder) in each column
+*PRECISION          4      ** Four significant figures in data
+*TIME             OFF      ** No time column
+*DATE              ON      ** First column will be date
+
+*TABLE-FOR   *PARAMETERS 'Oil Rate SC - Monthly'    ** Monthly average oil rate
+   *COLUMN-FOR  *WELLS *ALL-PRODUCERS
+*TABLE-END   
+
+*TABLE-FOR   *PARAMETERS 'Gas Rate SC - Monthly'    ** Monthly average oil rate
+   *COLUMN-FOR  *WELLS *ALL-PRODUCERS
+*TABLE-END   

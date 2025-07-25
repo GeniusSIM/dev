@@ -1,0 +1,504 @@
+
+
+     STARS Data Files Illustrating "Simulator Options"
+     -------------------------------------------------
+
+stsmo001.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stsmo002.dat:
+  title1 'STARS Test Bed No. 15'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+  title3 'Test Bed No. 3 run with ZH formulation'
+
+stsmo003.dat:
+  title1 'STARS Test Bed No. 24'
+  title2 'Fourth SPE Comparative Solution Project, Problem 1A'
+  title3 'Test Bed No. 6 with Outer Radial Blocks as Aquifer Model'
+
+stsmo004.dat:
+  title1 'STARS Test Bed No. 25'
+  title2 'Verify/Illustrate *BOTTOM Aquifer Model for Radial Grid'
+  title3 'Based on Test Bed No. 17'
+
+stsmo005.dat:
+  title1 'STARS Test Bed No. 47'
+  title2 'Test Bed No. 9, with Zero-Porosity Blocks and Full Printout'
+
+stsmo006.dat:
+  title1 'STARS Test Bed No. 61'
+  title2 'Water/Oil Vertical Equilibrium Illustration'
+  title3 'Based on Test Bed #9'
+
+stsmo007.dat:
+  title1 'STARS Test Bed No. 62'
+  title2 'Water/Oil/Gas Ver. Eq. with Two Transition Zones'
+  title3 'Based on Test Bed #20'
+
+stsmo008.dat:
+  title1 'STARS Test Bed No. 26'
+  title2 'Multi-Layer Variable Depth and Layer Thickness'
+  title3 'Illustrates W/O and G/O Contact and Reference Depth Options'
+
+stsmo009.dat:
+  title1 'STARS Horizontal Well Template #7'
+  title2 'Steam Injection with 26 Wells Including 3 Horizontal Producers'
+  title3 'Variable Top, 2 Regional Aquifers, Actual 12-Year History'
+
+stsmo010.dat:
+  title1 'STARS Simulator Options No. 10'
+  title2 'Water/Oil/Gas Ver. Eq. with Oil on Bottom, Pc = 0'
+  title3 'Based on Test Bed #62'
+
+stsmo011.dat:
+  title1 'STARS Simulator Options No. 11'
+  title2 'Oil/Water/Gas Ver. Eq. with Oil on Bottom, Non-Zero Pcow'
+  title3 'Based on Test Bed #62'
+
+stsmo012.dat:
+  title1 'STARS Simulator Options No. 12'
+  title2 'Water/Gas Vertical Equilibrium Initialization'
+  title3 'Based on Test Bed #62'
+
+stsmo013.dat:
+  title1 'STARS Simulator Options No. 13'
+  title2 'G-L and L-L Surface K Values'
+  title3 'Based on Test Bed #17'
+
+stsmo014.dat:
+  title1 'STARS Simulator Options No. 14'
+  title2 '*AQFRCOMP and Orig/Aqfr/Injt Water Components'
+  title3 'Based on Test Bed #24'
+
+stsmo015.dat:
+  title1 'STARS Simulator Options No. 15'
+  title2 'Relative Permeability Hysteresis for Non-wetting Oil,'
+  title3 'Wetting Water and Gas Phases Using Killough Method'
+
+stsmo016.dat:
+  title1 'STARS Simulator Options No. 16'
+  title2 'Test/Illustrate *KRTYPE and *KRTYPE_VERT'
+  title3 'Based on STTST06'
+
+stsmo017.dat:
+  title1 'STARS Simulator Options No. 17'
+  title2 'Test/Illustrate *KRSWITCH and Associated Keywords'
+  title3 'Based on STTST06'
+
+stsmo018.dat:
+  title1 'STARS Simulator Options No. 18'
+  title2 'Base Case for Testing Array-Reading Option *BINARY_DATA'
+  title3 'Based on STGRO036'
+
+stsmo019.dat:
+  title1 'STARS Simulator Options No. 19'
+  title2 'Test/Illustrate Array-Reading Option *BINARY_DATA'
+  title3 'Based on STSMO018'
+
+stsmo020.dat:
+  title1 'STARS Simulator Options No. 20'
+  title2 'Base Case for Testing *BINARY_DATA with Natural Fracture'
+  title3 'Based on STTST30'
+
+stsmo021.dat:
+  title1 'STARS Simulator Options No. 21'
+  title2 'Test/Illustrate *BINARY_DATA with Natural Fracture'
+  title3 'Based on STSMO020'
+
+stsmo022.dat:
+  title1 'STARS Simulator Options No. 22'
+  title2 '*LININTERP with Rel Perm Hysteresis of Killough'
+  title3 'Based on STSMO015'
+
+stsmo023.dat:
+  title1 'STARS Simulator Options No. 23'
+  title2 "Illustrate keyword equivalent of '-doms -parasol'"
+  title3 'Based on STTST46'
+
+stsmo024.dat:
+  title1 'STARS Simulator Options No. 24'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN'
+  title3 'Based on STTST46'
+
+stsmo025.dat:
+  title1 'STARS Simulator Options No. 25'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *AUTOPSLAB'
+  title3 'Based on STTST46'
+
+stsmo026.dat:
+  title1 'STARS Simulator Options No. 26'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *PARTITION'
+  title3 'Based on STTST46'
+
+stsmo027.dat:
+  title1 'STARS Simulator Options No. 27'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *PPARTITION'
+  title3 'Based on STTST46'
+
+stsmo028.dat:
+  title1 'STARS Simulator Options No. 28'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *GPARTITION'
+  title3 'Based on STTST46'
+
+stsmo029.dat:
+  title1 'STARS Simulator Options No. 29'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *APARTITION'
+  title3 'Based on STTST46'
+
+stsmo030.dat:
+  title1 'STARS Simulator Options No. 30'
+  title2 'Illustrate *SOLVER *PARASOL with *DTYPE'
+  title3 'Based on STTST46'
+
+stsmo031.dat:
+  title1 'STARS Simulator Options No. 31'
+  title2 'Illustrate *SOLVER *PARASOL with *DPLANES'
+  title3 'Based on STTST46'
+
+stsmo032.dat:
+  title1 'STARS Simulator Options No. 32'
+  title2 'Illustrate *SOLVER *PARASOL with *CHECKRB'
+  title3 'Based on STTST46'
+
+stsmo033.dat:
+  title1 'STARS Simulator Options No. 33'
+  title2 'Illustrate *SOLVER *PARASOL with *PDEGAA and *PDEGAB'
+  title3 'Based on STTST46'
+
+stsmo034.dat:
+  title1 'STARS Simulator Options No. 34'
+  title2 'Illustrate *SOLVER *PARASOL with *PNPROSL'
+  title3 'Based on STTST46'
+
+stsmo035.dat:
+  title1 'STARS Simulator Options No. 35'
+  title2 'Test/Illustrate *OILWET with Vert. Eq. WO Trans. Zone and *WOC_SW'
+
+stsmo036.dat:
+  title1 'STARS Simulator Options No. 36'
+  title2 'Test/Illustrate Water-Gas System Vert. Eq. with *TRANZONE and *WOC_SW'
+
+stsmo037.dat:
+  title1 'STARS Simulator Options No. 37'
+  title2 'Test/Illustrate Counter-Current Rock-Fluid Data with 2-D SAGD'
+
+stsmo038.dat:
+  title1 'STARS Simulator Options No. 38'
+  title2 'Test/Illustrate *PORINTERP *REF - Static Grid'
+  title3 'Based on STGRO037'
+
+stsmo039.dat:
+  title1 'STARS Simulator Options No. 39'
+  title2 'Test/Illustrate *PORINTERP *INIT - Static Grid'
+  title3 'Base case for STSMO038'
+
+stsmo040.dat:
+  title1 'STARS Simulator Options No. 40'
+  title2 'Test/Illustrate *PORINTERP *INIT - Dynamic Grid'
+  title3 'Based on STGRO040'
+
+stsmo041.dat:
+  title1 'STARS Simulator Options No. 41'
+  title2 'Test/Illustrate Over/Underburden Heatloss Through Null Blocks'
+  title3 'Based on STTST07'
+
+stsmo042.dat:
+  title1 'STARS Simulator Options No. 42'
+  title2 'Heater Well - *HTWELL *HTWRATE replacing *HEATR'
+  title3 'Same result as STTST01'
+
+stsmo043.dat:
+  title1 'STARS Simulator Options No. 43'
+  title2 'Heater Well - Heat-only Multi-block Well with *HTWRATEPL'
+  title3 'Based on STSMO042'
+
+stsmo044.dat:
+  title1 'STARS Simulator Options No. 44'
+  title2 'Test/Illustrate *HTWELL with convective/max heat rate'
+  title3 'Based on STTST06'
+
+stsmo045.dat:
+  title1 'STARS Simulator Options No. 45'
+  title2 'Test/Illustrate Heater Well in Cooling Mode'
+  title3 'with *WELL *FRAC and *PERFV *WI'
+
+stsmo046.dat:
+  title1 'STARS Simulator Options No. 46'
+  title2 'Test/Illustrate Heater Well Through Pinched-out, Null and Zero-Porosity Blocks'
+  title3 'Based on STWWM023'
+
+stsmo047.dat:
+  title1 'STARS Simulator Options No. 47'
+  title2 'Test/Illustrate *LAYERXYZ, Anisotropic/Nonuniform Thermal Cond.'
+  title3 'and Heat Rate Cut-off.  Based on STWWM016'
+
+stsmo048.dat:
+  title1 'STARS Simulator Options No. 48'
+  title2 'Multiple Heaters; Completion Length Modifiers; Shut-in Layers'
+  title3 'Based on STTST07'
+
+stsmo049.dat:
+  title1 'STARS Simulator Options No. 49'
+  title2 'Oil-Wet Pc Hysteresis with Non-Wetting Water Kr Hysteresis'
+  title3 'Using BBM Method'
+
+stsmo050.dat:
+  title1 'STARS Simulator Options No. 50'
+  title2 'Oil-Wet Pc Hysteresis with Non-Wetting Water Kr Hysteresis'
+  title3 'Using Killough Method'
+
+stsmo051.dat:
+  title1 'STARS Simulator Options No. 51'
+  title2 'Test/Illustrate *AIM *STAB *BACK in Recurrent Data Only'
+  title3 'Based on STTST57'
+
+stsmo052.dat:
+  title1 'STARS Simulator Options No. 52'
+  title2 'Test/Illustrate *DATUMDEPTH *INITIAL'
+  title3 'Based on STTST69'
+
+stsmo053.dat:
+  title1 'STARS Simulator Options No. 53'
+  title2 'Test/Illustrate *DILATION with Thermal Effects'
+  title3 'Based on STTST48'
+
+stsmo054.dat:
+  title1 'STARS Simulator Options No. 54'
+  title2 'Test/Illustrate *EPCOMPACT with Thermal Effect'
+  title3 'Based on STTST74'
+
+stsmo055.dat:
+  title1 'STARS Simulator Options No. 55'
+  title2 'Test/Illustrate *COMPACT_VAR Rock Model'
+
+stsmo056.dat:
+  title1 'STARS Simulator Options No. 56'
+  title2 'Test/Illustrate *PORFORM *EXP Porosity Formula'
+  title3 'Based on STTST07'
+
+stsmo057.dat:
+  title1 'STARS Simulator Options No. 57'
+  title2 'Test/Illustrate *VOLCONST *BULK Volume Constraint Type'
+  title3 'Based on STTST07'
+
+stsmo058.dat:
+  title1 'STARS Simulator Options No. 58'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX'
+  title3 'Based on STTST20 and MXDRM001'
+
+stsmo059.dat:
+  title1 'STARS Simulator Options No. 59'
+  title2 'Verify/Illustrate *RPT_INTRP *COMP for Surfactant Flood'
+
+stsmo060.dat:
+  title1 'STARS Simulator Options No. 60'
+  title2 'Verify/Illustrate *RESTART_SR2 *SEPARATE'
+  title3 'Based on STTST08'
+
+stsmo061.dat:
+  title1 'STARS Simulator Options No. 61'
+  title2 'Verify/Illustrate *UPOR_CP and *UPOR_CT'
+  title3 'Based on STTST06'
+
+stsmo062.dat:
+  title1 'STARS Simulator Options No. 62'
+  title2 'Illustrate *SOLVER *PARASOL with *PPATTERN *AUTOP2D'
+  title3 'Based on STTST46'
+
+stsmo063.dat:
+  title1 'STARS Simulator Options No. 63'
+  title2 'Verify/Illustrate *3PTSCALING, *3PTSCAL_x'
+  title2 'Three-Point Rock-Fluid End-Point Scaling'
+
+stsmo064.dat:
+  title1 'STARS Simulator Options No. 64'
+  title2 'Verify/Illustrate *GASZONE *NOOIL'
+  title3 'Based on STWWM009'
+
+stsmo065.dat:
+  title1 'STARS Simulator Options No. 65'
+  title2 'Verify/Illustrate *BINARY_DATA for *NODES, *BLOCKS'
+  title3 'Based on STTST04'
+
+stsmo066.dat:
+  title1 'STARS Simulator Options No. 66'
+  title2 'Verify/Illustrate Recurrent Permeability - Single Porosity'
+  title3 'Based on STTST07'
+
+stsmo067.dat:
+  title1 'STARS Simulator Options No. 67'
+  title2 'Verify/Illustrate Recurrent Permeability - Dual Porosity'
+  title3 'Based on STGRO045'
+
+stsmo068.dat:
+  title1 'STARS Simulator Options No. 68'
+  title2 'Verify/Illustrate *FLUX-SECTOR Output - RC Volume/Mass'
+  title3 'Based on STWWM036'
+
+stsmo069.dat:
+  title1 'STARS Simulator Options No. 69'
+  title2 'Verify/Illustrate *FLUX-SECTOR Output - RC/SC Volume'
+  title3 'Based on VERIFY49'
+
+stsmo070.dat:
+  title1 'STARS Simulator Options No. 70'
+  title2 'Verify/Illustrate *NUMSET and *NUMTYPE with NatFrac Grid'
+  title3 'Based on VERIFY49'
+
+stsmo071.dat:
+  title1 'STARS Simulator Options No. 71'
+  title2 'Verify/Illustrate *KILLOUGH_MOD, *HYS_CFRACTNW, *HYS_TRAPNW'
+  title3 'Based on STSMO015'
+
+stsmo072.dat:
+  title1 'STARS Simulator Options No. 72'
+  title2 'Verify/Illustrate *AQUIFER *RESBND Option'
+  title3 'Based on VERIFY03'
+
+stsmo073.dat:
+  title1 'STARS Simulator Options No. 73'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX from Separate SR2 File Set and ZP Cells'
+  title3 'Based on STSMO58 and MXDRM001.RSTR'
+
+stsmo074.dat:
+  title1 'STARS Simulator Options No. 74'
+  title2 'Verify/Illustrate *SWINIT and *DEPTH_AVE *EQUIL'
+
+stsmo076.dat:
+  title1 'STARS Simulator Options No. 76'
+  title2 'Illustrate *SOLVER *PARASOL with *JACDOMS'
+  title3 'Based on STTST46'
+
+stsmo077.dat:
+  title1 'STARS Simulator Options No. 77'
+  title2 'Verify/Illustrate Isolating *PERMSHALE with Sharp Break'
+  title3 'Based on STTST06'
+
+stsmo078.dat:
+  title1 'STARS Simulator Options No. 78'
+  title2 'Verify/Illustrate *PERMSHALE with *DYNAGRID'
+  title3 'Based on STTST07'
+
+stsmo079.dat:
+  title1 'STARS Simulator Options No. 79'
+  title2 'Verify/Illustrate Rock-Fluid Three-Point Scaling *KRWIE, BKRWIE, *KROWIE'
+
+stsmo080.dat:
+  TITLE1 'STARS Simulator Options No. 80'
+  TITLE2 'Verify/Illustrate *INTERP_ENDS with *KRINTRP'
+  TITLE3 'Based on STFLU020'
+
+stsmo082.dat:
+  title1 'STARS Simulator Options No. 82'
+  title2 'Test/Illustrate J-Function'
+  title3 'Based on STSMO049'
+
+stsmo083.dat:
+  title1 'STARS Simulator Options No. 83'
+  title2 'Illustrate/Verify *INIT_FROM_IMEX from Output SR2 File Set and ZP Cells'
+  title3 'Based on STSMO73 and MXDRM001'
+
+stsmo084.dat:
+  title1 'STARS Simulator Options No. 84'
+  titel2 'Verify/Illustrate Potential Gradient Threshold *PTHRESHI/J/K'
+
+stsmo085.dat:
+  title1 'STARS Simulator Options No. 85'
+  title2 'Verify/Illustrate *AQEN_CONTROL'
+
+stsmo086.dat:
+  title1 'STARS Simulator Options No. 86'
+  title2 'Verify/Illustrate *ENDP_ADJUST *ON'
+
+stsmo087.dat:
+  title1 'STARS Simulator Options No. 87'
+  title2 'Verify/Illustrate *EPSCAL_IMEX, *SLCON, *BSLCON'
+  title3 'Mimic IMEX Style of Rock-Fluid Endpoint Scaling'
+
+stsmo089.dat:
+  title1 'STARS Simulator Options No. 89'
+  title2 'Verify/Illustrate *WOC_PC and *GOC_PC'
+
+stsmo090.dat:
+  title1 'STARS Simulator Options No. 90'
+  title2 'Verify/Illustrate *RPT *SEGREGATED for Middle Phase Relative Permeability'
+  title3 'Based on STSMO73'
+
+stsmo091.dat:
+  title1 'STARS Simulator Options No. 91'
+  title2 'Test/Illustrate *COMBINATIVE with Defaults Assigned'
+  title3 'Based on STFLU037'
+
+stsmo092.dat:
+  title1 'STARS Simulator Options No. 92'
+  title2 'Test/Illustrate *COMBINATIVE with *FGMRES *OFF'
+  title3 'Based on STSMO091'
+
+stsmo093.dat:
+  title1 'STARS Simulator Options No. 93'
+  title2 'Test/Illustrate *COMBINATIVE and *AMG-COARSEN *AGGRESSIVE'
+  title3 'Based on STSMO064'
+
+stsmo094.dat:
+  title1 'STARS Simulator Options No. 94'
+  title2 'Test/Illustrate *COMBINATIVE with *AMG-DRS *ALL'
+  title3 'Based on STSMO084'
+
+stsmo095.dat:
+  title1 'STARS Simulator Options No. 95'
+  title2 'Test/Illustrate *COMBINATIVE with *AMG-SETUP-FREQ *STRUCTURE'
+  title3 'Based on STGRO066'
+
+stsmo096.dat:
+  title1 'STARS Simulator Options No. 96'
+  title2 'Verify/Illustrate *INTERP_SCAL for Double Interpolation'
+
+stsmo097.dat:
+  title1 'STARS Simulator Options No. 97'
+  title2 'Verify/Illustrate *INTERP_SCAL with *CP_IMBIB and *PCOW_CRV'
+
+stsmo098.dat:
+  title1 'STARS Simulator Options No. 98'
+  title2 'Verify/Illustrate *INTER_SCAL with Hysteresis'
+
+stsmo099.dat:
+  TITLE1 'STARS Simulator Options No. 99'
+  TITLE2 'Verify/Illustrate *SWINIT for oil-wetted water/oil/gas initialization'
+
+stsmo100.dat:
+  TITLE1 'STARS Simulator Options No.100'
+  TITLE2 'Verify/Illustrate *SWINIT for water/gas initialization'
+
+stsmo101.dat:
+  TITLE1 'STARS Simulator Options No. 101'
+  TITLE2 'Test/Illustrate *COMBINATIVE *ILU with Default Settings'
+  TITLE3 'Based on STSMO018'
+
+stsmo102.dat:
+  TITLE1 'STARS Simulator Options No. 102'
+  TITLE2 'Verify/Illustrate *SWINIT with *SWINIT_CPADJST *SCALE'
+
+stsmo103.dat:
+  TITLE1 'STARS Simulator Options No. 103'
+  TITLE2 'Verify/Illustrate *SWINIT for Water/Oil *DUALPERM Model'
+  TITLE3 '*SWINIT_FRAC *OFF Enabled'
+
+stsmo104.dat:
+  TITLE1 'STARS Simulator Options No. 104'
+  TITLE2 'Verify/Illustrate *AR_MM and *DT_ADJUST'
+
+stsmo105.dat:
+  TITLE1 'STARS Simulator Options No. 105'
+  TITLE2 'Verify/Illustrate *MAX_OS_FACTOR and *FORCE_MAXCHK'
+
+stsmo106.dat:
+  title1 'STARS Simulator Options No. 106'
+  title2 'Test/Illustrate Array-Reading Option *SIP_DATA'
+  title3 'Grid Data in SIP Form'
+
+stsmo107.dat:
+  title1 'STARS Simulator Options No. 107'
+  title2 'Test/Illustrate Array-Reading Option *SIP_DATA'
+  title3 'Grid and Property Data in SIP Form'

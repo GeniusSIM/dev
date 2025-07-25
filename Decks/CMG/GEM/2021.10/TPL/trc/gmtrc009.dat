@@ -1,0 +1,189 @@
+**--------------------------------------------------------------------**
+** GMTRC009.DAT:  Gas Recycling in a Fractured Reservoir with Tracer  **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMTRC009.DAT                                                **
+**                                                                    **
+** MODEL: CART 10x1x5 GRID       FRACTURED RESERVOIR     3 COMPONENTS **
+**        2 ROCK TYPES           GAS CYCLING             FIELD UNITS  **
+**        RE-CYCLING CONTROL     TRACER                               **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Modified after gmfrr002.dat                                        **
+**                                                                    **
+** This template data set is based on SPE problem 6 to model cycling  **
+** operation for a fractured gas-condensate reservoir.                **
+**                                                                    **
+** A tracer is defined to track the movement of 'LIGHT' component     **
+** originally from matrix block (1,1,3) during the production.        **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'SPE6 Gas injection, zero fracture Pcog'
+*TITLE2 'NO interfacial tension effects'
+
+*INUNIT *FIELD
+*WRST 0
+
+*OUTPRN *RES *ALL
+*OUTPRN *WELL *PSPLIT
+*OUTSRF *WELL *PSPLIT
+
+*OUTPRN *GRID   *IMPL *PRES  *SO  *SG  *SW  *TRCR-CONC 'TRC-LGT'
+
+*WSRF *WELL 1
+*OUTSRF *WELL   *TOIP *TGIP *TWIP *RECO *RECG
+*OUTSRF *GRID *PRES *SO *SG *SW *TRCR-RMOL 'TRC-LGT' *TRCR-CONC 'TRC-LGT'
+
+**--------------------------------------------------RESERVOIR DATA------
+*GRID *CART 10 1 5
+*DUALPOR
+*TRANSFER 1
+*DI *CON 200.
+*DJ *CON 1000.0
+*DK *CON 50.
+*DEPTH *TOP 1 1 5 0.0
+*DIFRAC *KVAR  10. 10. 5. 25. 25.
+*DJFRAC *EQUALSI
+*DKFRAC *EQUALSI
+*POR *FRACTURE *CON 0.01
+*POR *MATRIX   *CON 0.29
+*PERMI *FRACTURE *KVAR 20. 20. 90. 10. 10.
+*PERMJ *FRACTURE *KVAR 20. 20. 90. 10. 10.
+*PERMK *FRACTURE *KVAR  2.  2.  9.  1.  1.
+*PERMI *MATRIX   *CON   1.
+*PERMJ *MATRIX   *CON   1.
+*PERMK *MATRIX   *CON   1.
+*CPOR  *MATRIX   3.5D-6
+*PRPOR *MATRIX   6000.0
+*CPOR  *FRACTURE 3.5D-6
+*PRPOR *FRACTURE 6000.0
+
+**--------------------------------------------------FLUID COMPONENT DATA
+*MODEL *PR
+*NC 3  3
+*COMPNAME 'LIGHT' 'INTER' 'HEAVY'
+*TRES 144.0
+*PVC3   1.2
+*HCFLAG  1 1 1
+*PCRIT  41.66 25.60 12.63
+*VCRIT  0.099 0.255 1.151
+*TCRIT  152.5 322.9 634.7
+*AC     0.0080 0.1930 0.9351
+*MW     9.5830 38.191 283.632
+*VISCOEFF  0.109986 0.0186912  0.0468264 -0.0423968  0.0111989
+*VISVC  0.1188 0.2040 1.15845
+*MIXVC  1.0
+*PHASEID *CRIT
+*CW  3.5E-6
+*REFPW 14.7
+*VISW  0.35
+
+*NTRCR 1
+*TRCRNAME 'TRC-LGT'
+*TRCR-ASSOC
+** Associate component     Associated Tracer
+  'LIGHT'                  'TRC-LGT'
+
+**--------------------------------------------------ROCK FLUID----------
+*ROCKFLUID
+*RPT  1
+*SGT
+   0.0  0.0   1.00   0.075
+    .1   .015  .70   0.085
+    .2   .050  .45   0.095
+    .3   .103  .25   0.115
+    .4   .190  .11   0.145
+    .5   .310  .028  0.255
+    .55  .420  .0    0.386
+*SWT
+  0.20  0.000  1.000   1.0
+   .25   .005   .86    0.5
+   .3    .01    .723   0.3
+   .35   .02    .6     0.15
+   .4    .03    .492    .0
+   .45   .045   .392   -.2
+   .5    .06    .304  -1.2
+   .6    .11    .154  -4.0
+   .7    .18    .042  -10.
+   .75   .23    .0    -40.
+  1.0   1.0     .0    -120.
+*RPT 2
+*SGT
+   0.0  0.0   1.0    0.0
+   1.0  1.0   0.0    0.0
+*SWT
+  0.00  0.000  1.000  0.000
+  1.00  1.00   0.00   0.00
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+*VERTICAL *COMP
+*DWOC  1000.0
+*REFDEPTH  25.0
+*REFPRES  6015.
+*CDEPTH      0.
+*ZDEPTH     25.    .55 .25 .20
+*SEPARATOR   10. 60.
+             15. 60.
+
+*TRGLOBALC 'TRC-LGT' *MATRIX *IJK  1 1 3 1.0
+
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+*NORM *PRESS  500.
+*NORM *SATUR  0.10
+*NORM *GMOLAR 0.10
+*NORTH 80
+*ITERMAX 100
+
+**--------------------------------------------------WELL DATA-----------
+*RUN
+*DATE 1901 1 1
+      *DTMIN 0.005
+      *DTMAX 36.0
+      *DTMIN 0.005
+      *DTWELL 0.10
+      *AIMSET *FRACTURE *CON 3
+      *AIMSET *MATRIX   *CON 2
+      *WELL 1 'PR 10,1'
+      *WELL 2 'INJ 1,1'
+      *CYCLPROD  1
+         *OPERATE  *MAX  *STO  1000.000
+         *OPERATE  *MAX  *DWN   100.000
+         *MONITOR  *MIN  *STO    100.00  *STOP
+      *INJECTOR  2
+         *INCOMP   *CYCLING
+         *OPERATE  *MAX  *STR     90.
+
+      *PERF *WI    1
+**                well index in md-ft
+           10 1 2    1774.45
+           10 1 1    1774.45 *REFLAYER
+      *PERF *WI    2
+            1 1 5     887.22
+            1 1 4     887.22
+            1 1 3    7985.00 *REFLAYER
+
+*DATE 1901 7 1
+*DATE 1903 1 1
+*DATE 1905 1 1
+*DATE 1907 1 1
+*DATE 1909 1 1
+*DATE 1911 1 1
+
+*DATE 1913 1 1
+*DATE 1915 1 1
+*DATE 1917 1 1
+*DATE 1919 1 1
+*DATE 1921 1 1
+
+*STOP
+   
+

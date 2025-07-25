@@ -1,0 +1,197 @@
+   ******************************************************************************
+   ** mxsca002.dat:            OIL-Water SCAL Model                            **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSCA002.DAT                                                             **
+   ** MODEL:  1x1x52                                        OIL-WATER TWO-PHASE        **      
+   **         UNSTEADY-STATE EXPERIMENT                                                ** 
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This data set is based on 'Computer simulation of Special Core Analysis (SCAL)   **
+   ** flow experiments shared on the Internet', J.G. Maas and A.M. Schulte, SCA-9719   **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ** I/O Control Section                                                        
+
+   *TITLE1
+   'SCAL UNSTEADY-STATE EXPERIMENT'
+   *TITLE2
+   ' '
+
+   *INUNIT *LAB              
+
+   *WPRN   *WELL   10
+   *WPRN   *GRID   0
+   *WPRN   *ITER   *NONE
+
+   *OUTPRN *WELL   *BRIEF
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO *SW *PRES 
+
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1
+   *WSRF   *SECTOR 1
+   *OUTSRF *GRID   *SO *SW  *PRES *KRW *KRO *PCOW
+
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 1   1   52     ** 1-d 52 blocks 
+
+   *KDIR *DOWN
+
+   *DI *CON 2.251016391          ** I direction block dimensions (cm)  
+   *DJ *CON 2.251016391          ** J direction block dimensions (cm) 
+                                 ** equivalent Diam = 2.54 cm
+
+   *DK *KVAR 0.011111111 0.011111111 0.022222222 0.044444444 0.088888889
+             42*0.11111111 0.088888889 0.044444444 0.022222222 0.011111111
+             0.011111111               ** K direction block dimensions, core length = 5 cm
+
+   *DEPTH TOP  1 1 1  0.0            ** K corordination of the core inflow end.
+
+   *POR *KVAR  0.999  50*0.25  0.999     ** Porosity is constant throughout the reservoir.
+                
+   *CPOR   1.0e-06             ** Rock compressibility and
+   *PRPOR  101.325             ** reference pressure.   
+
+   *PERMI *KVAR 250.0e04  50*250.0  250.0e04      ** Each of the I, J, and K permeabilities
+
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI
+
+   *SECTOR 'CORE' 1  1  2:51
+
+   *FLUX_SECTORNAMES 'SURRND_IN'  1  'CORE'  2  'SURRND_OUT'  3
+   *FLUX_ISECTOR *IJK 1  1  1     1
+                      1  1  2:51  2
+                      1  1  52    3
+
+   *MODEL *OILWATER            ** Solve two equations.
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+    *PVT
+   ** p         rs         bo                  eg          vo          vg  
+   101.325      0.0       1.0                17.811       1.00       1.000 
+ 10000.0        1.0E-12   1.000000000001     17.811       1.00       1.010 
+
+   *DENSITY *OIL      0.700    ** g/cm3
+   *DENSITY *GAS      0.00122  ** g/cm3
+   *DENSITY *WATER    1.050    ** g/cm3
+ 
+    *BWI         1.00000       ** Water formation volume factor (cm3/cm3)
+    *CW          0.0           ** Water compressibility (1/kPa)
+    *CO          0.0           ** Oil compressibility (1/kPa)
+    *CVO         0.0           ** Pressure dependence of oil viscosity (mPa-s/kPa)
+    *REFPW     101.325         ** Reference pressure (kPa)
+    *VWI         1.0           ** Water viscosity (mPa-s)
+    *CVW         0.0           ** Pressure dependence of water viscosity (mPa-s/kPa)
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+
+   *SCAL_EXPERIMENT
+
+   *RPT 1
+   *SWT
+   ** Sw     Krw      Krow        Pcow
+    0.15     0.0      0.7        100.0
+    0.18     0.00003  *int         0.0
+    0.2      *int     0.47       -10.0
+    0.25     0.001    *int         *int
+    0.3      *int     0.1          *int
+    0.5      0.05     *int         *int
+    0.62     *int     0.001        *int
+    0.72     0.2      2.00E-05     *int
+    0.75     *int     *int       -15.0
+    0.8      0.3      0.0       -100.0
+
+
+   *RPT 2
+   *SWT
+   ** Sw     Krw     Krow     Pcow
+      0.0    0.0     1.0      0.0
+      1.0    1.0     0.0      0.0
+
+   *RTYPE *KVAR 2 50*1 2
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *USER_INPUT
+   *SO *KVAR
+        0.0  50*0.82  0.0
+   *PB CON 101.325
+   *PRES CON 101.325
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *DTMAX 10.0                 ** minutes
+   *DTMIN 1.0E-06              ** minutes
+   *NORM      *SATUR 0.01
+   *MAXCHANGE *SATUR 0.02
+   *NCUTS 8
+   *PRECC  1.0E-06
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE 2015 11 01
+   *DTWELL 0.00166667     ** minutes (0.1 sec) 
+
+
+   *AIMSET CON 1
+
+   *WELL 1  'Inje'
+   *INJECTOR  1                         ** Define the type of well 1.
+   *INCOMP *WATER
+   *OPERATE *MAX  *STW   0.1666666667  ** 10 cm3/hour
+   *OPERATE *MAX  *BHP   1000.0        ** kPa
+
+   **               rad      geofac    wfrac   skin
+   *GEOMETRY  *K    1.125    0.37       1.00    0.0  
+
+   *PERF 1 
+   ** if     jf     kf     wi 
+       1      1      1     1.0e+05
+
+
+   *WELL 2  'Prod'
+   *PRODUCER  2                        ** Define the type of well 2.
+   *OPERATE *MIN  *BHP    101.84       ** kPa 
+   *PERF 2 
+   ** if     jf     kf     wi 
+       1      1     52     1.0e+05  
+
+   *TIME 360.0
+   *DTWELL 0.00166667
+   *ALTER 1
+   1.666666667                        ** 100 cm3/hour
+
+   *TIME 600.0
+   *DTWELL 0.00166667
+   *ALTER 1
+   5.0                             ** 300 cm3/hour
+
+   *TIME 720.0                     ** totally 12 hours
+
+   *STOP                           ** Stop the simulation.
+

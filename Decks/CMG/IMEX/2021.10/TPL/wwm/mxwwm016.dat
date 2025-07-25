@@ -1,0 +1,275 @@
+   ************************************************************************************
+   ** mxwwm016.dat: Multi-lateral Well Setup and Display (using Sectors)             **
+   ************************************************************************************
+   ************************************************************************************************
+   **                                                                                            **
+   ** FILE:  (a demo template)              MXWWM016.DAT                                         **
+   **                                                                                            **
+   ** MODEL: 21x21x21 GRIDS         1 OIL WELL                          SIMPLE RESERVOIR MODEL   **
+   **        MULTI-LATERAL WELL     4 LEGS                              SI UNITS                 **
+   **                                                                                            **
+   ** USAGE: DEMONSTARATES MULTI-LATERAL WELL SETUP AND HOW TO USE SECTORS TO DISPLAY EACH LEGS  **
+   **        PRODUCTION                                                                          **
+   **                                                                                            **
+   ************************************************************************************************
+   **                                                                                            **
+   ** THIS MODEL DEMONSTRATES MULTI-LATERAL WELL SETUP.  THE LOWEST WELL LAYER PRODUCES WATER    **
+   ** FROM THE END OF THE LEG AND THE LEG IN LAYER 12 PRODUCES FREE GAS TOWARDS THE END OF THE   **
+   ** SIMULATION.  THE LEG IN LAYER 12 COMES CLOSEST TO THE GAS CAP DUE TO THE RESERVOIR DIP     **
+   **                                                                                            **
+   ************************************************************************************************
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1  'MULTILATERAL HORIZ. WELL DEMONSTRATION.'
+   *TITLE2  '4 STAGGERED WELLS FROM ONE VERTICAL WELL'
+   *CASEID  'MXWWM016'
+
+
+   **---INPUT/OUTPUT CONTROL SECTION----------------------------------------------------
+
+   *INUNIT  *SI
+
+   *INTERRUPT *RESTART-STOP
+   *RANGECHECK *ON
+
+   *WPRN   *WELL   *TIME
+   *WPRN   *SECTOR 0
+   *WPRN   *GRID   0
+
+   *OUTPRN *WELL   *LAYER
+   *OUTPRN *TABLES *NONE
+   *OUTPRN *GRID   *SO    *SW    *SG    *PRES
+   *OUTPRN *RES    *ALL
+
+   *WSRF   *WELL   *TIME
+   *WSRF   *SECTOR *TIME
+   *WSRF   *GRID   *TIME
+
+   *OUTSRF *GRID   *SO    *SW    *SG    *PRES
+   *OUTSRF *RES    *ALL
+   *OUTSRF *WELL   *LAYER
+
+   *OUTDIARY *MAXLOC *PRESNOAQ *HEADER  20
+
+
+   **----RESERVOIR DESCRIPTION KEYWORD GROUP--------------------------------------------
+
+   *GRID
+   *VARI 21 21 21
+   *KDIR *DOWN
+   *DTOP 21*3200 21*3201 21*3202 21*3203 21*3204 21*3205
+         21*3206 21*3207 21*3208 21*3209 21*3210 21*3211
+         21*3212 21*3213 21*3214 21*3215 21*3216 21*3217
+         21*3218 21*3219 21*3220
+
+   *DI *CON 200
+   *DJ *CON 200
+   *DK *KVAR 18*2.0 5.0 5.0 5.0
+
+   *VOLMOD *KVAR 19*1.0 5.0 50.0
+
+   *POR *CON 0.15
+
+   *PERMI *KVAR    100.0 100.0 100.0 100.0 100.0 100.0 100.0
+                   100.0 100.0 100.0 100.0 100.0 100.0 100.0
+                   100.0 100.0 100.0 100.0 100.0 100.0 100.0
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI * 0.1
+
+   *CPOR  *MATRIX   0.0000006
+   *PRPOR *MATRIX   3.4E+04
+
+   *SECTOR 'Layer 12 Leg 1'    11:11  3:11 12:12
+   *SECTOR 'Layer 14 Leg 2'    11:19 11:11 14:14
+   *SECTOR 'Layer 16 Leg 3'    11:11 11:19 16:16
+   *SECTOR 'Layer 18 Leg 4'     3:11 11:11 18:18
+
+
+   **---COMPONENT PROPERTIES----------------------------------------------------------
+
+   *MODEL *BLACKOIL
+
+   *PVT *EG 1
+**  P          Rs         Bo       EG        VisO      VisG
+    700        6.8       1.121     5.77      1.11      0.01262
+    1600       17.29     1.173     12.41     0.96      0.01349
+    2270       21.85     1.179     17.08     0.95      0.01371
+    3160       26.91     1.182     23.98     0.88      0.01401
+    4640       33.99     1.214     35.33     0.83      0.01434
+    6430       41.66     1.217     48.84     0.79      0.01485
+    8500       52.16     1.245     65.49     0.74      0.01535
+    1.249E+04  70.89     1.295     96.05     0.7       0.01657
+    1.728E+04  93.19     1.343     132.78    0.59      0.01849
+    2.096E+04  107.78    1.386     159.54    0.54      0.0204
+    3.447E+04  201.68    1.49      257.76    0.3       0.02741
+    4.826E+04  359.65    1.596     357.98    0.23      0.03456
+    6.895E+04  596.61    1.755     613.66    0.2       0.05281
+
+   *DENSITY *OIL 830
+   *DENSITY *GAS 1.33
+
+   *CVO      3.012E-05
+   *BWI      1.01
+   *CW       4.351E-07
+   *CO       1.136E-06
+   *REFPW    102
+   *VWI      1.29
+   *CVW      0
+   *DENSITY *WATER 1153
+
+
+   **---ROCK-FLUID DATA KEYWORD GROUP--------------------------------------------------
+
+   *ROCKFLUID
+   *RPT 1
+   *KROIL *STONE2 *SWSG
+   *SWT
+**    SW   KRW    KROW
+
+   0.200   0.00   1.00
+   0.300   0.04   0.64
+   0.400   0.16   0.36
+   0.500   0.36   0.16
+   0.600   0.64   0.04
+   0.700   1.00   0.00
+
+   *SLT
+**   Sl    KRG    KROW
+
+   0.200   1.00   0.00
+   0.300   0.64   0.04
+   0.400   0.36   0.16
+   0.500   0.16   0.36
+   0.600   0.04   0.64
+   0.700   0.00   1.00
+
+
+  **---INITIALIZATION------------------------------------------------------------
+
+   *INITIAL
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS
+
+   *REFDEPTH 3170
+   *REFPRES  3.4E+04
+   *DWOC 3250
+   *DGOC 3212
+
+   *PB *CON 0.0
+
+
+   **---NUMERICAL-----------------------------------------------------------------
+
+   *NUMERICAL
+   *DTMAX 60
+   *NORM *SATUR 0.20
+
+   **---WELL AND RUN DATA---------------------------------------------------------
+
+   *RUN
+   *DATE 1998 09 01
+
+   *AIMWELL *WELLNN
+
+   *WELL  1  'WELL 1'
+   *PRODUCER 'WELL 1'
+   *OPERATE  *MAX  *STO  1500  *CONT  *REPEAT
+   *OPERATE  *MIN  *BHP  1500  *CONT  *REPEAT
+   *MONITOR  *MIN  *STO  8     *STOP
+   *MONITOR  *MAX  *GOR  4000  *STOP
+   *MONITOR  *WCUT  0.9        *STOP
+
+**            DIR    RADIUS  GEOFAC  WFRAC   SKIN
+   *GEOMETRY   *I    0.089   0.3700  1.0000  0.000
+
+   ** SPECIFY I OR J DIRECTION
+   ** TO CALCULATE WELL INDEX
+
+   *PERF *GEO   'WELL 1'
+   **   IF  JF  KF    FF
+    11  11  11  1.000   *CLOSED *FLOW-TO 'SURFACE'                ** layer  1 (flows to surface)
+    11  11  12  1.000           *FLOW-TO  1         *REFLAYER     ** layer  2 (flows to layer  1, bhp evaluated here)
+    11  11  13  1.000   *CLOSED *FLOW-TO  2                       ** layer  3 (flows to layer  2, no perfs)
+    11  11  14  1.000           *FLOW-TO  3                       ** layer  4 (flows to layer  3)
+    11  11  15  1.000   *CLOSED *FLOW-TO  4                       ** layer  5 (flows to layer  4, no perfs)
+    11  11  16  1.000           *FLOW-TO  5                       ** layer  6 (flows to layer  5)
+    11  11  17  1.000   *CLOSED *FLOW-TO  6                       ** layer  7 (flows to layer  6, no perfs)
+    11  11  18  1.000           *FLOW-TO  7                       ** layer  8 (flows to layer  7)
+    11  10  12  1.000           *FLOW-TO  2                       ** layer  9 (flows to layer  2, 1st Leg Starts)
+    11  9   12  1.000           *FLOW-TO  9                       ** layer 10 (flows to layer  9)
+    11  8   12  1.000           *FLOW-TO 10                       ** layer 11 (flows to layer 10)
+    11  7   12  1.000           *FLOW-TO 11                       ** layer 12 (flows to layer 11)
+    11  6   12  1.000           *FLOW-TO 12                       ** layer 13 (flows to layer 12)
+    11  5   12  1.000           *FLOW-TO 13                       ** layer 14 (flows to layer 13)
+    11  4   12  1.000           *FLOW-TO 14                       ** layer 15 (flows to layer 14)
+    11  3   12  1.000           *FLOW-TO 15                       ** layer 16 (flows to layer 15)
+    12  11  14  1.000           *FLOW-TO  4                       ** layer 17 (flows to layer  4, 2nd Leg Starts)
+    13  11  14  1.000           *FLOW-TO 17                       ** layer 18 (flows to layer 17)
+    14  11  14  1.000           *FLOW-TO 18                       ** layer 19 (flows to layer 18)
+    15  11  14  1.000           *FLOW-TO 19                       ** layer 20 (flows to layer 19)
+    16  11  14  1.000           *FLOW-TO 20                       ** layer 21 (flows to layer 20)
+    17  11  14  1.000           *FLOW-TO 21                       ** layer 22 (flows to layer 21)
+    18  11  14  1.000           *FLOW-TO 22                       ** layer 23 (flows to layer 22)
+    19  11  14  1.000           *FLOW-TO 23                       ** layer 24 (flows to layer 23)
+    11  12  16  1.000           *FLOW-TO  6                       ** layer 25 (flows to layer  6, 3rd Leg Starts)
+    11  13  16  1.000           *FLOW-TO 25                       ** layer 26 (flows to layer 25)
+    11  14  16  1.000           *FLOW-TO 26                       ** layer 27 (flows to layer 26)
+    11  15  16  1.000           *FLOW-TO 27                       ** layer 28 (flows to layer 27)
+    11  16  16  1.000           *FLOW-TO 28                       ** layer 29 (flows to layer 28)
+    11  17  16  1.000           *FLOW-TO 29                       ** layer 30 (flows to layer 29)
+    11  18  16  1.000           *FLOW-TO 30                       ** layer 31 (flows to layer 30)
+    11  19  16  1.000           *FLOW-TO 31                       ** layer 32 (flows to layer 31)
+    10  11  18  1.000           *FLOW-TO  8                       ** layer 33 (flows to layer  8, 4th Leg Starts)
+    9  11   18  1.000           *FLOW-TO 33                       ** layer 34 (flows to layer 33)
+    8  11   18  1.000           *FLOW-TO 34                       ** layer 35 (flows to layer 34)
+    7  11   18  1.000           *FLOW-TO 35                       ** layer 36 (flows to layer 35)
+    6  11   18  1.000           *FLOW-TO 36                       ** layer 37 (flows to layer 36)
+    5  11   18  1.000           *FLOW-TO 37                       ** layer 38 (flows to layer 37)
+    4  11   18  1.000           *FLOW-TO 38                       ** layer 39 (flows to layer 38)
+    3  11   18  1.000           *FLOW-TO 39                       ** layer 40 (flows to layer 39)
+
+   *XFLOW-MODEL '*' *FULLY-MIXED
+
+
+   *DATE 1998 10 01
+   *DATE 1998 12 01
+
+   *DATE 1999 02 01
+   *DATE 1999 04 01
+   *DATE 1999 06 01
+   *DATE 1999 08 01
+   *DATE 1999 10 01
+   *DATE 1999 12 01
+
+   *DATE 2000 02 01
+   *DATE 2000 04 01
+   *DATE 2000 06 01
+   *DATE 2000 08 01
+   *DATE 2000 10 01
+   *DATE 2000 12 01
+
+   *DATE 2001 02 01
+   *DATE 2001 04 01
+   *DATE 2001 06 01
+   *DATE 2001 08 01
+   *DATE 2001 10 01
+   *DATE 2001 12 01
+
+   *DATE 2002 02 01
+   *DATE 2002 04 01
+   *DATE 2002 06 01
+   *DATE 2002 08 01
+   *DATE 2002 10 01
+   *DATE 2002 12 01
+
+   *DATE 2003 02 01
+   *DATE 2003 04 01
+   *DATE 2003 06 01
+   *DATE 2003 08 01
+   *DATE 2003 10 01
+   *DATE 2003 12 01
+
+   *STOP

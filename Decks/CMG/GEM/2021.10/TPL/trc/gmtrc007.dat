@@ -1,0 +1,345 @@
+**--------------------------------------------------------------------**
+** GMTRC007.DAT:  Barton-Bandis Dual Porosity Model with Dynagrid     **
+**                and Tracers                                         **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMTRC007.DAT                                               **
+**                                                                    **
+** MODEL:  INVERTED 5 SPOT              FIELD UNITS                   **
+**         DUAL POROSITY                1/4 PATTERN                   **
+**         8X8X1 CARTESIAN GRID         MATRIX-FRACTURE TRANSFER      **
+**                                                                    **
+** USAGE:  Test tracer option in a model with refined gridblocks      **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** In this test problem, Barton-Bandis model is applied to a  dual    **
+** permeability model for fracture closure.                           **
+** Hot water is injected into a 5-spot pattern containing dead oil.   **
+** The reservoir is fractured in all directions and the Dual Porosity **
+** model is used to simulate the reservoir behavior.                  **
+**                                                                    **
+** Gas-oil and oil-water capillary pressures in both the matrix and   **
+** fracture affect matrix-fracture transfer term.                     **
+**                                                                    **
+** A well tracer and a block tracer are used to track the movement of **
+** injected component and the component in the original fluid         **
+** respectively in a model with with recurrent refinement grids.      **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS SIMULATOR GEM
+
+*TITLE1 'Barton-Bandis Dual Porosity Model'
+*TITLE2 'with Dynagrid and Tracers'
+
+*INUNIT *FIELD
+
+*OUTPRN *GRID *IMPL *PRES *SW *SO *SG *TEMP *PERM
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+*WSRF *GRID 1
+
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP  *POROS  *PERM VDISPL STRESSM
+               *STRESEFF *TRCR-RMOL 'TRB-HC30' *TRCR-RMOL 'TRW-H2O'
+
+*OUTSRF *SPECIAL             
+              *PERMI   1,1,1 FR
+              *PERMJ   1,1,1 FR
+              *PERMK   1,1,1 FR
+*WRST  0              
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 8 8 1        ** 2D areal cartesian grid
+
+*DI *CON 75
+*DJ *CON 75
+*DK *CON 30
+
+KDIR DOWN
+
+**  The whole reservoir is fractured in all 3 directions
+**  The element size in x and y direction is 10 ft and
+**  30 ft (block size) in z direction.
+*NULL  *MATRIX 
+      IJK  4:8  1:1  1:1   0
+*NULL  *FRACTURE 
+      IJK  4:8  1:1  1:1   0
+
+*REFINE 1 1 1:1 INTO 5 5 1
+*DUALPERM
+*SHAPE *GK
+*TRANSFER 1
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   *CON 0.19
+*POR FRACTURE *CON 0.01     **  Fracture properties
+
+*PERMI *MATRIX   *CON 1
+*PERMI *FRACTURE *CON 1     **  Fracture properties
+*PERMJ *MATRIX   *CON 1
+*PERMJ *FRACTURE *CON 1     **  Fracture properties
+*PERMK *MATRIX   *CON 1
+*PERMK *FRACTURE *CON 1     **  Fracture properties
+
+*TRANSI *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSJ *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSI *FRACTURE *IJK 3:4 2 1 1.5
+*TRANSJ *FRACTURE *IJK 3:4 2 1 0.5
+
+**HEAT-LOSS *BOTTOM-TOP-BOUNDARY 
+**HLPROP 165.0 0.25 2.0
+
+*CROCKTYPE 1
+  *CP-ROCK 0.25 **ROCK HEAT CAPACITY [BTU/(LB F)]
+  *THCONR0 1.0 **THERMAL CONDUCTIVITY OF ROCK AND FLUIDS [BTU/(HR LB F)]
+  *CCPOR *MATRIX   3.E-06
+  *CCPOR *FRACTURE 3.E-06
+  *CPRPOR *MATRIX   200
+  *CPRPOR *FRACTURE 200
+
+*CROCKTYPE 2
+  *CP-ROCK 0.25 **ROCK HEAT CAPACITY [BTU/(LB F)]
+  *THCONR0 1.0 **THERMAL CONDUCTIVITY OF ROCK AND FLUIDS [BTU/(HR LB F)]
+  *CCPOR *MATRIX   3.E-06
+  *CCPOR *FRACTURE 3.E-06
+  *CPRPOR *MATRIX   200
+  *CPRPOR *FRACTURE 200
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+*END-GRID
+
+*CTPOR  54.8E-06
+*TRPOR  120
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    1    1
+*TRES        120.000
+*COMPNAME
+           'HC30'
+*SG         7.8638000E-01
+*TB         6.5183250E+02
+*PCRIT      1.1003743E+01
+*VCRIT      1.1757000E+00
+*TCRIT      7.6715000E+02
+*AC         1.0000000E+00
+*MW         4.0000000E+02
+*HCFLAG     0
+*VSHIFT     0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      1.1757000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01
+*OMEGB      7.7796074E-02
+*PCHOR      9.2860000E+02
+*BIN
+
+*ENTHCOEF
+            0.0000000E+00  2.6300600E-02  3.9898700E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENWS 62.7
+*CW   3.5E-06
+*REFPW 14.7
+
+*THERMAL *ON
+
+*NTRCR 2
+*TRCRNAME 'TRB-HC30' 'TRW-H2O'
+*TRCR-ASSOC
+** Associate component     Associated Tracer
+  'HC30'                  'TRB-HC30' 
+  'H2O'                   'TRW-H2O'
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0            16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0            5
+    0.55      0.142015    0.0            4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    0.95       0.0          0.95       0.0
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*VERTICAL *DEPTH_AVE *WATER_OIL
+*REFPRES 200.
+*REFDEPTH 15.
+*DWOC 50.
+
+*SWINIT *MATRIX   *CON 0.25
+*SWINIT *FRACTURE *CON 0.25
+
+*TEMPER *MATRIX   *CON 120
+*TEMPER *FRACTURE *CON 120
+
+*ZOIL 1.0
+
+*SWINIT_CPADJST *SHIFT
+
+*TRGLOBALC 'TRB-HC30' *MATRIX *IJK  1 1 1 1.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL 
+*NORM *PRESS 500.
+*NORM *TEMP 0.25
+*NORM *SATUR 0.15
+*MAXCHANGE *SATUR 0.8
+*MAXCHANGE *PRESS 1000.
+*MAXCHANGE *TEMP 50.  
+*CONVERGE *PRESS 1E-4
+*AIM *THRESH 0.0001
+
+*SDEGREE *GAUSS
+
+*DTMAX 10
+*DTMIN 1E-10
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*DATE 1901 1 1.5
+*REFINE 5 5 1:1 INTO 3 3 1
+   *DTWELL .17   ** 4 years of hot water injection
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR 'INJTR'
+   *INCOMP  *WATER
+
+   *OPERATE *MAX *STW 100 **89.05  
+   *PERF 'INJTR'  ** i j k  wi
+               1 1 1 / 3 3 1 754.2344 
+   *INJ-TEMP 'INJTR'
+             200.
+   *PRODUCER 'PRODN'
+   *OPERATE *MAX *STL 100 **89.05
+   *OPERATE *MIN *BHP    20
+   *GEOMETRY K .1 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'PRODN'  ** i j k
+               8 8 1  1.0
+
+*TRCR-INJCONC 'INJTR'
+'TRW-H2O' 1.0
+
+*SHUTIN 'PRODN'
+*TIME 2
+*TIME 6
+*TIME 8
+   *REFINE 2 3 1:1 *INTO 2 3 1
+   *DTWELL .1 
+*TIME 10
+*shutin 'INJTR'
+   *REFINE 8 2 1:1 *INTO 2 2 1
+   *DTWELL .1
+*TIME 12
+*DYNAGRID *DEREFINE  5  5  1
+*TIME 14
+*TIME 16
+*DYNAGRID *REREFINE  5  5  1 *INTO  5 5 1
+*TIME 18
+*TIME 20
+*STOP

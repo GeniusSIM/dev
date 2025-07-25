@@ -1,0 +1,297 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  This data uses *LININTERP together with relative permeability end-point
+**  overrides (*SWCON, *SORG, *SORW, *SGCON).
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+title1 'Verification Run #94'
+title2 'Verify Operation of *LININTERP with Rel Perm End-Point Overrides'
+
+*INUNIT  *SI
+
+WSRF WELL 1
+massbasis
+WSRF GRID TIME
+WSRF SECTOR 1
+OUTSRF GRID PRES SO SG TEMP
+OUTSRF WELL LAYER NONE
+WPRN GRID TIME
+WPRN SECTOR TIME
+OUTPRN GRID kro 
+OUTPRN RES NONE
+**$  Distance units: m 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+
+outsrf special blockvar sw 13,13,5
+outsrf special blockvar so 13,13,5
+outsrf special blockvar sg 13,13,5
+outsrf special blockvar kro 13,13,5
+
+outsrf special blockvar sw 11,10,3
+outsrf special blockvar so 11,10,3
+outsrf special blockvar sg 11,10,3
+outsrf special blockvar kro 11,10,3
+
+outsrf special blockvar sw 13,11,4
+outsrf special blockvar so 13,11,4
+outsrf special blockvar sg 13,11,4
+outsrf special blockvar kro 13,11,4
+
+outsrf special blockvar sw 13,11,1
+outsrf special blockvar so 13,11,1
+outsrf special blockvar sg 13,11,1
+outsrf special blockvar kro 13,11,1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+GRID VARI 25 25 5
+
+kdir down
+
+DI CON 14
+DJ CON 14
+DK KVAR
+2 2 2 2 2
+
+DTOP
+625*1470
+
+NULL CON            1
+
+POR CON 0.301
+
+PERMI CON
+1000
+PERMJ EQUALSI
+PERMK EQUALSI * 0.1
+
+PINCHOUTARRAY CON            1
+
+END-GRID
+
+
+*ROCKTYPE 1                   
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+MODEL 2 2 2 1
+
+COMPNAME 'water'   'oil' 
+
+CMM      0.0182    0.2   
+PCRIT       0       0    
+TCRIT       0       0    
+MASSDEN    1000    943   
+CP       4.35E-7  4.56E-7
+CT1         0    0 **  1E-3                         
+
+TEMR 60          
+
+VISCTABLE
+**$      temp
+   0    0.5    10000
+   5    0.5    8000 
+   30   0.5    1000        
+   63   0.5    260         
+   75   0.5    90.12       
+   100  0.5    32.16       
+   125  0.5    14.42       
+   150  0.5    7.09        
+   175  0.5    5.09        
+   200  0.5    3.44        
+   300  0.5    0.5          
+   400  0.5    0.01 
+   500  0.5    0.001
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+RPT 1 LININTERP WATWET
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+**$        Sw       krw      krow
+SWT
+         0.35         0         1
+         0.45    0.0018       0.8
+         0.55     0.004      0.41
+         0.65      0.01      0.08
+         0.85     0.035         0
+**
+**   Sl          Krg          Krog
+**  ----      --------      --------
+**$        Sl          krg      krog
+SLT
+
+     0.500000     0.150000  0.000000
+     0.600000  0.095022907  0.032000
+     0.700000  0.052540608  0.128000
+     0.800000  0.022553103  0.288000
+     0.900000  0.005060392  0.512000
+     0.95      0.0          1.0
+     1.000000            0  1.000000
+**  Temp     Swr      Sorw     Sgr      Sorg     Krwro    Krocw    Krgcw    
+
+swcon 0.4
+sorg 0.25
+sorw 0.23
+sgcon 0.04
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+INITIAL
+
+VERTICAL DEPTH_AVE
+REFPRES 14400
+REFDEPTH 1470
+
+TEMP CON 60
+
+DWOC 1550
+DGOC 100
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+DTMAX 121.0
+
+NCUTS 6
+itermax 300
+north 300
+
+norm satur 0.1
+
+converge totres tighter
+
+
+RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+DATE 2011 1 1
+
+   DTWELL 0.01
+
+   WELL  'PRODUCTOR-1'  frac 0.25 
+   PRODUCER 'PRODUCTOR-1'
+   OPERATE  MAX  STL  0.  CONT
+   OPERATE  MIN  BHP  3000.  CONT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.086  0.249  1.  0.
+   PERF  GEO  'PRODUCTOR-1'
+   **$ UBA    ff  Status  Connection  
+       1 1 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+       1 1 2  1.  OPEN    FLOW-TO  1
+       1 1 3  1.  OPEN    FLOW-TO  2
+       1 1 4  1.  OPEN    FLOW-TO  3
+       1 1 5  1.  OPEN    FLOW-TO  4
+
+   WELL  'PRODUCTOR-2'  frac 0.25 
+   PRODUCER 'PRODUCTOR-2'
+   OPERATE  MAX  STL  0.  CONT
+   OPERATE  MIN  BHP  3000.  CONT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.086  0.249  1.  0.
+   PERF  GEO  'PRODUCTOR-2'
+   **$ UBA     ff  Status  Connection  
+       25 1 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+       25 1 2  1.  OPEN    FLOW-TO  1
+       25 1 3  1.  OPEN    FLOW-TO  2
+       25 1 4  1.  OPEN    FLOW-TO  3
+       25 1 5  1.  OPEN    FLOW-TO  4
+
+   WELL  'PRODUCTOR-3'  frac 0.25 
+   PRODUCER 'PRODUCTOR-3'
+   OPERATE  MAX  STL  0.  CONT
+   OPERATE  MIN  BHP  3000.  CONT
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.086  0.249  1.  0.
+   PERF  GEO  'PRODUCTOR-3'
+   **$ UBA      ff  Status  Connection  
+       25 25 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+       25 25 2  1.  OPEN    FLOW-TO  1
+       25 25 3  1.  OPEN    FLOW-TO  2
+       25 25 4  1.  OPEN    FLOW-TO  3
+       25 25 5  1.  OPEN    FLOW-TO  4
+
+   WELL  'PRODUCTOR-4'  frac 0.25 
+   PRODUCER 'PRODUCTOR-4'
+   OPERATE  MAX  STL  0.  CONT
+   OPERATE  MIN  BHP  3000.  CONT
+   **$ UBA      ff  Status  Connection  
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.086  0.249  1.  0.
+   PERF  GEO  'PRODUCTOR-4'
+   **$ UBA     ff  Status  Connection  
+       1 25 1  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+       1 25 2  1.  OPEN    FLOW-TO  1
+       1 25 3  1.  OPEN    FLOW-TO  2
+       1 25 4  1.  OPEN    FLOW-TO  3
+       1 25 5  1.  OPEN    FLOW-TO  4
+
+   WELL  'INJECTOR-5'  frac 1                                                                                            
+   INJECTOR MOBWEIGHT IMPLICIT 'INJECTOR-5'                                                                               
+   INCOMP  WATER  1.  0.                                                                                           
+   TINJW  320
+   QUAL 0.3                                                                                                               
+   OPERATE  MAX  STW  0.  CONT                                                                                             
+   OPERATE  MAX  BHP  20000.  CONT                                                                                         
+   **$          rad  geofac  wfrac  skin
+   GEOMETRY  K  0.086  0.249  1.  0.
+   PERF  GEO  'INJECTOR-5'
+   **$ UBA      ff  Status  Connection  
+       13 13 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+       13 13 2  1.  OPEN    FLOW-FROM  1
+       13 13 3  1.  OPEN    FLOW-FROM  2
+       13 13 4  1.  OPEN    FLOW-FROM  3
+       13 13 5  1.  OPEN    FLOW-FROM  4
+
+   ALTER 'PRODUCTOR-1'
+         50
+   ALTER 'PRODUCTOR-2'
+         50
+   ALTER 'PRODUCTOR-3'
+         50
+   ALTER 'PRODUCTOR-4'
+         50
+   ALTER 'INJECTOR-5'
+         42
+
+DATE 2011 12 31
+DATE 2012 12 31
+DATE 2013 12 31
+DATE 2014 12 31
+DATE 2015 12 31
+DATE 2016 12 31
+DATE 2017 12 31
+DATE 2018 12 31
+DATE 2019 12 31
+DATE 2020 12 31
+DATE 2021 12 31
+DATE 2022 12 31
+DATE 2023 12 31
+DATE 2024 12 31
+DATE 2025 12 31

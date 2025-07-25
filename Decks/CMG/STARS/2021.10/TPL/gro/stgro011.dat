@@ -1,0 +1,246 @@
+
+***************************************************************************** 
+** Template  (stgro011.dat): Source/Sink Wells in Hybrid Grid in Cyclic    **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGRO011.DAT                                                             **
+**                                                                                  **
+** MODEL:  HORIZONRAL CYCLIC STEAMING WITH HYBRID           FIELD UNITS             **
+**         HYBRID GRID OPRION INSIDE CARTESIAN GRID         5X5X6 CARTESIAN GRID    ** 
+**                                                                                  ** 
+** USAGE:  ILLUSTRATES SOURCE/SINK HORIZONTAL WELLS INSIDE HYBRID GRID IN CYCLIC    **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  ** 
+**       Cyclic Steam Stimulation with a horizontal well. This is a                 **
+**       modification of the paper "Comparison of Discretization Methods            **
+**       for Modelling Nearwell Phenomena in Thermal Processes"' A. D. Hiebert      **
+**       et al, J. Can Pet Tech., vol 32, pg 46, (March 1993).                      **
+**                                                                                  **
+**       Dead Oil (Aberfeldy Properties) and Water, from Farouq Ali et al,          **  
+**       paper 88-39-16, 39th Ann Tech Meeting of CIM, Calgary, 1988                **
+**                                                                                  **
+**       This run is of a 5 x 5 x 6 coarse grid with a hybrid cylindrical           **
+**       block around a well located on the edge of the reservoir.                  **
+**       The cylindrical grid has 2 radial refinements and 4 angular ones.          **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 34'
+*TITLE2 'Near-Well Phenomena, Case #1'
+*TITLE3 'Region Around Well Modelled with Hybrid Grid Option'
+
+*INUNIT  *FIELD
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y
+*OUTPRN *WELL *ALL
+*WPRN *GRID 300
+*WPRN *ITER 300
+
+*OUTSRF *GRID *PRES *TEMP
+
+outsrf special blockvar temp 3,1,1
+               blockvar temp 3,1,1 / 1,1,1
+               blockvar temp 3,1,1 / 2,1,1
+               blockvar temp 4,1,1 / 1,1,1
+               blockvar temp 2,1,1 / 1,1,1
+               blockvar temp 5,1,1 / 1,1,1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 5 5 6
+
+*REFINE 1:5 1 1  *INTO  2 4 1
+*HYBRID  *RW 0.3 idir **rwi 3.0  5.735  16.7
+
+*DI *CON 131.24
+*DJ *CON 131.24
+*DK *KVAR 41.5  6.561 2*19.683 2*6.561
+
+*POR *CON 0.35
+
+*PERMI *CON 2000
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.1
+
+*END-GRID
+
+*CPOR 1.0E-4
+
+*ROCKCP 33.0
+*THCONR 42.24
+*THCONW 42.24
+*THCONO 42.24
+*THCONG 42.24
+**HLOSSPROP ** OVERBUR  33.0   35.28
+            ** UNDERBUR 33.0   35.28
+*HLOSSPROP -K 33.0   35.28
+           +K 33.0   35.28
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2  ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'   'DEAD OIL'
+**              -----     --------
+*CMM             18.02      600.0
+*PCRIT          3206.2       0           ** flag for ideal gas
+*TCRIT           705.4        0
+*MOLDEN            0        0.10113
+*CP                0        5.0e-6
+*CT1               0        5.0E-4
+
+*CPL1              0         300
+
+*AVG            1.13e-5       0
+*BVG             1.075        0
+
+*VISCTABLE
+**   Temp
+      74          0       1275
+     100          0        380
+     150          0         91.2
+     200          0         28.8
+     250          0         13.5
+     300          0          7.9
+     350          0          5.2
+     500          0          2
+
+*PRSR 14.7
+*TEMR 74.0
+*TSURF 60.0
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.2        0.0        0.8475
+    0.25       0.0045     0.71
+    0.3        0.01       0.6
+    0.35       0.02       0.51
+    0.4        0.03       0.43
+    0.45       0.04       0.355
+    0.5        0.05       0.287
+    0.6        0.075      0.16
+    0.65       0.09       0.1175
+    0.7        0.105      0.057
+    0.75       0.12       0.02
+    0.79       0.135      0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  -----     ------    ------
+    0.285     0.127     0.0
+    0.35      0.105     0.015
+    0.4       0.09      0.025
+    0.45      0.073     0.037
+    0.5       0.06      0.05
+    0.55      0.045     0.065
+    0.6       0.035     0.085
+    0.65      0.027     0.1175
+    0.7       0.02      0.137
+    0.75      0.015     0.175
+    0.8       0.012     0.225
+    0.85      0.007     0.29
+    0.9       0.0       0.39
+    1.0       0.0       0.8475
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+*REFPRES 200.0
+*REFBLOCK  1 1 1 / 1 1 1
+
+*TEMP *CON 74.0
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+*SDEGREE 2
+
+*NORM     *PRESS 200 *SATUR 0.2   *TEMP 180  *Y 0.2   *X 0.2
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*time 0
+
+   *dtwell 1e-2
+
+   *well 1 'STEAM INJT'
+   *well 2 'PRODUCER'
+
+   *INJECTOR  *MOBWEIGHT 'STEAM INJT'    ** Injection specification
+   *INCOMP *WATER  1.0  0.0
+   *TINJW 480
+   *QUAL .7      ** Wet steam at 70 % quality
+   *OPERATE *STW   629.0     ** Condensed steam equivalent
+   *OPERATE *MAX *BHP 750.0
+   *PERF 1  **  UBA             wi
+                1 1 1 / 1 1 1   45161.279 **50.902   
+                2 1 1 / 1 1 1   45161.279 **50.902
+                3 1 1 / 1 1 1  135482.95  **152.705
+                4 1 1 / 1 1 1  135482.95  **152.705
+                5 1 1 / 1 1 1   45161.279 **50.902
+
+   *PRODUCER 'PRODUCER'               ** Production specification
+   *OPERATE *STL  500.0
+   *OPERATE *MIN *BHP 17.0
+   *PERF 2  **  UBA             wi
+                1 1 1 / 1 1 1   45161.279 **50.902   
+                2 1 1 / 1 1 1   45161.279 **50.902
+                3 1 1 / 1 1 1  135482.95  **152.705
+                4 1 1 / 1 1 1  135482.95  **152.705
+                5 1 1 / 1 1 1   45161.279 **50.902
+
+   *SHUTIN 'PRODUCER'
+
+*TIME 10
+
+   *SHUTIN 'STEAM INJT'
+
+*TIME 17
+
+   *OPEN 'PRODUCER'
+
+*TIME 150
+

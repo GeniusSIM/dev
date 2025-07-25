@@ -1,0 +1,21 @@
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*pres *con 2014.7     ** high initial pressure
+
+*sw *con 0.178
+*so *con 0.654        ** initial gas saturation is 0.168
+
+*temp *con 100.
+
+** Gas in tube is air (79% N2 & 21% O2)
+*mfrac_gas 'INRT GAS' *con 0.79
+*mfrac_gas 'OXYGEN'   *con 0.21
+
+*mfrac_oil 'HEVY OIL' *con 0.256
+*mfrac_oil 'LITE OIL' *con 0.744
+
+

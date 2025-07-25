@@ -1,0 +1,223 @@
+   ******************************************************************************
+   ** mxsmo056.dat: Gas Water Model used to simulate CBM                       **
+   ** This data set demonstrates use of Gas Desorption in a single porosity    **
+   ** Coal Bed Methane Example                                                 **
+   ******************************************************************************
+   **************************************************************************************
+   **   Keywords Tested                                                                **
+   **                                                                                  **
+   ** ADGCSTV, ADGMAXV, ADGMAXV, ROCKDEN, ADGPCRIT                                     **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+                                
+RESULTS SIMULATOR IMEX 200600
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   TITLE1
+   'CBM Example 3'
+   TITLE2
+   'Paul,G.W., Sawyer,W.K. and Dean, R.H.'
+   TITLE3
+   ' SPE 20733, Problem 1'
+
+   INUNIT FIELD              
+
+   WPRN   WELL   10
+   WPRN   GRID   100
+
+   OUTPRN WELL   ALL
+   OUTPRN RES    ALL
+   OUTPRN TABLES ALL
+   OUTPRN GRID   SO SG PRES SW
+
+   WSRF   GRID   1
+   WSRF   WELL   1 
+   OUTSRF GRID   ALL
+   DEBUG XFLOW
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   GRID VARI 10   10    3    
+   KDIR DOWN
+                           
+   DI CON 528.0         
+   DJ CON 528.0
+   DK KVAR 15.0 5.0 15.0               
+
+   PERMI KVAR 20.0 100.0 5.0              
+   PERMJ KVAR 20.0 100.0 5.0               
+   PERMK KVAR  2.0  20.0 1.75
+                                  
+   DEPTH-TOP KVAR 2500.0 2515.0 2520.0      
+
+   POR KVAR 0.02 0.20 0.02               
+                
+   CPOR  0.0             
+   PRPOR 1100.0              
+
+   TRANSK CON 0.0
+
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   MODEL GASWATER    
+   TRES 95.00
+   PVTG EG
+   ** p            Eg     visg
+      14.7        5.38     0.0110
+     500.0      191.62     0.0110
+    1000.0      409.04     0.0124
+    1400.0      598.85     0.0142
+      
+   GRAVITY GAS    0.60
+   DENSITY WATER  62.4
+   BWI   1.0044722
+   CW    1.32e-6 
+   REFPW 1000.0
+   VWI   0.73
+   CVW   0.0   
+   
+
+   ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+** Layer 1 and 3 (pseudo Curves)
+   RPT 1
+   SWT smoothend off
+   ** sw         krw      
+      0.700      0.000   
+      0.750      0.005  
+      0.800      0.010  
+      0.850      0.080  
+      0.900      0.180   
+      0.950      0.350  
+      1.000      1.000  
+
+   SLT smoothend off
+   ** sl         krg    
+      0.700      1.000   
+      0.750      0.580  
+      0.800      0.300  
+      0.850      0.120   
+      0.900      0.035   
+      0.950      0.010  
+      1.000      0.000   
+
+** Layer 2 (Sandstone)
+   RPT 2
+   SWT smoothend off
+   ** sw         krw     
+      0.4      0.000  
+      0.5      0.045   
+      0.6      0.110   
+      0.7      0.215   
+      0.8      0.370   
+      0.9      0.595   
+      1.0      1.000  
+
+   SLT smoothend off
+   ** sl         krg     
+      0.4      1.000  
+      0.5      0.400   
+      0.6      0.210   
+      0.7      0.105   
+      0.8      0.035   
+      0.9      0.010  
+      1.0      0.000   
+
+   RTYPE KVAR 1 2 1                      
+
+** ADGCSTV = Langmuir Pressure Constant (psia-1)
+** ADGMAXV = Langmuir Isotherm constant (SCF/Lb)
+** ROCKDEN = Instrinsic (not Bulk) Rock Density Lb/Ft3    
+
+** Notes:
+** Divide SCF/Ton by 2000 to obtain SCF/Lb 
+** If bulk rock density = 1.39 gm/cc,  intrinsic density = 1.39 /(1-porosity)
+** multiply density in gm/cc by 62.3719 to obtain Lb/Ft3
+
+** This Model uses input of intrinsic rock density, so given a bulk density of 1.39 gm/cc 
+** and a porosity of 0.02 we obtain an intrinsic rock density of
+** 1.39/(1-0.02)*62.3719 = 88.5
+
+** if Langmuir Isotherm Constant is given in units of SCF/Ft3 (Vl) rather than SCF/Lb (Vm)
+** Vm = Vl / (Bulk Rock Density), Note units must be consistant.
+                  
+   ADGCSTV  KVAR 0.0017513 0.0  0.0017513
+   ADGMAXV  KVAR 0.332047  0.0  0.332047
+   ROCKDEN  KVAR 88.500    0.0  88.500
+   ADGPCRIT KVAR 1000.0   1000.0 1115
+
+   INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   USER_INPUT
+   PRES KVAR   1100  1108   1115
+   SW   KVAR   1.0   0.85      1.0
+
+   NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   DTMAX         5.0         
+   MAXSTEPS      1000   
+   NCUTS 20      
+   NORM PRESS 100   
+   FORCE_MAXCHK ON
+
+   RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   DATE 2000 01 01
+   DTWELL 0.010
+
+   GEOMETRY K  0.30    0.34    1.0    0.0 
+                     
+   WELL 1  'Producer1'
+
+   PRODUCER  1                        
+   OPERATE MIN  BHP  46.550        
+                                       
+   PERF GEOA   1
+   ** if     jf     kf     ff                         
+      3     3     1:3     1.0  
+
+   GEOMETRY K  0.30    0.34    1.0  -4.5 
+
+   WELL 2  'Producer2'
+
+   PRODUCER  2                        
+   OPERATE MIN  BHP  46.550                                               
+   PERF GEOA  2
+   ** if     jf     kf     ff                         
+      3     8     1     1.0  
+      3     8     2     0.231 
+      3     8     3     1.0  
+
+   WELL 3  'Producer3'
+   PRODUCER  3                        
+   OPERATE MIN  BHP  46.55                                               
+   PERF GEOA  3
+   ** if     jf     kf     ff                         
+      8     8     1     1.0  
+      8     8     2     0.231 
+      8     8     3     1.0  
+
+   SHUTIN 2 3
+   TIME 365
+   OPEN 2
+   TIME 730
+   OPEN 3
+   TIME 3650.0                       
+   STOP                              

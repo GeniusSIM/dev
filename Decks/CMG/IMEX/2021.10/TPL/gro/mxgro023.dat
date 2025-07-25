@@ -1,0 +1,214 @@
+** ***********************************************************************************
+** mxgro023.dat:                Model With Binary File Input                        **
+** ***********************************************************************************
+** ***********************************************************************************************
+**                                                                                              **
+** FILE:   MXGRO023.DAT                                                                         **
+**                                                                                              **
+** MODEL:  10x10x3 GRIDS          MODIFIED SPE 1 COMPARATIVE PROBLEM        FIELD UNIT          **
+** 2 WELLS (1 INJECTOR)   VERT. EQUAL. INITIALIZATION               GAS INJECTION               **
+** CORNER POINT GEOMETRY WITH THE USE OF *VARI, *COORD AND *ZCORN                               **
+** BINARY FILE INPUT                                                                            **
+**                                                                                              **
+** ***********************************************************************************************
+**                                                                                              **
+** THIS TEMPLATE ILLUSTRATES THE USE OF THE CORNER POINT GRIDDING OPTION.  CORNER POINT OPTION  **
+** ALONG WITH OTHER THREE (CART, VARI AND RADIAL) FORM THE FOUR AVAILABLE GRIDDING OPTIONS FOR  **
+** THE CMG SIMULATORS.   IN THIS EXAMPLE, CORNER POINT OPTION IS ACTIVATED BY  THE  KEY WORDS,  **
+** *VARI, *COORD AND *ZCORN.                                                                    **
+**                                                                                              **
+** ***********************************************************************************************
+** ************************************************************************************
+** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet)  **
+** ************************************************************************************
+** 2006-03-10, 11:40:28 AM, rubinb
+** 2006-03-10, 11:40:41 AM, rubinb
+RESULTS SIMULATOR IMEX 200600
+
+FILENAMES OUTPUT INDEX-OUT MAIN-RESULTS-OUT 
+FILENAMES *BINDATA-IN 'mxgro023.cmgbin'
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *INUNIT  *FIELD      
+
+   *WPRN    *WELL    *TIME
+   *WPRN    *GRID    *TIME
+   *OUTPRN  *WELL    *ALL
+   *OUTPRN  *RES     *ALL
+   *OUTPRN  *TABLES  *ALL
+   *OUTPRN  *GRID    *ALL
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+**$ ***************************************************************************
+**$ Definition of fundamental corner point grid
+**$ ***************************************************************************
+GRID CORNER 10 10 3
+COORD  BINARY_DATA
+ZCORN  BINARY_DATA
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+**$ Property: Porosity  Max: 0.3  Min: 0.3
+POR CON          0.3
+   *CPOR            3.0E-6
+   *PRPOR            14.7
+**$ Property: Permeability I (md)   Max: 500.1  Min: 50
+PERMI BINARY_DATA 
+**$ Property: Permeability J (md)   Max: 500  Min: 50
+PERMJ KVAR 
+ 500 50 200
+**$ Property: Permeability K (md)   Max: 60  Min: 20
+PERMK KVAR 
+ 60 40 20
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+
+
+   *MODEL *BLACKOIL
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+   *PVT
+   **    p     rs      bo      eg     viso     visg
+       14.7     1.0   1.062     6.0   1.040   0.0080
+      264.7    90.5   1.150    82.7   0.975   0.0096
+      514.7   180.0   1.207   159.0   0.910   0.0112
+     1014.7   371.0   1.295   313.0   0.830   0.0140
+     2014.7   636.0   1.435   620.0   0.695   0.0189
+     2514.0   775.0   1.500   773.0   0.641   0.0208
+     3014.7   930.0   1.565   926.0   0.594   0.0228
+     4014.7  1270.0   1.695  1233.0   0.510   0.0268
+     5014.7  1600.0   1.827  1541.0   0.449   0.0309
+     9014.7  2984.0   2.357  2591.0   0.203   0.0470   
+
+   *DENSITY  *OIL     46.244
+   *DENSITY  *GAS     0.0647
+   *DENSITY  *WATER   62.238
+   *CO                1.3687E-5
+   *CVO               4.6000E-5
+   *BWI               1.0410
+   *CW                2.9886E-6
+   *REFPW             14.7
+   *VWI               0.31
+   *CVW               0.0   
+
+
+   *ROCKFLUID
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+   *RPT 1
+   *SWT
+   ** sw     krw   krow   
+     0.12    0.0   1.0
+     0.82    0.0   0.0     
+                               
+   *SLT
+   **  sl     krg      krog  
+      0.120   0.984   0.0000 
+      0.150   0.980   0.0000       
+      0.300   0.940   0.0000       
+      0.400   0.870   0.0001
+      0.500   0.720   0.0010
+      0.550   0.600   0.0100
+      0.600   0.410   0.0210
+      0.700   0.190   0.0900
+      0.750   0.125   0.2000
+      0.800   0.075   0.3500
+      0.880   0.025   0.7000
+      0.950   0.005   0.9800
+      0.980   0.000   0.9970
+      0.999   0.000   1.0000
+      1.000   0.000   1.0000
+
+   *RPT 2
+   *SWT
+   ** sw     krw   krow   
+     0.12    0.0   1.0
+     0.82    0.0   0.0     
+                               
+   *SLT
+   **  sl     krg      krog  
+      0.120   0.984   0.0000 
+      0.150   0.980   0.0000       
+      0.300   0.940   0.0000       
+      0.400   0.870   0.0001
+      0.500   0.720   0.0010
+      0.550   0.600   0.0100
+      0.600   0.410   0.0210
+      0.700   0.190   0.0900
+      0.750   0.125   0.2000
+      0.800   0.075   0.3500
+      0.880   0.025   0.7000
+      0.950   0.005   0.9800
+      0.980   0.000   0.9970
+      0.999   0.000   1.0000
+      1.000   0.000   1.0000
+**$ Property: Rel Perm Set Num  Max: 2  Min: 1
+RTYPE BINARY_DATA 
+
+   *INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   *VERTICAL  *ON
+**$ Property: Bubble Point Pressure (psi)   Max: 4014.02  Min: 4014
+PB BINARY_DATA 
+
+   *REFDEPTH          8400.
+   *REFPRES           4800.
+   *DWOC              9500.
+   *DGOC              7000.
+   *DATUMDEPTH        8375.   
+
+
+   *NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   **NORM     *PRESS  1000.0
+   **NORM     *SATUR     0.2   
+
+
+   *RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   *DATE      1995 01 01
+   *DTWELL    1.0
+**$
+WELL  'Injector'
+INJECTOR UNWEIGHT 'Injector'
+INCOMP  GAS
+OPERATE  MAX  STG  1e+008  CONT
+OPERATE  MAX  BHP  10000.  CONT
+MONITOR  BACKFLOW  STOP
+   **               rad   geofac  wfrac  skin
+   **          if   jf     kf      wi 
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Injector'
+**$ UBA    ff       Status  Connection  
+    1 1 1  100000.  OPEN    FLOW-FROM  'SURFACE'
+**$
+WELL  'Producer'
+PRODUCER 'Producer'
+OPERATE  MAX  STO  20000.  CONT
+OPERATE  MIN  BHP  1000.  CONT
+MONITOR  BACKFLOW  STOP
+MONITOR    GOR  20000.  STOP
+   **               rad   geofac  wfrac  skin
+   **          if   jf     kf      ff                         
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.25  0.34  1.  0.
+PERF  GEO  'Producer'
+**$ UBA      ff  Status  Connection  
+    10 10 3  1.  OPEN    FLOW-TO  'SURFACE'
+
+   *TIME     1000.
+   *STOP

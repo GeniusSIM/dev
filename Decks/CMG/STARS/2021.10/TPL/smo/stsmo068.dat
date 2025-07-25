@@ -1,0 +1,317 @@
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Simulator Options No. 68'
+*TITLE2 'Verify/Illustrate *FLUX-SECTOR Output - RC Volume/Mass'
+*TITLE3 'Based on STWWM036'
+
+*INUNIT *SI
+
+*WPRN *GRID *TIME
+*WSRF *WELL 1
+*WSRF *GRID *TIME
+*OUTPRN *GRID  *PRES
+*OUTPRN *WELL  *ALL
+*OUTSRF *GRID  *SO
+*WRST *TIME
+
+*WPRN *SECTOR *TIME
+*WSRF *SECTOR 1
+
+*OUTPRN *FLUX_SECTOR  *ALL *RC *SUM *MASS    ** both INFLUX and INTERSEC at RC in I-direction
+*OUTSRF *FLUX_SECTOR  *ALL *RC *SUM *MASS
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *VARI 19 1 13
+
+*DI *IVAR  282.5 180.0 120.0 80.00 5*50.00 45.00 5*50.00 80.000 110.0 150.0 205.0
+*DJ *CON  650.00
+*DK *CON  5
+
+*DEPTH *TOP 1  1  1 1850.0
+
+*POR *CON   0.15
+
+*PERMI *CON 500.0
+*PERMJ   *EQUALSI / 3.0
+*PERMK   *EQUALSI / 3.0
+
+*FLUX_SECTORNAMES
+   'FSCTrgn1'  1
+   'FSCTrgn2'  2
+   'FSCTrgn3'  3
+   'FSCTrgn4'  4
+*FLUX_ISECTOR IJK
+    8:12  1  5:9    1
+    1:19  1  1:4    2
+    1:7   1  5:9    3
+   13:19  1  5:9    3
+    1:19  1 10:13   4
+
+*END-GRID
+
+*CPOR    3.0000E-7
+*PRPOR   27011.0
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL  7  7  7
+
+*COMPNAME   'WATER'       'C1'     'C2-3'     'C4-5'    'C6-10'   'C11-14'     'C15+'
+**         --------   --------   --------   --------   --------   --------   --------
+
+*CMM         0.0000     0.0163     0.0363     0.0636     0.1054     0.1678     0.3116
+
+*PCRIT         0.00    4573.81    4634.61    3603.12    2953.62    2276.77    1635.39
+*TCRIT         0.00     -84.15      61.65     165.25     287.65     399.55     548.95
+
+*KV1       0.000E+0   1.033E+6   1.938E+6   2.380E+6   3.037E+6   6.092E+6   2.887E+7
+*KV2       0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0
+*KV3       0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0   0.000E+0
+*KV4            0.0    -1024.3    -2020.7    -2846.5    -3889.5    -5308.9    -8039.2
+*KV5           0.00    -273.15    -273.15    -273.15    -273.15    -273.15    -273.15
+
+*MOLDEN   0.000E+00  1.336E+04  1.305E+04  9.535E+03  6.985E+03  4.866E+03  2.962E+03
+*CP       0.000E+00  5.551E-06  4.257E-06  2.644E-06  1.491E-06  7.686E-07  3.804E-08
+*CT1      0.000E+00  2.561E-03  2.096E-03  1.339E-03  7.994E-04  4.559E-04  1.446E-04
+
+*AVISC    0.000E+00  1.263E-01  1.534E-01  1.526E-01  1.526E-01  1.330E-01  1.019E-01
+*BVISC         0.00      85.27     177.54     258.21     362.18     517.04     831.01
+
+*PRSR 27112.3 ** reference pressure,     corresponding to the density
+*TEMR    91.0 ** reference temperature,  corresponding to the density
+*PSURF  101.3 ** pressure at surface,    for reporting well rates, etc.
+*TSURF   16.9 ** temperature at surface, for reporting well rates, etc.
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT  1
+
+*SWT
+       0.1169  0.0   0.80  10.0
+       0.2000  0.02  0.56   9.0
+       0.3000  0.08  0.34   7.9
+       0.4000  0.18  0.18   6.8
+       0.5000  0.34  0.08   5.6
+       0.6000  0.48  0.02   4.6
+       0.7000  0.64  0.0    3.9
+       0.8000  0.64  0.0    0.0
+       1.0000  0.64  0.0    0.0
+
+*SLT  *NOSWC
+       0.00  1.00   0.0
+       0.20  0.79   0.0
+       0.98  0.00   0.8
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*VERTICAL  *DEPTH_AVE
+*DWOC      1907.70
+*REFDEPTH  1839.0
+*REFPRES   27112.3
+
+*MFRAC_OIL  'C1'     *CON 0.393600
+*MFRAC_OIL  'C2-3'   *CON 0.199400
+*MFRAC_OIL  'C4-5'   *CON 0.090700
+*MFRAC_OIL  'C6-10'  *CON 0.139907
+*MFRAC_OIL  'C11-14' *CON 0.075670
+*MFRAC_OIL  'C15+'   *CON 0.100723
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*TFORM *ZT
+*ISOTHERMAL
+*NORM *PRESS  350.0
+*NORM *ZO  0.05
+*AIM *STAB
+*MAXSTEPS 1000
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*TIME 0
+**DATE 1983 11 11
+
+   *DTMAX 30.00
+   *DTWELL 1.25
+
+   **AIMSET *CON 3
+
+   *GROUP 'Group-1'  *ATTACHTO 'Field'
+   *GROUP 'Group-2'  *ATTACHTO 'Field'
+
+   *WELL 1  'PR-15,10'   *ATTACHTO 'Group-1'
+   *WELL 2  'INJ-5,11'   *ATTACHTO 'Group-1'
+   *WELL 3  'PR-03,03'   *ATTACHTO 'Group-1'
+   *WELL 4  'PR-10,13'   *ATTACHTO 'Group-1'
+   *WELL 5  'INJH2O'     *ATTACHTO 'Group-2'
+   *WELL 6  'INJ-6'      *ATTACHTO 'Group-1'
+   *WELL 7  'PR-10,6'    *ATTACHTO 'Group-1'
+   *WELL 8  'INJ-8'      *ATTACHTO 'Group-1'
+   *WELL 9  'INJ-9'      *ATTACHTO 'Group-1'
+   *WELL 10 'INJH2O-2'   *ATTACHTO 'Group-2'
+
+   *PRODUCER 'PR-15,10'
+      *OPERATE   *MAX *STO  400.
+      *OPERATE   *MIN *BHP  21000.0  *CONT
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'PR-15,10'
+         15  1  10  1.0
+
+   *INJECTOR 'INJ-5,11'
+      *TINJW 25.
+      *INCOMP    *GAS  0.0 0.99 0.01 0.0 0.0 0.0 0.0
+      *OPERATE   *MAX *STG  3.0E+04
+      *OPERATE   *MAX *BHP  3.5d+04
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJ-5,11'
+         5  1  11  1.0
+
+   *PRODUCER 'PR-03,03'
+      *OPERATE   *MAX *STO   120.0    *CONT
+      *OPERATE   *MIN *BHP   23000.0  *CONT
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'PR-03,03'
+         3  1   3  1.0
+
+   *PRODUCER 'PR-10,13'
+      *OPERATE   *MAX *STO   50.0
+      *OPERATE   *MIN *BHP   21000.0  *CONT
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+     *PERF *GEO 'PR-10,13'
+        10  1  13  1.0
+        10  1  12  1.0
+
+   *INJECTOR 'INJH2O'
+      *TINJW 25.
+      *QUAL 0.
+      *INCOMP    *WATER 1. 0. 0. 0. 0. 0. 0.
+      *OPERATE   *MAX *STW 250.0
+      *OPERATE   *MAX *BHP 1.0D+06
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJH2O  '
+         17  1  3  1.0
+
+   *INJECTOR 'INJ-6'
+      *TINJW 25.
+      *INCOMP    *GAS  0.0 0.99 0.01 0.0 0.0 0.0 0.0
+      *OPERATE   *MAX *STG  3.0E+04
+      *OPERATE   *MAX *BHP  3.0d+04
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJ-6'
+         12  1 11  1.0
+
+   *PRODUCER 'PR-10,6'
+      *OPERATE   *MAX *STO  100.0     *CONT
+      *OPERATE   *MIN *BHP  23000.0  *CONT
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+     *PERF *GEO 'PR-10,6'
+        13  1  7   1.0
+
+   *INJECTOR 'INJ-8'
+      *TINJW 25.
+      *INCOMP    *GAS  0. 0.99 0.01 0.0 0.0 0.0 0.0
+      *OPERATE   *MAX *STG  3.0E+04
+      *OPERATE   *MAX *BHP  3.0d+04
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJ-8'
+         13  1 11  1.0
+
+   *INJECTOR 'INJ-9'
+      *TINJW 25.
+      *INCOMP    *GAS  0. 0.99 0.01 0.0 0.0 0.0 0.0
+      *OPERATE   *MAX *STG  3.0E+04
+      *OPERATE   *MAX *BHP  3.0d+04
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJ-9'
+         11  1 11  1.0
+
+   *INJECTOR 'INJH2O-2'
+      *TINJW 25.
+      *QUAL 0.
+      *INCOMP    *WATER  1. 0. 0. 0. 0. 0. 0.
+      *OPERATE   *MAX *STW 150.0
+      *OPERATE   *MAX *BHP 1.0D+06
+      *GEOMETRY  *K 0.057  0.249  1.00  -4.0
+      *PERF *GEO 'INJH2O-2'
+         17  1  4  1.0
+
+   *GCONP   'Group-1'    *GTARGET  *STO   150.
+   *GCONI   'Group-1'    *GTARGET  *STG   3.0D+04        **(30.0 Mm3/day)
+   *GCONI   'Group-2'    *GTARGET  *STW   50. 
+
+   *APPOR-METHOD *PROD 'Group-1'  *IP
+   *APPOR-METHOD *GASI 'Group-1'  *IP
+   *APPOR-METHOD *WATI 'Group-2'  *IP
+
+   *ON-TIME  'Field' 'Group-1'        ** Specify group on-time fractions
+              0.9     0.8
+
+
+
+** Results:
+** -----------------------------------------------------------------------------------
+**  Group           On-Time Factor (OTF)                      Rates (Q)
+**  Hierarchy       --------------------     -----------------------------------------
+**                   Input     Actual        Instantaneous     Average      Actual
+** -----------------------------------------------------------------------------------
+** FIELD             0.90       0.90           120.0         108.0         108.0
+**   GRP-1 (PROD)      0.80       0.72          [150.0]        120.0         108.0
+**
+** FIELD             0.90       0.90            24.0          21.6          21.6
+**   GRP-1 (GASI)      0.80       0.72           [30.0]         24.0          21.6
+**
+** FIELD             0.90       0.90            50.0          45.0          45.0
+**   GRP-2 (WATI)      1.00       0.90           [50.0]         50.0          45.0
+** -----------------------------------------------------------------------------------
+** [--] targeted instantaneous values; all cumulatives reflect the actual rates.
+
+
+*TIME 300.0         ** UNTIL NOW, ALL GROUP TARGETS ARE APPORTIONED USING THE DEFAULT *IP
+
+
+   ** SUPPLY PRIORITY FORMULA FOR USE OF *PRIOR
+   *PRIOR-FORM   *PROD 'Group-1'         **MINIMIZE GOR
+                       **STO   STG   STW   STL   BHF
+      *PRIOR-NUMER   0.    1.    0.    0.    0.    0.
+      *PRIOR-DENOM   0.    0.    1.    0.    0.    0.
+
+   *PRIOR-FORM   *GASI 'Group-1'         **MAXIMIZE GAS INJECTION POTENTIAL
+       *PRIOR-RATE  *BHP          **VALID OPTION: MRC|BHP(VALUE)
+                    **CONST  STG   STW
+       *PRIOR-NUMER    0.     1.    0.
+
+
+   *APPOR-METHOD  *PROD 'Group-1' *PRIOR   **VALID OPTIONS: IP/GUIDE/INGUIDE/PRIOR
+
+   *APPOR-METHOD  *GASI 'Group-1' *PRIOR   **VALID OPTIONS: IP/GUIDE/INGUIDE/PRIOR
+
+
+*TIME 1000.0
+
+*STOP

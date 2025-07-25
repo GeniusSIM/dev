@@ -1,0 +1,368 @@
+
+
+     STARS Data Files Illustrating "Fluid Types"
+     -------------------------------------------
+
+stflu001.dat:
+  title1 'STARS Test Bed No. 1'
+  title2 'Dry Combustion Tube Experiment'
+
+stflu002.dat:
+  title1 'STARS Test Bed No. 3'
+  title2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+stflu003.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'
+
+stflu004.dat:
+  title1 'STARS Test Bed No. 10'
+  title2 'Dry Combustion Tube Experiment'
+  title3 'Test Bed No.1 with Original and Combustion Water Separate'
+
+stflu005.dat:
+  title1 'STARS Test Bed No. 11'
+  title2 'Emulsion Flow with Parallel Core Oil Displacement'
+  title3 'from Radke'
+
+stflu006.dat:
+  title1 'STARS Test Bed No. 12'
+  title2 'Caustic-Polymer Lab Run'
+
+stflu007.dat:
+  title1 'STARS Test Bed No. 13'
+  title2 'Surfactant Flooding in the North Sea'
+
+stflu008.dat:
+  title1 'STARS Test Bed No. 17'
+  title2 'Steam with Two Additives, Lab Run from Alberta Research Council'
+
+stflu009.dat:
+  title1 'STARS Test Bed No. 18'
+  title2 'Insitu Gel Simulation, from Scott'
+
+stflu010.dat:
+  title1 'STARS Test Bed No. 19'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #1'
+
+stflu011.dat:
+  title1 'STARS Test Bed No. 23'
+  title2 'Steam History Match & Foam Forecast'
+
+stflu012.dat:
+  title1 'STARS Test Bed No. 27'
+  title2 'One-Dimensional Foam Propagation'
+  title3 'CHEVRON Experiment #2'
+
+stflu013.dat:
+  title1 'STARS Test Bed No. 32'
+  title2 'One-Dimensional Preformed Foam Injection'
+  title3 "CHEVRON Experiment with OIL 'A' "
+
+stflu014.dat:
+  title1 'STARS Test Bed No. 56'
+  title2 'FOAM WITH HORIZONTAL WELLS, TROLL FIELD'
+
+stflu015.dat:
+  title1 'STARS Test Bed No. 57'
+  title2 'Multiple Contact Miscible with STARS'
+
+stflu016.dat:
+  title1 'STARS Test Bed No. 65'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Bubbly Oil Treatment'
+
+stflu017.dat:
+  title1 'STARS Test Bed No. 66'
+  title2 'Foamy Oil Field Scale Illustration'
+  title3 'Oily Foam Treatment'
+
+stflu018.dat:
+  title1 'STARS Fluid Model Template #18'
+  title2 'FOAM INJECTION IN A GENERIC NORTH SEA RESERVOIR'
+  title3 'Case sg1 : SAG with Transmissibility Barrier'
+
+stflu019.dat:
+  title1 'STARS Fluid Model Template #19'
+  title2 'GLISP 3-D Foam History Match Study'
+  title3 '1/6 Reservoir Element, 9 Layer-Model, 12 x 12 x 9 Grid'
+
+stflu020.dat:
+  title1 'STARS Fluid Model Template #20'
+  title2 'MICELLAR POLYMER IN STOCHASTIC RESERVOIR'
+  title3 'SURFACTANT-POLYMER CASE'
+
+stflu021.dat:
+  title1 'STARS Fluid Model Template #21'
+  title2 'STARS - ASPHALTENE PROCESSES'
+  title3 'NORTH SEA CROSS SECTION MODEL'
+
+stflu022.dat:
+  title1 'STARS Fluid Model Template #22'
+  title2 'Mole-based Version of Test Bed No. 18'
+  title3 'Insitu Gel Simulation, from Scott'
+
+stflu023.dat:
+  title1 'STARS Fluid Model Template #23'
+  title2 'Mole-based SI Version of Test Bed No. 18'
+  title3 'Insitu Gel Simulation, from Scott'
+
+stflu024.dat:
+  title1 'STARS Fluid Model Template #24'
+  title2 'Wolf Lake Pad Symmetry Element'
+  title3 'Cyclic Steaming Phase'
+
+stflu025.dat:
+  title1 'STARS Fluid Model Template #25'
+  title2 'Wolf Lake Pad Symmetry Element'
+  title3 'Combustion Phase'
+
+stflu026.dat:
+  title1 'STARS Fluid Model Template #26'
+  title2 'Steam Cycling in Initially Frozen Formation'
+  title3 'Based on STTST06'
+
+stflu027.dat:
+  title1 'STARS Fluid Model Template #27'
+  title2 'Steam Flood Encounters Sub-Zero Cooling Well'
+  title3 '*PERMTAB Case'
+
+stflu028.dat:
+  title1 'STARS Fluid Model Template #28'
+  title2 'Steam Flood Encounters Sub-Zero Cooling Well'
+  title3 '*PERMCK Case'
+
+stflu029.dat:
+  title1 'STARS Fluid Model Template #29'
+  title2 'Steam Cycling with Outer Cooling Ring'
+  title3 'Based on STTST06'
+
+stflu030.dat:
+  title1 'STARS Fluid Model Template #30'
+  title2 'Steam Cycling with Outer Cooling Ring & AUTOCOOLER'
+  title3 'Based on STFLU029'
+
+stflu031.dat:
+  title1 'STARS Fluid Model Template #31'
+  title2 'Series of Interacting Cooling Wells'
+
+stflu032.dat:
+  title1 'STARS Fluid Model Template #32'
+  title2 'Test/Illustrate *WATPENTH'
+  title3 'Based on STFLU024'
+
+stflu033.dat:
+  title1 'STARS Fluid Model Template #33'
+  title2 'Test/Illustrate *INIT_FROM_RESTART'
+  title3 'Mimic STFLU025 - Initial Conditions from STFLU024'
+
+stflu034.dat:
+  title1 'STARS Fluid Model Template #34'
+  title2 'Test/Illustrate *SHEARTHIN in Radial Lab-Scale Polymer Flood'
+
+stflu035.dat:
+  title1 'STARS Fluid Model Template #35'
+  title2 'Test/Illustrate *SHEARTHICK - Shear Thickening'
+  title3 'Based on STFLU036'
+
+stflu036.dat:
+  title1 'STARS Fluid Model Template #36'
+  title2 'Test/Illustrate *SHEARTHIN and *SHEARTHICK Together'
+  title3 '1D Coreflood Polymer Shear Thinning Plus Thickening'
+
+stflu037.dat:
+  title1 'STARS Fluid Model Template #37'
+  title2 'Test/Illustrate *SHEARTAB - White Castle Polymer Flood Project'
+
+stflu038.dat:
+  title1 'STARS Fluid Model Template #38'
+  title2 'Test/Illustrate *VISCTABLE *ATPRES with *VISCTYPE, *WATPHASE, *OILPHASE'
+  title3 'Based on VERIFY33'
+
+stflu039.dat:
+  title1 'STARS Fluid Model Template #39'
+  title2 'Test/Illustrate *TORTIKE_VG Steam Viscosity'
+  title3 'Based on STTST07'
+
+stflu040.dat:
+  title1 'STARS Fluid Model Template #40'
+  title2 'Test/Illustrate *VISOLOGLOG Oil Viscosity Mixing Rule'
+  title3 'Based on STTST08'
+
+stflu041.dat:
+  title1 'STARS Fluid Model Template #41'
+  title2 'Test/Illustrate *SHEARTHIN (Shear Rate), Radial Polymer Flood'
+  title3 'Viscosity as Function of Shear Rate'
+
+stflu042.dat:
+  title1 'STARS Fluid Model Template #42'
+  title2 'Test/Illustrate *SHEARTHICK (Shear Rate) - Shear Thickening'
+  title3 'Viscosity as Function of Shear Rate'
+
+stflu043.dat:
+  title1 'STARS Fluid Model Template #43'
+  title2 'Test/Illustrate *SHEARTAB (Shear Rate) - White Castle'
+  title3 'Constant Polymer, Flow = 136 m3/day'
+
+stflu044.dat:
+  title1 'STARS Fluid Model Template #44'
+  title2 'Test/Illustrate *SHEARTAB (Shear rate, Variable Perm) - White Castle'
+  title3 'Const polymer, flow = 1360 m3/day'
+
+stflu045.dat:
+  title1 'STARS Fluid Model Template #45'
+  title2 'Verify/Illustrate *SHIFT *MWT, Micellar Polymer in Core'
+  title3 'Uses Mole Basis'
+
+stflu046.dat:
+  title1 'STARS Fluid Model Template #46'
+  title2 'Verify/Illustrate *SHIFT *MWT, Micellar Polymer in Stochastic Reservoir'
+  title3 'Uses Mole Basis'
+
+stflu047.dat:
+  title1 'STARS Fluid Model Template #47'
+  title2 'Verify/Illustrate *VSSALTCMP, Micellar Polymer in Core'
+  title3 'Salinity Effect on Polymer Viscosity'
+
+stflu048.dat:
+  title1 'STARS Fluid Model Template #48'
+  title2 'Verify/Illustrate *VSSALTCMP, Micellar Polymer in Stochastic Reservoir'
+  title3 'Salinity Effect on Polymer Viscosity'
+
+stflu049.dat:
+  title1 'STARS Fluid Model Template #49'
+  title2 'Verify/Illustrate *RXORDUSE'
+  title3 'Based on STTST02'
+
+stflu050.dat:
+  title1 'STARS Fluid Model Template #50'
+  title2 'Verify/Illustrate *RXEQBASE with Foamy Oil'
+  title3 'Based on STTST65'
+
+stflu051.dat:
+  title1 'STARS Fluid Model Template #51'
+  title2 'Ionic flood in core (Na/Ca exchange)'
+  title3 'Test and illustrate ion exchange with clays'
+
+stflu052.dat:
+  title1 'STARS Fluid Model Template #52'
+  title2 'Lowsal Effect, Calcium and Sodium Ion Exchange via *INTCOMP *WATER'
+
+stflu053.dat:
+  title1 'STARS Fluid Model Template #53'
+  title2 'Lowsal Effect, Calcium and Sodium Ion Exchange via *INTCOMP *ADS'
+  title3 'Wettability Change with Calcium in Water Phase'
+
+stflu054.dat:
+  title1 'STARS Fluid Model Template #54'
+  title2 'Ionic Flood in Core (Na/Ca Exchange)'
+  title3 'Hill and Lake Paper on Ion Exchange with Clays'
+
+stflu056.dat:
+  title1 'STARS Fluid Model Template #56'
+  title2 'Verify/Illustrate *THCONGTAB, *THTYPE_FLX and *THTYPE_SAM'
+  title3 'Based on STWWM059'
+
+stflu057.dat:
+  title1 'STARS Fluid Model Template #57'
+  title2 'Verify/Illustrate *PVTSET/*PTYPE for Heavy Oil SAGD'
+
+stflu058.dat:
+  title1 'STARS Fluid Model Template #58'
+  title2 'Dry Combustion Tube with Enthalpy Departure'
+  title3 'Based on STTST01'
+
+stflu059.dat:
+  title1 'STARS Fluid Model Template #59'
+  title2 'Wet Combustion Tube with Enthalpy Departure'
+  title3 'Based on STTST02'
+
+stflu060.dat:
+  title1 'STARS Fluid Model Template #60'
+  title2 'Multi-Component Heavy-Oil Steam Flood with Enthalpy Departure'
+  title3 'Based on STTST08'
+
+stflu061.dat:
+  title1 'STARS Fluid Model Template #61'
+  title2 'Steam Injection with Oil and Soln Gas and Enthalpy Departure'
+  title3 'Based on STTST20'
+
+stflu062.dat:
+  title1 'STARS Fluid Model Template #62'
+  title2 'Multi-Component Oil and Soln Gas with Enthalpy Departure'
+  title3 'Based on STTST26'
+
+stflu063.dat:
+  TITLE1 'STARS Fluid Model Template #63'
+  TITLE2 'Test/Illustrate *SHEARTHIN in Radial Lab-Scale Polymer Flood'
+  TITLE3 'Multi-component Shear Thinning'
+
+stflu064.dat:
+  title1 'STARS Fluid Model Template #64'
+  title2 'Test/Illustrate *SHEARTAB with Temperature'
+  title3 'Based on STFLU036'
+
+stflu065.dat:
+  title1 'STARS Fluid Model Template #65'
+  title2 'Test/Illustrate *SHEARTHCKT with Temperature'
+  title3 'Based on STFLU036'
+
+stflu066.dat:
+  title1 'STARS Fluid Model Template #66'
+  title2 'Test/Illustrate *SHEARTHCKT/SHEARTHIN with Temperature'
+  title3 'Based on STFLU036'
+
+stflu067.dat:
+  title1 'STARS Fluid Model Template #67'
+  title2 'Illustrate equivalent salinity effect on viscosity'
+  title3 'Surfactant, polymer flood'
+
+stflu068.dat:
+  title1 'STARS Fluid Model Template #68'
+  title2 'Verify/Illustrate *GASSYLIQ for Multiple Properties and Components'
+  title3 'Based on STFLU050'
+
+stflu069.dat:
+  title1 'STARS Fluid Model Template #69'
+  title2 'Verify/Illustrate *ADSCOMP2, Micellar Polymer in Core'
+  title3 'Surfactant Adsorption Depends on Salinity'
+
+stflu070.dat:
+  title1 'STARS Fluid Model Template #70'
+  title2 'Verify/Illustrate *INTCOMP2, Micellar Polymer in Core'
+  title3 'Surfactant Mobilizing Depends on Alkali'
+
+stflu071.dat:
+  title1 'STARS Fluid Model Template #71'
+  title2 'Verify/Illustrate *SWIPV, OMEGA_PW, *RRFTW(O/G)'
+
+stflu072.dat:
+  title1 'STARS Fluid Model Template #72'
+  title2 'Verify/Illustrate *WELLSHEAR with Shear Thinning'
+
+stflu073.dat:
+  title1 'STARS Fluid Model Template #73'
+  title2 'Verify/Illustrate *WPLYFAC with Shear Thinning'
+
+stflu074.dat:
+  TITLE1 'STARS Fluid Model Template #74'
+  TITLE2 'Verify/Illustrate *OMEGA_PW *WL and *OMEGA_PMAX'
+  TITLE3 'Based on STFLU071'
+
+stflu075.dat:
+  TITLE1 'STARS Fluid Model Template #75'
+  TITLE2 'Illustrate Viscosity Nonlinear Mixing with *VSMIXGROUP'
+  TITLE3 'Based on STFLU020'
+
+stflu076.dat:
+  TITLE1 'STARS Fluid Model Template #76'
+  TITLE2 'Test/Illustrate *ADSRATE'
+  TITLE3 'STFLU036 with Rate Controlled Adsorption'
+
+stflu077.dat:
+  TITLE1 'STARS Fluid Model Template #77'
+  TITLE2 'Verify/Illustrate Component Mobility Factor *MOBCFAC'
+  TITLE3 'Based on STFLU071'
+

@@ -1,0 +1,186 @@
+*****************************************************************************
+** Template (gmgmc063.dat):  Overburden Loads                              **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc063.dat                                                             **
+**                                                                                  **
+** MODEL:  DISTRIBUTED YOUNG'S MODULUS                      FIELD UNITS             **
+**         ELASTIC MODEL                                    11X11X3 CARTESIAN GRID  **
+**                                                                                  **
+**                                                                                  **
+**   This example demonstrate the use of keyword *YOUNGMAP. When using this, only   **
+**   one rock type appears even though Young's modulus on each block is not the     **
+**   same. All blocks have the same Poisson's ratio and Cohesion.                   **
+**                                                                                  **
+**************************************************************************************
+** After stgeo077
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #63'
+*TITLE2 "Illustrate/Verify *YOUNGMAP - Distributed Young's Modulus"
+
+*INUNIT *FIELD
+
+*OUTPRN *GRID *POROS *PRES *SO *SG *SW
+
+*WSRF *GRID 1
+*OUTSRF *RES *ALL
+*OUTSRF *GRID *POROS *PRES *YOUNG *POISSON *VDISPL *VERDSPLGEO
+*OUTSRF *SPECIAL
+        *VERDSPLGEO 6,6,1
+        *SUBSIDGEO  6,6,1
+*WRST 0 
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 11 11 3
+
+*KDIR *DOWN
+
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000
+
+*POR  *CON 0.20
+
+*PERMI *CON 1.
+*PERMJ *EQUALSI * 1.
+*PERMK *EQUALSI * 0.1
+
+*CPOR   1.8570E-06
+*PRPOR  3000.
+
+
+**  ==============  COMPONENT PROPERTIES  ======================
+*MODEL *PR
+*NC 1 1
+*COMPNAME 'FC45' 
+*HCFLAG         0 
+*MW             539.0 
+*AC             1.329531 
+*PCRIT          7.14 
+*VCRIT          1.955 
+*TCRIT          957.8 
+*PCHOR          1090.4
+*SG             0.94 
+*TB             1027.13 
+*BIN
+*TRES 60. 
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow
+0.0     0.0000   1.0
+1.0000  1.0000   0.0000
+
+*SLT
+** Sl    Krg     Krog
+0.00    0.5000   0.0000
+1.0000  0.0000   1.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*VERTICAL *DEPTH_AVE *WATER_OIL
+*REFPRES 3035
+*REFDEPTH 5000
+*DWOC 7000
+*ZOIL 1.
+*ZGAS 1.
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+*DTMAX 31.
+*DTMIN 1.E-06
+*NORM      *PRESS   145.  
+*NORM      *SATUR   0.15
+*NORM      *GMOLAR  0.15
+
+
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH           ** geomechanics main keyword
+*GEOM3D
+
+** Note: The yielding stress has a high value to avoid plastics occuring.
+** Young modulus   Poisson's ratio   Yielding stress
+*YOUNGMAP *ALL
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6  2.10e6  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  
+  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  2.6e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6  
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6    
+  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  2.8e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6    
+  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6 2.05e6  2.5e6  2.1e6    
+  1.8e6  2.1e6  2.0e6  2.15e6  2.2e6  2.6e6  1.5e6  2.0e6  2.15e6  2.2e6  2.3e6 
+  2.5e6  2.6e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6   2.1e6  2.0e6  1.8e6  2.1e6  
+
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6    
+  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  2.8e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6    
+  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6 2.05e6  2.5e6  2.1e6    
+  1.8e6  2.1e6  2.0e6  2.15e6  2.2e6  2.6e6  1.5e6  2.0e6  2.15e6  2.2e6  2.3e6 
+  2.5e6  2.6e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6   2.1e6  2.0e6  1.8e6  2.1e6 
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6  2.10e6  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  
+  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  2.6e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6 
+
+  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  2.6e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6  
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6    
+  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  2.8e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6    
+  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6 2.05e6  2.5e6  2.1e6 
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.15e6  2.2e6  2.3e6  2.6e6  2.7e6  
+  2.2e6  2.6e6  1.5e6  2.0e6  2.2e6  2.10e6  2.25e6  2.3e6  2.4e6  2.2e6  2.5e6  
+  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6 
+  2.0e6  2.1e6  1.9e6  2.2e6  2.3e6  2.05e6  2.1e6  2.0e6  1.8e6  2.1e6  2.0e6    
+  2.0e6  2.15e6  2.05e6  2.5e6  2.1e6  2.3e6  2.6e6  2.5e6 2.05e6  2.5e6  2.1e6 
+  
+
+*POISSRATIO .3
+*COHESION 10000
+** Initial effective stress in the reservoir
+** H stress : horizontal stress on a plane
+** V stress : Vertical stress on a plane
+** N stress : Normal stress to a plane
+**      H stress  V stress  Shear stress  N stress
+*STRESS3D 6000       6000        6000  0   0  0
+
+** ==================== Recurrent Data Section ==================
+
+*RUN
+
+*DATE 2011 1 1
+
+   *DTWELL 0.05
+
+   *WELL 1 'PROD1'
+
+   *PRODUCER 'PROD1'
+   *OPERATE *MAX *STO 200
+   *OPERATE *MIN *BHP 100
+   *GEOMETRY *K  0.365 0.249 1.0 0.0
+   *PERF *GEO 'PROD1'
+       6  6  1:3  1.0
+
+*TIME 60
+
+*STOP

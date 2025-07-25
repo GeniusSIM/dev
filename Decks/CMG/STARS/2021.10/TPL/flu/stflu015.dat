@@ -1,0 +1,340 @@
+
+*****************************************************************************
+** Template  (stflu015.dat): STARS Example of Multiple Contact Miscibility **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STFLU015.DAT                                                             **
+**                                                                                  **
+** MODEL:  MULTIPLE CONTACT MISCIBILITY (C1,C4,C10)          SI UNITS               **
+**         COMPOSITIONALLY DEPENDENT K VALUES (HAND'S MODEL) 80X1X1 CARTESIAN GRID  ** 
+**                                                                                  ** 
+** USAGE:  HAND'S MODEL OF K VALUES ALLOWS SIMULATION OF DEVELOPED MISCIBILITY      **
+**                                                                                  **
+************************************************************************************** 
+************************************************************************************** 
+**                                                                                  **
+**    This test problem descibes STARS compositional simulation                     **
+**    based on study of Van Quy et al, SPEJ (April, 1972), p 171                    **
+**    Five experiments can be simulated; different compositiions:                   **
+**                                                                                  **
+**      (1) Two phase equil  (their Fig 7):  called MCMA                            **
+**      (2) High p gas drive (their Fig 12): called MCMB                            **
+**      (3) High p gas drive (their Fig 15): called MCMB1                           **
+**      (4) Condensing drive (their Fig 16): called MCMC                            **
+**      (5) Condensing drive (their Fig 19): called MCMC1                           **
+**                                                                                  **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 57'
+*TITLE2 'Multiple Contact Miscible with STARS'
+
+*INUNIT *SI    *EXCEPT 3 3  ** bar instead of kPa
+
+*OUTPRN *GRID *PRES  *SO *SG *X *Y *Z
+*WPRN *GRID *TIME
+
+*OUTPRN *ITER *NEWTON
+*WPRN *ITER *TIME
+
+*OUTPRN *WELL *ALL
+
+*OUTSRF *WELL *COMPONENT *ALL
+*OUTSRF *GRID *PRES  *SO *SG *VISW *X *Y *Z
+
+*WRST
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 80 1 1
+
+*DI *CON 25.
+*DJ *CON 1000.
+*DK *CON 20
+
+*POR *CON 0.3417
+
+*PERMI *CON 3940
+
+*PERMJ *EQUALSI
+
+*PERMK *EQUALSI  **may be changed
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 4 4 4 1   ** All components except oil are aqueous based
+
+
+*COMPNAME    'WATER'  'C10_OIL'  'C4_OIL' 'C1_OIL'
+**           -------   -------   -------  --------
+*CMM           .018     .142      .058     .016
+**MOLDEN         998      730       579      425    ** actually mass density
+*MOLDEN     5.544e+4  5.155e+3  9.983e+3  2.656e+4  ** true molar density
+*CP            4e-5      15E-5    15E-5     15E-5
+*PCRIT        220.5     21.1       38       46
+*TCRIT         374      344       152      -82.6
+
+**  ==============  VISCOSITY to be altered  ======================
+*AVISC         0.345     0.75        0.75         0.75
+** Nonlinear mixing rules for liquid phase viscosity
+*VSMIXCOMP 'C4_OIL'
+*VSMIXENDP 0 0.001  **VSMIXENDP 0 0.0015
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+**  ==============  VISCOSITY to be altered  ======================
+
+**  Reference conditions
+*PRSR 192
+*TEMR 71
+*PSURF 192
+*TSURF 71
+
+
+GASLIQKV          ** The following are gas-liquid K values
+
+**KV1    1.1860E05    1.1984E04     8.5881E03    5.4547E+03
+**KV2        0          0             0             0
+**KV3        0          0             0             0
+**KV4   -3.8164E03   -3.4568E03    -2.1549E03    -0.8798E03
+**KV5   -2.2702E02   -1.9448E02    -2.3873E02    -2.3873E02
+
+*kvtablim 69 345   70 100
+kvkeycomp 'C4_OIL' ratioo 0 1.0 1.44 0.173
+** Each component has a P-T dependent table at
+** the following values of u : 0.0 0.33 0.67 1.0
+
+ *KVTABLE 'WATER'
+    *KEYCOMP
+       2*0
+       2*0
+    *KEYCOMP
+       2*0
+       2*0
+    *KEYCOMP
+       2*0
+       2*0
+    *KEYCOMP
+       2*0
+       2*0
+**    *KEYCOMP           ** last entry may require critical K values
+**       2*0.000
+**       2*0.000
+
+ *KVTABLE 'C1_OIL'
+    *KEYCOMP
+       2*1.885
+       2*1.885
+    *KEYCOMP
+       2*1.690
+       2*1.690
+    *KEYCOMP
+       2*1.500
+       2*1.500
+    *KEYCOMP
+       2*1.105
+       2*1.105
+**   *KEYCOMP           ** last entry may require critical K values
+**       2*1.000
+**       2*1.000
+
+ *KVTABLE 'C4_OIL'
+    *KEYCOMP
+       2*0.273
+       2*0.273
+    *KEYCOMP
+       2*0.3600
+       2*0.3600
+    *KEYCOMP
+       2*0.4730
+       2*0.4730
+    *KEYCOMP
+       2*0.899
+       2*0.889
+**   *KEYCOMP           ** last entry may require critical K values
+**       2*1.000
+**       2*1.000
+
+ *KVTABLE 'C10_OIL'
+    *KEYCOMP
+       2*0.0144
+       2*0.0144
+    *KEYCOMP
+       2*0.0419
+       2*0.0419
+    *KEYCOMP
+       2*0.0902
+       2*0.0902
+    *KEYCOMP
+       2*0.3047
+       2*0.3047
+**   *KEYCOMP           ** last entry may require critical K values
+**       2*1.000
+**       2*1.000
+
+** Change surface phase of C10_OIL and C4_OIL to gas, their injection phase
+SURFLASH W G G G
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw       Krow
+**  -----     -------    -------
+    0.10         0.         1.0000
+    0.1385       0.0001     0.7083
+    0.177        0.0006     0.5306
+    0.2155       0.0027     0.3957
+    0.254        0.0052     0.2755
+    0.2925       0.0115     0.2021
+    0.331        0.0182     0.1313
+    0.3694       0.0304     0.0907
+    0.4079       0.0448     0.0565
+    0.4464       0.0639     0.0340
+    0.4849       0.0969     0.0222
+    0.5234       0.1299     0.0119
+    0.5619       0.1629     0.0058
+    0.6004       0.1984     0.0026
+    0.6389       0.2546     0.0018
+    0.6774       0.3148     0.0009
+    0.7159       0.3798     0.00009
+    0.7544       0.4632     0.000016
+    0.7929       0.5467     0.000001
+    0.8314       0.6429     0.0000000
+
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+    0.4        0.35       0.
+    0.5        0.287      0.179
+    0.6        0.225      0.357
+    0.7        0.162      0.536
+    0.8        0.1        0.714
+    0.96       0.         0.893
+    1.00       0.         1.000
+
+*INITIAL
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*PRES *CON 192
+*SO   *CON 0.9
+*TEMP *CON 71
+
+**MCMA
+**MFRAC_OIL 'C10_OIL' *CON 0.169
+**MFRAC_OIL 'C4_OIL'  *CON 0.254
+**MFRAC_OIL 'C1_OIL'  *CON 0.578
+
+**MCMB
+**MFRAC_OIL 'C10_OIL' *CON 0.08
+**MFRAC_OIL 'C4_OIL'  *CON 0.30
+**MFRAC_OIL 'C1_OIL'  *CON 0.62
+
+**MCMB1
+**MFRAC_OIL 'C10_OIL' *CON 0.36
+**MFRAC_OIL 'C4_OIL'  *CON 0.64
+
+**MCMC
+*MFRAC_OIL 'C10_OIL' *CON 0.373
+*MFRAC_OIL 'C4_OIL'  *CON 0.127
+*MFRAC_OIL 'C1_OIL'  *CON 0.50
+
+**MCMC1
+**MFRAC_OIL 'C10_OIL' *CON 0.50
+**MFRAC_OIL 'C1_OIL'  *CON 0.50
+
+*NUMERICAL
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+** All these can be defaulted.  The definitions
+** here match the previous data.
+
+*SDEGREE *GAUSS
+*DTMAX 2.5
+*ISOTHERMAL
+*TFORM *ZT
+*AIM *STAB
+
+**NORM     *PRESS 1.5  *ZO .1    *TEMP 50  *ZNCG .1    *ZAQ .1
+
+*NORM      *PRESS 15  *ZO .4    *TEMP 50  *ZNCG .4    *ZAQ .4
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL 2.5
+
+   *WELL 1 'In-1' *VERT  1 1
+   *WELL 2 'Pr-1' *VERT 80 1
+
+   *PRODUCER 'Pr-1'
+   *OPERATE *MIN *BHP 190
+   *GEOMETRY  k  0.09 .249 1 0  ** rw cc ff ss
+   *PERFV *TUBE-END 'Pr-1'  **  k  fh
+                  1       1.0
+ 
+   ** gas downhole density 2.66e4 vs surface density 41.9 -> 634 conversion
+   *INJECTOR *MOBWEIGHT 'In-1'
+   *INCOMP *GAS 0 .0   .23 0.77         **MCMC
+   **INCOMP *GAS 0 .0   .12 0.88         **MCMC1
+   *TINJW 71     ** gas injection (634 * 5000 m3/D)
+   *PINJW 1000
+
+   **INCOMP *GAS 0 .016 .122 .862        **MCMA ( 0 .012 .118 .870)
+   **INCOMP *GAS 0 .0   .0  1            **MCMB
+   **INCOMP *GAS 0 .0   .0  1            **MCMB1
+
+   *OPERATE *STG 3.17E+4
+   *OPERATE *MAX *BHP 250 **equivalent to 428 at ECLIPSE datum model
+   *PERFV 'In-1'   **  k      wi
+                 1   3.996716e9 ** 3.408E+7 ** = 5.376E+4 * 634  (liq WI * density conversion)
+
+*TIME 180
+*TIME 365
+*TIME 545
+*STOP
+*TIME 730
+*TIME 910
+*TIME 1095
+*STOP
+*TIME 1460
+*TIME 1825
+*TIME 2190
+*TIME 2555
+*TIME 2920
+*TIME 3285
+*TIME 3650
+

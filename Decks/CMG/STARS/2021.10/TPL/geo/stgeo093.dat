@@ -1,0 +1,461 @@
+
+***************************************************************************** 
+** Template  (stgeo093.dat): Barton-Bandis Dual Porosity Model             **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGEO093.DAT                                                             **
+**                                                                                  ** 
+** MODEL:  TWO WELLS                                        FIELD UNITS             **
+**         Barton-Bandis Dual Permeability Model        100X100X1 CARTESIAN GRID    **
+**         3D FRACTURE NETWORK WITH SHEAR FRACTURING                                **
+**         CAPILLARY PRESSURES AFFECT MATRIX-FRACTURE TRANSFER                      **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE EFFECT OF SHEAR FRACTURING                               **
+**                                                                                  **
+** Purposes:                                                                        **
+**       Shear fracturing and Barton-Bandis models are applied to a dual            **
+**       permeability model for fracture closure.                                   **
+**       The reservoir is fractured in all directions and the                       **
+**       dual perm model is used to simulate the reservoir behavior.                **
+**                                                                                  **
+**       The parent well is a producer which generates shear fractures in a region  **
+**       of withdrawn fluid and higher compressive stresses. The child              **
+**       or infill well is an injector located parallel to the parent well. When    **
+**       the child well is opened, the pressure increase in the region around the   **
+**       well reduces the effective stress so fracturing because of tensile         **
+**       stress may happen. The fluid from the injectors will travel to the parent  **
+**       well, affecting the production.                                            **
+**                                                                                  ** 
+**       Based on stgeo060.dat                                                      **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*title1 'STARS Geomechanics Template #93'
+*TITLE2 'Illustrate Shear and Tensile Fractures'
+
+*INUNIT *FIELD *EXCEPT 11 1  ** ft3 instead of bbl
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP
+*OUTPRN *WELL *ALL
+*WPRN *GRID time
+*WPRN *ITER time
+*wsrf *grid 5
+*wsrf *griddeform 5
+*OUTSRF *GRID *PRES *SW *SO *PERMI  *PERMJ  *PERMK VDISPL STRESEFF      
+   STRESSM  STRNMXP   STRNMNP   STRESNORM PRMXDIR   PRMNDIR  
+   STRESI    STRESJ    STRESK    STRESSH   STRESMXP
+   STRESMNP  *STRESSHMX *BBTHRESH
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 100  100  1        ** 2D areal cartesian grid
+
+*DI *CON 10
+*DJ *CON 10
+*DK *CON 30
+
+*DEPTH 1 1 1   15
+
+**  The whole reservoir is fractured in all 3 directions
+**  The element size in x and y direction is 10 ft and
+**  30 ft (block size) in z direction.
+
+*DUALPERM
+
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   CON 0.19
+*POR FRACTURE CON 0.01        **  Fracture properties
+
+*PERMI *MATRIX   *CON 1e-3
+*PERMI *FRACTURE *CON 1e-3     **  Fracture properties
+
+
+MOD
+
+       1:30  1   1    = 10
+       1:30  2   1    = 10
+       1:30  3   1    = 10
+
+       1:30  10   1    = 10
+       1:30  11   1    = 10
+       1:30  12   1    = 10
+
+       1:30  30   1    = 10
+       1:30  31   1    = 10
+       1:30  32   1    = 10
+
+       1:30  50   1    = 10
+       1:30  51   1    = 10
+       1:30  52   1    = 10
+
+       1:30  65   1    = 10
+       1:30  66   1    = 10
+       1:30  67   1    = 10
+
+       1:30  80   1    = 10
+       1:30  81   1    = 10
+       1:30  82   1    = 10
+
+       1:30  96   1    = 10
+       1:30  97   1    = 10
+       1:30  98   1    = 10
+
+
+*PERMJ *MATRIX   *CON 1e-3
+*PERMJ *FRACTURE *CON 1e-3     **  Fracture properties
+*PERMK *MATRIX   *CON 1e-3
+*PERMK *FRACTURE *CON 1e-3     **  Fracture properties
+MOD
+
+       1:30  1   1    = 10
+       1:30  2   1    = 10
+       1:30  3   1    = 10
+
+       1:30  10   1    = 10
+       1:30  11   1    = 10
+       1:30  12   1    = 10
+
+       1:30  30   1    = 10
+       1:30  31   1    = 10
+       1:30  32   1    = 10
+
+       1:30  50   1    = 10
+       1:30  51   1    = 10
+       1:30  52   1    = 10
+
+       1:30  65   1    = 10
+       1:30  66   1    = 10
+       1:30  67   1    = 10
+
+       1:30  80   1    = 10
+       1:30  81   1    = 10
+       1:30  82   1    = 10
+
+       1:30  96   1    = 10
+       1:30  97   1    = 10
+       1:30  98   1    = 10
+
+
+*END-GRID
+
+
+** Intrinsic formation/rock properties
+*rocktype 1
+*CPOR 3E-6
+*ROCKCP 35
+*THCONR 24
+*THCONW 24
+*THCONO 24
+*THCONG 24
+CTPOR  54.8E-06 
+*HLOSSPROP *OVERBUR 35 24 *UNDERBUR 35 24
+
+** Fracture rock type for geomechanics
+*ROCKTYPE 2 *COPY 1
+
+*THTYPE *MATRIX   *CON 1
+*THTYPE *FRACTURE *CON 2
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'  'DEAD_OIL'
+**              -----    --------
+*CMM              18        200
+*MOLDEN         3.55555    0.262
+*CP                0       1.1e-5
+*TCRIT           647.4       0
+*IDEALGAS
+
+*VISCTABLE
+
+**    Temp
+      40          0         14
+      50          0        5.21
+      60          0        2.45
+      70          0        1.36
+      80          0       .844
+      90          0       .57
+     100          0       .41
+     200          0       .08388
+     300          0       .06
+     400          0       .05617
+     500          0       .05532
+     600          0       .05509
+     700          0       .05502
+     800          0       .05499
+    1000          0       .05495
+    1200          0       .05492
+** Reference conditions
+*PRSR 14.7
+*TEMR 120
+*PSURF 14.71
+*TSURF 58.14
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow         Pcow
+**  ----      ------      ------       ------
+    0.25       0.0         0.92         
+    0.30       0.02        0.705       
+    0.40       0.055       0.42        
+    0.50       0.10        0.24        
+    0.60       0.145       0.11        
+    0.70       0.20        0.0         
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             
+    0.30      0.372       0.0            
+    0.35      0.312       0.0            
+    0.40      0.257       0.0            
+    0.45      0.225       0.0            
+    0.50      0.175       0.0             
+    0.55      0.142015    0.0             
+    0.57      0.131232    7.9000E-4      
+    0.60      0.115599    0.0049380      
+    0.62      0.105551    0.0096790      
+    0.65      0.091061    0.0197530      
+    0.67      0.081805    0.0284440      
+    0.70      0.068557    0.0444440      
+    0.72      0.060169    0.0570860      
+    0.75      0.048291    0.0790120      
+    0.77      0.040870    0.0956050      
+    0.80      0.030544    0.1234570      
+    0.83      0.021273    0.1548640      
+    0.85      0.015743    0.1777780     
+    0.87      0.010799    0.2022720      
+    0.90      0.004665    0.2419750      
+    0.92      0.001649    0.2704200      
+    0.94      0.0         0.3004440      
+    1.        0.0         0.92           
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          
+    0.10       0.05        0.77        
+    0.20       0.11        0.587       
+    0.25       0.145       0.519       
+    0.30       0.18        0.45        
+    0.40       0.26        0.33        
+    0.50       0.355       0.24        
+    0.60       0.475       0.173       
+    0.70       0.585       0.102       
+    0.80       0.715       0.057       
+    0.90       0.85        0.021       
+    1.         1.          0.0         
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        
+    0.10       0.90         0.10       
+    0.20       0.80         0.20       
+    0.25       0.75         0.25       
+    0.30       0.70         0.30       
+    0.40       0.60         0.40       
+    0.50       0.50         0.50      
+    0.60       0.40         0.60       
+    0.70       0.30         0.70       
+    0.80       0.20         0.80      
+    0.90       0.10         0.90       
+    1.         0.0          1.   
+
+**   Assign rel perm sets
+
+*KRTYPE *MATRIX *CON 1
+*KRTYPE *FRACTURE *CON 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES *MATRIX   *CON 1500
+*PRES *FRACTURE *CON 1500
+
+*SW *MATRIX   *CON 0.25   ** So by difference, since Sg = 0
+*SW *FRACTURE *CON 0.25   ** So by difference, since Sg = 0
+
+*TEMP *MATRIX   *CON 120
+*TEMP *FRACTURE *CON 120
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+*DTMAX 10
+
+*NORM      *PRESS 2500
+*NORM      *SATUR  .3
+
+*tform zt
+*isothermal
+
+
+
+**  ============== GEOMECHANICS SECTION =====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+
+*GEOM3D           ** 3D Finite elements
+*GCOUPLING 0 
+*GPSCALING 0.3        
+
+*NITERGEO 200
+**NINCS 10
+*FORCETOL 0.01
+
+*GEOROCK 1           ** rock type # 1 - matrix
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 1E6
+   *FRICANGLE 30
+   *BIOTSCOEF  1.0
+
+
+*GEOROCK 2           ** rock type # 2 - fracture
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 1E6
+   *FRICANGLE 30
+   *BIOTSCOEF  1.0
+
+   ** B-B model      E0         Kni      FRS     Khf     Kccf   Krcf
+   *GPERMBB          6.5e-5     3e6      0.0     200.    200.     5
+
+   *USHEARST  183.0    ** Shear failure threshold
+   *GULIMPERM          ** Prevent fracture permeability below its initial value
+   *BBTENSH   300.0    ** Tensile threshold will be changed when shear failure occurs
+
+*STRESS3D  
+     *IJK   1:100  1:100  1
+          800   500  800  0  0  0
+
+
+*GEOTYPE   *MATRIX *IJK 1:100  1:100  1:1   1
+*GEOTYPE   *FRACTURE *IJK 1:100  1:100  1:1   2
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*DATE 1901 1 1.5
+
+   *DTWELL .17   ** 4 years of steam injection
+
+   *WELL 1 'inj1'
+   *WELL 2 'prod1'
+
+   *INJECTOR *MOBWEIGHT 'inj1'
+   *INCOMP  *WATER  1.0  0.0
+   *TINJW 600
+   *QUAL .9
+   *OPERATE *STW 10000  
+   *PERF 'inj1'  ** i j k  wi
+             60  5   1   1.E6  CLOSED     FLOW-FROM  'SURFACE'  REFLAYER
+             60  6   1   1.E6  CLOSED     FLOW-FROM 1
+             60  7   1   1.E6  CLOSED     FLOW-FROM 2
+
+             60  20  1   1.E6  OPEN     FLOW-FROM 3
+             60  21  1   1.E6  OPEN     FLOW-FROM 4
+             60  22  1   1.E6  OPEN     FLOW-FROM 5
+
+             60  40  1   1.E6  OPEN     FLOW-FROM 6
+             60  41  1   1.E6  OPEN     FLOW-FROM 7
+             60  42  1   1.E6  OPEN     FLOW-FROM 8
+
+             60  60  1   1.E6  OPEN     FLOW-FROM 9
+             60  61  1   1.E6  OPEN     FLOW-FROM 10
+             60  62  1   1.E6  OPEN     FLOW-FROM 11
+
+             60  90  1   1.E6  OPEN     FLOW-FROM 12
+             60  91  1   1.E6  OPEN     FLOW-FROM 13
+             60  92  1   1.E6  OPEN     FLOW-FROM 14
+
+   *PRODUCER 'prod1'
+   *OPERATE     *STL 100
+   *OPERATE *MIN *BHP    20   **STOP   ** Stop run when min bhp exceeded
+   *GEOMETRY K .2 .432 1 0 ** rw cc ff ss
+   *PERF *GEO 'prod1'  ** i j k
+             20  1   1   1.E6  OPEN     FLOW-FROM  'SURFACE'  REFLAYER
+             20  2   1   1.E6  OPEN     FLOW-FROM 1
+             20  3   1   1.E6  OPEN     FLOW-FROM 2
+
+             20  10  1   1.E6  OPEN     FLOW-FROM 3
+             20  11  1   1.E6  OPEN     FLOW-FROM 4
+             20  12  1   1.E6  OPEN     FLOW-FROM 5
+
+             20  30  1   1.E6  OPEN     FLOW-FROM 6
+             20  31  1   1.E6  OPEN     FLOW-FROM 7
+             20  32  1   1.E6  OPEN     FLOW-FROM 8
+
+             20  50  1   1.E6  OPEN     FLOW-FROM 9
+             20  51  1   1.E6  OPEN     FLOW-FROM 10
+             20  52  1   1.E6  OPEN     FLOW-FROM 11
+
+             20  65  1   1.E6  OPEN     FLOW-FROM 12
+             20  66  1   1.E6  OPEN     FLOW-FROM 13
+             20  67  1   1.E6  OPEN     FLOW-FROM 14
+
+             20  80  1   1.E6  OPEN     FLOW-FROM 15
+             20  81  1   1.E6  OPEN     FLOW-FROM 16
+             20  82  1   1.E6  OPEN     FLOW-FROM 17
+
+             20  96  1   1.E6  OPEN     FLOW-FROM 18
+             20  97  1   1.E6  OPEN     FLOW-FROM 19
+             20  98  1   1.E6  OPEN     FLOW-FROM 20
+
+*shutin 'inj1'
+
+*TIME 75.0
+**shutin 'prod1'
+*DTWELL 1e-3
+open 'inj1'
+
+*time 76.0
+STOP
+
+*time 80.0
+*STOP
+
+

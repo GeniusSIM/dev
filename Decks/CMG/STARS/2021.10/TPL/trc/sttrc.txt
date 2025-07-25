@@ -1,0 +1,87 @@
+
+
+     STARS Data Files Illustrating Tracer Options
+     --------------------------------------------
+
+sttrc001.dat:
+  TITLE1 'STARS Tracer Template #1'
+  TITLE2 'Polymer Injection with Tracer'
+  TITLE3 'Based on STFLU035'
+
+sttrc002.dat:
+  TITLE1 'STARS Tracer Template #2'
+  TITLE2 'Polymer Injection with Tracer and Shut-in Well'
+  TITLE3 'Based on STTRC001'
+
+sttrc003.dat:
+  TITLE1 'STARS Tracer Template #3'
+  TITLE2 'Water Flooding with Well Tracers'
+
+sttrc004.dat:
+  TITLE1 'STARS Tracer Template #4'
+  TITLE2 'Water Flooding with Regional Tracers'
+  TITLE3 'Based on STTRC003'
+
+sttrc005.dat:
+  TITLE1 'STARS Tracer Template #5'
+  TITLE2 'Steam Injection with Tracer'
+  TITLE3 'Based on STFLU008'
+
+sttrc006.dat:
+  title1 'STARS Tracer Template #6'
+  title2 'Test/Illustrate Aquifer Tracer'
+  title3 'Based on STSMO014'
+
+sttrc007.dat:
+  TITLE1 'STARS Tracer Template #7'
+  TITLE2 'Gas-Aquifer Drive with Tracer'
+  TITLE3 'Based on STWWM010.dat'
+
+sttrc008.dat:
+  TITLE1 'STARS Tracer Template #8'
+  TITLE2 'Flux Boundary with Well Tracer - Full-Field Run'
+  TITLE3 '*FLXB-TYPE *PRESSURE'
+
+sttrc009.dat:
+  TITLE1 'STARS Tracer Template #9'
+  TITLE2 'Flux Boundary with Well Tracer - Reduced Run'
+  TITLE3 'Input File sttrc008.flxb'
+
+sttrc010.dat:
+  TITLE1 'STARS Tracer Template #10'
+  TITLE2 'Flux Boundary with Well Tracer - Full-Field Run'
+  TITLE3 '*FLXB-TYPE *FLUX'
+
+sttrc011.dat:
+  TITLE1 'STARS Tracer Template #11'
+  TITLE2 'Flux Boundary with Well Tracer - Reduced Run'
+  TITLE3 'Input File sttrc010.flxb'
+
+sttrc012.dat:
+  TITLE1 'STARS Tracer Template #12'
+  TITLE2 'Test/Illustrate Tracer with *DUALPERM'
+  TITLE3 'Based on VERIFY62'
+
+sttrc013.dat:
+  title1 'STARS Tracer Template #13'
+  title2 'Test/Illustrate Tracer with Mechanical Dispersivity'
+  title3 'Based on VERIFY85'
+
+sttrc014.dat:
+  TITLE1 'STARS Tracer Template #14'
+  TITLE2 'Test/Illustrate Tracer with Molecular Diffusion'
+  TITLE3 'Based on STTRC001'
+
+sttrc015.dat:
+  title1 'STARS Tracer Template #15'
+  title2 'Test/Illustrate Tracer with Total Dispersion and LGR'
+  title3 'Based on VERIFY50'
+
+sttrc016.dat:
+  title1 'STARS Trace Template #16'
+  title2 'Test/Illustrate Well Tracer with Adsorption'
+  title3 'Based on STTST12'
+
+sttrc017.dat:
+  TITLE1 'STARS Trace Template #17'
+  TITLE2 'Test/Illustrate Well Tracer with *DUALPERM and *DYNAGRID'

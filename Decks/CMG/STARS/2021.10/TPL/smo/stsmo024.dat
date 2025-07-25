@@ -1,0 +1,295 @@
+
+
+**                       OVERVIEW
+**                       ========
+
+**  This data set illustrates the use of *PPATTERN for
+**  PARASOL class partitioning. It is based on sttst46.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 24'
+*title2 'Illustrate *SOLVER *PARASOL with *PPATTERN'
+*title3 'Based on STTST46'
+
+inunit field   ** output same as input
+
+outprn grid pres sw so sg temp y x w solconc obhloss viso
+wprn grid time
+
+outprn well wellcomp
+
+outprn iter newton
+wprn iter 1
+
+outsrf grid  pres so sg temp
+
+outsrf special matbal well 'OIL'
+               obhloss           ** Cumulative heat loss
+               osr 'E PROD' 'INJECTOR' cum
+               osr 'NE PROD' 'INJECTOR' cum
+               blockvar sg   23,1,1
+               blockvar temp 23,1,1
+               blockvar so   23,1,1
+               blockvar pres 23,1,1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 31 31 10 
+kdir down
+ninepoint ij
+
+**  The nine-spot pattern is 2.5 acres in area, or 330 ft square, and
+**  is to be covered with a 31x31  grid.  The length along the side
+**  is 330 ft, and the block size is 330/30 = 11 ft.
+
+**       <---------- 330 ft ----------->
+
+**       P--------------P--------------P
+**       |              |              |
+**       |              |              |    Full 2.5-acre inverted
+**       |              |              |    nine-spot pattern
+**       |              |              |
+**       |              |              |
+**       |              |              |
+**       P--------------I--------------P
+**       |              |              |
+**       |              |              |
+**       |              |              |     J
+**       |              |              |     |
+**       |              |              |     |
+**       |              |              |     |
+**       P--------------P--------------P     --------> I
+
+**  A point-distributed grid is required in order to put grid nodes on
+**  the injector-producer line.  To do this, an oversized grid is
+**  specified, and then trimmed back using block modifiers.
+
+vamod  2  0.5    0.5  1.0  0.5   ** blocks along horizontal sides
+vamod  3  0.5    1.0  0.5  0.5   ** blocks along vertical sides
+vamod  4  0.25   0.5  0.5  0.25  ** corner blocks
+
+vatype con 1
+  mod 2:30  1 1:10 = 2
+      2:30 31 1:10 = 2
+       1 2:30 1:10 = 3
+      31 2:30 1:10 = 3
+       1    1 1:10 = 4
+      31    1 1:10 = 4
+       1   31 1:10 = 4
+      31   31 1:10 = 4
+
+**  Divide the previous 4 layers into 10 as
+**     Zone 1 (10 ft):  2 layers of 5 ft each
+**     Zone 2 (20 ft):  2 layers of 10 ft each
+**     Zone 3 (25 ft):  3 layers of 8 ft, 8 ft & 9 ft
+**     Zone 3 (25 ft):  3 layers of 8 ft, 8 ft & 9 ft
+
+di con 11
+dj con 11
+dk kvar 2*5 2*10 8 8 9 8 8 9
+
+por con 0.3
+permi kvar 2*2000 2*500 3*1000 3*2000
+permj equalsi
+permk equalsi  / 2
+*end-grid
+cpor 5e-4
+prpor 75
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop  overbur 35 24  underbur 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'    'OIL'
+**               -----    -------
+     cmm        18.02      600       
+     pcrit      3206.2      0        ** These four properties
+     tcrit      705.4       0        ** are for the gas phase.
+     avg        1.13e-5     0        ** The dead oil component does
+     bvg        1.075       0        ** not appear in the gas phase.
+
+     molden       0       0.10113
+     cp           0       5.e-6
+     ct1          0       3.8e-4
+
+     cpl1         0       300
+
+visctable
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         550     0           2.5
+
+prsr 14.7
+temr 60
+psurf 14.7
+tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+** Automatic static vertical equilibrium
+vertical depth_ave
+refpres 75
+refdepth 5
+
+temp con 125
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical
+
+itermax 300
+north 100
+
+maxsteps 5
+
+*solver *parasol
+*ppattern 2
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+** Project starts on December 18, 1978
+date 1978 12 18.5
+
+   dtwell 1
+
+   well 1 'INJECTOR' vert 16 16 frac 1.00  **   5-------4-------3
+   well 2 'E PROD'   vert 31 16 frac 0.50  **   |       |       |
+   well 3 'NE PROD'  vert 31 31 frac 0.25  **   |       |       |       N
+   well 4 'N PROD'   vert 16 31 frac 0.50  **   |       |       |       |
+   well 5 'NW PROD'  vert  1 31 frac 0.25  **   6-------1-------2   W---|---E
+   well 6 'W PROD'   vert  1 16 frac 0.50  **   |       |       |       |
+   well 7 'SW PROD'  vert  1  1 frac 0.25  **   |       |       |       S
+   well 8 'S PROD'   vert 16  1 frac 0.50  **   |       |       |
+   well 9 'SE PROD'  vert 31  1 frac 0.25  **   7-------8-------9
+
+   geometry k 0.3 0.249 1.0 0.0  ** Well radius 0.3 ft
+
+   injector mobweight 'INJECTOR'
+   tinjw 450
+   qual .7
+   incomp  water  1.0  0.0
+   operate     bhp 1000
+   operate max stw 300
+   perfv geo 'INJECTOR'
+            **  k          ** Inject only in the bottom zone
+                8:10  1.0
+
+   producer 'E PROD' 'NE PROD' 'N PROD' 'NW PROD' 'W PROD' 'SW PROD' 'S PROD' 'SE PROD'              ** All producers have these attributes
+   operate     bhp    17
+   operate max stl    1000
+   operate max steam  10    ** Steam CWE in bbl/day
+   perfv geo 'E PROD' 'NE PROD' 'N PROD' 'NW PROD' 'W PROD' 'SW PROD' 'S PROD' 'SE PROD'
+            **  k
+                1:10  1.0
+
+time 30    ** 1 month
+time 60    ** 2 months
+time 90    ** 3 months
+time 120   ** 4 months
+time 150   ** 5 months
+time 180   ** 6 months
+time 210   ** 7 months
+time 240   ** 8 months
+time 270   ** 9 months
+time 300   ** 10 months
+time 330   ** 11 months
+time 365   ** 1 year
+time 540   ** 18 months
+time 730   ** 2 years
+time 1095  ** 3 years
+time 1460  ** 4 years
+time 1825  ** 5 years
+time 2190  ** 6 years
+time 2555  ** 7 years
+time 2920  ** 8 years
+time 3285  ** 9 years
+time 3650  ** 10 years

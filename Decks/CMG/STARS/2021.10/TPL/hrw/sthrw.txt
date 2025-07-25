@@ -1,0 +1,14 @@
+
+
+     STARS Data Files Illustrating "Horizontal Wells"
+     ------------------------------------------------
+
+sthrw007.dat:
+  title1 'STARS Horizontal Well Template #7'
+  title2 'Steam Injection with 26 Wells Including 3 Horizontal Producers'
+  title3 'Variable Top, 2 Regional Aquifers, Actual 12-Year History'
+
+sthrw008.dat:
+  title1 'STARS Horizontal Well Template #8'
+  title2 'LIAOHE SAGD PROJECT - PHASE 3'
+  title3 '3D Horizontal WELLS with DIP'

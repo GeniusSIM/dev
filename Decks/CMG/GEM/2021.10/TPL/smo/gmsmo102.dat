@@ -1,0 +1,228 @@
+**--------------------------------------------------------------------**
+** GMSMO102.DAT:  2 Point Capillary Pressure Scaling                  **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMSMO102.DAT                                               **
+**                                                                    **
+** MODEL:  21x1x15       2 PT PC VERTICAL SCALING                     **
+**         FIELD UNITS   STONE'S FIRST MODEL FOR Kro                  **
+**         *KDIR *DOWN   6 HYDROCARBON COMPONENTS                     **
+**                                                                    **
+**--------------------------------------------------------------------**
+**  This template data set demonstrates the use of 2-point Capillary  **
+**  Pressure end-point scaling.                                       **
+**                                                                    **
+**  Companion template gmsmo103 uses J-Function for oil-water system. **
+**  The results of of the two templates should be identical.          **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 '2-Point Pc Scaling'
+*TITLE2 'Oil-Water-Gas Initialization'
+*TITLE3 'Cap. Pressure Shifting'
+
+*INUNIT    *FIELD
+
+*OUTPRN *WELL *ALL
+*OUTPRN *GRID *IMPL *SO *SG *SW *PRES
+*OUTPRN *RES  *ALL
+*OUTSRF *GRID *SW *SO *SG *PRES
+*OUTSRF *RES  *ALL
+*WSRF   *GRID 10
+*WSRF   *WELL 1
+
+*OUTSRF *SPECIAL *PCW  11 1 5
+                 *SW   11 1 5
+                 *PCG  19 1 2
+                 *SG   19 1 2
+                 *PCG  11 1 1
+                 *SG   11 1 1
+                 
+**--------------------------------------------------------------------**
+** Reservoir description Section                                      **
+**--------------------------------------------------------------------**
+
+*GRID *CART    21    1   15   ** This is an x-z cross sectional problem
+*KDIR *DOWN
+
+*DI *CON 95.0
+*DJ *CON 600.0
+*DK *CON 24.0
+
+*DEPTH *TOP 1    1   1  9000.   ** Depth to top center of first
+                                ** block in shallowest layer
+
+*POR *CON 0.15
+
+*PRPOR 3600.0                   ** Rock compressibility and
+*CPOR  4.0E-6                   ** reference pressure
+
+
+*PERMI *CON 120.
+*PERMJ *CON 120.
+*PERMK *CON 120.
+
+**--------------------------------------------------------------------**
+** Component Properties Section                                       **
+**--------------------------------------------------------------------**
+
+*MODEL *PR
+
+*NC 6 6
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69       18.       17.
+*VCRIT 0.099800  0.200500  0.369800  0.629700       0.7       0.8
+*TCRIT    190.6     369.8     507.4     617.7      720.     850.
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*BIN         0.
+           2*0.
+           3*0.
+           0.10     0.008      2*0.
+           0.10     0.008      3*0.
+*TRES 222.
+
+*DENW 63.02
+*CW      3.0E-06
+*REFPW   14.7
+*VISW    0.96
+
+**--------------------------------------------------------------------**
+** Rock-fluid Property Section                                        **
+**--------------------------------------------------------------------**
+
+*ROCKFLUID
+*RPT
+
+*KROIL *STONE1    ** Use Stone's 1st Model to compute oil relative
+                  ** permeability when three phases are present.
+
+*SWT              ** Water-oil relative permeability table.
+**   sw    krw    krow    pcow  pcowi
+   0.22    0.00   1.0     45.0  45.0
+   0.3     0.06   0.4     22.0  18.0
+   0.4     0.11   0.125   11.0   7.5
+   0.5     0.2    0.035    5.0   2.8
+   0.6     0.33   0.0048   2.5   1.0
+   0.8     0.65   0.0      1.65  0.0
+   0.9     0.83   0.0      1.1  -1.0
+   1.0     1.00   0.0      0.0  -3.0
+
+
+*SLT              ** Liquid-gas relative permeability table.
+**   sl     krg    krog     pcog pcogi
+   0.22  1.0000    0.00     5.5   5.5
+   0.3   0.8125    0.00     2.75  2.6
+   0.4   0.5500    0.00     1.6   1.25
+   0.5   0.3500    0.00     1.16  0.76
+   0.6   0.2300    0.00     1.01  0.60
+   0.7   0.1500    0.02     0.95  0.52
+   0.8   0.0800    0.1      0.85  0.42
+   0.9   0.0220    0.33     0.6   0.2
+   0.96  0.0000    0.6      0.35 -0.4
+   1.00  0.0000    1.0      0.00 -1.5
+
+
+*PCOW_SHIFT *IVAR        **(psi)
+  0.000000000000000       0.163227883271942       0.326455766543885
+  0.489683649815827       0.652911533087770       0.816139416359712
+  0.979367299631655        1.14259518290360        1.30582306617554
+   1.46905094944748        1.63227883271942        1.79550671599137
+   1.95873459926331        2.12196248253525        2.28519036580719
+   2.44841824907914        2.61164613235108        2.77487401562302
+   2.93810189889496        3.10132978216691        3.26455766543885
+
+*PCWMAX  *CON 46.0    **(psi)
+*PCWMIN  *CON  0.0
+*PCWIMIN *CON -3.5
+
+*PCGMAX  *CON  6.5 
+*PCGMIN  *CON  0.0
+*PCGIMIN *CON -2.5
+
+*PCSCALE_2PT
+
+**--------------------------------------------------------------------**
+** Initial Conditions Section                                         **
+**--------------------------------------------------------------------**
+
+*INITIAL
+*VERTICAL *DEPTH_AVE *WATER_OIL_GAS *EQUIL
+
+*REFPRES  3600.0                ** Set reference pressure
+*REFDEPTH 9108.0                ** at the reference depth.
+*DWOC     9250.0                ** Set water-oil contact
+*DGOC     9108.0                ** Set gas-oil contact
+
+** Initial oil composition :
+*ZOIL 0.50   0.07    0.03     0.20    0.15     0.05
+
+** Initial gas composition :
+*ZGAS 0.9304 0.04638 0.006924 0.01473 0.001512 0.0000314
+
+**--------------------------------------------------------------------**
+** Numerical Control Section                                          **
+**--------------------------------------------------------------------**
+
+*NUMERICAL
+
+*NORM *PRESS 150.
+*NORM  *GMOLAR 0.025
+*NORM  *SATUR  0.10
+*MAXCHANGE *SATUR 0.80
+*MAXCHANGE *PRESS 5000.
+*CONVERGE *MAXRES 1.E-04
+*DTMAX    31.
+*AIM *STAB *AND-THRESH 1 0.01
+
+**--------------------------------------------------------------------**
+** Well Data Section                                                  **
+**--------------------------------------------------------------------**
+
+*RUN
+*DATE 1994 01 01
+
+*DTWELL   0.1
+
+*WELL 1 'Producer 1'  
+*WELL 2 'Injector 2' 
+
+
+*PRODUCER 1
+*OPERATE *MIN *BHP 3600. 
+
+
+*INJECTOR 2          ** Main water injector
+*INCOMP *WATER
+*OPERATE *MAX *STW 1000.
+*OPERATE *MAX *DWB 43.
+
+
+**             rad      geofac   wfrac  skin
+*GEOMETRY  *K  0.50   0.99735570  1.0    0.0
+
+*PERF *GEO 1 ** Main producer
+18 1 5  1.0
+18 1 6  1.0
+
+*PERF *GEO 2 **Main Water injector
+6 1 11  4.0
+6 1 12  1.0
+6 1 13  1.0
+
+
+*DATE 1996 01 01
+
+*WRST *TNEXT
+
+*DATE 1997 01 01
+
+*DATE 1998 01 01
+
+*DATE 2002 01 01
+*STOP

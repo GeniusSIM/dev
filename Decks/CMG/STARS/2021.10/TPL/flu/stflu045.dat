@@ -1,0 +1,503 @@
+
+***************************************************************************** 
+** Template (flu020.dat): Micellar-Polymer Drive in a lab core             **
+*****************************************************************************
+**************************************************************************************
+** FILE : Modified STFLU020 for lab, comparison to a stars-me run and               **
+**           demonstration of *SHIFT *MWT                                           **
+** Heavy molecular weight polymers can cause run instabilities in mole basis        **
+** *SHIFT *MWT can be used to weight the shift parameters, used in the Jacobian     **
+**   matrix and overcome run instabilities                                          **
+** Modifications for ME comparison:						    **
+**	SI units								    **
+**	adsorption terms are defined for global phase				    **
+**	Mole basis is used							    **
+**	modified oil solubilization table to better reflect ME style binodal curve  **
+**	relation								    **
+**	extended relperms to cover full water saturation range			    **
+**	set capillary pressure to zero because stars-me does not do cap press	    **
+**	salt is included    	  						    **
+**	Note : stars-me requires k value surface flash but must not do with regular **
+**	stars									    **
+**										    **
+**                                                                                  **
+** MODEL: MODEL OF STOCHASTICALLY GENERATED PERMEABILITY    30x1x1 CARTESIAN GRID   **
+**        				                       LAB UNITS            **
+**         			                                                    **
+**        MOBILIZATION OF RESIDUAL OIL WITH A MICELLAR POLYMER SLUG                 **
+**        HAND'S RULE K VALUES FOR WATER-OIL SOLUBILIZATION                         **
+**        CAPILLARY NUMBER CORRELATION OF RELATIVE PERMEABILITY                     **
+**                                                                                  **
+** USAGE: MOBILIZATION OF RESIDUAL (WITH MICELLAR POLYMER SLUG AND POLYMER DRIVE)   **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**   THREE MICELLAR POLYMER FIELD TESTS HAVE BEEN ANALYZED:                         **
+**                                                                                  **
+**     (1) BIG MUDDY:     SAAD ET AL, SPE RES ENG, PG 24, FEB 1989                  **
+**     (2) CHATEAURENAUD: CHAPOTIN ET AL, SPE PAPER 14955                           **
+**                        SPE/DOE 5TH SYMPOSIUM,  TULSA APRIL 1986                  **
+**     (3) LOUDON: HUH ET AL, SPE PAPER 20465                                       **
+**                 65TH ANNUAL SPE MEETING,  NEW ORLEANS SEPT 1990                  **                  
+**                                                                                  **
+**                                                                                  **
+**   INJECTION SEQUENCE:                                                            **
+**                                                                                  **
+**      (1) ONE YEAR WATER FLOOD TO ESTABLISH BASELINE                              **
+**          (REPRESENTS END OF A WATERFLOODED RESERVOIR)                            **
+**      (2) ONE YEAR SURFACTANT POLYMER INJECTION                                   **
+**      (3) TWO YEARS POLYMER DRIVE                                                 **
+**      (4) ONE YEAR  POLYMER TAPER                                                 **
+**      (5) TEN YEARS RETURN TO WATERFLOOD                                          **
+**                                                                                  **
+**************************************************************************************
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #45'
+*TITLE2 'Verify/Illustrate *SHIFT *MWT, Micellar Polymer in Core'
+*TITLE3 'Uses Mole Basis'
+
+**MASSBASIS    ** USE MOLE DENSITIES, MOLE FRACTIONS, ETC.
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Y *Z *SG *PRES    *PERMI  *PERMK                               
+               *ADSORP   *VISW	*VISO *KRW *KRO *LOGIFT *LOGCAPN *WATMOB *OILMOB *IFT
+               *ADSPCMP           ** Special Adsoprption Component (Mass Frac)
+*OUTPRN *WELL  *ALL
+*OUTSRF *GRID  *ALL
+
+** ADD IN NEWTON ITERATIONS
+*OUTPRN *ITER *UNCONV           **NEWTON
+ 
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL                        **WELL MASS
+***WSRF *GRID 500  *WSRF *WELL 500 
+*WSRF *GRID 1
+*WRST 500
+*WPRN *GRID 500
+*WPRN *ITER 1   
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+** REMOVED PREVIOUS GRID DESCIPTORS
+
+*GRID *CART 30 1 1  ** One-dimensional grid
+
+*DI *CON .01
+*DJ *CON .0396
+*DK *CON .0396
+
+** REMOVE POROSITY GRID AND MAKE CONSTANT
+*POR *CON 0.25	** POROSITY
+
+
+** REMOVE PERM GRID AND MAKE CONST
+*PERMI *CON 500  ** 500 milli-darcies
+*PERMJ *EQUALSI  ** EQUAL TO I DIRECTION VALUE
+*PERMK *EQUALSI
+
+*END-GRID
+
+** ROCK COMPRESSIBILITIES
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+**Add chloride
+ 
+*MODEL 5 5 5 4   ** All components except oil are aqueous based
+ 
+*COMPNAME    'WATER'  'CHLORIDE' 'POLYMER'  'SURF'   'OIL'
+**           -------   -------   -------  ---------  -------
+*CMM            .018    .03545	100.      .548 		.100        **MOLECULAR WEIGHT IN SI UNITS
+**            polymer molecular weight is assumed
+**            oil     molecular weight is assumed  
+**----------------------------------------------------------------------------- 
+*MOLDEN    55555.55    28208.7     10    1824.82   9240        **Density 
+**-----------------------------------------------------------------------------   
+*CP           3e-6    3e-6     3e-6	3e-6        1.0e-5      **Compressibility (units 1/kPa)   
+*CT1          0e-6    0e-6	0e-6     0e-6     -5.883e-4      **Thermal expansion
+*PCRIT        22110.0   0	0        0        0           **Critical pressure in kPa
+*TCRIT        374.150      0	0        0        0           **Critical temperature in deg C
+**            Critical properties used for gas density (not necessary here)
+
+*SOLID_DEN 'POLYMER' 10 0 0
+*SOLID_DEN 'SURF'    1824.82 0 0
+
+ 
+**  Xanthan polymer effects on viscosity (20 cp at 0.075 mass fraction)
+**  Surfactant choosen to get 10 cp at 0.03 mass frac.
+
+*AVISC         0.600    .6	70.     .60        3.2         **Assigned liq. viscosity same units in lab and field
+**             polymer and surfactant viscosities can be investigated further                          
+
+** Nonlinear mixing rules for liquid phase viscosity
+*VSMIXCOMP 'POLYMER'
+*VSMIXENDP 0 0.00000027                     **Between 0 & 1500 ppm
+                                                       **For Xanthan (comp. 2)
+*VSMIXFUNC 0 0.15 0.28 0.42 0.52 0.63 0.7 0.79 0.87 0.94 1
+**Fit of nonlinear curve to nonlinear viscosity mixing function
+
+** THE FOLLOWING MUST BE CONVERTED TO LAB UNITS. these are references used for mass densities
+*PRSR  101.1
+*TEMR 17
+*PSURF 101.1
+*TSURF 17 
+**  Default K values for water, polymer, surf are overwritten (set to zero)
+ 
+*GASLIQKV           ** The following are gas-liquid K values
+*KVTABLIM  101.1 7213.8  17 149    **P-low, P-high, T-low, T-high 
+ 
+*KVTABLE 'WATER'     ** Want no water in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'POLYMER'   ** Want no polymer in gas phase (override default)
+  2*0
+  2*0
+*KVTABLE 'SURF'      ** Want no surfactant in gas phase (override default)
+  2*0
+  2*0                         
+
+*KVTABLE 'CHLORIDE'      ** Want no chloride in gas phase (override default)
+  2*0
+  2*0  
+  
+*LIQLIQKV   ** Define liquid-liquid K values (for lower phase microemulsions)              
+            ** Note oil is solubilized by surfactant in the aqueous phase
+            ** Uses Hand's parametrization of compositionally dependent K values
+**-----------------------------------------------------------------------------    
+                             
+**  Limited concentration K value table:                                     
+**  (with K values for maximum surfactant concentrations equal to injected)
+*KVTABLIM 101.1 7213.8  17 149 ** need to change pressure to kPa units
+**KVTABLIM 101.3 7213.8  60 300
+*KVKEYCOMP 'SURF' *RATIOW 0 0.0009854  1.0 0.0
+ 
+** Modified old stuflu020 to give a BNC similar to UTCHEM
+** z21 = (1/A)(z33/z13)^2
+** conversion from mass to mole basis for stars-me BNC mapping changes A to A*CMMwater*CMMoil/CMMsurf^2 
+** using A = 0.07438 for mass frac gives A = .0004458 for mole basis
+*KVTABLE 'OIL'          ** Each component has a P-T dependent table at
+   *KEYCOMP              ** the following values of ratiow :
+      2*0
+      2*0               **  Z33 = 0.0
+   *KEYCOMP
+      2*0.000242		**0.001344 mass basis, mass to mole basis requires factor of CMMoil/CMMsurf for stars-BNC
+      2*0.000242
+   *KEYCOMP
+      2*0.000968		**0.005378 mass basis
+      2*0.000968
+   *KEYCOMP
+      2*0.002178		** 0.012 mass basis
+      2*0.002178 
+   *KEYCOMP
+      2*0.0038722
+      2*0.0038722		** z33/z13 = 0.0013139
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+ 
+**  Interpolation between 2 sets:  high versus low IFT/ Cap No. situations.
+ 
+*INTCOMP 'OIL' *WATER
+*INTLIN   ** Linear interpolation of X(oil)
+
+*IFTTABLE   ** UTCHEM assumes ift is function of solubilization ratio
+            ** STARS gives ift as a function of solubilized oil (from K values)
+** IFT has same units in lab and field
+ 
+** Make new IFT curve to match HBNC = 0.12, A =.0004458 BNC
+** Note, mass to mole fractions of oil in water requires conversion factor of CMMwater/CMMoil
+**       oil mass frac      IFT
+**       -------------    --------   
+             	0.00          20.0000 
+		0.0018        0.680584 
+	        0.0036        0.159259 
+	        0.0054        0.050759
+	        0.0072	      0.018914
+
+ 
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+ 
+*KRINTRP 1
+ 
+**DTRAPW -3.9 *DTRAPN -4.5  ** Critical cap num for detrapping to begin 
+*DTRAPW  -4.4
+*DTRAPN -5.0  ** Critical cap num for detrapping to begin
+
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+** Capillary numbers for SI and Field in fourth and fifth colums are commented out for comparison to ME
+**    SW         KRW       KROW  Pcow
+**  ----      -------    ------- -----
+     0.0	0.0	 1.0	  **40.72
+     0.05	0.0	 1.0      **40.72
+     0.1	0.0	 1.0      **40.72
+     0.15	0.0	 1.0      **40.72
+     0.19      0.000000  1.00000  **40.72 **5.91
+     0.20      0.000159  0.95162  **37.21  **5.40
+     0.22      0.001149  0.85959  **33.83 **4.91
+     0.24      0.002881  0.77370  **30.66 **4.45
+     0.26      0.005279  0.66373  **27.69 **4.02
+     0.28      0.008299  0.61947  **24.94 **3.62
+     0.30      0.011909  0.55070  **22.32 **3.24
+     0.32      0.016087  0.48723  **19.91 ** 2.89
+     0.34      0.020813  0.42882  **17.63 ** 2.56
+     0.36      0.026073  0.37529  **15.57 ** 2.26
+     0.38      0.031852  0.32640  **13.64 ** 1.98
+     0.40      0.038139  0.28196  **11.92 ** 1.73
+     0.42      0.044925  0.24174  **10.33 ** 1.50
+     0.44      0.052200  0.20555  **8.82 ** 1.28
+     0.46      0.059956  0.17316  **7.51 ** 1.09
+     0.48      0.068186  0.14436  **6.34 ** 0.92
+     0.50      0.076883  0.11895  **5.31 ** 0.77
+     0.52      0.086041  0.09671  **4.34 ** 0.63
+     0.54      0.095654  0.07743  **3.51 ** 0.51
+     0.56      0.105716  0.06090  **2.895 ** 0.40
+     0.58      0.116224  0.04691  **2.137 ** 0.31
+     0.60      0.127172  0.03524  **1.655 ** 0.24
+     0.62      0.138555  0.02569  **1.172 ** 0.17
+**     0.64      0.150370  0.01804  0.14
+     0.66      0.162613  0.01208  **.689 ** 0.1
+**     0.68      0.175280  0.00761   0.0
+     0.70      0.188367  0.00440   **0.0
+**     0.72      0.201872  0.00225   0.0
+     0.74      0.215791  0.00095   **0.0
+     0.76      0.230120  0.00028   **0.0
+     0.80      0.260000  0.00000   **0.0
+     0.85	0.445	0.0	   **0.0
+     0.9	0.63	0.0	   **0.0
+     0.95	0.815	0.0	   **0.0
+     1.0	1.0	0.0	   **0.0
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.29      0.4200    0.000
+                   0.32      0.36898   0.00179
+                   0.34      0.33737   0.00496
+                   0.36      0.30762   0.00972
+                   0.38      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   1.00000 
+ 
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+ 
+*KRINTRP 2 *COPY 1 1
+ 
+**DTRAPW -1.3 *DTRAPN -2.3  ** Critical cap num for complete detrapping   
+*DTRAPW -1.8
+*DTRAPN -2.8  ** Critical cap num for complete detrapping
+
+
+*SWT   **  Water-oil relative permeabilities
+ 
+**   Sw         Krw       Krow
+**  -----     -------    -------   
+
+    0.0         0.0       1.
+    0.1         0.1       0.9
+    0.2         0.2       0.8
+    0.3         0.3       0.7
+    0.4         0.4       0.6
+    0.5         0.5       0.5
+    0.6         0.6       0.4
+    0.7         0.7       0.3
+    0.8         0.8       0.2
+    0.9         0.9       0.1
+    1.0         1.0       0.0
+**WCRV 2 OCRV 2
+ 
+**  Adsorption Data
+**  ---------------
+*ADSCOMP 'SURF' *GLOBAL   ** Reversible adsorption of aqueous surfactant
+*ADSLANG       ** Langmuir isotherm
+169297.88	0.0	21706.89  ** Field to SI conversion for tad1 = 16, tad3 is unitless
+** Conversion of tad1 term in kgfluid/m3PV to mol basis is division by CMM fluid =4274/.025
+** Conversion of tad3 term in kgfluid/kgsurf to mole basis is mult by CMMsurf/CMMfluid = 1000*.548/.025
+**	Note assuming fluid is .65 water and .35 oil but will change over time
+** Field units 2.672e+2   0.0      1000    ** (a31+a32*cse)*rhos = (2.5 + 0.5*2.6)*70.326 = 2.672e+2
+*ADMAXT 3.9		** 50% of tad1/tad3 conversion is kgsurf/m3PV (division by CMMsurf) -> molsurf/m3PV = 2.137/.548
+*ADRT 3.9		** 2.137 ** No flow modications from adsorption  
+
+*ADSCOMP 'POLYMER' *GLOBAL
+** Langmuir coeff's are dimensionless
+*ADSLANG
+443.64	0.0	396111.11
+** mass basis	11.2	0.0	100
+** similar conversion as above but poly CMM is 100 kg/mol
+*ADMAXT .0448	**mass basis is 4.48, division by CMMpoly
+*ADRT	.0448	** mass basis is 4.48
+*RRFT 2.4  **PORFT  0.8
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+**
+*INITIAL
+*PRES *CON 101.1 **set const pressure of 101.3 kPa    
+*SW   *CON  0.65    
+*SO *CON 0.35
+*TEMP *CON 17 ** convert to lab units and lab value
+*MFRAC_WAT 'WATER' *CON 1
+*MFRAC_OIL 'OIL'   *CON 1   
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+*ITERMAX 100 
+**DTMAX 90
+*DTMAX .025 ** change max time step to .025 days in lab     
+*TFORM *ZT
+*ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *TEMP 50  *ZNCG .2   *ZAQ .2  
+**NORM      *PRESS 1  *ZO .1    *TEMP 50  *ZNCG .1   *ZAQ .1
+*SHIFT *MWT
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+** change field date to time in lab
+**DATE 1976 1 1.5
+*TIME 0
+
+   *DTWELL 0.0025    ** One pore volume is 0.25 day
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+  *PERF *TUBE-END 'PRODN'   **  i j k
+                    30 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT WATER BASELINE
+   *INCOMP WATER 1.0 0.0000	0.0000 0.0 0.0000           
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   DTWELL 0.0025               **INJECT POLYMER SURFACTANT SLUG
+
+   *INJECTOR  'INJTR' **MOBWEIGHT
+   *INCOMP *WATER .99893325 0.0000	0.000000139344 0.001066611 0.0000    ** Polymer Surfactant slug
+   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+   *OUTPRN *GRID  *SW  *SO  *PRES  
+                  *VISW     *ADSORP  
+                  *MASFR    *ADSPCMP ** Special Adsoprption Component (Mass Frac)
+   *OUTSRF *GRID  *SW  *SO  *PRES                           
+                  *ADSORP   *VISW
+                  *ADSPCMP           ** Special Adsoprption Component (Mass Frac)
+   
+*TIME .125
+
+   DTWELL 0.0025               **INJECT POLYMER DRIVE
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER .999999865 0.0000	0.000000135101  0       0.0000    ** Polymer slug                        
+   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+   **OUTPRN *GRID *REMOVE *VISW *ADSPCMP *ADSORP
+   **OUTSRF *GRID *REMOVE *VISW *ADSPCMP *ADSORP
+   
+*TIME .1875 
+
+*TIME .25
+
+   *DTWELL 0.0025               **INJECT POLYMER TAPER
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER .999999932 0.0000	0.0000000675 0       0.0000    ** Polymer slug                        
+
+   
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+    
+   *OUTPRN *GRID  *SW  *SO  *PRES  
+                  *VISW     *ADSORP  
+                  *MASFR    *ADSPCMP ** Special Adsoprption Component (Mass Frac)
+   *OUTSRF *GRID  *SW  *SO  *PRES                                
+                  *ADSORP   *VISW
+                  *ADSPCMP           ** Special Adsoprption Component (Mass Frac)
+   
+*TIME .3125
+
+   *DTWELL 0.0025              **INJECT WATER DRIVE
+
+   *INJECTOR 'INJTR'
+   *INCOMP *WATER 1.0000 0.0000	0.0000 0.0000 0.0000           ** INJECT ONLY WATER
+   *OPERATE *STW 3.9e-4 **6.937E-5	** flow to fill reservoir in 1 day   *OPERATE *STW 2.5e-3
+   
+   **OUTPRN *GRID *REMOVE *VISW *ADSPCMP *ADSORP
+   **OUTSRF *GRID *REMOVE *VISW *ADSPCMP *ADSORP  
+   
+*TIME .375
+*TIME .4375
+*TIME .5
+*TIME .5625
+*TIME .625  ** 10 YEARS
+*TIME .6875
+*TIME .75
+*TIME .8125
+*TIME .875
+*TIME .9375  ** 15 YEARS
+*TIME 1    ** 1 DAY

@@ -1,0 +1,204 @@
+   ** ****************************************************************************
+   ** mxsmo058.dat      KRWEXTRAP test template                                 **
+   ** ****************************************************************************
+   ** ************************************************************************************
+   **                                                                                   **
+   ** FILE: MXSMO058                                                                    **
+   **                                                                                   **
+   ** MODEL:  KRWEXTRAP Test Template, water drawn up from the Water Zone will use an   **
+   ** extrapolated Krw of 1.0 in the flow equation                                      **
+   **                                                                                   **   
+   ** ************************************************************************************
+   ** **
+   ** ** Keyword Tested: KRWEXTRAP ON                                                   **
+   ** **
+   ** ************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet)  **
+   ** ************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   TITLE1
+   'KRWEXTRAP Template'
+
+   INUNIT FIELD              
+
+   WPRN   WELL   10
+   WPRN   GRID   TIME
+   WPRN   ITER   BRIEF
+
+   OUTPRN WELL   BRIEF
+   OUTPRN RES    NONE
+   OUTPRN TABLES NONE
+   OUTPRN GRID   SO SG PRES BPP
+
+   WSRF   GRID   TIME
+   WSRF   WELL   1 
+   OUTSRF GRID   ALL
+   WRST   FREQ   10
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   GRID CART 31   1    50    
+   KDIR DOWN                     
+   DI IVAR 5000 29*300.0 5000             
+   DJ CON 300.0             
+   DK KVAR 40*50.0 9*500.0  9000           
+                               
+   DTOP
+   31*8400.0         
+
+   POR CON 0.3               
+                
+   CPOR   3.0E-6              
+   PRPOR 14.7                 
+
+   PERMI CON 50.0       
+   PERMJ CON 50.0     
+   PERMK CON 50.0   
+
+   MODEL BLACKOIL            
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+
+** Note : The above PVT data violates the total hydrocarbon compressibility check. To correct,
+** you could either change rs value at p=5014.7 from 1618 to 1600 or to change the last bo entry 
+** from 2.357 to 2.352.  Other possibilities could be equally appllied. The above corrections 
+** were tested and they have insignificant effects. 
+
+   DENSITY OIL    46.244
+   DENSITY GAS     0.0647
+   DENSITY WATER  62.238
+   CO    1.3687E-5
+   CVO   4.6000E-5
+   BWI   1.0410
+   CW    2.9886E-6
+   REFPW 14.7
+   VWI   0.31
+   CVW   0.0   
+   
+   ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+   RPT 1
+   SWT
+**    sw            krw           krow 
+    0.25              0              1
+    0.30              0   0.8548571429
+    0.35  0.02971428571   0.7211428571
+    0.40  0.07085714286   0.5874285714
+    0.45   0.1257142857   0.4662857143
+    0.50   0.1771428571   0.3588571429
+    0.55   0.2274285714   0.2537142857
+    0.60            0.3   0.1702857143
+    0.65            0.4  0.09028571429
+    0.70            0.5              0
+
+** if you uncomment the line below AND remove the KRWEXTRAP keyword results will not change
+**  1.00           1.0             0.0 
+ 
+   SLT
+**    sl       krg      krog
+    0.25       1.0       0.0
+    1.00       0.0       1.0
+
+   KRWEXTRAP ON
+
+   INITIAL
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+   VERTICAL BLOCK_CENTER WATER_OIL_GAS 
+   PB CON    3000.        
+   REFDEPTH   8400.          
+   REFPRES    4800.          
+   DWOC       10000.          
+   DGOC       7000.                
+
+   NUMERICAL
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   DTMAX   30.0         
+   NORTH   100
+   ITERMAX 100
+
+   RUN
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+   DATE 1986 04 22
+   DTWELL 1.0
+
+   WELL  'Producer'
+   PRODUCER 'Producer'
+   OPERATE  MAX  STO  10000.  CONT
+   OPERATE  MIN  BHP  3500.  CONT
+   GEOMETRY  K  0.25  0.34  1.  0.
+   PERF  GEOA  'Producer'
+    16 1 5  1.  OPEN    FLOW-TO  'SURFACE'
+
+   WELL  'Injector'
+   INJECTOR MOBWEIGHT 'Injector'
+   INCOMP  WATER
+   OPERATE  MAX  STW  10000.  CONT
+   OPERATE  MAX  BHP  13000.  CONT
+   GEOMETRY  I  0.25  0.34  1.  0.
+   PERF  GEOA  'Injector'
+    2 1 50   1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+    3 1 50   1.  OPEN    FLOW-FROM  1
+    4 1 50   1.  OPEN    FLOW-FROM  2
+    5 1 50   1.  OPEN    FLOW-FROM  3
+    6 1 50   1.  OPEN    FLOW-FROM  4
+    7 1 50   1.  OPEN    FLOW-FROM  5
+    8 1 50   1.  OPEN    FLOW-FROM  6
+    9 1 50   1.  OPEN    FLOW-FROM  7
+    10 1 50  1.  OPEN    FLOW-FROM  8
+    11 1 50  1.  OPEN    FLOW-FROM  9
+    12 1 50  1.  OPEN    FLOW-FROM  10
+    13 1 50  1.  OPEN    FLOW-FROM  11
+    14 1 50  1.  OPEN    FLOW-FROM  12
+    15 1 50  1.  OPEN    FLOW-FROM  13
+    16 1 50  1.  OPEN    FLOW-FROM  14
+    17 1 50  1.  OPEN    FLOW-FROM  15
+    18 1 50  1.  OPEN    FLOW-FROM  16
+    19 1 50  1.  OPEN    FLOW-FROM  17
+    20 1 50  1.  OPEN    FLOW-FROM  18
+    21 1 50  1.  OPEN    FLOW-FROM  19
+    22 1 50  1.  OPEN    FLOW-FROM  20
+    23 1 50  1.  OPEN    FLOW-FROM  21
+    24 1 50  1.  OPEN    FLOW-FROM  22
+    25 1 50  1.  OPEN    FLOW-FROM  23
+    26 1 50  1.  OPEN    FLOW-FROM  24
+    27 1 50  1.  OPEN    FLOW-FROM  25
+    28 1 50  1.  OPEN    FLOW-FROM  26
+    29 1 50  1.  OPEN    FLOW-FROM  27
+    30 1 50  1.  OPEN    FLOW-FROM  28
+
+   TIME 3650.0                        
+   TIME 7300.0 
+   TIME 11000.0                                               
+   TIME 15000.0                                               
+   STOP                              
+

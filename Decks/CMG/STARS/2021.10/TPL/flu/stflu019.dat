@@ -1,0 +1,1014 @@
+
+***************************************************************************** 
+** Template  (flu019.dat): Application of Steam Foam in Tar Sand           **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STFLU019.DAT                                                             **
+**                                                                                  ** 
+** MODEL:  1/6 SYMMETRY ELEMENT         SI UNITS      12x12x9 GRIDS                 **
+**         INVERTED 4 SPOT PATTERN      2 WELLS       STEAM THEN FOAM INJECTION     ** 
+**         TRANSMISSIBILTY MULTIPLIERS TO MODEL HYDRAULIC FRACTURES                 **
+**         EMPIRICAL FOAM MODEL USES MODIFIED RELATIVE PERMEABILITY CURVES          **
+**                                                                                  **
+** USAGE:  HISTORY MATCH OF A STEAM FOAM PILOT TO CORRECT STEAM OVERRIDE            **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+** History Matching the Steam/Foam Injection Process in a Thick Athabasca Tar Sand  **
+** Reservoir. This is described in J Can Pet Tech (Jan 1994), v 33, p56; by E.C Lau **
+** and D. A. Coombe. Foam is applied to correct steam override caused by a high Sw  **
+** zone with a high transmissiblity.  True Well Pattern is unconfined inverted 4    **
+** spot of the form:                                                                **
+**                                                                                  **
+**                        h3 + + ++ + + h4                                          **
+**                          +          +                                            **
+**                           +   h6   +                                             **
+**                            +      +                                              **
+**                             +    +                                               **
+**                              +  +                                                **
+**                               h5                                                 **
+**                                                                                  **
+** Grid Model is 1/6 symmetry element between h6 and h4 with extra large blocks for **
+** unconfined nature. (a pseudo well is added to mimic the effects of h3 on this    **
+** portion of the pattern)                                                          **
+**                                                                                  **                       
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Fluid Model Template #19'
+*TITLE2 'GLISP 3-D Foam History Match Study'
+*TITLE3 '1/6 Reservoir Element, 9 Layer-Model, 12 x 12 x 9 Grid'
+
+*WRST  0
+**REWIND  1
+*WPRN  *ITER  1
+*WPRN  *GRID  100
+*OUTPRN *GRID  *NONE 
+*OUTPRN *ITER  *NEWTON  
+*OUTPRN *WELL  *ALL
+*OUTSRF *GRID  *NONE **TRMI *TRMJ *TRMK
+ 
+** ================ RESERVOIR DESCRIPTION ======================
+*GRID  *CART  12  12  9
+*NINEPOINT  *IJ
+*DI *IVAR  2.5000  5*7.0000  5.0000  7.0000  14.000  40.000  200.00  1000.0
+*DJ *JVAR  1.4434  5*4.0415  2.8868  4.0415  8.0830  23.094  115.47  577.35
+*DK *KVAR  3.00  2.00  3*7.83  8.60  0.50  5.67  3.25
+*DEPTH *TOP 1 1 9 210.0
+*VAMOD  2  0.5  0.0  1.0  0.5  1.0  0.0  0.5  *9P  1.0  0.5
+*VATYPE  *CON  1
+*VATYPE  *IJK   1  1  1:9  2
+*VATYPE  *IJK   2  2  1:9  2
+*VATYPE  *IJK   3  3  1:9  2
+*VATYPE  *IJK   4  4  1:9  2
+*VATYPE  *IJK   5  5  1:9  2
+*VATYPE  *IJK   6  6  1:9  2
+*VATYPE  *IJK   7  7  1:9  2
+*VATYPE  *IJK   8  8  1:9  2
+*VATYPE  *IJK   9  9  1:9  2
+*VATYPE  *IJK  10 10  1:9  2
+*VATYPE  *IJK  11 11  1:9  2
+*VATYPE  *IJK  12 12  1:9  2
+*VATYPE  *IJK   2:12  1  1:9  0
+*VATYPE  *IJK   3:12  2  1:9  0
+*VATYPE  *IJK   4:12  3  1:9  0
+*VATYPE  *IJK   5:12  4  1:9  0
+*VATYPE  *IJK   6:12  5  1:9  0
+*VATYPE  *IJK   7:12  6  1:9  0
+*VATYPE  *IJK   8:12  7  1:9  0
+*VATYPE  *IJK   9:12  8  1:9  0
+*VATYPE  *IJK  10:12  9  1:9  0
+*VATYPE  *IJK  11:12 10  1:9  0
+*VATYPE  *IJK  12:12 11  1:9  0
+*POR  *KVAR  5*0.365  2*0.350  0.360  0.340
+*PERMI  *CON  4000.
+*PERMJ  *EQUALSI
+*PERMK  *CON  800.
+*END-GRID
+*CPOR  7.0E-5
+*CTPOR  3.84E-5
+*ROCKCP  2.931E6
+*THCONR 1.495E5
+*THCONW 53500.
+*THCONO 11500.
+*THCONG 4500.
+*HLOSSPROP *OVERBUR   2.347E6  149536.
+           *UNDERBUR  2.347E6  149536.
+
+** ============== COMPONENT PROPERTIES =======================================
+** 
+*MODEL  3  3  3  2
+*COMPNAME  'water'  'surfacta'  'bitumen'
+*KV3        0.0        1.0e-4      0.0
+*CMM        0.0182     0.4800      0.5000
+*PCRIT      0          1100.       1100.
+*TCRIT      0          494.        494.
+*TEMR  12.78
+*PSURF  100.
+*TSURF  12.78
+*CPG1       0.0        125.6       125.6
+*CPL1       0.0        1047.       1047.
+*HVAPR      0.0        5500.       5500.
+*LIQPHASE
+*MOLDEN     0.0        2020.       2020.
+*CP         0.0        4.e-6       4.e-6
+*CT1        0.0        4.e-4       4.e-4
+*CT2        0.0        1.6e-7      1.6e-7
+*VISCTABLE
+ 0.10    0.0    1.0    4505918.
+10.00    0.0    1.0    4505918.
+37.78    0.0    1.0      53007.
+65.56    0.0    1.0       2845.
+93.30    0.0    1.0        387.
+121.0    0.0    1.0         95.
+148.9    0.0    1.0         34.3
+204.4    0.0    1.0          8.9
+260.0    0.0    1.0          3.48
+*SOLID_DEN 'surfacta' 23040 0 0   ** 48000 * 0.48
+*SOLID_CP 'surfacta' 42.7 0
+*STOREAC  0.0    1.0  0.0
+*STOPROD  26.37  0.0  0.0
+*FREQFAC  34.7
+*RENTH  0.0
+*RPHASE  0  1  0
+*RORDER  0.0  1.0  0.0
+*EACT  32500.
+
+** ====================== ROCK-FLUID PROPERTIES ================================
+**
+*ROCKFLUID
+*INTCOMP  'surfacta'  *WATER
+*IFTTABLE *TEMP  10.
+               0.0  13.
+               0.3  13.
+          *TEMP  320.
+               0.0  13.
+               0.3  13.
+*INTLIN
+*FMSURF  7.5E-5
+*FMCAP 5.0E-5
+*FMOIL 0.5
+*FMMOB 160.
+*EPSURF  1.0
+*EPCAP  0.0
+*EPOIL  1.0
+*KRINTRP  1
+*DTRAPW  1.0
+*DTRAPN  1.0
+*WCRV  1.
+*OCRV  1.
+*GCRV  1.
+*SWT
+0.0930    0.00000   1.0000
+0.1500    0.00017   0.8400
+0.2000    0.0008    0.7100
+0.2500    0.0024    0.5800
+0.3000    0.0061    0.4650
+0.3500    0.0140    0.3600
+0.4000    0.0250    0.2780
+0.4500    0.0460    0.2000
+0.5000    0.0760    0.1360
+0.5500    0.1200    0.0800
+0.6000    0.1800    0.0410
+0.6500    0.2600    0.0130
+0.7000    0.3600    0.00002
+0.7200    0.3800    0.0000
+1.0000    1.0000    0.0000
+*SLT
+0.1500    1.0000    0.0000
+0.4000    0.9900    0.0001
+0.4500    0.9600    0.0007
+0.5000    0.8500    0.0260
+0.5500    0.6900    0.0550
+0.6000    0.5400    0.0900
+0.6500    0.3900    0.1350
+0.7000    0.2870    0.1860
+0.7500    0.1800    0.2600
+0.8000    0.1140    0.3310
+0.8500    0.0540    0.4400
+0.9000    0.0220    0.5700
+0.9500    0.0045    0.7600
+1.0000    0.0000    1.0000
+*SWR  0.093
+*SORW  0.28
+*SGR  0.054
+*SORG  0.30
+*KRWRO  0.07
+*KROCW  0.75
+*KRINTRP  2  *COPY  1  1
+*DTRAPW  0.00625
+*DTRAPN  0.00625
+*WCRV  1.
+*OCRV  1.
+*GCRV  1.
+*SWR  0.093
+*SORW  0.28
+*SGR  0.054
+*SORG  0.30
+*KRWRO  0.07
+*KROCW  0.75
+*KRGCW  0.00625
+*ADSCOMP  'surfacta'  *WATER
+*ADSLANG  *TEMP
+51.0    27.5E6    0.0    2.1E6
+151.    5.40E6    0.0    9.3E5
+250.    1.00E6    0.0    5.3E5
+*ADMAXT  12.8
+*ADRT  0.0
+*PORFT  1.0
+*RRFT  1.0     
+
+** ================ INITIAL CONDITIONS =================================================
+** 
+*INITIAL
+*VERTICAL  *DEPTH_AVE
+*REFPRES 750.
+*REFBLOCK  1 1 1
+*TEMP  *CON  12.78
+*SW  *KVAR  5*0.145  2*0.34  0.17  0.38
+*SO  *KVAR  5*0.855  2*0.66  0.83  0.62
+*MFRAC_WAT 'water' *CON 1
+*MFRAC_OIL 'bitumen'  *CON 1
+
+
+
+** ================ NUMERICAL CONTROLS =================================================
+
+*NUMERICAL
+*DTMAX  100
+*MINPRES 25
+*UPSTREAM *KLEVEL
+*CONVERGE *TOTRES 0.005
+*NORM *TEMP 30 *PRESS 700
+*AIM  *STAB
+
+
+
+** ================== WELL AND RECURRENT dATA  ==========================================
+
+*RUN
+
+**  Define Wells and H4 Cycle 1 Steam Stimulation
+*DATE  1986 10 27
+
+*DTWELL  0.005
+
+*WELL  1  'H6'   *VERT  1  1
+*WELL  2  'H4'   *VERT  7  7
+*WELL  3  'H3'   *VERT  1  7
+*WELL  4  'H4I'  *VERT  7  7
+
+*TRANSI  *IJK  5:9  5:9  2  2.
+*TRANSJ  *IJK  5:9  5:9  2  2.
+*TRANSI  *IJK  4:10 4:10 7  100.
+*TRANSJ  *IJK  4:10 4:10 7  100.
+*TRANSK  *IJK  4:10 4:10 7  2.5
+*TRANSI  *IJK  7  7  1:9  2.5
+*TRANSJ  *IJK  7  7  1:9  2.5
+*TRANSK  *IJK  7  7  1:9  100.
+
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.0
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  43.05
+*GEOMETRY  *K  0.1365  0.235  0.5  0.0
+*PERFV 'H6'
+2  12.5
+*SHUTIN 'H6'
+
+*PRODUCER 'H4'
+*OPERATE  *MIN  *BHP  600.
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4'
+3  1.4659e5  **12.5   
+*SHUTIN 'H4'
+
+*PRODUCER 'H3'
+*OPERATE  *MIN  *BHP  400.
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H3'
+3  1.4659e5  **12.5
+*SHUTIN 'H3'
+
+*INJECTOR  *UNWEIGHT 'H4I'
+*TINJW  200.
+*QUAL 0.8
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  27.40
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4I'
+3  12.5
+    
+*WRST 
+*OUTPRN  *GRID  *TEMP 
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  
+
+*TIME  57.
+   *DTWELL 0.1
+*SHUTIN 'H4I'
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TRANSI  *IJK  5:9  5:9  2  1.
+*TRANSJ  *IJK  5:9  5:9  2  1.
+*TRANSI  *IJK  4:10 4:10 7  40.
+*TRANSJ  *IJK  4:10 4:10 7  40.
+*TRANSK  *IJK  4:10 4:10 7  1.
+*TRANSI  *IJK  7  7  1:9  1.
+*TRANSJ  *IJK  7  7  1:9  1.
+*TRANSK  *IJK  7  7  1:9  50.
+
+**    H4 on Production
+
+*TIME  86.
+
+*DTWELL  0.01
+
+*PRODUCER 'H4'
+*OPERATE  *MIN  *BHP  600.
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4'
+3  1.4659e5  **12.5
+
+*TIME  89.
+*ALTER 'H4'
+300.
+
+*TIME  92.
+*ALTER 'H4'
+50.
+
+**    H6 Cycle 1 Steam Stimulation
+
+*TIME  101.
+
+*DTWELL  0.01
+
+*OPEN 'H6'
+
+*TRANSI  *IJK  1:4  1:4  2  2.
+*TRANSJ  *IJK  1:4  1:4  2  2.
+*TRANSI  *IJK  1:5  1:5  7  100.
+*TRANSJ  *IJK  1:5  1:5  7  100.
+*TRANSK  *IJK  1:5  1:5  7  2.5
+*TRANSI  *IJK  1  1  1:9  2.5
+*TRANSJ  *IJK  1  1  1:9  2.5
+*TRANSK  *IJK  1  1  1:9  100.
+
+*TIME  127.
+
+*DTWELL  0.1
+
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  43.15
+
+*WRST
+*OUTPRN  *GRID  *TEMP 
+*OUTSRF  *GRID  *TEMP  *PRES  *SO
+
+*TIME  177.
+   *DTWELL  1
+*SHUTIN 'H6'
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TRANSI  *IJK  1:4  1:4  2  1.
+*TRANSJ  *IJK  1:4  1:4  2  1.
+*TRANSI  *IJK  1:5  1:5  7  40.
+*TRANSJ  *IJK  1:5  1:5  7  40.
+*TRANSK  *IJK  1:5  1:5  7  1.
+*TRANSI  *IJK  1  1  1:9  1.
+*TRANSJ  *IJK  1  1  1:9  1.
+*TRANSK  *IJK  1  1  1:9  50.
+
+*TIME  211.
+   *DTWELL 0.1
+*SHUTIN 'H4'
+
+**    H4 Cycle 2 Steam Stimulation
+
+*TIME  255.
+
+*DTWELL  0.1
+
+*INJECTOR  *UNWEIGHT 'H4I'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  62.70
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4I'
+3  12.5  
+*WRST
+*OUTPRN  *GRID  *TEMP  
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  
+
+*TRANSI  *IJK  5:9  5:9  2  2.
+*TRANSJ  *IJK  5:9  5:9  2  2.
+*TRANSI  *IJK  4:10 4:10 7  100.
+*TRANSJ  *IJK  4:10 4:10 7  100.
+*TRANSK  *IJK  4:10 4:10 7  2.5
+*TRANSI  *IJK  7  7  1:9  2.5
+*TRANSJ  *IJK  7  7  1:9  2.5
+*TRANSK  *IJK  7  7  1:9  100.
+
+**    Start H6 Continuous Steam Injection
+
+*TIME  279.
+   *DTWELL 0.1
+*SHUTIN 'H4I'
+*OPEN 'H6'
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.0
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  47.75
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TRANSI  *IJK  5:9  5:9  2  1.
+*TRANSJ  *IJK  5:9  5:9  2  1.
+*TRANSI  *IJK  4:10 4:10 7  40.
+*TRANSJ  *IJK  4:10 4:10 7  40.
+*TRANSK  *IJK  4:10 4:10 7  1.
+*TRANSI  *IJK  7  7  1:9  1.
+*TRANSJ  *IJK  7  7  1:9  1.
+*TRANSK  *IJK  7  7  1:9  50.
+
+*TRANSI  *IJK  1:4  1:4  2  2.
+*TRANSJ  *IJK  1:4  1:4  2  2.
+*TRANSI  *IJK  1:5  1:5  7  100.
+*TRANSJ  *IJK  1:5  1:5  7  100.
+*TRANSK  *IJK  1:5  1:5  7  2.5
+*TRANSI  *IJK  1  1  1:9  2.5
+*TRANSJ  *IJK  1  1  1:9  2.5
+*TRANSK  *IJK  1  1  1:9  100.
+
+*TIME  286.
+
+*DTWELL  0.01
+
+*PRODUCER 'H4'
+*OPERATE  *MIN  *BHP  562.
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4'
+3 1.4659e5 **12.5 
+
+*TIME  297.
+   *DTWELL 0.01
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  39.61
+
+*TIME  308.
+*ALTER 'H4'
+437.
+
+*TIME  319.
+*SHUTIN 'H4'
+
+*TIME  324.
+   *DTWELL 0.1
+*OPEN 'H4'
+
+*TIME  338.
+*ALTER 'H4'
+  508.
+
+*TIME  368.
+*ALTER 'H4'
+  502.
+
+*TIME  378.
+   *DTWELL  1
+*SHUTIN 'H6'
+
+*TIME  380.
+   *DTWELL  1
+*OPEN 'H6'
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.75
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  14.28
+
+*TIME  398.
+*ALTER 'H4'
+  438.
+
+*TIME  399.
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  25.97
+
+*TIME  428.
+*ALTER 'H4'
+  318.
+
+*TIME  437.
+*ALTER 'H6'
+  22.26
+
+*TIME  458.
+*ALTER 'H4'
+  244.
+
+*TIME  488.
+*ALTER 'H4'
+  177. 
+*WRST
+*OUTPRN  *GRID  *TEMP  
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  
+
+*TIME  518.
+*ALTER 'H4'
+  188.   
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TIME  534.
+*ALTER 'H6'
+  24.33
+
+*TIME  548.
+*ALTER 'H4'
+  200.
+
+*TIME  578.
+*ALTER 'H4'
+  160.
+
+*TIME  600.
+*ALTER 'H6'
+  18.35
+
+*TIME  608.
+*ALTER 'H4'
+  138.
+
+*TIME  612.
+*ALTER 'H6'
+  24.01
+
+*TIME  636.
+SHUTIN 'H6'
+
+*TIME  638.
+*ALTER 'H4'
+  183.
+
+*TIME  639.
+   *DTWELL  1
+*ALTER 'H6'
+  23.80
+
+*TIME  668.
+*ALTER 'H4'
+  273.
+
+*TIME  698.
+*ALTER 'H4'
+  208.
+
+**    Start Surfactant Injection at 0.2%
+
+*TIME  717.
+*DTWELL  0.1
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  0.9999250  0.0000750  0.0
+*OPERATE  *MAX  *STW  24.60
+*GEOMETRY  *K  0.1365  0.235  0.5  0.0
+*PERFV 'H6'
+2  12.5
+*ALTER 'H4'
+  274.    
+*WRST
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+
+*TIME  727.
+*ALTER 'H4'
+  513.   
+*WRST 0
+*OUTPRN  *GRID  *NONE
+*OUTSRF  *GRID  *NONE
+
+*TIME  748.
+*ALTER 'H4'
+  586.
+
+*TIME  764.
+*DTWELL 0.1
+*SHUTIN 'H6'
+
+*TIME  767.
+   *DTWELL 0.1
+*ALTER 'H6'
+  24.20
+
+*TIME  778.
+*ALTER 'H4'
+  543.
+
+*TIME  808.
+*ALTER 'H4'
+  349.
+
+*TIME  838.
+*ALTER 'H4'
+  391.
+
+*TIME  868.
+*ALTER 'H4'
+  266.
+
+*TIME  898.
+*ALTER 'H4'
+  116.
+
+*TIME  928.
+*ALTER 'H4'
+  162.  
+*WRST                                    
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+                                         
+**    Use pseudowell 3 to account for its true influence
+
+*TIME  940.
+*PRODUCER 'H3'
+*OPERATE  *MAX  *STL  4.0
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H3'
+6  1.4658e5  **12.5   
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TIME  958.
+*ALTER 'H4'
+  61.
+
+*TIME  988.
+*ALTER 'H4'
+  68.
+
+**    Reduced Surfactant Conc. to 0.1%
+
+*TIME  1010.
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  0.9999625  0.0000375  0.0
+*OPERATE  *MAX  *STW  24.20
+*GEOMETRY  *K  0.1365  0.235  0.5  0.0
+*PERFV 'H6'
+2  12.5
+*WRST   
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+
+*TIME  1018.
+*ALTER 'H4'
+  58.  
+*wrst 0
+*OUTPRN  *GRID  *NONE
+*OUTSRF  *GRID  *NONE
+
+*TIME  1048.
+*ALTER 'H4'
+  67.
+
+*TIME  1078.
+*ALTER 'H4'
+  65.
+
+*TIME  1108.
+*ALTER 'H4'
+  85.
+
+*TIME  1138.
+*ALTER 'H4'
+  101.
+
+**    Shutin H6 to Conduct Pressure Cycling Test
+
+*TIME  1166.
+*SHUTIN 'H6'
+
+*TIME  1168.
+*ALTER 'H4'
+  86.
+
+**    Resume Steam/Foam Injection
+
+*TIME  1190.
+*DTWELL  0.1
+*OPEN 'H6'
+
+*TIME  1198.
+*ALTER 'H4'
+  82.
+
+*TIME  1228.
+*ALTER 'H4'
+  106.
+
+**    H4 Steam Stimulation (Cycle 3)
+
+*TIME  1268.
+
+*DTWELL  0.1
+
+*SHUTIN 'H4'
+*INJECTOR  *UNWEIGHT 'H4I'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  38.57
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4I'
+3  12.5
+*SHUTIN 'H3'
+*WRST                                    
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+
+*TRANSI  *IJK  5:9  5:9  2  2.
+*TRANSJ  *IJK  5:9  5:9  2  2.
+*TRANSI  *IJK  4:10 4:10 7  100.
+*TRANSJ  *IJK  4:10 4:10 7  100.
+*TRANSK  *IJK  4:10 4:10 7  2.5
+*TRANSI  *IJK  7  7  1:9  2.5
+*TRANSJ  *IJK  7  7  1:9  2.5
+*TRANSK  *IJK  7  7  1:9  100.
+
+*TIME  1297.
+
+   *DTWELL 0.1
+
+*SHUTIN 'H4I'
+*WRST 0
+*OUTPRN  *GRID  *NONE
+*OUTSRF  *GRID  *NONE
+
+*TRANSI  *IJK  5:9  5:9  2  1.
+*TRANSJ  *IJK  5:9  5:9  2  1.
+*TRANSI  *IJK  4:10 4:10 7  40.
+*TRANSJ  *IJK  4:10 4:10 7  40.
+*TRANSK  *IJK  4:10 4:10 7  1.
+*TRANSI  *IJK  7  7  1:9  1.
+*TRANSJ  *IJK  7  7  1:9  1.
+*TRANSK  *IJK  7  7  1:9  50.
+
+**    H4 on Production
+
+*TIME  1320.
+
+*DTWELL  0.01
+
+*PRODUCER 'H4'
+*OPERATE  *MIN  *BHP  900.
+*GEOMETRY  *K  0.2030  0.235  0.5  0.0
+*PERFV 'H4'
+3  1.4659e5  **12.5
+
+*TIME  1322.
+*ALTER 'H4'
+  625.
+
+*TIME  1332.
+*ALTER 'H4'
+  350.
+
+*TIME  1353.
+*ALTER 'H4'
+  241.
+
+*TIME  1383.
+*ALTER 'H4'
+  193.
+
+**    Start 5 Days On and 2 Days Off Strategy
+
+*TIME  1386.
+*SHUTIN 'H6'
+
+*TIME  1388.
+*DTWELL  1.
+*OPEN 'H6'
+
+*TIME  1393.
+*SHUTIN 'H6'
+
+*TIME  1395.
+*OPEN 'H6'
+*wrst 
+*outprn  *grid  *temp *krinter *sg
+*outsrf  *grid  *temp  *pres  *so  *sg *krinter
+
+*TIME  1400.
+*SHUTIN 'H6'
+*WRST 0
+*OUTPRN  *GRID  *NONE 
+*OUTSRF  *GRID  *NONE 
+
+*TIME  1402.
+*OPEN 'H6'
+
+*TIME  1407.
+*SHUTIN 'H6'
+
+*TIME  1409.
+*OPEN 'H6'
+*DTWELL  1.
+
+*TIME  1413.
+*ALTER 'H4'
+  144.
+
+*TIME  1414.
+*SHUTIN 'H6'
+
+*TIME  1416.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1421.
+   *DTWELL 0.1
+*SHUTIN 'H6'
+
+*TIME  1423.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1428.
+   *DTWELL 0.1
+*SHUTIN 'H6'
+
+*TIME  1430.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1435.
+*SHUTIN 'H6'
+
+*TIME  1437.
+*OPEN 'H6'
+*DTWELL  0.1
+
+*TIME  1442.
+*SHUTIN 'H6'
+
+*TIME  1443.
+*ALTER 'H4'
+  141.
+
+*TIME  1444.
+*OPEN 'H6'
+*DTWELL  0.1
+
+*TIME  1449.
+*SHUTIN 'H6'
+
+**    Start 3 Days On and 4 Days Off Strategy
+
+*TIME  1451.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1454.
+*SHUTIN 'H6'
+
+*TIME  1458.
+*OPEN 'H6'
+*DTWELL  1.
+
+*TIME  1461.
+*SHUTIN 'H6'
+
+*TIME  1466.
+*OPEN 'H6'
+*DTWELL  0.1
+
+*TIME  1469.
+*SHUTIN 'H6'
+
+*TIME  1472.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1473.
+*ALTER 'H4'
+  243.
+
+*TIME  1475.
+*SHUTIN 'H6'
+
+*TIME  1479.
+*OPEN 'H6'
+*DTWELL  0.1
+
+*TIME  1482.
+*SHUTIN 'H6'
+
+**    Resume Continuous Injection
+
+*TIME  1486.
+   *DTWELL 0.1
+*OPEN 'H6'
+
+*TIME  1503.
+*ALTER 'H4'
+  267. 
+*WRST  
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+
+*TIME  1509.   
+*WRST 0
+*OUTPRN  *GRID  *NONE
+*OUTSRF  *GRID  *NONE
+
+*TIME  1533.
+*ALTER 'H4'
+  159.
+
+*TIME  1563.
+*ALTER 'H4'
+  190.
+
+**    Stop Foam Injection
+
+*TIME  1585.
+   *DTWELL 0.1
+*INJECTOR  *UNWEIGHT 'H6'
+*TINJW  200.
+*QUAL 0.7
+*INCOMP  *WATER  1.0  0.0  0.0
+*OPERATE  *MAX  *STW  18.30
+*GEOMETRY  K  0.1365  0.235  0.5  0.0
+*PERFV 'H6'
+2  12.5
+*WRST  
+*OUTPRN  *GRID  *TEMP  *KRINTER
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *KRINTER 
+
+*TIME  1593.
+*ALTER 'H4'
+  247.  
+WRST 0
+*OUTPRN  *GRID  *NONE
+*OUTSRF  *GRID  *NONE
+
+*TIME  1623.
+*ALTER 'H4'
+  264.
+
+*TIME  1653.
+*ALTER 'H4'
+  230.
+
+*TIME  1683.
+*ALTER 'H4'
+  279.
+
+**    Stop Steam Injection
+
+*TIME  1708.
+   *DTWELL  1
+*SHUTIN 'H6'
+
+*TIME  1713.
+*ALTER 'H4'
+  206.
+*OUTPRN  *GRID  *TEMP  *KRINTER *SG
+*OUTSRF  *GRID  *TEMP  *PRES  *SO  *SG *KRINTER
+
+*TIME  1722.
+*STOP
+

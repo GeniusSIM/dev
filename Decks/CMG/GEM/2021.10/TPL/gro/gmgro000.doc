@@ -1,0 +1,51 @@
+               GRIDDING OPTIONS
+               ----------------
+
+
+
+Templates in the Gridding Options (GRO) directory:
+
+GMGRO001.DAT -- Compositional Radial Model for Coning Study
+GMGRO002.DAT -- Base Case for Corner Point Gridding Examples (following)
+GMGRO003.DAT -- Corner Point Gridding Example: *COORD
+GMGRO004.DAT -- Corner Point Gridding Example: *CORNERS
+GMGRO005.DAT -- Corner Point Gridding Example: *DI, *DJ and *ZCORN
+GMGRO006.DAT -- Corner Point Gridding Example: *XCORN, *YCORN and *ZCORN
+GMGRO007.DAT -- GMGRO002 with Refined Grids
+GMGRO008.DAT -- Pinch outs in a Corner Point Grid.
+GMGRO009.DAT -- Corner Point Grid with complicated cell overlappings.
+GMGRO010.DAT -- Paydepth modifications in a Corner Point Grid.
+GMGRO011.DAT -- Refined Corner Point Grid.
+GMGRO012.DAT -- Refinement in Recurrent Data.
+GMGRO013.DAT –- TRANSF example.
+GMGRO014.DAT –- Dynagrid Example: Coarse grid.
+GMGRO015.DAT -- Dynagrid Example: Fine grid.
+GMGRO016.DAT -- Dynagrid Example: Fine grid/static amalgamation (=coarse grid).
+GMGRO017.DAT -- Dynagrid Example: Fine grid with dynamic amalgamation.
+GMGRO018.DAT -- Dynagrid Example: Global mole fraction amalgamation control.
+GMGRO019.DAT -- Special Connections: Diffusion/dispersion calculations are 
+                excluded from special connections.
+GMGRO020.DAT -- Use of *ARRAY qualifier to modify a property in a set of grid-blocks
+GMGRO021.DAT -- Use of keywords *AREALPINCH-TOL and *DISTORTED-BLOCK
+
+GMGRO022.DAT -- Pre-processed Dynamic Gridding Example 
+GMGRO023.DAT -- Transmissibilty Modification between Regions
+
+GMGRO024.DAT -- Threshold Pressure - *PTHRESH-IREGN *ELASTIC option
+GMGRO025.DAT -- Threshold Pressure - *PTHRESH-IREGN *PLASTIC option
+GMGRO026.DAT -- Threshold Pressure - *PTHRESH-FAULT *ELASTIC option
+GMGRO027.DAT -- Threshold Pressure - *PTHRESH-FAULT *PLASTIC option
+GMGRO028.DAT -- Threshold Pressure - Elastic Mode with LGR
+GMGRO029.DAT -- Inter Region Transmissibility Multiplier and *REGIONMULT
+
+GMGRO030.DAT -- Test Discrete Fracture Network in a WAG Process Model
+GMGRO031.DAT -- Discrete Fracture Network in a Dual Porosity Model
+GMGRO032.DAT -- Use of LAYER-CTRL for DF perforations in a DFN model
+GMGRO033.DAT -- Discrete Fracture Network in Dilation Modelling
+GMGRO034.DAT -- Separate Reservoirs Communicating via DFNs
+GMGRO035.DAT -- Well Communication through Discrete Fracture Network
+GMGRO036.DAT -- Triangular Shape DFU in a Discrete Fracture Network.
+
+Cross references to templates in other directories:
+
+GMSMO006.DAT -- Variable depth, variable thickness grid

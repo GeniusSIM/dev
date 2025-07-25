@@ -1,0 +1,315 @@
+
+
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Electrical Heating Test Data #1'
+*title2 'Test/Illustrate *ELWCOMPTAB and *ELSCOMPTAB'
+
+*inunit *field   ** output same as input
+
+*outprn *grid pres sw so sg temp y x w solconc obhloss viso visg
+outprn grid  elconduct elpotent elpower elpowerden elcumenrgy
+*outprn *well *all
+*wrst 200
+*wprn *grid 200
+*wprn *iter 200
+wrst 1
+
+wprn sector 1
+wsrf sector 1
+
+outsrf special blockvar pres 2,1,2
+               blockvar so 2,1,2
+               blockvar sg 2,1,2
+               blockvar temp 2,1,2
+               blockvar elcden 2,1,2
+               elheat rate                 ** total electrical heat rate
+               elheat cum                  ** total electrical heat cum
+               ebndstat 1 potential        ** 'Earth' voltage
+               ebndstat 2 potential        ** 'Electrode' voltage
+               ebndstat 1 current          ** 'Earth' current
+               ebndstat 2 current          ** 'Electrode' current
+               ebndstat 1 cumcurrent       ** 'Earth' accumulated current
+               ebndstat 2 cumcurrent       ** 'Electrode' accumulated current
+               eblaystat 1,1,1 current     ** 'Electrode' layer (1,1,1) current
+               eblaystat 1,1,2 current     ** 'Electrode' layer (1,1,2) current
+               eblaystat 1,1,3 current     ** 'Electrode' layer (1,1,3) current
+               eblaystat 1,1,4 current     ** 'Electrode' layer (1,1,4) current
+               eblaystat 1,1,5 current     ** 'Electrode' layer (1,1,5) current
+               eblaystat 1,1,6 current     ** 'Electrode' layer (1,1,6) current
+               eblaystat 1,1,1 cumcurrent  ** 'Electrode' layer (1,1,1) accumulated current
+               eblaystat 1,1,2 cumcurrent  ** 'Electrode' layer (1,1,2) accumulated current
+               eblaystat 1,1,3 cumcurrent  ** 'Electrode' layer (1,1,3) accumulated current
+               eblaystat 1,1,4 cumcurrent  ** 'Electrode' layer (1,1,4) accumulated current
+               eblaystat 1,1,5 cumcurrent  ** 'Electrode' layer (1,1,5) accumulated current
+               eblaystat 1,1,6 cumcurrent  ** 'Electrode' layer (1,1,6) accumulated current
+               ebndresis 1 2               ** Resistance between 'Electrode' and 'Earth'
+               epotgradb 1,1,10 2,1,10     ** Step voltage on surface
+               epotgradb 2,1,10 3,1,10     ** Step voltage on surface
+               epotgradb 3,1,10 4,1,10     ** Step voltage on surface
+               epotgradb 1,1,5  1,1,6      ** Voltage gradient at electrode end
+               epotgradb 1,1,6  1,1,7      ** Voltage gradient at electrode end
+               epotgradb 4,1,6  4,1,7      ** Voltage gradient further out
+
+outsrf grid  pres so sg temp w
+outsrf grid  elconduct elpotent elpower elpowerden elcumenrgy elcurden elcur elcden
+
+outprn iter newton
+wprn iter 1
+wprn grid 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 20 1 10 rw .282152231  ** Radius is old default of 8.6 cm
+
+**  Radial blocks:  small near well;  outer block is large
+*di *ivar 3*1 3*1.5 3*2 3*3 3*4 3*5 10 30
+
+*dj *con 360  **  Full circle
+
+*dk *kvar 6*2 10 3*30
+
+*por *con 0.3
+*permi *con 1000
+*permj *equalsi
+*permk *equalsi  / 2
+
+*end-grid
+
+*cpor 5e-4
+*prpor 75
+*rockcp 35
+*thconr 24
+*thconw 24
+*thcono 24
+*thcong 24
+**hlossprop  overbur 35 24  underbur 35 24
+
+
+** Electrical Heating
+** ------------------
+
+*elecheat
+   *atortu 1.3
+   *elwcomptab     'Orig Wat'        'Ion Wat'
+**      T      ival  jval  kval   ival  jval  kval
+       55      0.83  0.87  0.49   1.6   1.7   0.9
+      155      1.23  1.27  0.89   2.4   2.6   1.5
+      255      2.23  2.27  1.89   3.8   3.9   2.5
+   *elscomptab     'Solid 1'         'Solid 2'
+**      T      ival  jval  kval   ival  jval  kval
+       55      2.0   2.0   2.0    0.2   0.2   0.2
+      155      3.0   3.0   3.0    0.8   0.8   0.8
+      255      3.8   3.8   3.8    1.1   1.1   1.1
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 5 3 3 2
+
+*compname       'Orig Wat'   'Ion Wat'     'OIL'   'Solid 1'  'Solid 2'
+**               --------     -------     -------   -------    -------
+     *cmm        18.02        18.02         600       100        200
+     *pcrit      3206.2       3206.2         0
+     *tcrit      705.4        705.4          0
+     *cpl1       0            0             300
+
+     *molden     0            0           0.10113
+     *cp         0            0           5.e-6
+     *ct1        0            0           3.8e-4
+
+*visctable
+
+**      Temp
+          45     0            0           5780
+          75     0            0           5780
+         100     0            0           1380
+         150     0            0            187
+         200     0            0             47
+         250     0            0             17.4
+         300     0            0              8.5
+         350     0            0              5.2
+         500     0            0              2.5
+
+*solid_den 'Solid 1' 80 0 0  ** lb/ft3
+*solid_cp  'Solid 1' 44 0    ** Btu/lbmole-F ~ (35 Btu/ft3-F)/(80 lb/ft3)/(100 lb/lbmole)
+
+*solid_den 'Solid 2' 60 0 0  ** lb/ft3
+*solid_cp  'Solid 2' 116 0    ** Btu/lbmole-F ~ (35 Btu/ft3-F)/(60 lb/ft3)/(200 lb/lbmole)
+
+** Reaction converts 'Solid 1' into "Solid 2'
+**compname  'Orig Wat'  'Ion Wat'  'OIL'   'Solid 1'  'Solid 2'
+*storeac        0           0        0        1           0
+*stoprod        0           0        0        0          0.5
+*freqfac 0 **1
+
+*prsr 14.7
+*temr 60
+*psurf 14.7
+*tsurf 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+** Automatic static vertical equilibrium
+*vertical *depth_ave
+*refpres 500
+*refblock 1 1 10
+
+*temp *con 55
+
+*mfrac_wat 'Orig Wat' *con 1
+
+*conc_sld 'Solid 1' *kvar 5*0.08 5*0  ** lbmole/ft3 pv ~ (0.1 ft3/ft3 pv)*(0.8 lbmole/ft3)
+*conc_sld 'Solid 2' *kvar 5*0.03 5*0  ** lbmole/ft3 pv ~ (0.1 ft3/ft3 pv)*(0.3 lbmole/ft3)
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical
+
+*sdegree gauss
+*dtmax 90
+
+*norm     press 200  satur 0.2   temp 180  y 0.2   x 0.2
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+
+   dtwell .02
+
+   ** INJECTOR:  Constant water rate type
+
+   well 'Injector 1' vert 1 1
+   injector 'Injector 1'
+   incomp water 0 1 0
+   tinjw 55
+   operate stw 50
+   geometry k  .3 .5 1 0
+   perfv geo 'Injector 1'
+                   1:10    1.0
+
+   ** PRODUCER:  Constant liquid rate type
+
+   well 'Producer 1' vert 1 1
+   producer 'Producer 1'
+   operate     stl    1000
+   operate min bhp    400
+   geometry k  .3 .5 1 0
+   perfv geo 'Producer 1'
+                   1:10    1.0
+
+   shutin 'Producer 1'
+
+   elbound 'Earth' 1:20 1 10
+   eltarget potential 'Earth' 0
+
+   elbound 'Electrode' 1 1 1:6  -i
+   eltarget potential 'Electrode' 220
+
+   eltarget power 25
+
+time 1
+
+   dtwell 0.01
+
+   shutin 'Injector 1'
+   open 'Producer 1'
+
+   eltarget potential 'Electrode' 200
+
+time 2
+
+   dtwell 0.1
+
+   elbound 'Electrode' 1 1 1:5  -i
+   eltarget potential 'Electrode' 180
+
+time 3
+
+   dtwell 0.1
+
+   elbound 'Electrode' 1 1 2:5  -i
+   eltarget potential 'Electrode' 160
+
+time 4
+
+   dtwell 0.1
+
+   elbound 'Electrode' 1 1 3:5  -i
+   eltarget potential 'Electrode' 140
+
+time 7
+
+time 10

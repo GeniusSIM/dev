@@ -1,0 +1,323 @@
+RESULTS SIMULATOR STARS
+
+*****************************************************************************
+** Template (stgeo074.dat):  Illustrate *GCAPMOD                           **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STGEO074.DAT                                                             **
+**                                                                                  **
+** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+**         CAP MODEL                                    6X6X10 CARTESIAN GRID       **
+**                                                                                  **
+** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL-THERMAL OPTION IN STARS            **
+**                                                                                  **
+** PURPOSE:                                                                         **
+**       Changing Young's modulus in the hardening cap via the keyword *GCAPMOD.    **
+**       Considered as a triaxial test - Only a quarter of block is examined.       **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+*interrupt *stop
+
+*title1 'STARS Geomechanics Template #74'
+*title2 "Verify/Illustrate *GCAPMOD Changing Young's Modulus in Hardening Cap"
+*title3 'Triaxial Test, Based on STGEO033'
+
+*INUNIT  *field
+*OUTUNIT *field
+
+*WSRF *GRID 1
+*wsrf *griddeform 1
+*WPRN *GRID 1 
+*OUTPRN *GRID *VPOROS *VERDSPLPOR *PRES *SO *SG *SW 
+*PRNTORIEN 2 0
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*OUTSRF *GRID *VPOROS *PRES *YOUNG *POISSON *VDISPL *TEMP *VERDSPLPOR *VERDSPLGEO
+              *STRESSH *STRESI *STRESJ *STRESK *STRESEFF *STRNEPL
+              *STRAINI *STRAINJ *STRAINK *STRAINSH *STRAINVOL *YLDSTATE
+*OUTSRF *SPECIAL 
+                 *AVGVAR *PRES
+                 *AVGVAR *vporos
+                 *AVGVAR *streseff
+                 *BLOCKVAR *PRES     6,6,1
+                 *BLOCKVAR *VPOROS   6,6,1
+                 *BLOCKVAR *STRESEFF 6,6,1
+                 *BLOCKVAR *STRNEPL  6,6,1
+                 *BLOCKVAR *STRAINVOL  6,6,1
+                 *BLOCKVAR *VERDSPLGEO 6,6,1
+                 *BLOCKVAR *VERDSPLPOR 6,6,1
+
+                 *BLOCKVAR *PRES     1,1,1
+                 *BLOCKVAR *VPOROS   1,1,1
+                 *BLOCKVAR *STRESEFF 1,1,1
+                 *BLOCKVAR *STRNEPL  1,1,1
+                 *BLOCKVAR *STRAINVOL  1,1,1
+                 *BLOCKVAR *VERDSPLGEO 1,1,1
+                 *BLOCKVAR *VERDSPLPOR 1,1,1
+
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *CART 6 6 10
+*KDIR DOWN
+*DI *CON 181.81
+*DJ *CON 181.81
+*DK *CON 20
+
+*DEPTH  1 1 1     5000 
+
+*POR  *CON 0.36
+   *mod  1:6   1:6   1:5  = 0.0001
+
+*PERMI *CON 15000.0
+  *mod  1:6    1:6   1:5   = 1.0e-6  
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 1.0
+
+*END-GRID
+
+*PRPOR 3000
+
+*ROCKTYPE   1
+
+CTPOR  54.8E-06 
+*ROCKCP 28.8
+*THCONR 38.4
+*THCONW 38.4
+*THCONO 38.4
+*THCONG 38.4
+*HLOSSPROP     *OVERBUR  35.0  30.0
+               *UNDERBUR 35.0  30.0
+
+*THTYPE CON 1 
+
+
+
+**============= FLUID DEFINITIONS =============
+
+*******************************************************************************
+** THE FOLLOWING SECTION CAN BE USED FOR THE COMPONENT PROPERTY INPUT INTO STARS
+********************************************************************************
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'    'OIL'
+**               -----    -------
+     *CMM        18.02      600
+     *PCRIT      3206.2      0        ** These four properties
+     *TCRIT      705.4       0        ** are for the gas phase.
+     *AVG        1.13e-5     0        ** The dead oil component does
+     *BVG        1.075       0        ** not appear in the gas phase.
+
+     *MOLDEN     0        0.10113
+     *CP         0        5.e-6
+     *CT1        0        3.8e-4
+
+     *CPL1       0        300
+
+*VISCTABLE
+
+**      Temp
+          75     0        5780
+         100     0        1380
+         150     0         187
+         200     0          47
+         250     0          17.4
+         300     0           8.5
+         350     0           5.2
+         500     0           2.5
+         800     0           2.5
+
+*PRSR 14.7
+*TEMR 60
+*PSURF 14.7
+*TSURF 60
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw        Krow
+**  ----     --------    -------
+    0.45     0.0         0.4
+    0.47     0.000056    0.361
+    0.50     0.000552    0.30625
+    0.55     0.00312     0.225
+    0.60     0.00861     0.15625
+    0.65     0.01768     0.1
+    0.70     0.03088     0.05625
+    0.75     0.04871     0.025
+    0.77     0.05724     0.016
+    0.80     0.07162     0.00625
+    0.82     0.08229     0.00225
+    0.85     0.1         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----     -------     -------
+    0.45     0.2         0.0
+    0.55     0.14202     0.0
+    0.57     0.13123     0.00079
+    0.60     0.11560     0.00494
+    0.62     0.10555     0.00968
+    0.65     0.09106     0.01975
+    0.67     0.08181     0.02844
+    0.70     0.06856     0.04444
+    0.72     0.06017     0.05709
+    0.75     0.04829     0.07901
+    0.77     0.04087     0.09560
+    0.80     0.03054     0.12346
+    0.83     0.02127     0.15486
+    0.85     0.01574     0.17778
+    0.87     0.01080     0.20227
+    0.90     0.00467     0.24198
+    0.92     0.00165     0.27042
+    0.94     0.0         0.30044
+    1.       0.0         0.4
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*vertical depth_ave
+*refpres 3035
+*refdepth 5000
+*TEMP *CON 150
+
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  1E-2
+
+*UNRELAX -1
+
+*RANGECHECK *OFF
+*NORM      *PRESS 500  ***TEMP 50  *SATUR .2  *Y .2  *X .2
+*CONVERGE  *PRESS 100  ***TEMP 10  *SATUR .1  *Y .1  *X .1
+*RANGECHECK *ON
+
+*tform zt
+*isothermal
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+
+*GEOMECH              ** Main keyword for using geomechanics module              
+*GEOM3D               ** Using 3D finite elements
+*SOLVERG *AIMSOL
+*GCOUPLING 0
+
+*nitergeo 500         ** Max number of iterations for convergence
+*GCAPMODEL 1          ** Cap model 1
+*ELASTMOD 1.5e4       ** Elastic Young's modulus (PSI)
+*POISSRATIO 0.30      ** Poisson's ratio
+*FRICANGLE 30.0       ** Friction angle (degrees)
+*COHESION 14.5        ** Cohesion (PSI)
+*GCAPR 2.0E0          ** Aspect ratio
+*GCAPD 3E-4           ** Parameter D (1/PSI)
+*GCAPW 0.001          ** Parameter W
+*GCAPLOC 45.0         ** Initial hardening parameter
+*GCAPTEN -200         ** Tension cut-off (PSI)
+*GCINCRMT 2           ** Number of strain divisions for convergence
+*GCAPMOD              
+
+*STRESS3D 0 0 0 0 0 0
+*PRESCBC3D          ** Prescribed Boundary for quarter of a block
+  *IJK  1:6  1:6  10
+      5:8  03  0.0
+  *IJK  1:6  1   1:10
+     1:2  02  0.0
+     5:6  02  0.0
+  *IJK  1  1:6  1:10
+     1  01  0.0
+     4  01  0.0
+     5  01  0.0
+     8  01  0.0
+      
+*DLOADBC3D                 ** Applying pressure around the surface of the block
+   *IJK 6  1:6   1:10
+        2  3  6  7   10.0
+   *IJK 1:6  6   1:10
+        3  4  7  8   10.0
+   
+
+*RUN
+
+
+** ===================RECURRENT DATA ================
+
+*DATE 1936 12 31
+
+   *DTWELL 0.001
+
+   *WELL 'inj1'
+
+Time 0.001
+  *DLOADBC3D            ** applying pressure on top of the block
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+Time 0.002
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+Time 0.003
+  *DLOADBC3D            ** applying pressure on top of the block
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+
+Time 0.004
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.005
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   10.0
+Time 0.006
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.007
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.008
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.009
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.010
+  *DLOADBC3D 
+   *IJK 1:6  1:6   1:1
+        1  2  3  4   5.0
+Time 0.011
+
+*STOP

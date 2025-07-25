@@ -1,0 +1,261 @@
+**--------------------------------------------------------------------**
+** GMSMO063.DAT: Adsorption of a Component from Aqueous Phase         **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMSMO063.DAT                                               **
+**                                                                    **
+** MODEL:  7x7x3 CARTESIAN GRID  AQUEOUS PHASE INJECTION 7 COMPONENTS **
+**         FIELD UNITS                                                **
+**                                                                    **
+**--------------------------------------------------------------------**
+** This tempale data set is constructed to demonstrate adsorption of  **
+** a component from the aqueous phase. Water solution containing the  **
+** aqueous component is injected for a period of 10 years followed    **
+** by ure water injection for next 10 years.                          **
+**                                                                    **
+** The adsorption input for the aquous component is specified via     **
+** Langmuir isotherm. The aqueous components adsorbs to the rock in   **
+** the aqueous component injection period and then desorbs in the     **
+** pure water injection period, however the desorption is limited by  **
+** the specified residual desorption level.                           **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+
+** ------------------- I/O Control Section -----------------------------
+*TITLE1 'Aqueous Phase Adsorption'
+*TITLE2 'Langmuir Data Input'
+*TITLE3 'Test Residual Adsorption Level'
+*INUNIT *FIELD
+*OUTPRN *WELL *ALL
+*OUTPRN *RES *ALL
+
+*WSRF *WELL 1
+*OUTSRF GRID  *WALL *DENW *ADS 'POLY-1' *MOLALITY 'POLY-1'
+*OUTSRF *WELL *HCPVIN *WWEL 'POLY-1' 'PROD-1'  *WWEL 'POLY-1' 'INJ-1'
+*OUTSRF *SPECIAL *ADS  'POLY-1' 1 1 1
+                 *ADS  'POLY-1' 5 5 2
+
+** ------- Reservoir Description Section ---------------------------------
+*GRID *VARI 7 7 3
+*KDIR *UP
+*DI *IVAR  7*315
+*DJ *JVAR  7*315
+*DK *ALL   49*50 49*30 49*20
+*DTOP      49*1925
+*POR *CON  0.300
+
+*PERMI *KVAR    200.0   50.0  500.0
+*PERMJ *KVAR    200.0   50.0  500.0
+*PERMK *KVAR    19.2  200.0  200.0
+*PRPOR 14.7
+*CPOR 3.0E-6
+
+** ----------------- Fluid Model ----------------------------------------
+*MODEL   *PR
+*NC    6    6
+*TRES       160.000
+*COMPNAME
+           'C1'           'C3'           'C6'           'C10'
+           'C15'          'C20'
+*SG         2.6548243E-01  5.2203614E-01  6.6417775E-01  7.4136955E-01
+            7.6230751E-01  7.8620830E-01
+*TB        -1.6064925E+02 -4.3620636E+01  6.5995161E+01  1.6981838E+02
+            2.7281954E+02  3.4381966E+02
+*PCRIT      4.5440000E+01  4.1940000E+01  2.9730000E+01  2.0690000E+01
+            1.3610000E+01  1.1020000E+01
+*VCRIT      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00
+*TCRIT      1.9060000E+02  3.6980000E+02  5.0740000E+02  6.1770000E+02
+            7.0560000E+02  7.6670000E+02
+*AC         1.3000000E-02  1.5240000E-01  3.0070000E-01  4.8850000E-01
+            6.5000000E-01  8.5000000E-01
+*MW         1.6040000E+01  4.4100000E+01  8.6180000E+01  1.4229000E+02
+            2.0600000E+02  2.8200000E+02
+*HCFLAG     0              0              0              0
+            0              0
+*BIN
+            0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            5.0000000E-02  5.0000000E-03  0.0000000E+00  0.0000000E+00
+            0.0000000E+00
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VSHIF1     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*TREFVS     6.0000000E+01  6.0000000E+01  6.0000000E+01  6.0000000E+01
+            6.0000000E+01  6.0000000E+01
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.9800000E-02  2.0050000E-01  3.6980000E-01  6.2970000E-01
+            1.0423000E+00  1.3412000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            2.3324000E-02
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02
+*PCHOR      3.9843180E+01  1.2676442E+02  2.5062202E+02  4.0365452E+02
+            5.6062080E+02  7.2450720E+02
+
+*ENTHCOEF
+            0.0000000E+00  2.6589778E-01  3.4085379E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  5.5613508E-02  4.0821847E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  1.5512597E-02  3.9456214E-04 -5.1333581E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  3.0429172E-03  3.9810535E-04 -5.3243759E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.2809515E-02  3.9758428E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00  2.6277569E-02  3.9897828E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+
+*DENWS 61.01
+*DENW 59.696
+*REFPW 14.7
+*VISW 0.4
+*CW 3.3e-6
+
+*AQUEOUS-DENSITY *LINEAR
+
+*NC-AQUEOUS 1
+*COMPNAME-AQUEOUS 'POLY-1'
+*MW-AQUEOUS 22000.
+
+** ------   Rock-fluid Data -------------------------------
+*ROCKFLUID
+*RPT 1
+
+**$        Sw       krw      krow      Pcow
+*SWT
+          0.2       0.0       1.0       7.0
+          0.3      0.07       0.4       4.0
+          0.4      0.15     0.169       3.0
+          0.5      0.24    0.0851       2.5
+          0.6      0.33     0.056       2.0
+          0.8      0.65     0.021       1.0
+          0.9      0.83       0.0       0.5
+          1.0       1.0       0.0       0.0
+
+**$        Sl       krg       krog      Pcog
+*SLT
+          0.2      0.98        0.0       0.0
+          0.3      0.94        0.0       0.0
+          0.4      0.87     1.E-04       0.0
+          0.5      0.72      0.001       0.0
+         0.55       0.6      0.010       0.0
+          0.6      0.41      0.021       0.0
+          0.7      0.19       0.09       0.0
+         0.75     0.125        0.2       0.0
+          0.8     0.075       0.35       0.0
+         0.88     0.025        0.7       0.0
+         0.95     0.005       0.98       0.0
+         0.98       0.0      0.997       0.0
+        0.999       0.0        1.0       0.0
+          1.0       0.0        1.0       0.0
+
+*ADAMAXC 'POLY-1'  *CON  1.0e-5   ** Max Adsorption level mol/lb of rock
+*ADACSTC 'POLY-1'  *CON  0.8e+5   ** Inverse of mole fraction
+*ADRT    'POLY-1'  *CON  5.e-07   ** Residual adsorption level mol/lb of rock
+
+** -------------  Initial Conditions Section  ---------------------------------
+*INITIAL
+*USER_INPUT
+*PRES *CON 2400.
+*SW   *CON  0.2
+
+*ZGLOBALC 'C1'  *CON  0.35
+*ZGLOBALC 'C3'  *CON  0.06
+*ZGLOBALC 'C6'  *CON  0.03
+*ZGLOBALC 'C10' *CON  0.15
+*ZGLOBALC 'C15' *CON  0.20
+*ZGLOBALC 'C20' *CON  0.21
+
+*MOLALITY-AQUEOUS 0.0
+
+** ------- Numerical Methods Control Section ----------------------------------
+*NUMERICAL
+*DTMAX 62.
+
+** --------------------- Recurrent Data ---------------------------------------
+*RUN
+*DATE 1987 11  2.
+*DTWELL 1
+
+*WELL  'INJ-1'
+
+*INJECTOR 'INJ-1'
+**               Inject polymer solution
+**               <--- 1 to Nc ---------> <-Nc_aqu->   
+*INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 0.0 0.0 9.1051e-5
+*OPERATE  *MAX  *STW  5000.0  *CONT
+*OPERATE  *MAX  *BHP  10000.0 *CONT *REPEAT
+*GEOMETRY  K  0.25  0.34  1.0  0.0
+*PERF  *GEO  'INJ-1'
+**$ UBA    ff   Status  Connection  
+    1 1 1  1.0  *OPEN   *FLOW-FROM  'SURFACE'
+
+
+*WELL  'PROD-1'
+*PRODUCER 'PROD-1'
+*OPERATE  MAX  STO  2500.0  CONT
+*OPERATE  MIN  BHP  1500.0  CONT
+   ** if      jf     kf     ff
+*GEOMETRY  K  0.25  0.34  1.0  0.0
+*PERF  GEO  'PROD-1'
+**$ UBA    ff   Status  Connection  
+    7 7 3  1.0  OPEN    FLOW-TO  'SURFACE'
+*HEAD-METHOD '*' GRAVITY
+*XFLOW-MODEL '*' FULLY-MIXED
+
+*DATE 1988 11 02
+*DATE 1989 11 02
+*DATE 1990 11 02
+*DATE 1991 11 02
+*DATE 1992 11 02
+*DATE 1993 11 02
+*DATE 1994 11 02
+*DATE 1995 11 02
+*DATE 1996 11 02
+   
+*INJECTOR 'INJ-1'
+**               Inject water
+*INCOMP WATER
+*OPERATE  MAX  STW  10000.0  CONT
+*OPERATE  MAX  BHP  10000.0  CONT REPEAT
+
+*PRODUCER 'PROD-1'
+*OPERATE  MAX  STO  5000.0  CONT
+*OPERATE  MIN  BHP  1500.0  CONT
+
+*DATE 1997 11 02
+*DATE 1998 11 02
+*DATE 1999 11 02
+*DATE 2000 11 02
+*DATE 2001 11 02
+*DATE 2002 11 02
+*DATE 2003 11 02
+*DATE 2004 11 02
+*DATE 2005 11 02
+*DATE 2006 11 02
+*DATE 2007 11 02
+*DATE 2008 11 02
+*DATE 2009 11 02
+*DATE 2010 11 02
+*DATE 2011 11 02
+*DATE 2012 11 02
+*DATE 2013 11 02
+*DATE 2014 11 02
+*DATE 2015 11 02
+*DATE 2016 11 02
+*DATE 2017 11 02
+*STOP
+

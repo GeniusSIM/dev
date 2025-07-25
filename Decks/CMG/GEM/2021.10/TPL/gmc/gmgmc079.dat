@@ -1,0 +1,471 @@
+
+*****************************************************************************
+** Template  (gmgmc079.dat): BB Model - Effect of Shear Fracturing         **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  gmgmc079.DAT                                                             **
+**                                                                                  **
+** MODEL:  TWO WELLS                                        FIELD UNITS             **
+**         Barton-Bandis Dual Permeability Model        100X100X1 CARTESIAN GRID    **
+**                                                                                  **
+** Purpose:                                                                         **
+**       Shear fracturing and Barton-Bandis models are applied to a dual            **
+**       permeability model for fracture closure.                                   **
+**       The reservoir is fractured in all directions and the                       **
+**       Dual Perm model is used to simulate the reservoir behaviour.               **
+**                                                                                  **
+**       A parent well is a producer which gererates shear fractures in a region    **
+**       of withdrawn fluid and higher compressive stresses.                        **
+**       A child or infill well is an injector located parallel to the parent well. **
+**       When a child well is opened, the increase in pressure in the region around **
+**       it reduces the effective stress so that the fracture due to tensile stress **
+**       may happen. The fluid from the injectors will travel to the parent well    **
+**       and affect to the production.                                              **
+**                                                                                  **
+**       Illustrates the effect of Shear Fracturing                                 **
+**                                                                                  **
+**************************************************************************************
+** After stgeo093  & gmgmc050.dat
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #79'
+*TITLE2 'Illustrate Shear and Tensile Fractures'
+
+*INUNIT *FIELD
+*OUTPRN *GRID  *PRES *SW *SO
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+
+*WSRF *GRIDDEFORM 5
+*OUTSRF *GRID  *PRES *SW  *SO *SG *PERM  *VELOCRC
+   *VDISPL    *STRESEFF   *YOUNG      *POISSON    *YIELD    
+   *GCOHESION *HARDENING  *BIOT       *STRESSHIJ  *STRESSHJK
+   *STRESSHIK *STRAINSHIJ *STRAINSHJK *STRAINSHIK *STRESSM  
+   *STRESI    *STRESJ     *STRESK     *STRESSH    *STRESMXP
+   *STRESMNP  *STRNEPL    *STRAINSH   *STRESSHMX  *BBTHRESH
+   *TSTRESMNP *TSTRESMXP
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 100  100 1 
+*KDIR *DOWN
+
+*DI *CON 10
+*DJ *CON 10
+*DK *CON 30
+
+*DEPTH 1 1 1   15
+
+*DUALPERM
+*SHAPE *GK
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   CON 0.19
+*POR FRACTURE CON 0.01         **  Fracture properties
+
+*PERMI *MATRIX   *CON 1e0
+*PERMI *FRACTURE *CON 1e-3     **  Fracture properties
+
+
+*MOD
+
+       1:30  1   1    = 10
+       1:30  2   1    = 10
+       1:30  3   1    = 10
+
+       1:30  10   1    = 10
+       1:30  11   1    = 10
+       1:30  12   1    = 10
+
+       1:30  30   1    = 10
+       1:30  31   1    = 10
+       1:30  32   1    = 10
+
+       1:30  50   1    = 10
+       1:30  51   1    = 10
+       1:30  52   1    = 10
+
+       1:30  65   1    = 10
+       1:30  66   1    = 10
+       1:30  67   1    = 10
+
+       1:30  80   1    = 10
+       1:30  81   1    = 10
+       1:30  82   1    = 10
+
+       1:30  96   1    = 10
+       1:30  97   1    = 10
+       1:30  98   1    = 10
+
+       60  5   1    = 10
+       60  6   1    = 10
+       60  7   1    = 10
+
+       60  20   1    = 10
+       60  21   1    = 10
+       60  22   1    = 10
+
+       60  40   1    = 10
+       60  41   1    = 10
+       60  42   1    = 10
+
+       60  60   1    = 10
+       60  61   1    = 10
+       60  62   1    = 10
+
+       60  90   1    = 10
+       60  91   1    = 10
+       60  92   1    = 10
+
+*PERMJ *MATRIX   *CON 1e0
+*PERMJ *FRACTURE *CON 1e-2     **  Fracture properties
+*PERMK *MATRIX   *CON 1e0
+*PERMK *FRACTURE *CON 1e-3     **  Fracture properties
+*MOD
+
+       1:30  1   1    = 10
+       1:30  2   1    = 10
+       1:30  3   1    = 10
+
+       1:30  10   1    = 10
+       1:30  11   1    = 10
+       1:30  12   1    = 10
+
+       1:30  30   1    = 10
+       1:30  31   1    = 10
+       1:30  32   1    = 10
+
+       1:30  50   1    = 10
+       1:30  51   1    = 10
+       1:30  52   1    = 10
+
+       1:30  65   1    = 10
+       1:30  66   1    = 10
+       1:30  67   1    = 10
+
+       1:30  80   1    = 10
+       1:30  81   1    = 10
+       1:30  82   1    = 10
+
+       1:30  96   1    = 10
+       1:30  97   1    = 10
+       1:30  98   1    = 10
+
+       60  5   1    = 10
+       60  6   1    = 10
+       60  7   1    = 10
+
+       60  20   1    = 10
+       60  21   1    = 10
+       60  22   1    = 10
+
+       60  40   1    = 10
+       60  41   1    = 10
+       60  42   1    = 10
+
+       60  60   1    = 10
+       60  61   1    = 10
+       60  62   1    = 10
+
+       60  90   1    = 10
+       60  91   1    = 10
+       60  92   1    = 10
+
+*CROCKTYPE 1
+  *CCPOR  *MATRIX 3.E-06
+  *CPRPOR *MATRIX 200
+  *CCPOR  *FRACTURE 3.E-06
+  *CPRPOR *FRACTURE 200
+*CROCKTYPE 2
+  *CCPOR  *MATRIX 3.E-06
+  *CPRPOR *MATRIX 200
+  *CCPOR  *FRACTURE 3.E-06
+  *CPRPOR *FRACTURE 200
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    2    2
+*TRES        120.000
+*COMPNAME
+           'PS1'          'PS2'
+*SG         3.0000000E-01  9.2785600E-01
+*TB        -1.0000000E+02  4.8145263E+02
+*PCRIT      2.7007280E+01  1.0488707E+01
+*VCRIT      1.3706898E-01  1.4354780E+00
+*TCRIT      2.3784734E+02  9.1987506E+02
+*AC         4.1176000E-02  1.0650994E+00
+*MW         3.0398100E+01  4.0285700E+02
+*HCFLAG     0              0
+*BIN
+            1.2587594E-01
+*VSHIFT    -7.3458996E-02  2.5747694E-01
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.7636000E+00  8.8536000E-03  1.4776000E+00
+            4.6974742E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      8.4752965E+01  9.3278183E+02
+
+*ENTHCOEF
+            0.0000000E+00  2.7877075E-01  3.2911326E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -2.0326851E-02  3.9996373E-04 -5.7426800E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENW  998.115
+*DENWS 998.9584
+ 
+*CW 4.3502e-007
+*REFPW 12000
+*VISW 0.571723
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow         Pcow
+**  ----      ------      ------       ------
+    0.25       0.0         0.92         
+    0.30       0.02        0.705       
+    0.40       0.055       0.42        
+    0.50       0.10        0.24        
+    0.60       0.145       0.11        
+    0.70       0.20        0.0         
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             
+    0.30      0.372       0.0            
+    0.35      0.312       0.0            
+    0.40      0.257       0.0            
+    0.45      0.225       0.0            
+    0.50      0.175       0.0             
+    0.55      0.142015    0.0             
+    0.57      0.131232    7.9000E-4      
+    0.60      0.115599    0.0049380      
+    0.62      0.105551    0.0096790      
+    0.65      0.091061    0.0197530      
+    0.67      0.081805    0.0284440      
+    0.70      0.068557    0.0444440      
+    0.72      0.060169    0.0570860      
+    0.75      0.048291    0.0790120      
+    0.77      0.040870    0.0956050      
+    0.80      0.030544    0.1234570      
+    0.83      0.021273    0.1548640      
+    0.85      0.015743    0.1777780     
+    0.87      0.010799    0.2022720      
+    0.90      0.004665    0.2419750      
+    0.92      0.001649    0.2704200      
+    0.94      0.0         0.3004440      
+    1.        0.0         0.92           
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          
+    0.10       0.05        0.77        
+    0.20       0.11        0.587       
+    0.25       0.145       0.519       
+    0.30       0.18        0.45        
+    0.40       0.26        0.33        
+    0.50       0.355       0.24        
+    0.60       0.475       0.173       
+    0.70       0.585       0.102       
+    0.80       0.715       0.057       
+    0.90       0.85        0.021       
+    1.         1.          0.0         
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        
+    0.10       0.90         0.10       
+    0.20       0.80         0.20       
+    0.25       0.75         0.25       
+    0.30       0.70         0.30       
+    0.40       0.60         0.40       
+    0.50       0.50         0.50      
+    0.60       0.40         0.60       
+    0.70       0.30         0.70       
+    0.80       0.20         0.80      
+    0.90       0.10         0.90       
+    1.         0.0          1.
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*USER_INPUT
+
+*PRES *MATRIX   *CON 1500
+*PRES *FRACTURE *CON 1500
+
+*SW *MATRIX   *CON 0.25 
+*SW *FRACTURE *CON 0.25 
+
+*ZGLOBALC  'PS1' *CON 0.07
+*ZGLOBALC  'PS2' *CON 0.97
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL  
+*DTMIN 1E-10
+
+*NORM      *PRESS  2500
+*NORM      *SATUR  0.025
+*NORM      *GMOLAR 0.025
+*MAXCHANGE *SATUR  0.8
+*MAXCHANGE *GMOLAR 0.8
+
+**  ============== GEOMECHANICS SECTION =====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+
+*GEOM3D           ** 3D Finite elements
+*GCOUPLING 2 
+*GPSCALING 0.5        
+
+*NITERGEO 200
+**NINCS 10
+*FORCETOL 0.01
+
+*GEOROCK 1           ** rock type # 1 - matrix
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 1E6
+   *FRICANGLE 30
+   *BIOTSCOEF  1.0
+
+*GEOROCK 2           ** rock type # 2 - fracture
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 1E6
+   *FRICANGLE 30
+   *BIOTSCOEF  1.0
+
+   ** B-B model      E0         Kni      FRS     Khf     Kccf   Krcf
+   *GPERMBB          6.5e-5     3e6      0.0     200.    200.     5
+
+   *USHEARST  240.0    ** Shear failure threshold
+   *PERMODULUS  0.1    ** Permeability modulus
+   *SHPERMAX    0.1    ** Maximum permeability due to shear failure
+   *SHPERMRES   0.01   ** Residual permeability due to shear failure
+   *GULIMPERM          ** Prevent fracture permeability below its initial value
+   *BBTENSH   350.0    ** Tensile threshold will be changed when shear failure occurs
+
+*STRESS3D  
+     *IJK   1:100  1:100  1
+            500   500  800  0  0  0
+
+
+*GEOTYPE   *MATRIX   *IJK 1:100  1:100  1:1   1
+*GEOTYPE   *FRACTURE *IJK 1:100  1:100  1:1   2
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1901 1 1.5
+
+   *DTWELL 0.01
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR 'INJTR'
+   *INCOMP  *WATER
+   *OPERATE *MAX *STW 150.
+   *GEOMETRY *K .2 .432 1 0 ** rw cc ff S
+   *PERF 'INJTR'  ** i j k  wi
+             60  5   1   1.E3  CLOSED   FLOW-FROM  'SURFACE'  REFLAYER
+             60  6   1   1.E3  CLOSED   FLOW-FROM 1
+             60  7   1   1.E3  CLOSED   FLOW-FROM 2
+
+             60  20  1   1.E3  OPEN     FLOW-FROM 3
+             60  21  1   1.E3  OPEN     FLOW-FROM 4
+             60  22  1   1.E3  OPEN     FLOW-FROM 5
+
+             60  40  1   1.E3  OPEN     FLOW-FROM 6
+             60  41  1   1.E3  OPEN     FLOW-FROM 7
+             60  42  1   1.E3  OPEN     FLOW-FROM 8
+
+             60  60  1   1.E3  OPEN     FLOW-FROM 9
+             60  61  1   1.E3  OPEN     FLOW-FROM 10
+             60  62  1   1.E3  OPEN     FLOW-FROM 11
+
+             60  90  1   1.E3  OPEN     FLOW-FROM 12
+             60  91  1   1.E3  OPEN     FLOW-FROM 13
+             60  92  1   1.E3  OPEN     FLOW-FROM 14
+   *PRODUCER 'PRODN'
+   *OPERATE *STL 50.
+   *OPERATE *MIN *BHP  20.   
+   *GEOMETRY *K .1 .432 1 0 ** rw cc ff S
+   *PERF *GEO 'PRODN'
+             20  1   1   1.E3  OPEN     FLOW-FROM  'SURFACE'  REFLAYER
+             20  2   1   1.E3  OPEN     FLOW-FROM 1
+             20  3   1   1.E3  OPEN     FLOW-FROM 2
+
+             20  10  1   1.E3  OPEN     FLOW-FROM 3
+             20  11  1   1.E3  OPEN     FLOW-FROM 4
+             20  12  1   1.E3  OPEN     FLOW-FROM 5
+
+             20  30  1   1.E3  OPEN     FLOW-FROM 6
+             20  31  1   1.E3  OPEN     FLOW-FROM 7
+             20  32  1   1.E3  OPEN     FLOW-FROM 8
+
+             20  50  1   1.E3  OPEN     FLOW-FROM 9
+             20  51  1   1.E3  OPEN     FLOW-FROM 10
+             20  52  1   1.E3  OPEN     FLOW-FROM 11
+
+             20  65  1   1.E3  OPEN     FLOW-FROM 12
+             20  66  1   1.E3  OPEN     FLOW-FROM 13
+             20  67  1   1.E3  OPEN     FLOW-FROM 14
+
+             20  80  1   1.E3  OPEN     FLOW-FROM 15
+             20  81  1   1.E3  OPEN     FLOW-FROM 16
+             20  82  1   1.E3  OPEN     FLOW-FROM 17
+
+             20  96  1   1.E3  OPEN     FLOW-FROM 18
+             20  97  1   1.E3  OPEN     FLOW-FROM 19
+             20  98  1   1.E3  OPEN     FLOW-FROM 20
+
+*WIRANGE 'INJTR' 'PRODN'
+  *RANGE1 1.E3 1.E3
+
+*SHUTIN 'INJTR'
+
+*TIME 70.0
+*DTWELL 1e-3 
+*OPEN 'INJTR'
+*TIME 120.0
+*STOP

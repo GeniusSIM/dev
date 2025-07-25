@@ -1,0 +1,209 @@
+**--------------------------------------------------------------------**
+** GMFRR005.DAT:  Fractured Gas Reservoir with MINC                   **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:   GMFRR005.DAT                                               **
+**                                                                    **
+** MODEL:  CART 21x21x1 GRID     7 COMPONENTS    FRACTURED RESERVOIR  **
+**         MINC METHOD           SI UNITS                             **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This is a fractured reservoir with properties representative of a  **
+** shale gas problem. The MINC (Multiple Intercting Nested Continua)  **
+** method is used to divide the matrix blocks into 5 nested regions,  **
+** to allow modelling of the transport of gas through the matrix out  **
+** to the fracture system. The companion data set GMFRR006.DAT shows  **
+** the same system modelled with a standard DUALPOR model.            **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*FILENAMES *OUTPUT *SRFOUT *RESTARTOUT *INDEX-OUT *MAINRESULTSOUT
+*TITLE1 'Shale Gas - MINC'
+*INUNIT *SI
+
+*WSRF *GRID 1
+*WSRF *WELL 1
+*WPRN *GRID *TIME
+*WPRN *WELL 1
+*WRST  0
+*OUTSRF *RES  *ALL
+
+*OUTSRF *GRID *PRES *SW *SG *Y 'C1' *ADS 'C1'
+*OUTPRN *RES  *ALL
+*OUTPRN *GRID *IMPL *PRES *SW *SG *Y 'C1' *ADS 'C1'
+*OUTPRN *WELL *ALL
+
+**--------------------------------------------------RESERVOIR DATA------
+*GRID *CART 21 21 1
+*KDIR *DOWN
+
+*MINC 5
+
+*DI *CON 20.0
+*DJ *CON 20.0
+*DK *CON 20.0
+*PAYDEPTH *CON 1000.0
+
+*DIFRAC *CON  8.0
+*DJFRAC *CON  8.0
+*DKFRAC *CON  8.0
+
+*POR *FRACTURE *CON   0.001
+*POR *MATRIX   *CON   0.04
+
+*PERMI *FRACTURE *CON 0.001
+*MOD
+11 6:16 1 = 1
+*PERMJ *FRACTURE *EQUALSI
+*PERMK *FRACTURE *CON 0.001
+
+*PERMI *MATRIX   *CON 0.0001
+*PERMJ *MATRIX   *CON 0.0001
+*PERMK *MATRIX   *CON 0.0001
+
+*CPOR  *MATRIX   1.45E-7
+*CPOR  *FRACTURE 1.45E-7
+*PRPOR *MATRIX   7650.0
+*PRPOR *FRACTURE 7650.0
+
+**--------------------------------------------------FLUID COMPONENT DATA
+**Insert file written by WINPROP based on library components
+
+** PVT UNITS CONSISTENT WITH *INUNIT *SI
+
+*MODEL   *PR
+*NC    4    4
+*TRES        49.000
+*PVC3  1.2000000E+00
+*COMPNAME
+           'N2'           'C1'           'C2'           'C3'
+*SG         8.0900000E-01  3.0000000E-01  3.5600000E-01  5.0700000E-01
+*TB        -1.9575000E+02 -1.6145000E+02 -8.8650000E+01 -4.2050000E+01
+*PCRIT      3.3500000E+01  4.5400000E+01  4.8200000E+01  4.1900000E+01
+*VCRIT      8.9500000E-02  9.9000000E-02  1.4800000E-01  2.0300000E-01
+*TCRIT      1.2620000E+02  1.9060000E+02  3.0540000E+02  3.6980000E+02
+*AC         4.0000000E-02  8.0000000E-03  9.8000000E-02  1.5200000E-01
+*MW         2.8013000E+01  1.6043000E+01  3.0070000E+01  4.4097000E+01
+*HCFLAG     0              0              0              0
+*BIN
+            3.1000000E-02
+            4.2000000E-02  2.6890022E-03
+            9.1000000E-02  8.5370405E-03  1.6620489E-03
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      8.9500000E-02  9.9000000E-02  1.4800000E-01  2.0300000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      4.1000000E+01  7.7000000E+01  1.0800000E+02  1.5030000E+02
+
+*REFPW 101.325
+*DENW 990.0
+*CW 5.8E-07
+*VISW 0.607
+
+**--------------------------------------------------ROCK FLUID----------
+*ROCKFLUID
+RPT 1
+SWT
+**$        Sw       krw         krow
+         0.05         0          0.1
+     0.096875  0.003125    0.0878906
+      0.14375    0.0125    0.0765625
+     0.190625  0.028125    0.0660156
+       0.2375      0.05      0.05625
+     0.284375  0.078125    0.0472656
+      0.33125    0.1125    0.0390625
+     0.378125  0.153125    0.0316406
+        0.425       0.2        0.025
+     0.471875  0.253125    0.0191406
+      0.51875    0.3125    0.0140625
+     0.565625  0.378125   0.00976563
+       0.6125      0.45      0.00625
+     0.659375  0.528125   0.00351563
+      0.70625    0.6125    0.0015625
+     0.753125  0.703125  0.000390625
+          0.8       0.8            0
+SLT
+**$        Sl       krg         krog
+          0.1       0.8            0
+     0.153125  0.703125  0.000390625
+      0.20625    0.6125    0.0015625
+     0.259375  0.528125   0.00351563
+       0.3125      0.45      0.00625
+     0.365625  0.378125   0.00976563
+      0.41875    0.3125    0.0140625
+     0.471875  0.253125    0.0191406
+        0.525       0.2        0.025
+     0.578125  0.153125    0.0316406
+      0.63125    0.1125    0.0390625
+     0.684375  0.078125    0.0472656
+       0.7375      0.05      0.05625
+     0.790625  0.028125    0.0660156
+      0.84375    0.0125    0.0765625
+     0.896875  0.003125    0.0878906
+         0.95         0          0.1
+
+
+*ROCKDEN *MATRIX   *CON 2560.0
+*ROCKDEN *FRACTURE *CON 2560.0
+
+*ADGMAXC 'C1'  *MATRIX   *CON 0.3500    ** gmol/kg of rock
+*ADGCSTC 'C1'  *MATRIX   *CON 3.000E-05 ** 1/kPa
+*ADGMAXC 'C1'  *FRACTURE *CON 0.0
+*ADGCSTC 'C1'  *FRACTURE *CON 0.0
+
+
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+VERTICAL DEPTH_AVE WATER_GAS EQUIL NOTRANZONE
+*REFPRES  7650.0
+*REFDEPTH 1000.0
+*ZGAS          4.0000000E-03  9.7800000E-01  1.1000000E-02  7.0000000E-03
+
+*DWGC 1100
+*GASZONE NOOIL
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+*NORM *PRESS 1000.0
+*DTMAX 31.0
+**--------------------------------------------------WELL DATA-----------
+*RUN
+*DATE 2000 1 1
+*AIMSET *FRACTURE *CON 3
+*AIMSET *MATRIX   *CON 3
+*DTWELL 1.0E-03
+*DTMIN  1.0E-04
+
+        *WELL 1 'PRODUCER'
+        *PRODUCER 1
+        *OPERATE *MIN *BHP 275.
+        *OPERATE *MAX *STG 25000.0
+        *GEOMETRY *K
+            0.0365  0.37   1.000    0.0
+        *PERF *GEO 1
+            11 11 1 1.0
+
+*TIME 25.0
+
+*TIME 30.0
+*TIME 45.0
+*TIME 60.0
+
+
+*TIME 75.0
+*TIME 90.0
+*TIME 105.0
+*TIME 120.0
+*TIME 150.0
+*TIME 182.5
+*TIME 365.0
+
+*STOP

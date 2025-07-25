@@ -1,0 +1,336 @@
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate elastic-plastic compaction-rebound option.
+
+**    1) This run is three production/injection cycles followed by
+**       a trailing production period.  The run starts in the elastic
+**       zone (initial pressure greater than plastic onset pressure).
+
+**    2) When pressure falls below plastic onset pressure *PPLASTIC
+**       the compressibility is switched to the plastic value *CRP
+**       resulting in "plastic" behaviour.
+
+**    3) When pressure rises, the point of departure from plastic
+**       behaviour is remembered, and compressibility is switched to the
+**       original elastic value specified by keyword *CPOR.
+
+**    4) When pressure falls, elastic behaviour occurs until the
+**       plastic departure point is reached, at which point further
+**       pressure decrease results in futher plastic behaviour.
+
+**    5) Switching between elastic and plastic behaviour is done on
+**       a block-by-block basis.
+
+**    6) See the above graphically by viewing the special histories
+**       of pressure and void porosity in block (3,3,1).  The plot of
+**       "PRES 3,3,1" on the X axis and "VPOROS 3,3,1" on the Y axis
+**       shows the branching that occurs for the various cycles.
+**       The plot of "PRES 3,3,1", "VPOROS 3,3,1" and "SUBSIDPOR 3,3,1"
+**       (subsidence) versus time shows the complex decrease in
+**       porosity and formation thickness resulting from plastic
+**       behaviour.
+
+**    7) Permeability depends on porosity through keyword *PMUL, and
+**       its behaviour is similar to porosity.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 74'
+*title2 'Test/Illustrate Elastic-Plastic Compaction-Rebound'
+
+*INUNIT  *FIELD
+*OUTUNIT *FIELD
+
+*WPRN *GRID *TIME
+*OUTPRN *GRID *PRES *VPOROS *SUBSIDPOR *SBDZ *VERDSPLPOR
+*PRNTORIEN 2 0
+*WPRN *ITER 1
+*OUTPRN *ITER *NEWTON
+
+*OUTSRF *GRID *PRES *VPOROS *SUBSIDPOR *SBDZ *VERDSPLPOR permi permj permk
+*OUTSRF *SPECIAL *BLOCKVAR *PRES   1,2,1
+                 *BLOCKVAR *VPOROS 1,2,1
+                 *BLOCKVAR *PERMI  1,2,1
+                 *BLOCKVAR *PRES   2,3,1
+                 *BLOCKVAR *VPOROS 2,3,1
+                 *BLOCKVAR *PERMI  2,3,1
+                 *BLOCKVAR *PRES   3,3,1
+                 *BLOCKVAR *VPOROS 3,3,1
+                 *BLOCKVAR *PERMI  3,3,1
+                 *BLOCKVAR *PRES   5,5,1
+                 *BLOCKVAR *VPOROS 5,5,1
+                 *BLOCKVAR *PERMI  5,5,1
+                 *BLOCKVAR *SUBSIDPOR 1,2,1
+                 *BLOCKVAR *SUBSIDPOR 2,3,1
+                 *BLOCKVAR *SUBSIDPOR 3,3,1
+                 *BLOCKVAR *SUBSIDPOR 5,5,1
+                 *BLOCKVAR *SBDZ   1,2,1
+                 *BLOCKVAR *SBDZ   2,3,1
+                 *BLOCKVAR *SBDZ   3,3,1
+                 *BLOCKVAR *SBDZ   5,5,1
+                 *BLOCKVAR *VERDSPLPOR 1,2,1
+                 *BLOCKVAR *VERDSPLPOR 2,3,1
+                 *BLOCKVAR *VERDSPLPOR 3,3,1
+                 *BLOCKVAR *VERDSPLPOR 5,5,1
+
+*wrst 10
+
+** ========= DEFINITION OF FUNDAMENTAL CARTESIAN GRID ==========
+
+*GRID *VARI 5 5 3
+
+*DI *CON 50.0
+*DJ *CON 50.0
+*DK *KVAR 30 40 60
+
+*DEPTH *TOP 1 1 1 1100
+
+*POR  *KVAR 0.29 0.29 0.29
+
+*PERMI *KVAR 880.0 880.0 880.0
+*PERMJ *EQUALSI * 1.00
+*PERMK *EQUALSI * 0.10
+
+*END-GRID
+
+
+*PRPOR 1110.0
+
+*ROCKTYPE 1
+
+  *EPCOMPACT *CRP 1.1E-3 *PPLASTIC 1070
+
+  *CPOR  1.2E-4
+
+*ROCKTYPE 2 copy 1
+
+  *EPCOMPACT *CRP 1.2E-3 *PPLASTIC 1080
+
+*ROCKTYPE 3 copy 1
+
+  *EPCOMPACT *CRP 1.3E-3 *PPLASTIC 1090
+
+*PERMULI *CON 4.5
+*PERMULJ *EQUALSI
+*PERMULK *EQUALSI / 2.1
+
+*THTYPE *KVAR 1 2 3
+
+
+
+**============= FLUID DEFINITIONS =============
+
+*******************************************************************************
+** THE FOLLOWING SECTION CAN BE USED FOR THE COMPONENT PROPERTY INPUT INTO STARS
+********************************************************************************
+
+MODEL 3 3 3  ** 3 components
+COMPNAME        'WATER'    'OIL'     'GAS'
+**               -----   -------   -------
+     CMM          0.00  400.0000   18.5408 ** molecular weights
+     PCRIT        0.00       0.0    666.99 ** Critical pressure of gas
+     TCRIT        0.00       0.0    344.12 ** Critical temperature of gas
+     KV1          0.00       0.0    81398. ** 1st coefficient for K value
+     KV2          0.00       0.0  0.020060 ** 2nd coefficient for K value
+     KV3          0.00       0.0   -28.604 ** 3rd coefficient for K value
+     KV4          0.00       0.0   -1583.7 ** 4th coefficient for K value
+     KV5          0.00       0.0   -446.78 ** 5th coefficient for K value
+     MASSDEN      0.00     58.74      7.91 ** partial molar liquid density at prsr and tem
+     CP           0.00   7.15E-5   7.15E-5 ** liquid compressibility 1/psi
+     CT1          0.00  4.000E-4  4.000E-4 ** 1st coefficient of thermal expansion
+
+VISCTABLE
+**                             dead          gas             Live
+**               Water          Oil        Viscosity          Oil
+**      Temp    Viscosity    Viscosity     in liquid       Viscosity
+**             (0=default)       cp            cp              cp
+**     =====   ===========   =========     =========       =========
+         70.       0.0      23603.7812     1670.8276  **  66948.8594
+
+** REFERENCE CONDITIONS
+*PRSR 14.7
+*TEMR 60.0
+*PSURF 14.7
+*TSURF 60.0
+
+
+
+** ================ ROCK-FLUID PROPERTIES ==============
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+** SW    Krw     Krow
+0.2030  0.0000  0.8000
+0.2316  0.0001  0.5852
+0.3801  0.0008  0.4040
+0.4687  0.0062  0.2562
+0.5572  0.0260  0.1419
+0.6458  0.0793  0.0612
+0.7343  0.1973  0.0139
+0.7970  0.4000  0.0000
+0.8229  0.4265  0.0000
+0.9114  0.8000  0.0000
+1.0000  0.8000  0.0000
+
+*SLT
+** Sl    Krg     Krog
+0.2500  0.5000  0.0000
+0.3333  0.4044  0.0007
+0.4167  0.3173  0.0065
+0.5000  0.2391  0.0238
+0.5833  0.1702  0.0597
+0.6667  0.1113  0.1220
+0.7500  0.0630  0.2186
+0.8333  0.0267  0.3580
+0.9167  0.0043  0.5488
+0.9600  0.0000  0.6500
+1.0000  0.0000  0.8000
+
+**ROCK 1
+*KRTEMTAB  *SWR   *SORW   *SGR   *SORG   *KRWRO  *KROCW  *KRGCW
+     123   .230    .185    .04    .047     .400    .800   0.500
+     500   .386    .167    .04    .040     .500    .800   0.500
+
+
+
+** ================= INTTTAL CONDITIONS =================
+
+*INITIAL
+
+*PRES *CON 1110.0
+
+*TEMP *CON 60
+*MFRAC_OIL 'OIL' *CON 1
+
+
+
+** ================ NUMERICAL CONTROL ===================
+
+*NUMERICAL
+
+*DTMAX  30.0
+tform zt
+isothermal
+
+
+
+*RUN
+
+** ===================RECURRENT DATA ================
+
+*DATE  1937  1  1
+
+   *DTWELL 1
+
+   *WELL 1 'prod1'   *vert    1  1
+   *WELL 2 'prod2'   *vert    5  1
+   *WELL 3 'prod3'   *vert    5  5
+   *WELL 4 'prod4'   *vert    1  5
+   *WELL 5 'prod5'   *vert    3  3
+   *WELL 6 'injec'   *vert    3  3
+
+   *producer 'prod1' 'prod2' 'prod3' 'prod4' 'prod5'       ** Cycle #1:  Produce
+   *operate *sto 30
+   *operate *min *bhp 165
+
+   *geometry *k  0.365 0.249 1.0 0.0
+   *perfv *geo 'prod1' 'prod2' 'prod3' 'prod4' 'prod5'
+               1  1.0
+               2  1.0
+
+   *injector *mobweight 'injec'
+   *incomp water 1.0  0.0  0.0
+   *tinjw 123.0
+   qual 0.0
+   *operate     stw 350
+   *operate max bhp 2000.0
+   *perfv *geo 'injec'
+               1  1.0
+               2  1.0
+               3  1.0
+   *shutin 'injec'
+
+*DATE  1937  4  1
+*DATE  1937  7  1
+*DATE  1937  10 1
+*DATE  1938  1  1
+*DATE  1938  4  1
+*DATE  1938  7  1
+*DATE  1938  10 1
+*DATE  1939  1  1
+
+   *shutin 'prod5'
+   *open 'injec'             ** Cycle #1:  Inject
+
+*DATE  1939  4  1
+*DATE  1939  7  1
+*DATE  1939  10 1
+*DATE  1940  1  1
+
+   *shutin 'injec'
+   *open 'prod5'             ** Cycle #2:  Produce
+   *DTWELL 1
+
+*DATE  1940  4  1
+*DATE  1940  7  1
+*DATE  1940  10 1
+*DATE  1941  1  1
+*DATE  1941  4  1
+*DATE  1941  7  1
+*DATE  1941  10 1
+*DATE  1942  1  1
+
+   *shutin 'prod5'
+   *open 'injec'             ** Cycle #2:  Inject
+
+*DATE  1942  4  1
+*DATE  1942  7  1
+*DATE  1942  10 1
+*DATE  1943  1  1
+
+   *shutin 'injec'
+   *open 'prod5'             ** Cycle #3:  Produce
+   *DTWELL 1
+
+*DATE  1943  4  1
+*DATE  1943  7  1
+*DATE  1943  10 1
+*DATE  1944  1  1
+*DATE  1944  4  1
+*DATE  1944  7  1
+*DATE  1944  10 1
+*DATE  1945  1  1
+
+   *shutin 'prod5'
+   *open 'injec'             ** Cycle #3:  Inject
+
+*DATE  1945  4  1
+*DATE  1945  7  1
+*DATE  1945  10 1
+*DATE  1946  1  1
+
+   *shutin 'injec'
+   *open 'prod5'             ** Produce
+   *DTWELL 1
+
+*DATE  1946  6  1
+*DATE  1947  1  1
+*DATE  1948  1  1
+*DATE  1949  1  1
+*DATE  1950  1  1
+*DATE  1951  1  1
+*DATE  1952  1  1

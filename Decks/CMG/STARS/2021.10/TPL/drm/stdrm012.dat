@@ -1,0 +1,316 @@
+
+*****************************************************************************
+** Template  (stdrm012.dat): Gravity Drainage in a Dual Permeability Grid  **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STDRM012.DAT                                                             **
+**                                                                                  ** 
+** MODEL:  DUAL HORIZONTAL WELL SAGD MODEL                  FIELD UNITS             **
+**         1/2 PATTERN DUAL PERMEABILITY FRACTURED NETWORK  5X1X10 CARTESIAN GRID   **
+**         MODIFIED PROPERTIES VERSION OF SPE COMPARATIVE SOLUTION PROJECT          **
+**                                                                                  **
+** USAGE:  APPLICATION OF DK FOR NATURALLY FRACTURED GRAVITY DRAINAGE RESERVOIRS    **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       This is the STARS data set for Lee's modified "Fourth SPE                  **
+**       Comparative Solution Project - a Comparison of Steam Injection             **
+**       Simulators", paper SPE 13510, presented at the eighth SPE symposium        **
+**       on reservoir simulation at Dallas, Texas, Feb. 10-13, 1985. Lee's          **
+**       paper is SPE 16009, 9th SPE symposium on reservoir simulation, San         **
+**       Antonio, Texas, Feb. 1987.                                                 **
+**                                                                                  **
+**       The problem is a gravity drainage 2 horizontal wells, with water and       **
+**       a dead oil.  A two-dimensional cross-sectional study is required.          **
+**                                                                                  **
+**       Features:                                                                  **
+**                                                                                  **
+**       1)  Two-dimensional cross-sectional X-Z coordinates.                       **
+**                                                                                  **
+**       2)  Distinct permeability layering.                                        **
+**                                                                                  **
+**       3)  Black-oil type treatment of fluids. Oil density has                    **
+**           been increased by Lee to make heavier than water.                      **
+**                                                                                  **
+**       4)  Oil viscosity has been modified to heavy oil/bitumen.  Sharp           **
+**           changes occur at the steam front (33500 cp at 100 F to 4.23 cp         **
+**           at 450 F).                                                             **
+**                                                                                  **
+**       5)  Automatic initial vertical equilibrium calculation.                    **
+**                                                                                  **
+**       6)  Multi-layer well with additional injection and production              **
+**           operating constraints.                                                 **
+**                                                                                  **
+**       7)  A dual permeability approach to modelling naturally                    **
+**           fractured reservoirs is employed.                                      **
+**                                                                                  **
+**************************************************************************************
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 30'
+*TITLE2 'Simple Gravity Drainage Process'
+*TITLE3 'Natural Fractures Modelled with the Dual Permeability Option'
+
+*INUNIT *FIELD
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y *OBHLOSS
+*OUTPRN *WELL *ALL
+*OUTPRN *ITER *TSS
+*WPRN GRID 400
+*WPRN *ITER 400
+*WRST 300
+*PRNTORIEN 2 0
+
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 5 1 10        **   2D vertical cross-sectional cartesian grid
+
+
+*DI *IVAR 5 10 15 20 25
+*DJ *CON 5
+*DK *CON 3
+
+*DUALPERM                 **   Fracture spacing mimics Lee's sigma=3 value
+*DIFRAC *CON 1.633        **   Reservoir has vertical fractures only
+*DJFRAC *EQUALSI
+*DKFRAC *CON 0
+
+*POR *MATRIX    *CON 0.28
+*POR *FRACTURE  *CON 0.02
+
+*PERMI *MATRIX   *CON 050
+*PERMI *FRACTURE *CON 2000
+*PERMJ *MATRIX   *CON 050
+*PERMJ *FRACTURE *CON 2000
+*PERMK *MATRIX   *CON 050
+*PERMK *FRACTURE *CON 2000
+
+*TRANSI *MATRIX   ijk 1:2 1 5 3.5
+*TRANSK *MATRIX   ijk 1:2 1 5 4.5
+*TRANSI *FRACTURE ijk 1:2 1 5 3.6
+*TRANSK *FRACTURE ijk 1:2 1 5 4.6
+
+*END-GRID
+
+** Intrinsic formation/matrix properties
+*CPOR 5E-4
+*ROCKCP 35
+*THCONR 24
+*THCONW 24
+*THCONO 24
+*THCONG 24
+
+*HLOSSPROP *OVERBUR 35 24 *UNDERBUR 35 24
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*COMPNAME       'Water'    'OIL'
+**              -----    --------
+*CMM             18.02      600
+*MOLDEN            0       0.1075
+*CP                0        5e-6
+*CT1               0       8.8e-4
+*PCRIT          3206.2       0
+*TCRIT           705.4       0
+*CPL1              0        300
+
+*VISCTABLE
+
+**    Temp
+      70          0     2.9666e5
+      80          0     1.3466e5
+      90          0       65248
+     100          0       33500
+     125          0        7839
+     150          0        2349
+     175          0       853.2
+     200          0       360.7
+     250          0        90.7
+     300          0        31.7
+     350          0        13.9
+     400          0        7.22
+     450          0        4.23
+     500          0        2.71
+     550          0        1.87
+
+** Reference conditions
+
+*PRSR 14.7
+*TEMR 60
+*PSURF 14.7
+*TSURF 60
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT      **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4
+    0.47      0.000056      0.361
+    0.5       0.000552      0.30625
+    0.55      0.00312       0.225
+    0.6       0.00861       0.15625
+    0.65      0.01768       0.1
+    0.7       0.03088       0.05625
+    0.75      0.04871       0.025
+    0.77      0.05724       0.016
+    0.8       0.07162       0.00625
+    0.82      0.08229       0.00225
+    0.85      0.1           0.0
+
+*SLT     **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT      **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0
+    1.0        1.0          0.0
+
+*SLT     **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+
+**   Assign rel perm sets
+
+*KRTYPE *MATRIX *CON 1
+*KRTYPE *FRACTURE *CON 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+** Fractures in layer 5 will have initial pressure of 150 psi
+** Pressure in other layers (matrix and fracture) will be adjusted
+** according to gravity
+
+*VERTICAL *DEPTH_AVE
+*REFPRES 150
+*REFBLOCK 1 1 5
+
+*SW *MATRIX   *CON 0.45
+*SW *FRACTURE *CON 0.95
+
+*TEMP *MATRIX   *CON 75
+*TEMP *FRACTURE *CON 75
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*NEWTONCYC 10
+*SDEGREE 1
+*SORDER *RCMRB
+*DTMAX 90
+*UPSTREAM *KLEVEL
+
+*NORM      *PRESS 200  *SATUR  .15   *TEMP 120  *Y .15   *X .15
+
+
+*RUN
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*DATE 1973 9 25.5
+
+   *DTWELL .004
+
+   *WELL 1 'Injector 1'      ** Horizontal well in J direction
+   *WELL 2 'Producer 1'      **             "
+
+   *INJECTOR *MOBWEIGHT 'Injector 1'
+   *incomp *water 1.0  0.0
+   *tinjw 360.77
+   *qual .7
+   *OPERATE     *BHP   155     ** Start on BHP
+   *OPERATE *MAX *STW   1000   ** Maximum water rate
+   *PERF 'Injector 1'  ** i j k wi = 0.007082 *k * h / ln(0.5 * re / rw)
+              1 1 2 36926.102 **41.62
+
+   *PRODUCER 'Producer 1'
+   *OPERATE      *BHP    154   ** Start on BHP
+   *OPERATE *MAX *STL   1000   ** Maximum liquid rate
+   *OPERATE *MAX *STEAM  5E-2  CONT  ** maximum steam rate
+   *GEOMETRY J .3 .5 1 0  ** rw cc ff ss
+   *PERF *GEO 'Producer 1'  ** i j k
+                   1 1 1  1.0
+
+*TIME 45 
+
+   *TRANSI *MATRIX   ijk 1:2 1 5 0.5
+   *TRANSI *FRACTURE ijk 1:2 1 5 0.6
+   *TRANSK *FRACTURE ijk 1:2 1 5 1.6
+
+*TIME 90
+*TIME 150
+*TIME 210
+*TIME 365
+*TIME 730
+
+*STOP
+

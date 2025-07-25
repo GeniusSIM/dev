@@ -1,0 +1,376 @@
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate complex water chemistry
+
+**    This run simulates problem 2 of the examples
+**    given in the paper by GT Yeh and VS Tripathi
+**    Water Resources Research. V 27, No. 12, pp 3075-3094,
+**    December, 1991.
+
+**    Model for simulating alkaline surfactant flood:
+**			8 stars components,
+**                      6 geo-elements,
+**                      18 water species,
+**                      and 12 chemical reaction equations.
+
+**    Hydrogen is set as a stars component to identify its presence but
+**       mole concentration is set to zero.
+
+**    Geo-chem outputs are in mol/l (water) for water species
+**        and in mol/l and eq/l (pore volume) for solid and sorbed species, respectively.                  
+
+**    30x1x1 cartesian grid
+
+**    This is the STARS counterpart to STARS-ME stmeg005.dat
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Geochem Model Template #5'
+*TITLE2 'Complex water chemistry'
+*TITLE3 'Test and illustrate complex geochemistry'
+
+*INUNIT *SI
+*OUTUNIT *SI
+
+*OUTPRN *GRID  *SW  *SO  *W *X *Y *Z *SG *PRES  ** WATER AND OIL SATURATIONS AND PRESSURE
+               *VISW     *ADSORP  ** WATER VISC AND ADSORPTION
+               *MASFR    *ADSPCMP *VISO *KRW *KRO *LOGIFT *LOGCAPN
+*OUTSRF *GRID  *SW  *SO  *W   *X *Y *Z *SG *PRES    *PERMI  *PERMK                               
+               *VISW *VISO *KRW *KRO *WATMOB *OILMOB
+
+** GEOCHEM OUTPUTS
+*OUTSRF *GRID  *AQ-SP *PHAQ
+
+*OUTPRN *WELL  *ALL
+*OUTPRN *ITER *NEWTON **UNCONV
+ 
+*OUTSRF *WELL DOWNHOLE COMPONENT ALL
+*WSRF *GRID *TIME
+*WPRN *GRID *TIME
+*WPRN *ITER 1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 30 1 1  ** One-dimensional grid
+
+*DI *CON .01
+*DJ *CON .0396
+*DK *CON .0396
+
+*POR *CON 0.25	** POROSITY
+
+*PERMI *CON 500  ** 500 milli-darcies
+*PERMJ *EQUALSI  ** EQUAL TO I DIRECTION VALUE
+*PERMK *EQUALSI
+
+*END-GRID
+
+*CPOR 1.e-4	** SIGNALS INPUT OF ROCK COMPRESSIBILITIES
+*PRPOR 101.1  	** SIGNALS INPUT OF REF PRESSURE FOR ROCK COMPRESSIBILITIES
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+ 
+*MODEL 8 8 8 7   ** All components except oil are aqueous based
+ 
+*COMPNAME    'WATER'  	'H'		'CO3'  		'Mg'	'CALCIUM'	'SO4'	'CHLORIDE'	'OIL'
+**           -------	----------	--------  	-----	 ----		---	-----		-------
+*CMM          .018   	.001   		.06   		.0243	.04		.096   	0.0355		0.100	**Molecular weight IN SI UNITS
+
+** Geochem inputs
+** Input total number of elements, aqueous species, solid elements, solid species, sorbed species
+** note - there are 0 elements that make up the 0 solid species
+** there are 0 sorbed species
+*GEOCHEM 6 18 0 0 0
+** flag stars components that will participate in geochem reactions
+** water participates by default so flag to zero (follow order of COMPNAME)
+*COMP-GEO 0 1 1 1 1 1 1 0
+
+** Aqueous species inputs
+***************************
+** identify aqueous species by name
+*CMPNAME-AQ 'H+' 'CO3--' 'Mg++' 'Ca++' 'SO4--' 'H2O' 'OH-' 'CaCO3' 'CaHCO3+' 'CaSO4'
+'CaOH+' 'MgCO3' 'MgHCO3+' 'MgSO4' 'MgOH+' 'HCO3-' 'H2CO3' 'HSO4-' 
+*CHARGE-AQ  1 -2 2 2 -2 0 -1 0 1 0 1 0 1 0 1 -1 0 -1
+
+** construct the element abundance matrix, a matrix of columns
+** equal to the number of total species and rows equal to the number of elements
+** coeffecients represent the number of elements in each species
+**         1    2        3      4       5      6     7      8	     9	      10     11	     12      13        14      15      16      17	18
+**        'H+' 'CO3--' 'Mg++'   'Ca++' 'SO4--' 'H2O' 'OH-' 'CaCO3' 'CaHCO3+' 'CaSO4' 'CaOH+' 'MgCO3' 'MgHCO3+' 'MgSO4' 'MgOH+' 'HCO3-' 'H2CO3' 'HSO4-' 
+** H	   1    0     	0    	0    	0      2    1        0     1      	0     1       0       1         0      1        1       2       1
+** CO3     0    1     	0    	0    	0      0    0        1     1      	0     0       1       1         0      0        1       1       0
+** Mg      0    0     	1    	0    	0      0    0        0     0      	0     0       1       1         1      1        0       0       0
+** Ca	   0    0     	0    	1    	0      0    0        1     1      	1     1       0       0         0      0        0       0       0
+** SO4     0    0     	0    	0    	1      0    0        0     0      	1     0       0       0         1      0        0       0       1
+** Cl	   0    0     	0    	0    	0      1    0        0     0      	0     0       0       0         0      0        0       0       0
+
+*AMAT_AQ
+	   1    0     	0    	0    	0      2    1        0     1      	0     1       0       1         0      1        1       2       1
+           0    1     	0    	0    	0      0    0        1     1      	0     0       1       1         0      0        1       1       0
+           0    0     	1    	0    	0      0    0        0     0      	0     0       1       1         1      1        0       0       0
+	   0    0     	0    	1    	0      0    0        1     1      	1     1       0       0         0      0        0       0       0
+           0    0     	0    	0    	1      0    0        0     0      	1     0       0       0         1      0        0       0       1
+	   0    0     	0    	0    	0      1    0        0     0      	0     0       0       0         0      0        0       0       0
+
+** Build the stoichiometry matrix, consisting of columns equal to the number of aqueous fluids
+** and rows equal to the number of reactions
+** Each equation is followed with the associated reaction constant
+** In this example there are 18 aqueous species (independents and dependents) and
+** 12 reactions (equivalent to the number of dependent species)
+** total number of equations is number of dependent species  minus number of independent species
+
+**   1    2        3      4      5	 6     7      8	      9	       10	11	12     13        14      15      16      17	18
+**  'H+' 'CO3--' 'Mg++' 'Ca++' 'SO4--'   'H2O' 'OH-' 'CaCO3' 'CaHCO3+' 'CaSO4' 'CaOH+' 'MgCO3' 'MgHCO3+' 'MgSO4' 'MgOH+' 'HCO3-' 'H2CO3' 'HSO4-' 
+** Equation 1: OH reaction (water dissociation)
+** H20 -> H+ + OH-
+*STOICH_AQ -1 0 0 0 0 0 -1 0 0 0 0 0 0 0 0 0 0 0
+*LG-KEQ -14.0d0
+** Equation 2: CaCO3
+** Ca++ + CO3-- -> CaCO3
+*STOICH_AQ 0 1 0 1 0 0 0 -1 0 0 0 0 0 0 0 0 0 0
+*LG-KEQ 3.22d0
+** Equation 3: CaHCO3 reaction
+** Ca++ + H+ + CO3-- -> Ca(HCO3)+
+*STOICH_AQ 1 1 0 1 0 0 0 0 -1 0 0 0 0 0 0 0 0 0
+*LG-KEQ 11.43d0
+** Equation 4: CaSO4 reaction
+** Ca++ + SO4-- -> CaSO4
+*STOICH_AQ 0 0 0 1 1 0 0 0 0 -1 0 0 0 0 0 0 0 0
+*LG-KEQ 2.31d0
+** Equation 5: CaOH reaction
+** Ca++ + H2O -> Ca(OH)+ H+
+*STOICH_AQ -1 0 0 1 0 0 0 0 0 0 -1 0 0 0 0 0 0 0
+*LG-KEQ -12.85d0
+** Equation 6: MgCO3
+** Mg++ + CO3-- -> MgCO3
+*STOICH_AQ 0 1 1 0 0 0 0 0 0 0 0 -1 0 0 0 0 0 0
+*LG-KEQ 2.98d0
+** Equation 7: MgHCO3
+** Mg++ + H+ + CO3-- -> Mg(HCO3)+
+*STOICH_AQ 1 1 1 0 0 0 0 0 0 0 0 0 -1 0 0 0 0 0
+*LG-KEQ 11.4d0
+** Equation 8: MgSO4
+** Mg++ + SO4-- -> MgSO4
+*STOICH_AQ 0 0 1 0 1 0 0 0 0 0 0 0 0 -1 0 0 0 0
+*LG-KEQ 2.25d0
+** Equation 9: MgOH
+** Mg++ + H2O -> Mg(OH)+ + H+
+*STOICH_AQ -1 0 1 0 0 0 0 0 0 0 0 0 0 0 -1 0 0 0
+*LG-KEQ -11.44d0
+** Equation 10: HCO3
+** H+ + CO3-- -> HCO3-
+*STOICH_AQ 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0 0
+*LG-KEQ 10.32d0
+** Equation 11: H2CO3, dissolved CO2
+** 2H+ + CO3-- -> H2CO3
+*STOICH_AQ 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 0
+*LG-KEQ 16.67d0
+** Equation 12: HSO4
+** H+ + SO4-- -> HSO4-
+*STOICH_AQ 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 -1 
+*LG-KEQ 1.99d0
+
+** Ionic species
+** Must identify location of hydrogen in the *CMPNAME-AQ species list
+****************
+*HYDROGEN 1
+
+ 
+**----------------------------------------------------------------------------- 
+*MASSDEN    1000    	1000     1000   1000	1000   1000    1000    924     **Density 
+**-----------------------------------------------------------------------------   
+*CP           3e-6    3e-6     3e-6	3e-6     3e-6	3e-6	3e-6	1e-5  **Compressibility (units 1/kPa)   
+*CT1          0e-6    0e-6	0e-6     0e-6	0e-6     0e-6	0e-6	0e-6  **Thermal expansion
+*PCRIT        22110.0   0	0        0	0        0	0	0     **Critical pressure in kPa
+*TCRIT        374.150   0	0        0	0        0	0       0     **Critical temperature in deg C
+
+*AVISC         0.6    0.6	0.6     0.6	0.6     0.6   0.6    3.2	**Assigned liq. viscosity
+
+
+*PRSR  101.1
+*TEMR 17
+*PSURF 101.1
+*TSURF 17 
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+**  BEGIN STARS REL-PERM INPUT DATA
+
+*SWT   **  WATER-OIL RELATIVE PERMEABILITIES
+**    SW         KRW       KROW  Pcow
+**  ----      -------    ------- -----
+    0.19      0.000000  1.00000  40.72 **5.91
+     0.20      0.000159  0.95162  37.21  **5.40
+     0.22      0.001149  0.85959  33.83 **4.91
+     0.24      0.002881  0.77370  30.66 **4.45
+     0.26      0.005279  0.66373  27.69 **4.02
+     0.28      0.008299  0.61947  24.94 **3.62
+     0.30      0.011909  0.55070  22.32 **3.24
+     0.32      0.016087  0.48723  19.91 ** 2.89
+     0.34      0.020813  0.42882  17.63 ** 2.56
+     0.36      0.026073  0.37529  15.57 ** 2.26
+     0.38      0.031852  0.32640  13.64 ** 1.98
+     0.40      0.038139  0.28196  11.92 ** 1.73
+     0.42      0.044925  0.24174  10.33 ** 1.50
+     0.44      0.052200  0.20555  8.82 ** 1.28
+     0.46      0.059956  0.17316  7.51 ** 1.09
+     0.48      0.068186  0.14436  6.34 ** 0.92
+     0.50      0.076883  0.11895  5.31 ** 0.77
+     0.52      0.086041  0.09671  4.34 ** 0.63
+     0.54      0.095654  0.07743  3.51 ** 0.51
+     0.56      0.105716  0.06090  2.895 ** 0.40
+     0.58      0.116224  0.04691  2.137 ** 0.31
+     0.60      0.127172  0.03524  1.655 ** 0.24
+     0.62      0.138555  0.02569  1.172 ** 0.17
+**     0.64      0.150370  0.01804  0.14
+     0.66      0.162613  0.01208  .689 ** 0.1
+**     0.68      0.175280  0.00761   0.0
+     0.70      0.188367  0.00440   0.0
+**     0.72      0.201872  0.00225   0.0
+     0.74      0.215791  0.00095   0.0
+     0.76      0.230120  0.00028   0.0
+     0.80      0.260000  0.00000   0.0
+*SLT   **  LIQUID-GAS RELATIVE PERMEABILITIES
+**                  SL        KRG       KROG
+**                ----      -----     ------
+                   0.29      0.4200    0.000
+                   0.32      0.36898   0.00179
+                   0.34      0.33737   0.00496
+                   0.36      0.30762   0.00972
+                   0.38      0.27967   0.01607
+                   0.40      0.25347   0.02400
+                   0.42      0.22896   0.03353
+**                   0.44      0.20608   0.04463
+                   0.46      0.18478   0.05733
+                   0.48      0.16500   0.07161
+                   0.50      0.14668   0.08748
+                   0.52      0.12978   0.10494
+                   0.54      0.11422   0.12398
+                   0.56      0.09996   0.14461
+**                   0.58      0.08694   0.16683
+                   0.60      0.07510   0.19064
+                   0.62      0.06439   0.21603
+                   0.64      0.05475   0.24301
+                   0.66      0.04612   0.27157
+**                   0.68      0.03845   0.30173
+                   0.70      0.03168   0.33347
+**                   0.72      0.02576   0.36679
+                   0.74      0.02063   0.40171
+                   0.76      0.01622   0.43821
+**                   0.78      0.01250   0.47629
+                   0.80      0.00939   0.51597
+                   0.82      0.00684   0.55723
+**                   0.84      0.00481   0.60008
+                   0.86      0.00322   0.64451
+**                   0.88      0.00203   0.69054
+                   0.90      0.00117   0.73815
+                   0.92      0.00060   0.78734
+                   0.94      0.00025   0.83813
+                   0.96      0.00008   0.89050
+                   0.98      0.00001   0.94446
+                   1.00      0.00000   1.00000 
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES *CON 101.1  
+*SW   *CON  0.85    
+*SO *CON 0.15
+*TEMP *CON 17 ** convert to lab units and lab value
+*MFRAC_WAT 'WATER' *CON 1
+** initial pH of 8.0
+**MFRAC_WAT 'H' *CON 18.0e-8
+**NOTE paper in Molars moles/Lwater, water is .018L/mol
+*MFRAC_WAT 'CALCIUM' *CON 18.0e-7
+*MFRAC_WAT 'Mg' *CON 90.0e-6
+*MFRAC_WAT 'SO4' *CON 9.00e-5
+*MFRAC_WAT 'CO3' *CON 18.0e-7
+*MFRAC_WAT 'CHLORIDE' *CON 1.77e-6 ** Chloride amount can be adjusted to change pH
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*ITERMAX 100 
+**DTMAX 90
+*DTMAX .025 ** change max time step to .025 days in lab     
+*TFORM *ZT
+*ISOTHERMAL 
+*NORM      *PRESS 150 *ZO .2    *TEMP 50  *ZNCG .2   *ZAQ .2  
+**NORM      *PRESS 1  *ZO .1    *TEMP 50  *ZNCG .1   *ZAQ .1
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*TIME 0
+
+   *DTWELL 0.0025
+
+   *WELL 1 'INJTR'      ** Well list
+   *WELL 2 'PRODN'
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *BHP 101.1
+   *GEOMETRY *I .11 .3687 1 0  ** rw,cc,ff,ss
+   *PERF *TUBE-END 'PRODN'   **  i j k
+                    30 1 1 1.0                  
+   
+   *INJECTOR 'INJTR'  **MOBWEIGHT                            ** INJECT CHEMICAL SLUG
+
+**COMPNAME    		'WATER'  	'H'		'CO3'  		'Mg'		'CALCIUM'	'SO4'		'CHLORIDE'	'OIL'
+**           		-------		----------	--------  	-----	 	----		---		----------	-----
+   *INCOMP WATER    	.99481		0.0 		18e-5     	1.78e-4	 	1.62e-3		18e-7		0.0		  0.0
+   
+   *OPERATE *STW 3.9e-4
+   *PERF TUBE-END 'INJTR'   ** i j k  wi
+              1 1 1 1.1
+   
+*TIME .0625
+
+   
+*TIME .125
+
+   
+*TIME .1875 
+
+*TIME .25
+
+    
+*TIME .3125
+
+   *WRST *TNEXT
+
+*TIME .375
+*TIME .4375
+*TIME .5
+*TIME .5625
+*TIME .625
+*TIME .6875
+*TIME .75
+*TIME .8125
+*TIME .875
+*TIME .9375
+*TIME 1    ** 1 DAY

@@ -1,0 +1,65 @@
+               TRIGGER ACTIONS
+               -----------------
+
+
+
+Templates in the Trigger Action (TRG) directory:
+
+GMTRG001.DAT -- WAG control - elapsed time relative to trigger definition time
+GMTRG002.DAT -- WAG control - elapsed time relative to simulation start time
+GMTRG003.DAT -- Trigger WAG control with varying cycle times
+GMTRG004.DAT -- Trigger Well rate and BHP control
+GMTRG005.DAT -- Trigger Gas phase voidage replacement
+GMTRG006.DAT -- Trigger Reperforate based on layer water cut
+GMTRG007.DAT -- Voidage Replacement via Triggers for Production Rate
+GMTRG008.DAT -- WAG Process Model with Group Cyclic Controls
+GMTRG009.DAT -- Use of OR logical connector in constructing a trigger condition.
+GMTRG010.DAT -- WAG Process Model with Group Cyclic Controls
+
+GMTRG011.DAT -- WAG process with cycle duration based on cum. injection/time targets.
+GMTRG012.DAT -- Use of special symbol '$' to link the value of the 
+                trigger test condition with a well action line
+GMTRG013.DAT -- Template with triggers on reporting groups
+GMTRG014.DAT -- Demonstrate use of maximum reservoir pressure criterion to control 
+                voidage replacement factor.
+GMTRG015.DAT -- Demonstrate use of gaslift rate; and gaslift+gas production rate 
+                as trigger conditions.
+GMTRG016.DAT -- Demostrate use of average time as trigger condition over which
+                a moving average of a quantity is to be calculated
+GMTRG017.DAT -- Demonstrate use of *MPVS *MPLS *MPWS for trigger *ON_GROUP
+
+GMTRG018.DAT -- WAG Process Model with Triggers.
+GMTRG019.DAT -- 2-D Miscible Flood With Group Well Control
+                Use of place holder in Trigger
+
+GMTRG020.DAT -- Test of Gas Phase Voidage Replacement with Trigger
+                Variables (1)
+GMTRG021.DAT -- Test of Gas Phase Voidage Replacement with Trigger
+                Variables (2)
+GMTRG022.DAT -- WAG Process Model with Trigger Variables.
+GMTRG023.DAT -- 2-D Miscible Flood With Group Well Control
+                Trigger variables with built-in functions
+GMTRG024.DAT -- WAG Process Model with Triggers.
+                Cycle duration based on cumulative injection
+
+GMTRG025.DAT -- WAG Process Model with Trigger Variables -- Simplified Trigger Format.
+
+GMTRG026.DAT -- WAG Process Model with Triggers -- Cycle duration based on cumulative injection.
+
+GMTRG027.DAT -- Use of place holder and *TIME_DELAY in Trigger
+GMTRG028.DAT -- Use of *TDATE to monitor Trigger condition.
+GMTRG029.DAT -- Group Cyclic Controls - zero cycle part in maximum time
+GMTRG030.DAT -- Use of discrete Trigger variables (*TRGVARS)
+GMTRG031.DAT -- Aqueous phase composition monitoring with Triggers
+GMTRG032.DAT -- Test of Gas Phase Voidage Replacement with Trigger IF ELSEIF BLOCK
+GMTRG033.DAT -- Use of Comparison Operators in triggers
+
+
+Cross references to templates in other directories:
+
+GMSPR002.DAT -- WAG control without triggers
+GMWWM004.DAT -- Related to GMTRG004
+GMWWM056.DAT -- Related to GMTRG005
+GMWWM033.DAT -- Related to GMTRG006
+GMWWM066.DAT -- Related to GMTRG007, GMTRG009
+

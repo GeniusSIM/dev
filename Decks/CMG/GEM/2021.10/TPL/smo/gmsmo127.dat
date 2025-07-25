@@ -1,0 +1,411 @@
+**--------------------------------------------------------------------**
+** GMSMO127.DAT:  Kr Interpoplation via *INTERP-SCAL(2)               **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO127.DAT                                                **
+**                                                                    **
+** MODEL: CART 21x21x8 GRID                  3-D WAG (CO2-WATER)      **
+**        ION-EXCHANGE WITH EQV              4 COMPONENTS             **
+**        FRACTION DEPENDENT KR'S             FIELD UNITS             **
+**        INTERP_SCAL                                                 **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template data set is constructed to model a low salinity      **
+** water flood in a 5-spot pattern.                                   **
+** Two ion-exchangers are specified. The interploation of relative    **
+** permeabilities is done based on equivalent fraction of Na-X.       **
+**                                                                    **
+** Ion Exchange modelling -- output of well stream aqueous phase      **
+**                           quantities                               **
+**                                                                    **
+** Well-stream aqueous phase properties are printed out via keywords  **
+**    *OUTPRN *WELL *AQPHASEPROP                                      **
+** to the out file and written to Simulation Results File for         **
+** plotting via keywords                                              **
+**    *OUTSRF *WELL *AQPHASEPROP                                      **
+**                                                                    **
+** Well-stream aqueous phase composition and molality of individual   **
+** aqueous components at surface and/or reservoir conditions is       **
+** written to special history for a given aqueous component in a well **
+** using kewords *WWEL, *WWELR, *MOLALITYW or *MOLALITYWR.            **
+**                                                                    **
+** The aqueous phase well stream densities are output via *DENWW and  **
+** *DENWWR at surface and reservoir conditions respectively, to the   **
+** special history.                                                   **
+**                                                                    **
+** The aqueous phase well stream salinities are output via *SALINWW   **
+** and *SALINWWR at surface and reservoir conditions respectively, to **
+** the special history.                                               **
+**                                                                    **
+** The aqueous phase well stream viscosities are output via *VISWW    **
+** and *VISWWR at surface and reservoir conditions respectively, to   **
+** the special history.                                               **
+**--------------------------------------------------------------------**
+**                                                                    **
+** A Two-Step relative permeability Interpolation procedure is        **
+** specified via keyword *INTERP_SCAL in which,                       **
+**   1. Common end points are first calculated between adjoining      **
+**      table sets, followed by,                                      **
+**   2. Interpolation of relative permeability values                 **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 '3D Reservoir study'
+*TITLE2 'Use of Adaptive Time Stepping Control'
+*INUNIT *FIELD
+
+*WSRF *WELL 1
+*WPRN *WELL *TIME
+
+*OUTSRF *GRID *PRES *SO *SG *SW *POROS *WALL *DENW
+
+*OUTSRF *SPECIAL *EQVFRIEX 'Ca-X2' 11 11 1
+                 *EQVFRIEX 'Mg-X2' 11 11 1
+                 *EQVFRIEX 'Na-X'  11 11 1
+                 *PH               11 11 1
+                 *KRO              12 17 5
+                 *SO               12 17 5
+                 *W         'CO2'  12 17 5
+                 *W         'H2O'  12 17 5
+                 *W         'H+'   12 17 5
+                 *W         'Cl-'  1 1 5
+                 *WWEL      'H2O'  'PROD1'
+                 *WWEL      'Cl-'  'PROD1'
+                 *WWELR     'H2O'  'PROD1'
+                 *WWELR     'Cl-'  'PROD1'
+                 *WWELR     'CO2'  'PROD1'
+                 *WWEL      'CO2'  'PROD1'
+                 *MOLALITYW 'Cl-'  'PROD1'
+                 *MOLALITYWR 'Cl-' 'PROD1'
+                 *DENWW            'PROD1'
+                 *DENWWR           'PROD1'
+                 *SALINWW          'PROD1'
+                 *SALINWWR         'PROD1'
+                 *VISWW            'PROD1'
+                 *VISWWR           'PROD1'
+
+*OUTPRN *RES *ALL
+*DIARY *CHANGES-UNCONV
+*OUTPRN *WELL *AQPHASEPROP  ** Print aqueous-stream component properties for the wells
+*OUTSRF *WELL *AQPHASEPROP  ** Plot aqueous-stream component molar rates and mole fractions for wells/groups
+
+*WRST 0
+
+**-------------------------------------RESERVOIR & GRID DATA------------
+*GRID *CART 21 21 8
+*KDIR *DOWN
+*DI *CON 100
+*DJ *CON 100.0
+*DK *CON 50.0
+*DEPTH 1 1 1 4500.
+*POR *CON 0.2
+*PERMI *CON 200.0
+*PERMJ *CON 200.0
+*PERMK *CON 20.0
+*CPOR 4.0D-06
+*PRPOR 1900.
+**-------------------------------------FLUID PROPERTY DATA--------------
+
+*MODEL   *PR
+*NC    4    4
+*TRES       160.000
+*COMPNAME
+           'CO2'          'CH4'          'NC4'          'NC10'
+*SG         8.1800000E-01  3.0000000E-01  5.8400000E-01  7.3400000E-01
+*TB        -1.0921000E+02 -2.5861000E+02  3.1190000E+01  3.4547000E+02
+*PCRIT      7.2800000E+01  4.5400000E+01  3.7500000E+01  2.0800000E+01
+*VCRIT      9.4000000E-02  9.9000000E-02  2.5500000E-01  6.0300000E-01
+*TCRIT      3.0420000E+02  1.9060000E+02  4.2520000E+02  6.1760000E+02
+*AC         2.2500000E-01  8.0000000E-03  1.9300000E-01  4.9000000E-01
+*MW         4.4010000E+01  1.6043000E+01  5.8124000E+01  1.4228600E+02
+*HCFLAG     0              0              0              0
+*BIN
+            1.0300000E-01
+            1.3000000E-01  1.4748531E-02
+            1.1000000E-01  5.2194209E-02  1.2227931E-02
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.4000000E-02  9.9000000E-02  2.5500000E-01  6.0300000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      7.8000000E+01  7.7000000E+01  1.8990000E+02  4.3350000E+02
+
+*SOLUBILITY
+*HENRY-CORR-CO2
+
+*ENTHCOEF
+            9.6880000E-02  1.5884300E-01 -3.3712000E-05  1.4810500E-07
+           -9.6620300E-11  2.0738320E-14
+           -2.8385700E+00  5.3828500E-01 -2.1140900E-04  3.3927600E-07
+           -1.1643220E-10  1.3896120E-14
+            7.2281400E+00  9.9687000E-02  2.6654800E-04  5.4073000E-08
+           -4.2926900E-11  6.6958000E-15
+           -3.0242800E+00  2.0343700E-01 -3.5383000E-05  4.0734500E-07
+           -2.3076890E-10  4.2992000E-14
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DER-CHEM-EQUIL  *NUMERICAL
+*DER-REACT-RATE  *NUMERICAL
+
+*PERM-VS-POR   1
+
+*ACTIVITY-MODEL  *IDEAL
+*SALINITY-CALC  *ON
+*AQFILL  *OFF
+
+*NC-AQUEOUS    7
+*COMPNAME-AQUEOUS
+'H+' 'Ca++' 'Mg++' 'Na+' 'Cl-' 'HCO3-' 'OH-'
+*MW-AQUEOUS
+ 1.0079 40.0800 24.3050 22.9898 35.4530  61.0171   17.0073
+*ION-SIZE-AQUEOUS
+   9.00 6.00 8.00 4.00 3.00  4.50 3.50
+*CHARGE-AQUEOUS
+   1.0  2.0  2.0  1.0  -1.0 -1.0  -1.0
+
+*NC-MINERAL    2
+*COMPNAME-MINERAL
+'Calcite' 'Magnesi*'
+*MW-MINERAL
+  100.0892   84.3142
+*MASSDENSITY-MINERAL
+   2709.95   3009.29
+
+*NC-IEX 3
+*COMPNAME-IEX
+'Ca-X2' 'Mg-X2' 'Na-X'
+*AQIONS-IEX
+'Ca++' 'Mg++' 'Na+'
+
+
+*REACTION-CHEM   'CO2' + 'H2O' = 'H+' + 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+ -6.549243E+00  9.001740E-03 -1.021150E-04  2.761879E-07 -3.561421E-10
+
+*REACTION-CHEM   'OH-' + 'H+' = 'H2O'
+*LOG-CHEM-EQUIL-COEFS
+  1.492816E+01 -4.187619E-02  1.973673E-04 -5.549507E-07  7.581087E-10
+
+*REACTION-RATE 'Calcite' + 'H+' = 'Ca++' + 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+  2.068889E+00 -1.426678E-02 -6.060961E-06  1.459215E-07 -4.189284E-10
+*SPEC-REACT-SURFACE-AREA     6500.00
+*ACTIVATION-ENERGY    41870.00
+*LOG-TST-RATE-CONSTANT    -8.80000
+*REF-TEMP-RATE-CONST       25.00
+
+*REACTION-RATE 'Magnesi*' + 'H+' = 'Mg++' + 'HCO3-'
+*LOG-CHEM-EQUIL-COEFS
+  3.118132E+00 -2.837280E-02  4.141541E-05  4.756590E-08 -3.487563E-10
+*SPEC-REACT-SURFACE-AREA     6500.00
+*ACTIVATION-ENERGY    41870.00
+*LOG-TST-RATE-CONSTANT    -9.10000
+*REF-TEMP-RATE-CONST       25.00
+
+
+** Stoichiometry and selectivity cofficent for ion-exchanger 1
+*REACTION-IEX 'Na+' + 0.5 'Ca-X2' = 0.5 'Ca++' + 'Na-X'
+ *SCOEFF-IEX
+  25.0  0.4
+  100.0 0.4
+
+** Stoichiometry and selectivity cofficent for ion-exchanger 2
+*REACTION-IEX 'Na+' + 0.5 'Mg-X2' = 0.5 'Mg++' + 'Na-X'
+ *SCOEFF-IEX
+  25.0  0.5
+  100.0 0.5
+
+*PHASEID *CRIT
+*CW  3.0D-06
+*REFPW 1900.0
+*DENW 62.5
+*TRACE-INTERNAL-OFF
+**-------------------------------------ROCK FLUID DATA------------------
+*ROCKFLUID
+
+*RPT  1            ** Rock type designator
+*INTERP_SCAL
+*INTCOMP *EQVFRIEX 'Na-X'
+*KRINTRP 1
+*INTCOMP_VAL 0.35
+
+*SGT
+       0.0       0.0       1.00000    0.0
+       0.05000   0.0       0.88000    0.0
+       0.08890   0.00100   0.70230    0.0
+       0.17780   0.01000   0.47050    0.0
+       0.26670   0.03000   0.29630    0.0010
+       0.35560   0.05000   0.17150    0.0100
+       0.44440   0.10000   0.08780    0.0300
+       0.53330   0.20000   0.03700    0.8000
+       0.62220   0.35000   0.01100    3.0000
+       0.65000   0.39000   0.0        4.0000
+       0.71110   0.56000   0.0        8.0000
+       0.80000   1.0       0.0       30.0000
+*SWT                       
+
+    0.200     0.0        1.000       1.00
+    0.210     1.16E-02   0.918       0.854
+    0.230     7.65E-02   0.748       0.576
+    0.240     0.125      0.659       0.443
+    0.245     0.153      0.614       0.379
+    0.250     0.184      0.568       0.316
+    0.255     0.216      0.521       0.255
+    0.260     0.251      0.474       0.195
+    0.265     0.288      0.425       0.138
+    0.270     0.327      0.375       8.18E-02
+    0.275     0.368      0.323       2.84E-02
+    0.280     0.411      0.269      -2.25E-02
+    0.285     0.456      0.213      -7.02E-02
+    0.290     0.503      0.153      -0.114
+    0.295     0.552      8.68E-02   -0.153
+    0.297     0.578      4.93E-02   -0.169
+    0.300     0.603      0.000      -0.181
+
+
+*KRINTRP 2 
+*INTCOMP_VAL 0.05       
+*SGT
+        0.0       0.0       1.00000    0.0
+        0.05000   0.0       0.88000    0.0
+        0.08890   0.00100   0.70230    0.0
+        0.17780   0.01000   0.47050    0.0
+        0.26670   0.03000   0.29630    0.0010
+        0.35560   0.05000   0.17150    0.0100
+        0.44440   0.10000   0.08780    0.0300
+        0.53330   0.20000   0.03700    0.8000
+        0.62220   0.35000   0.01100    3.0000
+        0.65000   0.39000   0.0        4.0000
+        0.71110   0.56000   0.0        8.0000
+        0.80000   1.0       0.0       30.0000
+*SWT
+
+    0.20  0.0     1.0     1.0
+    0.25  0.003	  0.987   0.912
+    0.30  0.0125  0.974   0.823
+    0.35  0.0281  0.959   0.729
+    0.40  0.05    0.944   0.635
+    0.46  0.0845  0.924   0.519
+    0.50  0.1125  0.910   0.439
+    0.56  0.162   0.887   0.316
+    0.60  0.2     0.870   0.231
+    0.66  0.2645  0.843   0.099
+    0.70  0.3125  0.822   0.007
+    0.75  0.3781  0.792  -0.114
+    0.80  0.45    0.758  -0.242
+    0.85  0.5281  0.715  -0.380
+    0.90  0.6125  0.660  -0.533
+    0.95  0.7031  0.574  -0.713
+    1.00  0.8     0.0    -1.0
+
+
+
+*RTYPE   *CON      1 
+*CEC-IEX *CON      50.0
+**-------------------------------------INITIAL RESERVOIR CONDITION------
+*INITIAL
+
+*VERTICAL   *DEPTH_AVE *WATER_OIL_GAS
+*REFDEPTH   4500.
+*REFPRES    1900.
+*DWOC   4750
+*DGOC   4000
+
+*ZGAS 0.55 0.2 0.2 0.05
+*ZOIL 0.05 0.2 0.2 0.55
+
+*SEPARATOR  14.70  60.0
+
+*MOLALITY-AQUEOUS-PRIMARY
+** 'H+'    'Ca++'  'Mg++' 'Na+'   'Cl-'
+4.235E-05  0.633    1.14   1.29   1.67
+
+*VOLUMEFRACTION-MINERAL
+0.02 0.02
+**-------------------------------------NUMERICAL METHOD-----------------
+*NUMERICAL
+*ADTSC   ** Turn adaptive timestepping control on
+         ** The numerical controls below will be overidden by internal
+         ** logic and timestepping will be controlled adaptively based
+         ** on characteristics of 5 previous timesteps.
+*NORM      *PRESS 145.0
+*NORM      *SATUR  0.1
+*NORM      *GMOLAR 0.05
+*NORM      *AQUEOUS 0.1
+*MAXCHANGE *SATUR  0.8
+*MAXCHANGE *GMOLAR 0.8
+*MAXCHANGE *PRESS 2000.
+*CONVERGE *MAXRES 1.0E-6
+*AIM *STAB *AND-THRESH 1 0.001
+
+*ITERCER 5
+
+**-------------------------------------WELL DATA------------------------
+** ONE INJECTOR AND ONE PRODUCER LOCATED AT EITHER END
+** INJECTOR  : Constant rate water injection with ions
+** PRODUCERS : Constant BHP
+*RUN
+*DATE 1986 1 1
+     *DTMIN 0.0001
+     *DTMAX 31.
+     *DTWELL 0.01
+
+     *WELL 1 'PROD1'                  ** Producer on BHP constraint
+        *PRODUCER  1
+           *OPERATE *MIN *BHP 2500
+
+        *GEOMETRY *K  0.375  0.2488  1.0  0.0
+        *PERF *GEO 1
+              1 1 1:5 1.0
+
+     *WELL 2 'PROD2'                  ** Producer on BHP constraint
+        *PRODUCER  2
+           *OPERATE *MIN *BHP 2500
+
+        *GEOMETRY *K  0.375  0.2488  1.0  0.0
+        *PERF *GEO 2
+              1 21 1:5 1.0
+
+     *WELL 3 'PROD3'                  ** Producer on BHP constraint
+        *PRODUCER  3
+           *OPERATE *MIN *BHP 2500
+
+        *GEOMETRY *K  0.375  0.2488  1.0  0.0
+        *PERF *GEO 3
+              21 1 1:5 1.0
+
+     *WELL 4 'PROD4'                  ** Producer on BHP constraint
+        *PRODUCER  4
+           *OPERATE *MIN *BHP 2500
+
+        *GEOMETRY *K  0.375  0.2488  1.0  0.0
+        *PERF *GEO 4
+              21 21 1:5 1.0
+
+     *WELL 5   'INJ-AQ'                  ** Water(and ions) injector
+        *INJECTOR 5
+           *INCOMP  *AQUEOUS
+** ------- 1 to Nc -------** **----------- 1 to Nc_aqu ---------------------------**
+             0.0 0.0 0.0 0.0  4.235E-06 0.0633 1.14 0.129 0.167 7.766E-04  4.027E-09 
+           *OPERATE *MAX *STW 5000. ** bbl/day
+
+        *GEOMETRY *K  0.375  0.2488  1.0  0.0
+        *PERF *GEO 5
+              11 11 1:5 1.0
+
+*DATE 1987 1 1
+  *ALTER 'INJ-AQ'
+  7500
+*DATE 1987 06 1
+  *ALTER 'INJ-AQ'
+  5500
+*DATE 1988 1 1
+*STOP

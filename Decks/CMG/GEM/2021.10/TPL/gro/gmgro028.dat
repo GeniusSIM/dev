@@ -1,0 +1,229 @@
+   ******************************************************************************
+   ** GMGRO028.dat:       Threshold Pressure - Elastic Mode with LGR           **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   GMGRO028.DAT                                                             **
+   ** MODEL:  10x10x6          One EOS Region         Multiple Initialization Regions  **
+   **                          Threshold Pressures                                     **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 10x10x6 model containing multiple INIT Regions and fluid contacts.     **
+   ** The threshold pressure across equilibration regions prevents flow from occurring **
+   ** between adjacent initialization regions until the potential exceeds a specified  **
+   ** (or default) threshold value. With the Elastic mode, the flow can be irreversible**
+   ** across the two sides of the interface if two different values are specified.     **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+   *RESULTS *SIMULATOR *GEM
+
+   *TITLE1
+   'GEM Grid Option Template No. 28'
+   *TITLE2
+   'PTHRESH across INIT Regions - Elastic with LGR'
+   *TITLE3
+   '*PTHRESH-IREGN *ELASTIC'
+
+   *INUNIT    *FIELD               
+
+   *WSRF      *WELL 1
+   ** *WSRF *GRID 1
+   *OUTSRF    *GRID *PRES *SO *SG *SW *VELOCRC
+
+   *OUTSRF *RES *ALL
+
+   *DEBUG *JDUMP 51:51 1:1 1:1 5
+   
+   *GRID *CART    10    10   6                                      
+   **************************************************************************  
+   ** Reservoir description Section
+   **************************************************************************
+
+   *DI *CON 500.0                             
+   *DJ *CON 500.0                  
+
+   *DK *KVAR                             
+    50.0  100.0  100.0  50.0 50.0  50.0   
+
+   *DEPTH 1    1   6  3400.0      
+
+   *POR  *CON  0.150              
+   *PRPOR 3600.0                 
+   *CPOR  4.0E-6                 
+                          
+   *PERMI *KVAR                   
+      35.0   19.1   13.75  30.0   12.5   47.2
+   *PERMJ *KVAR
+      35.0   19.1   13.75  30.0   12.5   47.2
+   *PERMK *KVAR
+      3.50   1.91   1.375  3.00   1.25   4.72
+                               
+   **************************************************************************  
+   ** FLUID PROPERTY DATA
+   **************************************************************************
+
+   *MODEL   *PR
+   *NC    4    4
+   *TRES       160.000
+   *COMPNAME
+              'CO2'          'CH4'          'NC4'          'NC10'
+   *SG         8.1800000E-01  3.0000000E-01  5.8400000E-01  7.3400000E-01
+   *TB        -1.0921000E+02 -2.5861000E+02  3.1190000E+01  3.4547000E+02
+   *PCRIT      7.2800000E+01  4.5400000E+01  3.7500000E+01  2.0800000E+01
+   *VCRIT      9.4000000E-02  9.9000000E-02  2.5500000E-01  6.0300000E-01
+   *TCRIT      3.0420000E+02  1.9060000E+02  4.2520000E+02  6.1760000E+02
+   *AC         2.2500000E-01  8.0000000E-03  1.9300000E-01  4.9000000E-01
+   *MW         4.4010000E+01  1.6043000E+01  5.8124000E+01  1.4228600E+02
+   *HCFLAG     0              0              0              0
+   *BIN
+               1.0300000E-01
+               1.3000000E-01  1.4748531E-02
+               1.1000000E-01  5.2194209E-02  1.2227931E-02
+   *VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+   *VISCOR *HZYT
+   *MIXVC      1.0000000E+00
+   *VISVC      9.4000000E-02  9.9000000E-02  2.5500000E-01  6.0300000E-01
+   *VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+               9.3324000E-03
+   *OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+   *OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+   *PCHOR      7.8000000E+01  7.7000000E+01  1.8990000E+02  4.3350000E+02
+
+   *ENTHCOEF
+               9.6880000E-02  1.5884300E-01 -3.3712000E-05  1.4810500E-07
+              -9.6620300E-11  2.0738320E-14
+              -2.8385700E+00  5.3828500E-01 -2.1140900E-04  3.3927600E-07
+              -1.1643220E-10  1.3896120E-14
+               7.2281400E+00  9.9687000E-02  2.6654800E-04  5.4073000E-08
+              -4.2926900E-11  6.6958000E-15
+              -3.0242800E+00  2.0343700E-01 -3.5383000E-05  4.0734500E-07
+              -2.3076890E-10  4.2992000E-14
+
+
+
+   *PHASEID *CRIT
+   *CW  3.0E-06
+   *REFPW 14.7
+   *DENW  63.02
+   *ROCKFLUID
+   **************************************************************************
+   **Rock-fluid Property Section
+   **************************************************************************
+   *RPT    
+
+   *SWT *SMOOTHEND *QUAD          ** Water-oil relative permeability table.
+   **   sw    krw    krow    pcow
+      0.22    0.0    1.0     7.0
+      0.30    0.07   0.4     4.0
+      0.40    0.15   0.125   3.0
+      0.50    0.24   0.0649  2.5
+      0.60    0.33   0.0048  2.0
+      0.80    0.65   0.0     1.0
+      0.90    0.83   0.0     0.5
+      1.00    1.0    0.0     0.0
+
+   *SLT *SMOOTHEND *QUAD          ** Liquid-gas relative permeability table.
+   **   sl     krg    krog     pcog
+      0.22    1.0     0.0      3.9
+      0.30    0.8125  0.0      3.5
+      0.40    0.5     0.0      3.0
+      0.50    0.42    0.0      2.5
+      0.60    0.34    0.0      2.0
+      0.70    0.24    0.02     1.5
+      0.80    0.1     0.1      1.0
+      0.90    0.022   0.33     0.5
+      0.96    0.0     0.6      0.2
+      1.0     0.0     1.0      0.0
+
+** Threshold pressure for flow across ITYPE regions
+
+   *PTHRESH-IREGN *ELASTIC
+       2   1            ** Region 2 to Region 1, default pthresh (initial max)
+       1   2            ** Region 1 to Region 1, default pthresh (initial max)
+
+
+   *INITIAL
+   **************************************************************************
+   ** Initial Conditions Section
+   **************************************************************************
+   *VERTICAL *DEPTH_AVE *WATER_OIL_GAS 
+
+   *NREGIONS 2
+
+   *REFPRES  3600.0  3400.0                
+   *REFDEPTH 3800.0  3800.0 
+   *DWOC     3750.0  3700.0
+   *DGOC     3300.0  3360.0           
+
+   *ZGAS 
+          0.55 0.2 0.2 0.05
+          0.55 0.2 0.2 0.05
+   *ZOIL 
+          0.05 0.2 0.2 0.55
+          0.05 0.2 0.2 0.55
+
+   *ITYPE *IJK
+       1:5     1:10     1:6    1
+       6:10    1:10     1:6    2
+    
+   *NUMERICAL
+   **************************************************************************   
+   ** Numerical Control Section
+   **************************************************************************
+   *DTMAX        31.
+   *MAXSTEPS     1000              
+   *DTMAX 10.
+
+   *RUN
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   *DATE 1994 01 01
+   *DTWELL 
+    1.0
+
+   *WELL 1 'Producer' *VERT 10 1    
+
+   *PRODUCER 1
+
+   *OPERATE *MAX *STO 100.00     
+   *OPERATE *MIN *BHP 3000.00 *CONT 
+
+   **             rad   geofac  wfrac  skin
+   *GEOMETRY  *K  0.25   0.34    1.0    0.0 
+   *PERFV *GEO 1
+   ** kf      ff     
+     3:4     1.0
+
+   shutin 1
+
+   *TIME 10.0                     
+      OPEN 1
+
+     *ALTER                         
+      1
+      100.0
+
+   *TIME 50.0
+   *ALTER
+     1
+     1000.0
+
+   *REFINE   2  2  1 
+   *RANGE    2 1:10 1:6
+
+   *REFINE   2  2  1 
+   *RANGE    5 1:10 1:6
+
+   *WRST *TNEXT
+   *TIME 720.0
+   *ALTER
+      1
+      100.0
+
+   *TIME 900.0                   
+   *STOP

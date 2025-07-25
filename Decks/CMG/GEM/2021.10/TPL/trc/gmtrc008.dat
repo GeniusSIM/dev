@@ -1,0 +1,312 @@
+**--------------------------------------------------------------------**
+** GMTRC008.DAT: Polymer slug injection with tracers in a light oil   **
+**               reservoir                                            **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMTRC008.DAT                                                **
+**                                                                    **
+** MODEL: CART 21x21x4 GRID                       4 COMPONENTS        **
+**        FIELD UNITS                             5 TRACERS           **
+**        QUARTER 5-SPOT PATTERN                                      **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** Modified after gmplm001.dat                                        **
+**                                                                    **
+** Polymer injection in a light oil reservoir in a quarter of a       **
+** 5-spot pattern.                                                    **
+**                                                                    **
+** The oil and water viscosities at reservoir conditions are 1.5 cp   **
+** and 0.34 cp respectively. A polymer slug with concentartion small  **
+** enough to alter the aqueous phase viscosity to around 1.5 cp is    **
+** injected for a period of 6 months. This is followed by water       **
+** injection for a period of 6 mnoths. The cycle is repeated several  **
+** times for a period of 10 years.                                    **
+**                                                                    **
+** In a companion dataset gmplm002.dat, no polymer is injected - only **
+** water injection is done. Comparision of results from the two       **
+** data sets shows inremental oil recovery due to polymer slug        **
+** injection over water-flood.                                        **
+**                                                                    **
+** 5 tracers are defined to track the movement of each polymer slug.  **
+** Note that only 1 tracer is injected with each slug                 **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'SPE3'
+*TITLE2 'Polymer Slug Injection with Tracers'
+
+*INUNIT *FIELD
+
+*WRST   0
+*WPRN   *ITER  *BRIEF
+*WSRF   *WELL   1
+*OUTSRF *GRID *SO *SW  *SG  *PRES *MOLALITY 'POLYMER' *VISW *VISO
+              *RMOL 'POLYMER' *TRCR-CONC 'TRC-PLM1' *TRCR-CONC 'TRC-PLM2'
+              *TRCR-CONC 'TRC-PLM3' *TRCR-CONC 'TRC-PLM4' *TRCR-CONC 'TRC-PLM5'
+*OUTSRF *RES *ALL
+**------------------------- RESERVOIR DATA --------------------------
+*GRID  *CART  21  21  4
+*DI  *CON 120.
+*DJ  *CON 120.
+*DK  *KVAR  50.  50.  30.  30.
+*DEPTH 1 1 1 9010
+*POR  *CON  0.13
+*PERMI *CON 150
+*PERMJ *EQUALSI
+*PERMK *EQUALSI * 0.10
+*CPOR  4.0E-06
+*PRPOR  3550.0
+
+** ------------------------ FLUID COMPONENT DATA --------------------
+
+*MODEL   *PR
+*NC    4    4
+*TRES       100.000
+*PVC3  1.2000000E+00
+*COMPNAME
+           'C1'           'C2'           'C3'           'FC35'
+*SG         3.0000000E-01  3.5600000E-01  5.0700000E-01  9.2000000E-01
+*TB        -2.5861000E+02 -1.2757000E+02 -4.3690000E+01  9.0833000E+02
+*PCRIT      4.5400000E+01  4.8200000E+01  4.1900000E+01  8.9100000E+00
+*VCRIT      9.9000000E-02  1.4800000E-01  2.0300000E-01  1.5890000E+00
+*TCRIT      1.9060000E+02  3.0540000E+02  3.6980000E+02  9.0590000E+02
+*AC         8.0000000E-03  9.8000000E-02  1.5200000E-01  1.1786420E+00
+*MW         1.6043000E+01  3.0070000E+01  4.4097000E+01  4.4500000E+02
+*HCFLAG     0              0              0              0
+*BIN
+            2.6890022E-03
+            8.5370405E-03  1.6620489E-03
+            1.1668844E-01  8.7485776E-02  6.6882706E-02
+*VSHIFT    -1.5386050E-01 -1.0210346E-01 -7.3300940E-02  7.7033540E-02
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      9.9000000E-02  1.4800000E-01  2.0300000E-01  2.0300000E+00
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+*PCHOR      7.7000000E+01  1.0800000E+02  1.5030000E+02  9.9030000E+02
+*ENTHCOEF
+           -5.5811400E+00  5.6483400E-01 -2.8297300E-04  4.1739900E-07
+           -1.5255760E-10  1.9588570E-14
+           -7.6005000E-01  2.7308800E-01 -4.2956000E-05  3.1281500E-07
+           -1.3898900E-10  2.0070230E-14
+           -1.2230100E+00  1.7973300E-01  6.6458000E-05  2.5099800E-07
+           -1.2474610E-10  1.8935090E-14
+            0.0000000E+00 -1.4631650E-02  3.9919450E-04 -5.6319130E-08
+            0.0000000E+00  0.0000000E+00
+
+*DENWS 63.046
+*CW    3.E-06
+*REFPW 3600
+
+*NC-AQUEOUS 1
+*COMPNAME-AQUEOUS
+'POLYMER'
+
+*COMPNAME-POLYMER 
+'POLYMER'
+*MW-AQUEOUS
+22000.
+
+** Use default aqueous phase viscosity model, i.e., *NONLIN1
+*AQUEOUS-VISCOSITY *POLYMER
+
+** Specify parameters for aqueous viscoisty
+*AVISC-AQUEOUS 1.5
+*BVISC-AQUEOUS 0.0
+
+** Specify parameters for H2O component viscosity
+*AVISC-H2O 0.34
+*BVISC-H2O 0.
+
+** Mixing rule parameters for aqueous phase viscosity
+    **     component  xlow  xhigh
+*VSMIXENDP 'POLYMER'  0     8.19808e-09
+    **     parameters to generate weighting factors against aqueous phase mole fraction
+*VSMIXFUNC 'POLYMER' 0 0.16243 0.32486 0.487104 0.541771 0.596487 0.677189 0.757892 0.838595 0.919297 1 
+
+*DERIVATIVEMETHOD *NUMERALL
+
+*NTRCR 5
+*TRCRNAME 'TRC-PLM1' 'TRC-PLM2' 'TRC-PLM3' 'TRC-PLM4' 'TRC-PLM5'
+*TRCR-ASSOC
+** Associate component     Associated Tracer
+  'POLYMER'               'TRC-PLM1' 'TRC-PLM2' 'TRC-PLM3' 'TRC-PLM4' 'TRC-PLM5' 
+
+** --------------------------- ROCK FLUID ------------------
+
+*ROCKFLUID
+*RPT 1
+
+*SWT   
+** sw          krw     krow       pcow
+0.151090       0.0     1.0        400.0
+0.151230       0.0     0.99997    359.190
+0.151740       0.0     0.99993    257.920
+0.152460       0.0     0.99991    186.310
+0.156470       0.0     0.999510    79.060
+0.165850       0.0     0.996290    40.010
+0.178350       0.0     0.991590    27.930
+0.203350   0.000010    0.978830    20.400
+0.253350   0.000030    0.943730    15.550
+0.350000   0.000280    0.830230    11.655
+0.352000   0.002292    0.804277     8.720
+0.354000   0.004304    0.778326     5.947
+0.356000   0.006316    0.752374     3.317
+0.358000   0.008328    0.726422     1.165
+0.360000   0.010340    0.700470     0.463
+0.364395   0.015548    0.642258    -0.499
+0.368790   0.020756    0.584046    -1.139
+0.370000   0.022190    0.568020    -1.194
+0.380000   0.035890    0.434980    -1.547
+0.400000   0.069530    0.171430    -1.604
+0.433450   0.087900    0.125310    -1.710
+0.461390   0.104910    0.094980    -1.780
+0.489320   0.123290    0.070530    -1.860
+0.517250   0.143030    0.051130    -1.930
+0.573120   0.186590    0.024640    -2.070
+0.601060   0.210380    0.016190    -2.130
+0.656930   0.261900    0.005940    -2.260
+0.712800   0.318650    0.001590    -2.380
+0.811110   0.430920    0.000020    -2.600
+0.881490   0.490000    0.000000    -2.75
+
+*SGT  
+** sl        krg    krog   pcog
+0.000000   0.0000   1.00   0.0
+0.040000   0.0000   0.60   0.2
+0.100000   0.0220   0.33   0.5
+0.200000   0.1000   0.10   1.0
+0.300000   0.2400   0.02   1.5
+0.400000   0.3400   0.00   2.0
+0.500000   0.4200   0.00   2.5
+0.600000   0.5000   0.00   3.0
+0.700000   0.8125   0.00   3.5
+0.848910   1.0000   0.00   3.9
+
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+*VERTICAL *BLOCK_CENTER  *WATER_OIL_GAS   
+*REFDEPTH   9035.
+*REFPRES    3600.
+*DWOC       9950.
+*DGOC       8800.
+*DATUMDEPTH 9035.
+*ZOIL 0.30 0.22 0.12 0.36
+*ZGAS 0.20 0.22 0.12 0.36
+*MOLALITY-AQUEOUS 0.0
+
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+*NORM      *PRESS  145.04
+*NORM      *SATUR  0.05
+*NORM      *GMOLAR 0.05
+*MAXCHANGE *PRESS 500.
+*MAXCHANGE *SATUR  0.8
+*MAXCHANGE *GMOLAR 0.8
+*CONVERGE *MAXRES 1.E-04
+*AIM *STAB *AND-THRESH 1 0.001
+
+**--------------------------------------------------WELL DATA-----------
+*RUN
+*DATE 1986 1 1
+      *DTMIN    0.1E-06
+      *DTMAX  31
+      *DTWELL   0.1
+      *AIMWELL  *WELLNN
+      *WELL 1 'PROD'
+      *WELL 2 'INJ'
+      *PRODUCER  1
+            *OPERATE  *MAX  *STO    5000
+            *OPERATE  *MIN  *BHP    500.
+      *INJECTOR  2   ** Inject polymer solution with 'POLYMER' molality of 4.54E-07
+            *INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 4.54e-7
+            *OPERATE  *MAX  *STW   5000
+            *OPERATE  *MAX  *BHP   6000.
+
+      *GEOMETRY  *K  1.0  0.34  1.0  0.0
+      *PERF *GEO 1
+                 1  1  1:4  1.0
+      *PERF *GEO 2
+                21  21 1:4  1.0
+
+*TRCR-INJCONC 2
+'TRC-PLM1' 1.0
+'TRC-PLM2' 0.0
+'TRC-PLM3' 0.0
+'TRC-PLM4' 0.0
+'TRC-PLM5' 0.0
+
+
+*DATE 1986 6 1
+  *INJECTOR 2
+  *INCOMP *WATER
+*DATE 1988 1 1
+  *INJECTOR 2
+  *INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 4.54e-7
+
+*TRCR-INJCONC 2
+'TRC-PLM1' 0.0
+'TRC-PLM2' 1.0
+'TRC-PLM3' 0.0
+'TRC-PLM4' 0.0
+'TRC-PLM5' 0.0
+
+*DATE 1988 6 1
+  *INJECTOR 2
+  *INCOMP *WATER
+*DATE 1990 1 1
+  *INJECTOR 2
+  *INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 4.54e-7
+
+*TRCR-INJCONC 2
+'TRC-PLM1' 0.0
+'TRC-PLM2' 0.0
+'TRC-PLM3' 1.0
+'TRC-PLM4' 0.0
+'TRC-PLM5' 0.0
+
+*DATE 1990 6 1
+  *INJECTOR 2
+  *INCOMP *WATER
+*DATE 1992 1 1
+  *INJECTOR 2
+  *INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 4.54e-7
+
+*TRCR-INJCONC 2
+'TRC-PLM1' 0.0
+'TRC-PLM2' 0.0
+'TRC-PLM3' 0.0
+'TRC-PLM4' 1.0
+'TRC-PLM5' 0.0
+
+*DATE 1992 6 1
+  *INJECTOR 2
+  *INCOMP *WATER
+*DATE 1994 1 1
+  *INJECTOR 2
+  *INCOMP *AQUEOUS 0.0 0.0 0.0 0.0 4.54e-7
+
+*TRCR-INJCONC 2
+'TRC-PLM1' 0.0
+'TRC-PLM2' 0.0
+'TRC-PLM3' 0.0
+'TRC-PLM4' 0.0
+'TRC-PLM5' 1.0
+
+*DATE 1994 6 1
+  *INJECTOR 2
+  *INCOMP *WATER
+*DATE 1994 9 1
+*DATE 1995 1 1
+*DATE 1995 3 1
+*DATE 1995 6 1
+*DATE 1995 9 1
+*DATE 1996 1 1
+*STOP

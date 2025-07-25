@@ -1,0 +1,323 @@
+
+
+**                        OVERVIEW
+**                        ========
+
+**  Features:
+
+**  1)  *UPWIND *IK together with *GRID *CORNER.
+
+**  3)  This grid is actually Cartesian and gets the same result when you
+**         (1) use *GRID *CART instead of *GRID *CORNER,
+**         (2) use *DK and *DEPTH instead of *ZCORN.
+
+**  4)  This is STGRO021 with *NINEPOINT but without amalgamation.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Grid Option Template No. 60'
+*TITLE2 'Test/Illustrate *UPWIND *IK with *GRID *CORNER'
+*TITLE3 'Based on STGRO024'
+
+*INUNIT  *SI   
+*OUTUNIT *SI   ** output same as input
+
+*WRST     time
+*OUTPRN   *GRID pres temp so sw sg y x w z
+*OUTPRN   *ITER *NEWTON
+*OUTPRN   *WELL *ALL 
+*WPRN     *GRID time
+*WPRN     *ITER 10
+
+*OUTSRF   *WELL *COMPONENT *ALL *LAYER *ALL *DOWNHOLE
+*OUTSRF   *GRID *PRES *SW *SO *SG *TEMP *X *Y *VISO *VISW *VISG *THCONDUCT
+                *FLUXRC *MASDENW *MASDENO *MASDENG *OBHLOSS
+
+*OUTSRF *SPECIAL *SOR 'Injector S1' 'Producer P1' INST 
+                 *SOR 'Injector S1' 'Producer P1' CUM 
+*WSRF     *GRID *TIME
+
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+**grid *cart 15 1 15
+*grid *corner 15 1 15
+*kdir *down          
+
+*di *con 1
+*dj *con 1
+
+**dk *con 1
+**depth top 1 1 1 300.00
+*zcorn
+         60*300.0        60*301.0
+         60*301.0        60*302.0
+         60*302.0        60*303.0
+         60*303.0        60*304.0
+         60*304.0        60*305.0
+         60*305.0        60*306.0
+         60*306.0        60*307.0
+         60*307.0        60*308.0
+         60*308.0        60*309.0
+         60*309.0        60*310.0
+         60*310.0        60*311.0
+         60*311.0        60*312.0
+         60*312.0        60*313.0
+         60*313.0        60*314.0
+         60*314.0        60*315.0
+
+*POR   *CON 0.36
+*PERMI *CON 3000
+*PERMJ *EQUALSI
+*PERMK *CON 700
+
+*END-GRID
+
+*ROCKTYPE 1
+** Rock compressibility (1/kPa)
+    *CPOR   7.00E-06  
+** Volumetric heat capacity of reservoir rock (J/m3-°C)
+    *ROCKCP 2.39E+06
+** Thermal conductivity of reservoir rock (J/m-day-°C)
+    *THCONR 1.33E+05
+** Thermal conductivity of water phase (J/m-day-°C)
+    *THCONW 3.90E+05
+** Thermal conductivity of oil phase (J/m-day-°C)
+    *THCONO 1.33E+05
+** Thermal conductivity of gas phase (J/m-day-°C)
+    *THCONG 1.0E+05
+** Overburden/underburden  heat loss:
+** Volumetric heat capacity - Thermal conductivity 
+HLOSSPROP  *OVERBUR  2.39E+06 2.333E+05   
+HLOSSPROP  *UNDERBUR 2.39E+06 2.333E+05 
+** Temperature of underburden / overburden
+HLOSST 12
+*THTYPE CON 1
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL 3 3 3   ** 3 Components: water, oil and CH4
+
+*PRSR 100
+*TEMR 25  
+
+*COMPNAME       'WATER'  'BITUMEN'   'CH4'
+     *CMM       0.01802    0.5      0.01604 
+     *PCRIT      22105      0         4600 
+     *TCRIT      374.1      0        -82.8
+
+     *MASSDEN    1000      1010       1002
+     *CP         5.8E-7   6.84E-7    5.5E-7
+     *CT1       0.00072   0.000785   0.0008
+
+     *CPG1       0       1000    67.2
+     *CPG2       0         0      0
+     *CPG3       0         0      0
+     *CPG4       0         0      0
+     *HVR        0         0      0
+
+     **        Water      Bitumen      ch4
+     *KV1        0          0        136803
+     *KV4        0          0        -481.31
+     *KV5        0          0        -273.15
+
+*VISCTABLE
+**T°   Water  Bitume       ch4 liquide
+10	0.0   1700000    450
+20	0.0   319000     211.3
+30	0.0   80722	      46.08
+40	0.0   22300	      30
+50	0.0   8028	      13.76
+60	0.0   3073	       8.16
+70	0.0   1415.4	 4.8
+80	0.0   680.6	       4.0
+100	0.0   212.6	       3.4
+125	0.0   70.94	       2.9
+150	0.0   30.92	       2.5 
+175	0.0   16.35	       1.85
+200	0.0   9.96	       1.45
+225	0.0   6.787	       1.16
+250	0.0   4.999	       0.95
+275	0.0   3.73	       0.68
+300	0.0   3	       0.548
+1000  0.0   2            0.540
+
+*AVG 2.2000E-5  2.3518E-5  8.3E-5
+*BVG 1.07       1.075      0.9
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+**  Water-oil relative permeabilities
+*SWT 
+**   Sw        Krw        Krow       Pcow
+    .2        0           1          4.5
+    .2462     .0003918    .8589186   1.7
+    .2923     .0026358    .7280375   .7
+    .3385     .0080382    .6074459   .2
+    .3846     .0177312    .4972427   .05
+    .4308     .0327523    .3975380   .044
+    .4769     .0540742    .3084565   .039
+    .5231     .0826217    .2301415   .033
+    .5692     .1192811    .1627611   .028
+    .6154     .1649078    .1065177   .022
+    .6615     .2203303    .0616649   .017
+    .7077     .2863546    .0285407   .011
+    .7538     .3637665    .0076473   .006
+    .8000     .4533342    0          0
+    .8500     .5649555    0          0
+    .9000     .6926632    0          0
+    .9500     .8373770    0          0
+    1         1           0          0
+
+**  Liquid-gas relative permeabilities
+*SLT   
+**   Sl        Krg         Krog        Pcog
+     .2       1           0          13.5
+     .2577    .802425     .000724     5.1
+     .3154    .631663     .004869     2.1
+     .3731    .486022     .014848     .6
+     .4308    .363766     .032752     .15
+     .4885    .26312      .060498     .138
+     .5462    .182253     .099883     .125
+     .6038    .119281     .152615     .113
+     .6615    .072248     .22033      .1
+     .7192    .039113     .30461      .088
+     .7769    .017731     .406983     .075
+     .8346    .005814     .52894      .063
+     .8923    .000864     .671932     .05
+     .95      0           .837377     .038
+     .9625    0           .876319     .025
+     .975     0           .916394     .013
+     .9875    0           .957616     0
+     1        0           1           0
+
+*KRTEMTAB *SWR *SORW
+**      T°    Swc        Sorw
+         7    0.2        0.2
+       107    0.272      0.155
+       207    0.344      0.110
+       307    0.416      0.065
+
+*KRTYPE *CON 1
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*VERTICAL *DEPTH_AVE
+*REFDEPTH 300
+*REFPRES  1200
+
+*TEMP *CON 12
+
+*MFRAC_OIL 'BITUMEN' *CON 0.963
+*MFRAC_OIL 'CH4'     *CON 0.037
+*MFRAC_GAS 'CH4'     *CON 1.0
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL   ** All these can be defaulted.
+
+*AIM *STAB 
+
+*UPWIND *IK
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+** Project starts on 01/01/2001
+*DATE 2001 1 1
+
+   *DTWELL 1e-4
+
+   *WELL 1  'Injector S1'  
+   *INJECTOR *UNWEIGHT 'Injector S1'
+   *TINJW 250
+   *QUAL 0.9 
+   *INCOMP *WATER 1 0 0         
+   *OPERATE *MAX *BHP 2000 *CONT *REPEAT
+   *OPERATE *STW 300 *CONT *REPEAT
+   *GEOMETRY *J 0.11 0.249 1.0  0
+   *PERF *GEO 'Injector S1' ** i  j  k  II-factor
+                               1 1 15 0.05
+
+   *WELL 2  'Producer P1'
+   *PRODUCER 'Producer P1'         
+   *OPERATE *MIN *BHP 700 *CONT 
+   *OPERATE *STEAM 50 *CONT *REPEAT
+   *GEOMETRY *J 0.11 0.249 1.0  0
+   *PERF *GEO 'Producer P1'  ** i  j  k  IP-factor
+                                1 1 12  0.0128
+
+   *SHUTIN 'Injector S1' 'Producer P1'         
+
+   *TMPSET *IJK 1 1 12 235
+   *TMPSET *IJK 1 1 15 235
+   *UHTR   *IJK 1 1 12 0.6E+09
+   *UHTR   *IJK 1 1 15 0.6E+09
+
+*TIME 1
+*TIME 10
+*TIME 20
+*TIME 30
+*TIME 40
+*TIME 50
+*TIME 70
+*TIME 90
+*TIME 120
+*TIME 150
+
+*TIME 151
+
+   *DTWELL 1e-2
+
+   *UHTR *IJK 1 1 12 0
+   *UHTR *IJK 1 1 15 0
+
+   *OPEN 'Injector S1'
+   *OPEN 'Producer P1'         
+
+*TIME 152
+*TIME 153
+*TIME 154
+*TIME 160
+*TIME 170
+*TIME 180
+*TIME 210
+*TIME 240
+*TIME 270
+*TIME 300
+*TIME 330
+*TIME 365
+*TIME 395 
+*TIME 425 
+*TIME 455 
+*TIME 485 
+*TIME 515 
+*TIME 545 
+*TIME 575 
+*TIME 605
+*TIME 635 
+*TIME 665 
+*TIME 695 
+*TIME 730
+*TIME 760 
+*TIME 790 
+*TIME 820
+stop

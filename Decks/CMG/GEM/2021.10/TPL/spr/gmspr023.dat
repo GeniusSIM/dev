@@ -1,0 +1,572 @@
+**--------------------------------------------------------------------**
+** GMSPR023.DAT: Hydraulic Fracturing Model                           **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSPR023.DAT                                                **
+**                                                                    **
+** MODEL: 51x51x1 Grid                  6 COMPONENTS                  **
+**        FIELD UNITS                   NONDARCY GENERAL              **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template illustrates the use of an LGR to explicitly          **
+** represent a fracture and the use of NDARCYCOR to Pseudo-ize the    **
+** Forchheimer Number. Non-Darcy parameters are input with            ** 
+** NONDARCY GENERAL. The LGR is defined at time zero, and             **
+** multiple hydraulic fracturing events with changes in permeability  **
+** are modelled.                                                      **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+RESULTS SIMULATOR GEM
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'Hydraulic fracturing model'
+*TITLE2
+'LGR defined at time 0'
+
+** facture length = 2000 ft 1/2 length = 1000 ft
+** reservoir perm = 1 md
+** fracture perm  = 50,000 md
+** fracture thickness = 0.10 inch = 0.00833 ft
+
+** (kfbf)d = 50000 x 0.00833 / (1 * 1000) = 0.4165
+
+*INUNIT *FIELD             
+*WPRN   *WELL TIME
+*WPRN   *GRID 0
+*OUTPRN *GRID NONE
+*WSRF   *GRID   TIME
+OUTSRF RES ALL
+*WSRF   *WELL   TIME
+OUTSRF WELL LAYER ALL DOWNHOLE
+*OUTSRF *GRID PRES SO SW SG VELOCRC RFG PERM
+WPRN ITER BRIEF
+*WRST 0
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 51 51 1
+KDIR DOWN
+
+
+** fractured well draining 6800*6800 ft
+refine 26:26 26 1 into  13 13 1
+refine 19:25 26 1 into  3 13 1
+refine 27:33 26 1 into  3 13 1
+
+DI IVAR
+51*133.33333
+DI RG 26 26 1 IVAR  35.083115 16.0 8.0 4.0 2.0 1.0557 1.0557 1.0557 2.0 4.0 8.0 16.0 35.083115
+
+DJ JVAR 
+51*133.33333
+
+DJ RG 19 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 20 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665 
+DJ RG 21 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 22 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 23 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 24 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 25 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 26 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 27 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 28 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 29 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 30 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 31 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 32 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+DJ RG 33 26 1 JVAR  35.166665 16.0 8.0 4.0 2.0 1.0 1.0 1.0  2.0 4.0 8.0 16.0 35.166665
+
+DK KVAR
+ 50
+DTOP
+ 2601*950
+
+
+NULL CON            1
+*CPOR   5.0E-6            
+*PRPOR  3600.0              
+
+PERMI CON    1.0
+PERMJ EQUALSI
+PERMK EQUALSI
+
+POR CON      0.200
+     
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+*MODEL   *PR
+*NC    6    6
+*TRES       135.000
+*COMPNAME
+           'N2-C1'        'CO2-C2'       'C3'           'IC4-NC4'
+           'IC5-NC5'      'C6+'
+*SG         3.0130652E-01  3.7054157E-01  5.0700000E-01  5.7181217E-01
+            6.2738626E-01  7.4290000E-01
+*TB        -2.5759262E+02 -1.1474736E+02 -4.3690000E+01  1.9209647E+01
+            8.7968521E+01  2.8224269E+02
+*PCRIT      4.5355206E+01  4.9037092E+01  4.1900000E+01  3.6633731E+01
+            3.3362240E+01  2.7517975E+01
+*VCRIT      9.8961763E-02  1.4519067E-01  2.0300000E-01  2.5956134E-01
+            3.0519948E-01  4.4727492E-01
+*TCRIT      1.9033264E+02  3.0535271E+02  3.6980000E+02  4.1532111E+02
+            4.6406185E+02  5.7665684E+02
+*AC         8.1266760E-03  1.0416505E-01  1.5200000E-01  1.8328571E-01
+            2.3660000E-01  3.5214629E-01
+*MW         1.6090385E+01  3.0746699E+01  4.4097000E+01  5.8124000E+01
+            7.2151000E+01  1.1400000E+02
+*HCFLAG     0              0              0              0
+            0              0
+*BIN
+            2.4441751E-03
+            8.5461672E-03  1.8694605E-03
+            1.5311918E-02  5.6004473E-03  1.0060669E-03
+            2.0797675E-02  9.1334053E-03  2.7651711E-03  4.3710309E-04
+            3.6834764E-02  2.0757491E-02  1.0317307E-02  4.9166600E-03
+            2.4301116E-03
+*VSHIFT     0.0000000E+00  0.0000000E+00  0.0000000E+00  0.0000000E+00
+            0.0000000E+00  0.0000000E+00
+*VISCOR *HZYT
+*MIXVC      1.0000000E+00
+*VISVC      8.7210000E-02  1.2465000E-01  2.0300000E-01  2.3641000E-01
+            2.8765000E-01  4.3279000E-01
+*VISCOEFF   1.0230000E-01  2.3364000E-02  5.8533000E-02 -4.0758000E-02
+            9.3324000E-03
+*OMEGA      4.5723553E-01  4.5723553E-01  4.5723553E-01  4.5723553E-01
+            4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02  7.7796074E-02  7.7796074E-02
+            7.7796074E-02  7.7796074E-02
+*PCHOR      7.6857489E+01  1.0654369E+02  1.5030000E+02  1.8510000E+02
+            2.2760000E+02  3.2390000E+02
+
+*DENWS  63.021
+*DENW   62.807     **  *BWI   1.0034
+*CW    3.0E-6
+*REFPW 3600
+*VISW   0.96
+
+*PHASEID *GAS
+
+
+*ROCKFLUID
+********************************************************************************
+** Rock-Fluid Property Section                                                **
+********************************************************************************
+RPT 1
+** sw          krw     krow       
+SWT
+**$        Sw         krw        krow
+          0.2           0           1
+      0.24375  0.00149536    0.878906
+       0.2875  0.00598145    0.765625
+      0.33125   0.0134583    0.660156
+        0.375   0.0239258      0.5625
+      0.41875    0.037384    0.472656
+       0.4625    0.053833    0.390625
+      0.50625   0.0732727    0.316406
+         0.55   0.0957031        0.25
+      0.59375    0.121124    0.191406
+       0.6375    0.149536    0.140625
+      0.68125    0.180939   0.0976563
+        0.725    0.215332      0.0625
+      0.76875    0.252716   0.0351562
+       0.8125    0.293091    0.015625
+      0.85625    0.336456  0.00390625
+          0.9    0.382812           0
+         0.95    0.439453           0
+            1         0.5           0
+** sl        krg    krog   
+SGT
+**$        Sg         krg        krog
+            0           0           1
+      0.04375  0.00299072    0.878906
+       0.0875   0.0119629    0.765625
+      0.13125   0.0269165    0.660156
+        0.175   0.0478516      0.5625
+      0.21875   0.0747681    0.472656
+       0.2625    0.107666    0.390625
+      0.30625    0.146545    0.316406
+         0.35    0.191406        0.25
+      0.39375    0.242249    0.191406
+       0.4375    0.299072    0.140625
+      0.48125    0.361877   0.0976563
+        0.525    0.430664      0.0625
+      0.56875    0.505432   0.0351563
+       0.6125    0.586182    0.015625
+      0.65625    0.672913  0.00390625
+          0.7    0.765625           0
+         0.75    0.878906           0
+          0.8           1           0
+
+RPT 2
+** sw          krw     krow       
+SWT
+**$        Sw         krw        krow
+          0.0           0           1
+          0.01        *INT        *INT
+          0.2         *INT        *INT
+          0.3         *INT        *INT
+          0.4         *INT        *INT
+          0.7         *INT        *INT
+          0.99        *INT        *INT
+          1.0         1.0         0.0
+
+
+** sl        krg    krog   
+SGT
+**$        Sg         krg        krog
+          0.0           0           1
+          0.01        *INT        *INT
+          0.2         *INT        *INT
+          0.3         *INT        *INT
+          0.4         *INT        *INT
+          0.7         *INT        *INT
+          0.99        *INT        *INT
+          1.0         1.0         0.0
+
+RTYPE CON      1
+
+NONDARCY GENERAL 0.5
+3.36e12     1.54 0  
+3.36e12     1.54 0  
+3.36e12     1.54 0  
+
+NDARCYCOR CON      0
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *BLOCK_CENTER *WATER_GAS
+*REFDEPTH   1050.          
+*REFPRES    3000.          
+*DWGC       1500.
+*SWOC 0.999
+
+*ZGAS     7.2315080E-01  9.5114969E-02  7.0181919E-02  9.0497738E-02
+          1.8468926E-02  2.5856496E-03
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+*AIM *OFF
+*DTMAX       30.
+*DTMIN       1.0E-09
+*NORTH       80
+*ITERMAX     80
+*NORM *PRESS 50.0
+*NORM *SATUR 0.05
+*NORM *GMOLAR 0.05
+*MAXCHANGE *PRESS 2500.0
+*MAXCHANGE *SATUR 0.85
+*MAXCHANGE *GMOLAR 0.85
+*CONVERGE *MAXRES *NORMAL
+*SDEGREE 2
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2000 01 01
+*DTWELL 1.0E-07
+**$
+WELL  'Producer1'
+PRODUCER 'Producer1'
+OPERATE  MAX  STG  5.0e6  CONT
+OPERATE  MIN  BHP  1000.  CONT
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K 0.25  0.3  1.  0.
+PERF  WI  'Producer1'
+**$ UBA                                              wi  Status  Connection  
+    26 26 1  / 7 7 1 50000000.0  OPEN    FLOW-TO  'SURFACE'
+
+**$ Property: Implicit flag  Max: 1  Min: 1
+AIMSET CON            1
+*DATE 2000 02 01
+*DATE 2000 03 01
+*DATE 2000 04 01
+*DATE 2000 05 01
+*DATE 2000 06 01
+*DATE 2000 07 01
+*DATE 2000 08 01
+*DATE 2000 09 01
+*DATE 2000 10 01
+*DATE 2000 11 01
+*DATE 2000 12 01
+
+NDARCYCOR CON 0.0
+NDARCYCOR RG 19 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 20 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 21 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 22 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 23 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 24 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 25 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 26 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 27 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 28 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 29 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 30 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 31 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 32 26 1 JVAR 6*0  9.045  6*0 
+NDARCYCOR RG 33 26 1 JVAR 6*0  9.045  6*0
+ 
+PERMI RG 19 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 20 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 21 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 22 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 23 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 24 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 25 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 26 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 27 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 28 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 29 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 30 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 31 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 32 26 1 JVAR 6*1  416.6  6*1 
+PERMI RG 33 26 1 JVAR 6*1  416.6  6*1 
+
+PERMJ RG 19 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 20 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 21 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 22 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 23 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 24 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 25 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 26 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 27 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 28 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 29 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 30 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 31 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 32 26 1 JVAR 6*1  416.6  6*1 
+PERMJ RG 33 26 1 JVAR 6*1  416.6  6*1 
+
+PERMK RG 19 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 20 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 21 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 22 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 23 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 24 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 25 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 26 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 27 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 28 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 29 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 30 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 31 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 32 26 1 JVAR 6*1  416.6  6*1 
+PERMK RG 33 26 1 JVAR 6*1  416.6  6*1 
+
+WELL  'Producer1'
+PRODUCER 'Producer1'
+OPERATE  MAX  STG  5.0e6  CONT
+OPERATE  MIN  BHP  1000.  CONT
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K 0.25  0.3  1.  0.
+PERF  WI  'Producer1'
+**$ UBA                                              wi  Status  Connection  
+    26 26 1 / 7 7 1 50000000.0  OPEN    FLOW-TO  'SURFACE'
+
+*DATE 2001 01 01
+*DATE 2001 02 01
+*DATE 2001 03 01
+*DATE 2001 04 01
+
+NDARCYCOR CON 0.0
+NDARCYCOR RG 19 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 20 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 21 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 22 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 23 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 24 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 25 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 26 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 27 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 28 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 29 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 30 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 31 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 32 26 1 JVAR 6*0  19.045  6*0 
+NDARCYCOR RG 33 26 1 JVAR 6*0  19.045  6*0
+*DATE 2001 05 01
+*DATE 2001 06 01
+*DATE 2001 07 01
+
+NDARCYCOR CON 0.0
+NDARCYCOR RG 19 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 20 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 21 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 22 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 23 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 24 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 25 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 26 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 27 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 28 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 29 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 30 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 31 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 32 26 1 JVAR 6*0  3.001  6*0 
+NDARCYCOR RG 33 26 1 JVAR 6*0  3.001  6*0
+*DATE 2001 08 01
+*DATE 2001 09 01
+*DATE 2001 10 01
+*DATE 2001 11 01
+*DATE 2001 12 01
+ 
+PERMI RG 19 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 20 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 21 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 22 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 23 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 24 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 25 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 26 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 27 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 28 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 29 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 30 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 31 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 32 26 1 JVAR 6*1  4160.6  6*1 
+PERMI RG 33 26 1 JVAR 6*1  4160.6  6*1 
+
+PERMJ RG 19 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 20 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 21 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 22 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 23 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 24 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 25 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 26 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 27 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 28 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 29 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 30 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 31 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 32 26 1 JVAR 6*1  4160.6  6*1 
+PERMJ RG 33 26 1 JVAR 6*1  4160.6  6*1 
+
+PERMK RG 19 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 20 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 21 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 22 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 23 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 24 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 25 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 26 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 27 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 28 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 29 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 30 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 31 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 32 26 1 JVAR 6*1  4160.6  6*1 
+PERMK RG 33 26 1 JVAR 6*1  4160.6  6*1 
+NDARCYCOR CON 0.0
+NDARCYCOR RG 19 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 20 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 21 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 22 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 23 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 24 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 25 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 26 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 27 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 28 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 29 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 30 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 31 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 32 26 1 JVAR 6*0  12.001  6*0 
+NDARCYCOR RG 33 26 1 JVAR 6*0  12.001  6*0
+
+*DATE 2002 01 01
+*DATE 2002 07 01
+*DATE 2003 01 01
+*DATE 2003 07 01
+PERMI RG 19 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 20 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 21 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 22 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 23 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 24 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 25 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 26 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 27 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 28 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 29 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 30 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 31 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 32 26 1 JVAR 6*1  150.0  6*1 
+PERMI RG 33 26 1 JVAR 6*1  150.0  6*1 
+
+PERMJ RG 19 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 20 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 21 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 22 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 23 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 24 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 25 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 26 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 27 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 28 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 29 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 30 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 31 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 32 26 1 JVAR 6*1  150.0  6*1 
+PERMJ RG 33 26 1 JVAR 6*1  150.0  6*1 
+
+PERMK RG 19 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 20 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 21 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 22 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 23 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 24 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 25 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 26 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 27 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 28 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 29 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 30 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 31 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 32 26 1 JVAR 6*1  150.0  6*1 
+PERMK RG 33 26 1 JVAR 6*1  150.0  6*1 
+
+*DATE 2004 01 01
+*DATE 2004 07 01
+
+*DATE 2005 01 01
+*DATE 2005 07 01
+stop
+*DATE 2006 01 01
+*DATE 2006 07 01
+
+*DATE 2007 01 01
+*DATE 2007 07 01
+
+*DATE 2008 01 01
+*DATE 2008 07 01
+
+*DATE 2009 01 01
+*DATE 2009 07 01
+
+*DATE 2010 01 01
+*STOP
+
+
+

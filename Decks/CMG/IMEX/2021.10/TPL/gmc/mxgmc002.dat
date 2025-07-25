@@ -1,0 +1,184 @@
+   *****************************************************************************
+   ** Template (mxgmc002.dat):  CARTESIAN GRID DEFORMATION                    **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC002.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         ELASTIC MODEL                                    7X7X2 CARTESIAN GRID    **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   **   The purpose of this problem is to demostrate grid deformation                  **
+   **   (*GRIDDEFORM) and when a reservoir is subject to overburden load with some     **
+   **   null blocks in the model.                                                      **
+   **   Keyword GEOM3D is used for real 3D finite elements.                            **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section                                                        **
+   ********************************************************************************
+
+   *TITLE1
+      'IMEX Geomechanics Template #002'
+   *INUNIT *FIELD              
+   *WPRN   *WELL   1
+   *WPRN   *GRID   10
+   *OUTPRN *WELL   *ALL
+   *OUTPRN *RES    *NONE
+   *OUTPRN *TABLES *ALL
+
+   *OUTPRN *GRID   *SO *SG *PRES *BPP *POROS
+   *WSRF   *GRID   1
+   *WSRF   *WELL   1 
+   *OUTSRF *GRID   *SO *SG *PRES *BPP  *SBDZ *POROS
+                   *YOUNG *POISSON *VDISPL *STRESSH *STRESI *STRESJ *STRESK
+                   *STRESEFF *VERDSPLGEO *SUBSIDGEO
+   *WSRF *GRIDDEFORM 1
+
+   *OUTSRF *SPECIAL 3 3 1 *POROS
+   *OUTSRF *SPECIAL 3 3 1 *PRES
+
+   ********************************************************************************
+   ** Reservoir Description Section                                              **
+   ********************************************************************************
+
+   *GRID *CART 7 7 2  
+   *KDIR *DOWN                                                      
+   *DI *CON 130.0
+   *DJ *CON 130.0
+   *DK *CON 20
+                                                       
+   *DEPTH  1 1 1     5000        
+   *POR *CON  0.3                  
+   *CPOR  1.8570E-6
+   *PRPOR 3000
+   *PERMI *CON 1.0  
+   *PERMJ *EQUALSI * 1.00
+   *PERMK *EQUALSI * 0.1
+   
+   *NULL *IJK
+      2:2 2:2 1:2 0
+     
+   ********************************************************************************
+   ** Component Property Section                                                 **
+   ********************************************************************************
+
+   *MODEL *BLACKOIL
+   
+   *PVT
+   ** p              rs      bo          eg    viso     visg
+     14.70000   1.00000   1.06200   6.00000   1.04000 0.0080000
+      264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+      514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+     1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+     2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+     2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+     3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+     4014.700  1270.000   1.69500  1233.000 0.5100000 0.0268000
+     5014.700  1618.000   1.82700  1541.000 0.4490000 0.0309000
+     9014.700  2984.000   2.35700  2591.000 0.2030000 0.0470000
+   
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0   
+
+   *PTYPE *CON 1
+
+   ********************************************************************************
+   ** Rock-Fluid Property Section                                                **
+   ********************************************************************************
+
+   *ROCKFLUID  
+   *RPT 1
+   *SWT
+   ** sw         krw   krow   
+    0.1200000    0.0   1.0
+    0.8200000    1.0   0.0     
+                               
+   *SLT
+   **  sl     krg        krog  
+     0.12    1.0         0.0 
+     1.0     0.0         1.0
+   
+   ********************************************************************************
+   ** Initial Conditions Section                                                 **
+   ********************************************************************************
+
+   *INITIAL
+   *VERTICAL *BLOCK_CENTER *WATER_OIL_GAS 
+   *PB *CON    2000.7  
+     
+   *REFDEPTH   5000.
+   *REFPRES    3035. 
+   *DWOC       6500.
+   *DGOC       4000. 
+
+   ********************************************************************************
+   ** Numerical Control Section                                                  **
+   ********************************************************************************
+   *NUMERICAL
+   *DTMAX       30.0        
+   *MAXSTEPS    100          
+   *NORM *PRESS 1000.0       
+   *NORM *SATUR 0.20
+   *AIM  *STAB *AND_THRESH
+   
+   **  ==============  GEOMECHANIC MODEL  ======================
+   
+   *GEOMECH             ** Geomechanic main keyword
+   *GEOM3D              ** 3D finite element
+   *printgeo 5          ** Printing geomechanics information
+   *gcoupling 2         ** geomechanic coupling type 2
+   *GCFACTOR 1.0        ** geomechanic coupling factor for coupling type 2
+   *SOLVERG *AIMSOL 
+   *ELASTMOD 5.E3
+   *POISSRATIO .3
+   *COHESION 10000
+   *STRESS3D 0 0 0 0 0 0    ** Initial stresses 
+   *DLOADBC3D               ** Distributed load on a surface of a finite element
+   *IJK  1:7  1   1
+         1 2 3 4   100.0     ** top
+   *IJK  1:7  7   1
+         1 2 3 4   100.0     ** top
+   *IJK  1    1:7 1
+         1 2 3 4   100.0     ** top
+   *IJK  7    1:7 1
+         1 2 3 4   100.0     ** top
+      
+   ********************************************************************************
+   ** Well and Recurrent Data Section                                            **
+   ********************************************************************************
+
+   *RUN
+   *DATE 1936 12 31
+   
+   
+      *DTWELL 0.05
+      
+      *WELL 1 'prod1'
+      
+      *producer 1
+      *operate *max *STO 000
+      *operate *min *bhp 100
+      *geometry *k  0.365 0.249 1.0 0.0
+      *perf *geo 1
+          4  4  1:2  1.0
+   
+   *time 360
+             
+   *STOP                              

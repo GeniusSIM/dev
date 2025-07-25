@@ -1,0 +1,313 @@
+ 1  1
+EOREC:     0 mxwwm078.LSresolve
+         
+         *TIME 0.1
+EOREC:     0 mxwwm078.LDresolve
+
+
+ 2  1
+EOREC:     1 mxwwm078.LSresolve
+
+         *WCURRCN    1
+
+         *ALTER   1
+           1000
+         
+         *TIME 0.2
+EOREC:     1 mxwwm078.LDresolve
+
+ 3  1
+EOREC:     2 mxwwm078.LSresolve
+        
+         *ALTER    1
+            2000
+         
+         *TIME 0.3
+EOREC:     2 mxwwm078.LDresolve
+
+ 4  1
+EOREC:     3 mxwwm078.LSresolve
+         
+         *ALTER    1
+           3000
+         
+         *TIME 0.4
+EOREC:     3 mxwwm078.LDresolve
+
+ 5  1
+EOREC:     4 mxwwm078.LSresolve
+
+         *ALTER  1
+           4000
+         
+         *TIME 0.5
+EOREC:     4 mxwwm078.LDresolve
+
+ 6  1
+EOREC:     5 mxwwm078.LSresolve
+
+         *ALTER  1
+           5000
+         
+         *TIME 0.6
+EOREC:     5 mxwwm078.LDresolve
+
+ 7  1
+EOREC:     6 mxwwm078.LSresolve
+
+         *ALTER    1
+           6000
+         
+         *TIME 0.7
+EOREC:     6 mxwwm078.LDresolve
+
+ 8  1
+EOREC:     7 mxwwm078.LSresolve
+
+         *ALTER    1
+           7000
+         
+         *TIME 0.8
+EOREC:     7 mxwwm078.LDresolve
+
+ 9  1
+EOREC:     8 mxwwm078.LSresolve
+
+         *ALTER    1
+           8000
+         
+         *TIME 0.9
+EOREC:     8 mxwwm078.LDresolve
+
+ 10  1
+EOREC:     9 mxwwm078.LSresolve
+
+         *ALTER    1
+           9000
+         
+         *TIME 1.0
+EOREC:     9 mxwwm078.LDresolve
+
+ 11  1
+EOREC:    10 mxwwm078.LSresolve
+
+         *ALTER    1
+           10000
+         
+         *TIME 1.1
+EOREC:    10 mxwwm078.LDresolve
+
+ 12  1
+EOREC:    11 mxwwm078.LSresolve
+
+         *ALTER    1
+           11000
+         
+         *TIME 1.2
+EOREC:    11 mxwwm078.LDresolve
+
+ 13  1
+EOREC:    12 mxwwm078.LSresolve
+
+         *ALTER    1
+           12000
+         
+         *TIME 1.3
+EOREC:    12 mxwwm078.LDresolve
+
+ 14  1
+EOREC:    13 mxwwm078.LSresolve
+
+         *ALTER    1
+           13000
+         
+         *TIME 1.4
+EOREC:    13 mxwwm078.LDresolve
+
+ 15  1
+EOREC:    14 mxwwm078.LSresolve
+
+         *ALTER    1
+           14000
+         
+         *TIME 1.5
+EOREC:    14 mxwwm078.LDresolve
+
+ 16  1
+EOREC:    15 mxwwm078.LSresolve
+
+         *ALTER    1
+           15000
+         
+         *TIME 1.6
+EOREC:    15 mxwwm078.LDresolve
+
+ 17  1
+EOREC:    16 mxwwm078.LSresolve
+
+         *ALTER    1
+           16000
+         
+         *TIME 1.7
+EOREC:    16 mxwwm078.LDresolve
+
+ 18  1
+EOREC:    17 mxwwm078.LSresolve
+
+         *ALTER    1
+           17000
+         
+         *TIME 1.8
+EOREC:    17 mxwwm078.LDresolve
+
+ 19  1
+EOREC:    18 mxwwm078.LSresolve
+
+         *ALTER   1
+           18000
+         
+         *TIME 1.9
+EOREC:    18 mxwwm078.LDresolve
+
+ 20  1
+EOREC:    19 mxwwm078.LSresolve
+
+         *ALTER   1
+           19000
+         
+         *TIME 2.0
+EOREC:    19 mxwwm078.LDresolve
+
+ 21  1
+EOREC:    20 mxwwm078.LSresolve
+
+         *ALTER   1
+           20000
+         
+         *TIME 2.1
+EOREC:    20 mxwwm078.LDresolve
+
+ 22  1
+EOREC:    21 mxwwm078.LSresolve
+
+         *ALTER   1
+           21000
+         
+         *TIME 2.2
+EOREC:    21 mxwwm078.LDresolve
+
+ 23  1
+EOREC:    22 mxwwm078.LSresolve
+
+         *ALTER   1
+           22000
+         
+         *TIME 2.3
+EOREC:    22 mxwwm078.LDresolve
+
+ 24  1
+EOREC:    23 mxwwm078.LSresolve
+
+         *ALTER   1
+           23000
+         
+         *TIME 2.4
+EOREC:    23 mxwwm078.LDresolve
+
+ 25  1
+EOREC:    24 mxwwm078.LSresolve
+
+         *ALTER   1
+           24000
+         
+         *TIME 2.5
+EOREC:    24 mxwwm078.LDresolve
+
+ 26  1
+EOREC:    25 mxwwm078.LSresolve
+
+         *ALTER   1
+           25000
+         
+         *TIME 2.6
+EOREC:    25 mxwwm078.LDresolve
+
+ 27  1
+EOREC:    26 mxwwm078.LSresolve
+
+         *ALTER   1
+           26000
+         
+         *TIME 2.7
+EOREC:    26 mxwwm078.LDresolve
+
+ 28  1
+EOREC:    27 mxwwm078.LSresolve
+
+         *ALTER   1
+           27000
+         
+         *TIME 2.8
+EOREC:    27 mxwwm078.LDresolve
+
+ 29  1
+EOREC:    28 mxwwm078.LSresolve
+
+         *ALTER   1
+           28000
+         
+         *TIME 2.9
+EOREC:    28 mxwwm078.LDresolve
+
+ 30  1
+EOREC:    29 mxwwm078.LSresolve
+
+         *ALTER   1
+           29000
+         
+         *TIME 3.0
+EOREC:    29 mxwwm078.LDresolve
+
+ 31  1
+EOREC:    30 mxwwm078.LSresolve
+
+         *ALTER   1
+           30000
+         
+         *TIME 3.1
+EOREC:    30 mxwwm078.LDresolve
+
+ 32  1
+EOREC:    31 mxwwm078.LSresolve
+
+         *DTMAX 10.0
+         *TIME 30.0
+EOREC:    31 mxwwm078.LDresolve
+
+
+ 33  1
+EOREC:    32 mxwwm078.LSresolve
+
+         *ALTER   1
+           1.5e3
+
+         *TIME 90.0
+EOREC:    32 mxwwm078.LDresolve
+
+ 34  1
+EOREC:    33 mxwwm078.LSresolve
+
+         *ALTER   1
+           30e3
+
+         *TIME 150
+EOREC:    33 mxwwm078.LDresolve
+
+ 35  9
+EOREC:    34 mxwwm078.LSresolve
+
+         *ALTER   1
+           1.5e3
+         
+         *TIME 300
+EOREC:    34 mxwwm078.LDresolve

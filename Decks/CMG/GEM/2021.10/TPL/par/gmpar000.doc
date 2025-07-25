@@ -1,0 +1,18 @@
+                       PARALLEL TEST DATA SETS FOR GEM
+                       -------------------------------
+
+GMPAR001.DAT : Parallel Linear Solver for Fully Implicit Problem
+GMPAR002.DAT : Sequential Linear Solver for Fully Implicit Problem
+GMPAR003.DAT : Parallel Linear Solver for CO2 Flood
+GMPAR004.DAT : Sequential Linear Solver for CO2 Flood
+GMPAR005.DAT : Parallel Linear Solver for Dual Porosity Reservoir
+GMPAR006.DAT : Sequential Linear Solver for Dual Porosity Reservoir
+GMPAR007.DAT : Demonstrate use of *AUTO2D for partitioning of linear solver domain
+GMPAR008.DAT : Test/Illustrate *COMBINATIVE with Defaults Assigned
+GMPAR009.DAT : Test/Illustrate *COMBINATIVE with *FGMRES *OFF
+GMPAR010.DAT : Test/Illustrate *COMBINATIVE and *AMG-COARSEN *AGGRESSIVE
+GMPAR011.DAT : Demnostrate *COMBINATIVE with *AMG-DRS *ALL
+GMPAR012.DAT : Use of *COMBINATIVE with *AMG-SETUP-FREQ *STRUCTURE
+GMPAR013.DAT : *COMBINATIVE linear solver option with *AMG-SETUP-FREQ *TIMESTEP
+GMPAR014.DAT : Test/Illustrate *COMBINATIVE *ILU with Defaults Assigned
+GMPAR015.DAT : Use of COMBINATIVE Linear Solver in Recurrent

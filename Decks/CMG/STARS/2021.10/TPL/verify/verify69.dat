@@ -1,0 +1,75 @@
+
+
+
+**                       OVERVIEW
+**                       ========
+
+**  PURPOSE:  Verify and illustrate the usage of *INCLUDE files.
+**  Each data section (except I/O control) is loaded from a separate include file.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #69'
+*title2 'Verify *INCLUDE'
+*title3 'Based on STTST01'
+
+*inunit field except  1 1  ** hrs instead of days
+              except 11 1  ** ft3 instead of bbl
+
+*outprn *grid pres sw so sg temp y x solconc obhloss viso cchloss
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf well component all mass mole downhole
+
+outsrf grid pres sw so sg temp y x w solconc obhloss
+            masdenw masdeno  masdeng pcow pcog visw viso visg
+            krw kro krg kvalyw kvalyx cmpdenw cmpdeno cmpvisw
+            cmpviso cmpvisg cchloss
+
+outsrf special blockvar temp 1,1,2
+               blockvar temp 1,1,6
+               blockvar temp 1,1,10
+               blockvar sw 1,1,6
+               blockvar solconc 1,1,6 'COKE'
+               blockvar y 1,1,6 'OXYGEN'
+               blockvar kro 1,1,6
+               avgvar temp             ** average T in tube
+               maxvar solconc 'COKE'   ** max coke conc in tube
+               matbal reaction 'WATER'
+               matbal reaction 'HEVY OIL'
+               matbal reaction energy  ** net reaction oxygen
+               cchloss                 ** net cum heat from heaters
+               tfront 400              ** 400 deg front position
+               tfront 800              ** 800 deg front position
+               tfront 800 backward     ** 800 deg backward front position
+               tfront 800 1 1 3:10     ** 800 deg custom column
+               tfront 800 1 1 12:7     ** 800 deg custom column
+               volfrac 'PRODUCER' 'HEVY OIL'
+               volfrac 'PRODUCER' 'LITE OIL'
+               volfrac 'PRODUCER' 'INRT GAS'
+               volfrac 'PRODUCER' 'OXYGEN'
+               massfrac 'PRODUCER' 'HEVY OIL'
+               massfrac 'PRODUCER' 'LITE OIL'
+               massfrac 'PRODUCER' 'INRT GAS'
+               massfrac 'PRODUCER' 'OXYGEN'
+               molefrac 'PRODUCER' 'HEVY OIL'
+               molefrac 'PRODUCER' 'LITE OIL'
+               molefrac 'PRODUCER' 'INRT GAS'
+               molefrac 'PRODUCER' 'OXYGEN'
+
+** Load all other data from *INCLUDE files.
+*include 'verify69_grid.dat'
+*include 'verify69_comps.dat'
+*include 'verify69_rockfluid.dat'
+*include 'verify69_initial.dat'
+*include 'verify69_num.dat'
+*include 'verify69_recurrent.dat'
+

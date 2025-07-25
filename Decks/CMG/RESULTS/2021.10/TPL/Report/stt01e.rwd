@@ -1,0 +1,156 @@
+** This example tests the unit conversion facilities
+**
+** stt01e.rwd
+**
+
+
+** Set the sr3 file to read data from.
+
+FILE 'sttst01.sr3' 
+
+** Set the column width and print precision to apply to all columns
+
+PRECISION 4
+WIDTH     13
+LINES-PER-PAGE 99999
+
+
+** Describe the table
+
+TABLE-FOR WELLS 'PRODUCER'  
+   COLUMN-FOR  PARAMETERS 'Gas Rate SC'  Units SI
+   COLUMN-FOR  PARAMETERS 'Gas Rate SC'  Units FIELD
+   COLUMN-FOR  PARAMETERS 'Gas Rate SC'  Units MODSI
+   
+   COLUMN-FOR  PARAMETERS 'Oil Rate SC'  Units SI
+   COLUMN-FOR  PARAMETERS 'Oil Rate SC'  Units FIELD
+   COLUMN-FOR  PARAMETERS 'Oil Rate SC'  Units MODSI
+   
+   COLUMN-FOR  PARAMETERS 'BHP' UNITS SI
+   COLUMN-FOR  PARAMETERS 'BHP' UNITS FIELD
+   COLUMN-FOR  PARAMETERS 'BHP' UNITS MODSI
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'  
+   COLUMN-FOR  PARAMETERS 'Gas Rate SC'  Units LAB
+   COLUMN-FOR  PARAMETERS 'Oil Rate SC'  Units LAB
+   COLUMN-FOR  PARAMETERS 'BHP'          Units LAB
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'TEMP Average'  Units SI
+   COLUMN-FOR  SPECIALS 'TEMP Average'  Units FIELD
+   COLUMN-FOR  SPECIALS 'TEMP Average'  Units MODSI
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'TEMP Average'  Units LAB
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'ENERGY net reacted'  Units SI
+   COLUMN-FOR  SPECIALS 'ENERGY net reacted'  Units FIELD
+   COLUMN-FOR  SPECIALS 'ENERGY net reacted'  Units MODSI
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'ENERGY net reacted'  Units LAB
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'POSITION 400 deg, 1 1 12:1' Units SI
+   COLUMN-FOR  SPECIALS 'POSITION 400 deg, 1 1 12:1' Units FIELD
+   COLUMN-FOR  SPECIALS 'POSITION 400 deg, 1 1 12:1' Units MODSI
+TABLE-END   
+
+TABLE-FOR WELLS 'PRODUCER'
+   COLUMN-FOR  SPECIALS 'POSITION 400 deg, 1 1 12:1' Units LAB
+TABLE-END   
+
+
+** ............................... Description ................................
+**
+** 
+** LEGEND: 
+**	[]	anything in square brackets means --> optional
+**	int	integer number greater than 0
+**	str	string, usually represents a name or a type
+**	*	used before every keyword (not using * before each keyword will
+**		not affect how the command file works)
+**      ~	can specify multiple selections
+**	( | )	one or the other choice in the bracket is appropriate(not both)
+**	'name'	string = str
+**	name	value = integer = int 
+**
+** ............................................................................
+**
+**
+** PRECISION
+** -----------
+** Action	specifies the number of significant figures to be printed
+**
+** Syntax	*PRECISION precision
+**
+** WIDTH
+** ------
+** Action	specifies the width in characters for a given column.
+**
+** Syntax	*WIDTH width
+**
+** LINES-PER-PAGE
+** ---------------
+** Action	specifies the maximum number of lines (including titles) to be
+**		printed in a page
+**
+** Syntax	*LINES-PER-PAGE num_lines
+**
+**
+** TABLE-FOR
+** TABLE-END
+** ----------
+** Action	used to specify the information for a table or group of tables
+**
+** Syntax	*TABLE-FOR [(*WELLS str~ | *PARAMETERS str~)]
+**		*TABLE-END
+**
+** WELLS
+** ------
+** Action	used to specify the well-names for which information will be
+**		printed in tables and columns
+**
+** Syntax	*WELLS ('well-name'~ | *ALL | *ALL-PRODUCERS | *ALL-INJECTORS)
+**			    
+**
+** COLUMN-FOR
+** -----------
+** Action	used to specify the information for a column or a group of 
+**		columns
+**
+** Syntax	*COLUMN-FOR [*PARAMETERS str~]
+**			    [[*WELLS or *GROUPS or *SECTORS or *SPECIALS] str~]
+**			    [*PRECISION int][*WIDTH int][*MULTIPLY mult-factor]
+**
+** PARAMETERS
+** -----------
+** Action	used to specify the parameter-names for which information will
+**		be printed in tables and columns
+**
+** Syntax	*PARAMETER 'parameter-name' or
+**		*PARAMETER 'parameter-name (('component-name')|(COMPONENT))' 
+**
+** UNITS
+** ------
+** Action	specifies the output units for data
+**
+** Syntax	*UNITS (*SI | *FIELD | *MODSI | *LAB)
+**
+**
+** SPECIALS
+** ---------
+**
+** Action	used to specify the special-history-names for which information 
+**		will be printed in tables and columns
+**
+** Syntax	*SPECIALS ('special-history-name' | *ALL)
+**
+** ............................................................................

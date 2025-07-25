@@ -1,0 +1,298 @@
+   *****************************************************************************
+   ** Template (mxgmc059.dat):  3D RADIAL GRID                                **
+   *****************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE :  MXGMC059.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  SINGLE WELL                                      FIELD UNITS             **
+   **         Mohr-Coulomb model                  RESERVOIR    11x11x5 CARTESIAN GRID  **
+   **                                             GEOGRID      13x13x5 CARTESIAN GRID  **
+   **                                                                                  **
+   ** USAGE:  ILLUSTRATES THE COUPLED GEOMECHANICAL OPTION IN IMEX                     **
+   **                                                                                  **
+   ** Purposes:                                                                        **
+   **         Using GEOGRID for dual perm and local refined grids on reservoir         **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+*TITLE1
+   'IMEX Geomechanics Template #059'
+*TITLE2
+   'Verify/Illustrate *GEOGRID with *REFINE and *DUALPERM'
+
+INUNIT FIELD
+
+WSRF WELL 1
+
+*WSRF *GRIDDEFORM  1
+*WSRF *GRID 1
+*OUTSRF *GRID  *POROS *PRES *YOUNG *POISSON *VDISPL *STRESSH *STRESI *STRESJ
+               *STRESK *STRESEFF *VPOROSGEO *VERDSPLGEO *SUBSIDGEO
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+
+GRID CART 11 11 5
+
+KDIR DOWN
+
+DI IVAR 
+ 11*100
+
+DJ JVAR 
+ 11*100
+
+DK CON 60
+
+DTOP
+ 121*9850
+
+DUALPERM 
+
+*REFINE 6 6 1:5 INTO 3 3 1
+
+POR MATRIX CON         0.06
+POR FRACTURE CON       4E-005
+
+PERMI MATRIX CON       0.0002
+PERMJ MATRIX CON       0.0002
+PERMK MATRIX CON       0.0002
+
+PERMI FRACTURE CON 2e-5
+PERMJ FRACTURE CON 2e-5
+PERMK FRACTURE CON 2e-5
+
+DJFRAC CON           50
+DIFRAC CON           50
+DKFRAC CON            0
+
+*CPOR 1E-6
+PRPOR  8000
+
+*CROCKTYPE 1
+   *CCPOR  *MATRIX 1E-6
+   *CPRPOR *MATRIX 8000
+   *CCPOR  *FRACTURE 1E-6
+   *CPRPOR *FRACTURE 8000
+
+*CROCKTYPE 2
+   *CCPOR  *MATRIX 1E-6
+   *CPRPOR *MATRIX 8000
+   *CCPOR  *FRACTURE 1E-6
+   *CPRPOR *FRACTURE 8000
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL *BLACKOIL
+
+   *PVT
+      ** p              rs      bo          eg    viso     visg
+           0.000   1.00000   1.06200   6.00000   1.04000 0.0080000
+         264.700  90.50000   1.15000  82.70000 0.9750000 0.0096000
+         514.700   180.000   1.20700   159.000 0.9100000 0.0112000
+        1014.700   371.000   1.29500   313.000 0.8300000 0.0140000
+        2014.700   636.000   1.43500   620.000 0.6950000 0.0189000
+        2514.000   775.000   1.50000   773.000 0.6410000 0.0208000
+        3014.700   930.000   1.56500   926.000 0.5940000 0.0228000
+
+   *DENSITY *GAS    0.0647
+   *DENSITY *WATER  62.238
+   *DENSITY *OIL    46.244      
+   *CO    1.3687E-5
+   *CVO   4.6000E-5
+   *BWI   1.0410   
+   *CW    2.9886E-6 
+   *REFPW 14.7 
+   *VWI   0.31
+   *CVW   0.0   
+
+*TRES 120
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*USER_INPUT
+
+*PRES *MATRIX   *CON 200
+*PRES *FRACTURE *CON 200
+
+*SW *MATRIX   *CON 0.25
+*SW *FRACTURE *CON 0.25
+
+*SO *MATRIX   *CON 0.75
+*SO *FRACTURE *CON 0.75
+
+*PB *MATRIX   *CON 0.0
+*PB *FRACTURE *CON 0.0
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*DTMIN 1.E-8
+
+*NORM     *PRESS 250
+*CONVERGE *PRESS 1.0
+
+**  ==============  GEOMECHANIC MODEL  ======================
+
+*GEOMECH
+
+*GEOM3D
+*GCOUPLING 0
+*GPTOLMUL 0.5 
+
+** Independent Geomechanics grid
+*GEOGRID *GCART 13 13 5 ** Cartesian grid
+*GDI *GIVAR 5*100 1*33.5 1*33 1*33.5 5*100  ** Size of grid
+*GDJ *GJVAR 5*100 1*33.5 1*33 1*33.5 5*100  ** Size of grid
+*GDK *GCON 60                               ** Size of grid
+
+*GEODEPTH *GTOP 1 1 1   9850
+
+*GEOROCK 1           ** rock type # 1 for matrix
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+   *GPERMLC 50.0
+*GEOROCK 2           ** rock type # 2 for fracture
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+   ** B-B model     E0        Kni     FRS     Khf    Kccf   Krcf
+   *GPERMBB         6.5e-5     3e6     -50    100.    80.    5 
+
+*GEOTYPE *MATRIX   *IJK 1:13  1:13  1:5   1
+*GEOTYPE *FRACTURE *IJK 1:13  1:13  1:5   2
+
+STRESS3D 4000 4000 6000 0.0 0.0 0.0
+STRESSGRAD3D -0.49345 -0.49345 -0.9869 0.0 0.0 0.0
+
+*GOUTSRF *GGRID *ALL
+
+
+RUN
+
+** ==================== Recurrent Data Section ==================
+
+DATE 2011 1 1
+
+   DTWELL 1e-7
+
+   WELL  'prod1'
+   PRODUCER 'prod1'
+   OPERATE  MIN  BHP  200.  CONT REPEAT
+   GEOMETRY  I  0.25  0.37  1.  0.
+   PERF  GEOA  'prod1'
+      **$ UBA        ff  Status  Connection  
+      6 6 1 / 2 2 1  1.  OPEN  FLOW-TO  'SURFACE'
+      6 6 2 / 2 2 1  1.  OPEN  FLOW-TO  1
+      6 6 3 / 2 2 1  1.  OPEN  FLOW-TO  2
+      6 6 4 / 2 2 1  1.  OPEN  FLOW-TO  3
+      6 6 5 / 2 2 1  1.  OPEN  FLOW-TO  4
+
+DATE 2011 3 31
+
+STOP

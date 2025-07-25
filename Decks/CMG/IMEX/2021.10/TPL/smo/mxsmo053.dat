@@ -1,0 +1,489 @@
+   ******************************************************************************
+   ** mxwwm053.dat: Blackoil Model                                             **
+   ** This data set demonstrates use of PPATTERN PARTITION                     **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:                 mxwwm053.dat                                               **
+   **                                                                                  **
+   ** MODEL:  71 71 5  Production Controlled by Cycling Option                         ** 
+   **                                                                                  ** 
+   ** PPATTERN PARTITION for assigned grid partitioning in parallel run.               **
+   ** Command line options -jacpar -parasol should be avoided, which override keywords ** 
+   ** in dataset. Instead, Keyword PNTHRDS is used for number of threads with JACPAR ON**
+   ** for parallel run control. The partitioning is assigned with PPATTERN PARTITION.  **
+   ** Additional -partition_info command line option will output actual partitioning   **
+   ** in .out of the run.                                                              **
+   **                                                                                  **
+   ** SOLVER   PARASOL                                                                 **
+   ** PPATTERN PARTITION                                                               **
+   ** 'FIELD' 'class 1' 'class 2' 'sep 1' *J 37                                        **
+   ** 'class 1' 'class 11' 'class 12' 'sep 2' *J 18                                    **
+   ** 'class 2' 'class 21' 'class 22' 'sep 3' *J 55                                    **
+   ** 'class 11' 'class 111' 'class 112' 'sep 4' *J 9                                  **
+   ** 'class 12' 'class 121' 'class 122' 'sep 5' *J 28                                 **
+   ** 'class 21' 'class 211' 'class 212' 'sep 6' *J 46                                 **
+   ** 'class 22' 'class 221' 'class 222' 'sep 7' *J 63                                 **
+   ** PNTHRDS  08                                                                      **
+   ** JACPAR ON                                                                        **
+   **                                                                                  **
+   **************************************************************************************
+   **   Keywords Tested                                                                **
+   **                                                                                  **
+   ** GCONCYCLE_START 'Well4-Grp'  'Well5-Grp' 'Well9-Grp' 'Well10-Grp'                **
+   **   CYCSTREAMS 'PROD' 'GASI'                                                       ** 
+   **   NPARTS 2                                                                       **
+   **   NCYCLES 1                                                                      **
+   **   TARGETTYPES                                                                    **
+   **              'PROD' 'STL'  'STL'                                                 **
+   **              'GASI' 'STG'  'STG'                                                 **
+   **  MAXRATES                                                                        **
+   **     'PROD'  1500.0    0.0                                                        **
+   **     'GASI'     0.0  1500000.0                                                    **
+   **   DTWCYC     0.01      0.01                                                      **
+   **   MINQOIL    1000.0   0.0                                                        **
+   **GCONCYCLE_END                                                                     **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+RESULTS SIMULATOR IMEX 200600
+
+
+
+
+********************************************************************************
+** I/O Control Section                                                        **
+********************************************************************************
+
+*TITLE1
+'Cycling Group Test Problem 3'
+*TITLE2
+'Automatic Injection well redefinition'
+
+*NOLIST
+*INUNIT *FIELD 
+             
+*WPRN   *WELL 0
+*WPRN   *GRID 0
+*OUTPRN *GRID *PRES *SO *SW  *SG
+*OUTPRN *TABLES *NONE
+*WSRF   *GRID   TIME
+*WSRF   *WELL   TIME
+*OUTSRF *GRID *SO *SW  *SG  *PRES
+**$  Distance units: ft 
+RESULTS XOFFSET           0.0000
+RESULTS YOFFSET           0.0000
+RESULTS ROTATION           0.0000  **$  (DEGREES)
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 71 71 5
+KDIR DOWN
+DI IVAR 
+ 2000 1500 1000 500 400 300 200 100 50 20 3*10 20 50 5*98 50 20 3*10
+ 20 50 5*98 50 20 3*10 20 50 5*98 50 20 3*10 20 50 5*98 50 20 3*10
+ 20 50 100 200 300 400 500 1000 1500 2000
+DJ JVAR 
+ 2000 1500 1000 500 400 300 200 100 50 20 3*10 20 50 5*98 50 20 3*10
+ 20 50 5*98 50 20 3*10 20 50 5*98 50 20 3*10 20 50 5*98 50 20 3*10
+ 20 50 100 200 300 400 500 1000 1500 2000
+DK KVAR
+ 4*20 120
+DTOP
+ 5041*5000
+**$ Property: NULL Blocks  Max: 1  Min: 1
+**$  0 = null block, 1 = active block
+NULL CON            1
+POR KVAR 
+ 0.1 0.12 0.13 0.15 0.13 
+
+*CPOR   3.0E-6              
+*PRPOR 3600.0              
+**$ Property: Permeability I (md)   Max: 1000  Min: 1000
+PERMI CON         1000
+PERMJ EQUALSI
+PERMK EQUALSI * 0.5
+**$ Property: Pinchout Array  Max: 1  Min: 1
+**$  0 = pinched block, 1 = active block
+PINCHOUTARRAY CON            1
+MODEL BLACKOIL 
+********************************************************************************
+** Component Property Section                                                 **
+********************************************************************************
+TRES 100
+** p       rs     bo      zg    viso     visg
+PVT ZG 1
+
+**$         p        Rs        Bo         z      viso       visg
+         14.7         0    1.0000      0.95       1.2     0.0125
+          400       165    1.0120      0.95      1.17      0.013
+          800       335    1.0255      0.95      1.14     0.0135
+         1200       500    1.0380      0.95      1.11      0.014
+         1600       665    1.0510      0.95      1.08     0.0145
+         2000       828    1.0630      0.95   1.05705      0.015
+         2400       985    1.0750      0.95      1.03     0.0155
+         2800      1130    1.0870      0.95         1      0.016
+         3200      1270    1.0985      0.95      0.98     0.0165
+         3600      1390    1.1100      0.95  0.956376      0.017
+         4000      1500    1.1200      0.95      0.94     0.0175
+         9000      2300    1.2500      0.95      0.75  0.0223248
+BWI 1.0034
+CO 1.0E-5
+CVW 0.0
+CW 3.0E-6
+DENSITY OIL 44.986
+DENSITY WATER 63.021
+REFPW 3600
+VWI 0.96
+GRAVITY GAS 0.92
+
+*ROCKFLUID
+RPT 1
+SWT
+**$        Sw         krw        krow
+          0.2           0           1    1
+      0.24375  0.00078125    0.878906   *int
+       0.2875    0.003125    0.765625   *int
+      0.33125  0.00703125    0.660156   *int
+        0.375      0.0125      0.5625   *int
+      0.41875   0.0195313    0.472656   *int
+       0.4625    0.028125    0.390625   *int
+      0.50625   0.0382813    0.316406   *int
+         0.55        0.05        0.25   *int
+      0.59375   0.0632812    0.191406   *int
+       0.6375    0.078125    0.140625   *int
+      0.68125   0.0945312   0.0976563   *int
+        0.725      0.1125      0.0625   *int
+      0.76875    0.132031   0.0351562   *int
+       0.8125    0.153125    0.015625   *int
+      0.85625    0.175781  0.00390625   *int
+          0.9         0.2           0    0
+SLT
+**$        Sl          krg        krog
+          0.3            1           0
+      0.34375     0.823975  0.00390625
+       0.3875     0.669922    0.015625
+      0.43125     0.536377   0.0351563
+        0.475     0.421875      0.0625
+      0.51875     0.324951   0.0976563
+       0.5625     0.244141    0.140625
+      0.60625     0.177979    0.191406
+         0.65        0.125        0.25
+      0.69375    0.0837402    0.316406
+       0.7375    0.0527344    0.390625
+      0.78125    0.0305176    0.472656
+        0.825     0.015625      0.5625
+      0.86875    0.0065918    0.660156
+       0.9125   0.00195313    0.765625
+      0.95625  0.000244141    0.878906
+            1            0           1
+BKRWIRO CON 0.5
+
+*INITIAL
+********************************************************************************
+** Initial Conditions Section                                                 **
+********************************************************************************
+*VERTICAL *DEPTH_AVE    
+**$ Property: Bubble Point Pressure (psi)   Max: 3600  Min: 3600
+PB CON         3600
+*REFDEPTH   5000.           
+*REFPRES    3600.           
+*DWOC       5075.          
+*DGOC       3000.           
+*DATUMDEPTH 5000.
+*WOC_SW     0.995
+
+*NUMERICAL
+********************************************************************************
+** Numerical Control Section                                                  **
+********************************************************************************
+DTMAX  30.0
+NORTH   80
+ITERMAX 80
+NORM SATUR 0.15
+SDEGREE 1
+
+SOLVER   PARASOL
+*PPATTERN *PARTITION 
+'FIELD' 'class 1' 'class 2' 'sep 1' *J 37
+'class 1' 'class 11' 'class 12' 'sep 2' *J 18
+'class 2' 'class 21' 'class 22' 'sep 3' *J 55
+'class 11' 'class 111' 'class 112' 'sep 4' *J 9
+'class 12' 'class 121' 'class 122' 'sep 5' *J 28
+'class 21' 'class 211' 'class 212' 'sep 6' *J 46
+'class 22' 'class 221' 'class 222' 'sep 7' *J 63
+
+PNTHRDS  08
+JACPAR ON
+
+*RUN
+********************************************************************************
+** Well and Recurrent Data Section                                            **
+********************************************************************************
+*DATE 2007 01 01
+*DTWELL 0.5
+GROUP 'Well4-Grp' ATTACHTO 'FIELD'
+GROUP 'Well5-Grp' ATTACHTO 'FIELD'
+GROUP 'Well9-Grp' ATTACHTO 'FIELD'
+GROUP 'Well10-Grp' ATTACHTO 'FIELD'
+**$
+WELL  'Injector10' ATTACHTO 'Well10-Grp'
+INJECTOR MOBWEIGHT 'Injector10'
+INCOMP  GAS
+OPERATE  MAX  STG  1500000.  CONT
+OPERATE  MAX  BHP  7000.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Injector10'
+**$ UBA      ff  Status  Connection  
+    48 48 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+OPEN 'Injector10'
+**$
+WELL  'Injector4' ATTACHTO 'Well4-Grp'
+INJECTOR MOBWEIGHT 'Injector4'
+INCOMP  GAS
+OPERATE  MAX  STG  1500000.  CONT
+OPERATE  MAX  BHP  7000.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Injector4'
+**$ UBA      ff  Status  Connection  
+    24 24 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+OPEN 'Injector4'
+**$
+WELL  'Injector5' ATTACHTO 'Well5-Grp'
+INJECTOR MOBWEIGHT 'Injector5'
+INCOMP  GAS
+OPERATE  MAX  STG  1500000.  CONT
+OPERATE  MAX  BHP  7000.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Injector5'
+**$ UBA      ff  Status  Connection  
+    48 24 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+OPEN 'Injector5'
+**$
+WELL  'Injector9' ATTACHTO 'Well9-Grp'
+INJECTOR MOBWEIGHT 'Injector9'
+INCOMP  GAS
+OPERATE  MAX  STG  1500000.  CONT
+OPERATE  MAX  BHP  7000.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Injector9'
+**$ UBA      ff  Status  Connection  
+    24 48 1  1.  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+OPEN 'Injector9'
+**$
+WELL  'Producer1'
+PRODUCER 'Producer1'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer1'
+**$ UBA      ff  Status  Connection  
+    12 12 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer1'
+**$
+WELL  'Producer10' ATTACHTO 'Well10-Grp'
+PRODUCER 'Producer10'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer10'
+**$ UBA      ff  Status  Connection  
+    48 48 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    48 48 3  1.  OPEN    FLOW-TO  1
+OPEN 'Producer10'
+**$
+WELL  'Producer11'
+PRODUCER 'Producer11'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer11'
+**$ UBA      ff  Status  Connection  
+    12 60 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer11'
+**$
+WELL  'Producer12'
+PRODUCER 'Producer12'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer12'
+**$ UBA      ff  Status  Connection  
+    36 60 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer12'
+**$
+WELL  'Producer13'
+PRODUCER 'Producer13'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer13'
+**$ UBA      ff  Status  Connection  
+    60 60 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer13'
+**$
+WELL  'Producer2'
+PRODUCER 'Producer2'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer2'
+**$ UBA      ff  Status  Connection  
+    36 12 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer2'
+**$
+WELL  'Producer3'
+PRODUCER 'Producer3'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer3'
+**$ UBA      ff  Status  Connection  
+    60 12 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer3'
+**$
+WELL  'Producer4' ATTACHTO 'Well4-Grp'
+PRODUCER 'Producer4'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer4'
+**$ UBA      ff  Status  Connection  
+    24 24 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    24 24 3  1.  OPEN    FLOW-TO  1
+OPEN 'Producer4'
+**$
+WELL  'Producer5' ATTACHTO 'Well5-Grp'
+PRODUCER 'Producer5'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer5'
+**$ UBA      ff  Status  Connection  
+    48 24 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    48 24 3  1.  OPEN    FLOW-TO  1
+OPEN 'Producer5'
+**$
+WELL  'Producer6'
+PRODUCER 'Producer6'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer6'
+**$ UBA      ff  Status  Connection  
+    12 36 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer6'
+**$
+WELL  'Producer7'
+PRODUCER 'Producer7'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer7'
+**$ UBA      ff  Status  Connection  
+    36 36 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer7'
+**$
+WELL  'Producer8'
+PRODUCER 'Producer8'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer8'
+**$ UBA      ff  Status  Connection  
+    60 36 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+OPEN 'Producer8'
+**$
+WELL  'Producer9' ATTACHTO 'Well9-Grp'
+PRODUCER 'Producer9'
+OPERATE  MAX  STL  1500.  CONT
+OPERATE  MIN  BHP  100.  CONT
+**            rad    geofac  wfrac   skin
+** kf     ff
+**$          rad  geofac  wfrac  skin
+GEOMETRY  K  0.5  0.37  1.  0.
+PERF  GEOA  'Producer9'
+**$ UBA      ff  Status  Connection  
+    24 48 2  1.  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+    24 48 3  1.  OPEN    FLOW-TO  1
+OPEN 'Producer9'
+*AIMWELL *WELLNN
+
+GCONI 'Well4-Grp'  'Well5-Grp' 'Well9-Grp' 'Well10-Grp'
+  GTARGET STG 15000.0 
+
+APPOR-METHOD  PROD  'Well4-Grp'  'Well5-Grp' 'Well9-Grp' 'Well10-Grp'  *IP
+APPOR-METHOD  GASI  'Well4-Grp'  'Well5-Grp' 'Well9-Grp' 'Well10-Grp'  *IP
+
+TIME 1.0
+
+
+GCONCYCLE_START 'Well4-Grp'  'Well5-Grp' 'Well9-Grp' 'Well10-Grp'
+   CYCSTREAMS 'PROD' 'GASI'
+   NPARTS 2
+   NCYCLES 1
+   TARGETTYPES  
+              'PROD' 'STL'  'STL'
+              'GASI' 'STG'  'STG'
+   MAXRATES
+     'PROD'  1500.0    0.0
+     'GASI'     0.0  1500000.0
+   DTWCYC     0.01      0.01
+   MINQOIL    1000.0   0.0           
+GCONCYCLE_END
+
+DATE 2007 07 01
+DATE 2008 01 01
+
+STOP
+
+

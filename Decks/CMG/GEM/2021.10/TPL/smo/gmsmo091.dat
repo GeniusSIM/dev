@@ -1,0 +1,252 @@
+**--------------------------------------------------------------------**
+** GMSMO091.DAT:  Surfactant injection in aqueous phase               **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMSMO091.DAT                                                **
+**                                                                    **
+** MODEL: CART 7x7x3 GRID      6 COMPONENTS           2 WELLS         **
+**        WATER WITH SURFACTANT INJECTION             FIELD UNITS     **
+**        OIL-WATER CAPILLARY NUMBER BASED REL PERM INTERPOLATION     **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template models a production operation in which the reservoir **
+** is depleted for one year followed by water injection with          **
+** surfactant as one of the aqueous components.                       **
+**                                                                    **
+** Interfacial tension effects on relative permeability are           **
+** incorporated by oil-water capillary number based relative          **
+** permeability interpolation.                                        **
+**                                                                    **
+** Oil-water interfacial values are input as a function of surfactant **
+** composition in aqueous phase via *IFTTABLE.                        **
+**                                                                    **
+** Keyword *INTLOG: allows logarithmic interpolation of IFT table     **
+**                                                                    **
+** Specific keywords used to output for each grid block; and for a    **
+** particulary grid block as a special history:                       **
+**     *CAPNOW  -- o-w capillary number                               **
+**     *SIGMAOW -- o-w interfacial tension                            **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*TITLE1 'Surfactant Injection in Aqueous Phase'
+*TITLE2 'Capillary Number Effect on Kr'
+*INUNIT  *FIELD
+
+*WRST 0
+*WSRF *WELL 1
+*OUTPRN *GRID *IMPL *PRES *SO *SG *SW *CAPNOW *SIGMAOW
+*OUTPRN *RES *ALL
+*OUTSRF *WELL *PAVG
+*OUTSRF *GRID *PRES *SO *SG *SW *KRO *KRG *KRW
+         *VISO *VISG *VISW *KRINTER *CAPNOW  *W 'Surf' 
+         *SIGMAOW
+
+*OUTSRF *SPECIAL *CAPNOW  4 4 1
+                 *KRW     4 4 1
+                 *KRO     4 4 1
+                 *KRG     4 4 1
+                 *SIGMAOW 4 4 1
+
+**--------------------------- RESERVOIR DATA ------------------------------
+*GRID *CART 7 7 3
+*DEPTH *TOP 1 1 1 975.0
+*DI *CON 500.0
+*DJ *CON 500.0
+*DK *KVAR 50.0 30.0 20.0
+*POR *CON 0.30
+*PERMI *KVAR 200.0 50.0 500.0
+*PERMJ *EQUALSI
+*PERMK *KVAR  25.0 50.0  50.0
+*CPOR  5.0E-06
+*PRPOR  3990.30
+
+**---------------------------------- FLUID COMPONENT DATA ------------------
+*MODEL *PR
+*NC 6 6
+*TRES  160.0
+*PHASEID *CRIT
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69     13.61     11.02
+*VCRIT 0.099800  0.200500  0.369800  0.629700    1.0423    1.3412
+*TCRIT    190.6     369.8     507.4     617.7     705.6     766.7
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*VISCOR *MODPEDERSEN
+*VISCOEFF
+  1.0000000E-04  2.2960493E+00  5.9024000E-03  1.5613334E+00  4.1384000E-01
+
+*BIN  0.
+      0.    0.
+      0.    0.      0.
+      0.05  0.005   0.    0.
+      0.05  0.005   0.    0.    0.
+
+*RHOW    1571.10
+*CW      3.3E-06
+*REFPW   14.6960
+*VISW    0.70
+
+*NC-AQUEOUS 1
+*COMPNAME-AQUEOUS 'Surf'
+*MW-AQUEOUS 350.0
+
+*AQUEOUS-DENSITY  *ROWE-CHOU
+
+*COMPNAME-SURFACTANT 'Surf'
+
+** ------------------   Rock Fluid Data ---------------------------
+*ROCKFLUID
+
+*RPT 1
+
+*INTLOG  ** Logrithmic interpolation of IFTTABLE
+
+*INTCOMP *CAPNOW 'Surf'
+
+*IFTTABLE   
+     ** 'Surf' mole frac    IFT
+            0.00000       13.000
+            0.00003        0.300
+            0.00006        0.0007
+            0.00015        0.005
+            0.00030        0.100
+            0.00300        8.000
+
+**  Set #1:  High IFT, corresponding to no 'Surf'
+**  -------------------------------------------
+
+*KRINTRP 1
+
+*DTRAPW -8.0   ** log10 of critical capillary number for no 'Surf' effect
+*SGT
+ 0.0000   0.000    1.0000
+ 0.0500   0.000    0.8800
+ 0.0889   0.001    0.7023
+ 0.1778   0.010    0.4705
+ 0.2667   0.030    0.2963
+ 0.3556   0.050    0.1715
+ 0.4444   0.100    0.0878
+ 0.5333   0.200    0.0370
+ 0.6222   0.350    0.0110
+ 0.6500   0.390    0.0000
+ 0.7111   0.560    0.0000
+ 0.8000   1.000    0.0000
+
+*SWT
+ 0.2000   0.0000   1.000
+ 0.2899   0.0022   0.160 
+ 0.3778   0.0180   0.100 
+ 0.4667   0.0607   0.050 
+ 0.5556   0.1438   0.020 
+ 0.6444   0.2809   0.003 
+ 0.7000   0.4089   0.000
+ 0.7333   0.4855   0.000
+ 0.8222   0.7709   0.000
+ 0.9111   1.0000   0.000
+ 1.0000   1.0000   0.000
+
+**  Set #2:  Low IFT, corresponding to high 'Surf' concentration
+**  ----------------------------------------------------------
+
+*KRINTRP 2 
+
+*DTRAPW -4.0 ** log10 of critical capillary number for full 'Surf' effect
+
+ *SGT
+ 0.0000   0.000    1.0000
+ 0.0500   0.000    0.8800 
+ 0.0889   0.001    0.7023 
+ 0.1778   0.010    0.4705 
+ 0.2667   0.030    0.2963 
+ 0.3556   0.050    0.1715 
+ 0.4444   0.100    0.0878 
+ 0.5333   0.200    0.0370 
+ 0.6222   0.350    0.0110 
+ 0.6500   0.390    0.0000 
+ 0.7111   0.560    0.0000 
+ 0.8000   1.000    0.0000 
+
+*SWT
+ 0.2000   0.0000   1.0000
+ 0.2899   0.0022   0.6769 
+ 0.3778   0.0180   0.4153 
+ 0.4667   0.0607   0.2178 
+ 0.5556   0.1438   0.0835 
+ 0.6444   0.2809   0.0123 
+ 0.7000   0.4089   0.0000 
+ 0.7333   0.4855   0.0000 
+ 0.8222   0.7709   0.0000 
+ 0.9111   1.0000   0.0000 
+ 1.0000   1.0000   0.0000 
+
+*RTYPE *CON 1
+
+**-------------------------------------INITIAL CONDITION---
+*INITIAL
+   *VERTICAL *OFF
+   *PRES *KVAR 4000.0  3990.3  3984.3
+   
+   *SW   *CON     0.2
+   
+   *ZGLOBALC 'C1'  *CON         0.5
+   *ZGLOBALC 'C3'  *CON         0.03
+   *ZGLOBALC 'C6'  *CON         0.07
+   *ZGLOBALC 'C10' *CON         0.2
+   *ZGLOBALC 'C15' *CON         0.15
+   *ZGLOBALC 'C20' *CON         0.05
+
+   *MOLALITY-AQUEOUS 0.0
+
+**---------------------------------------------NUMERICAL-----------
+*NUMERICAL
+   *NORM *PRESS  145.0
+   *NORM *SATUR  0.05
+   *NORM *GMOLAR 0.025
+   *MAXCHANGE *SATUR  0.8
+   *MAXCHANGE *GMOLAR 0.8
+   *DTMAX 15.
+**----------------------------------------------WELL DATA-----------
+*RUN
+*DATE  1986 1 1
+   *DTMIN  0.1
+   *DTWELL 1.0
+   *AIMWELL *WELLN
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+
+   *WELL 1 'PROD'
+   *WELL 2 'INJ-H2O'
+
+   *PRODUCER 1                    ** define producer
+      *OPERATE *MAX *STO  12000.0
+      *OPERATE *MIN *BHP   1000.0
+      *PERF *GEO 1
+        7 7 1  1.0
+   
+   *INJECTOR 2                    ** define surfactant+water injector
+      *INCOMP *AQUEOUS 0.  0.  0.  0.  0.  0. 0.01 ** Surfactant molality = 0.01 
+      *OPERATE *MAX *STW 10000.0
+      *OPERATE *MAX *BHP 5000.
+      *PERF *GEO 2
+        1 1 3  1.0
+        1 1 2  1.0
+        1 1 1  1.0
+  
+  *SHUTIN 2                ** Shut-in injector
+
+*DATE 1987 1 1
+  *OPEN 2                  ** Inject water(+surfactant)
+*DATE 1988 1 1
+*DATE 1989 1 1
+*DATE 1990 1 1
+*DATE 1991 1 1
+*DATE 1992 1 1
+*DATE 1993 1 1
+*DATE 1994 1 1
+*DATE 1995 1 1
+*STOP

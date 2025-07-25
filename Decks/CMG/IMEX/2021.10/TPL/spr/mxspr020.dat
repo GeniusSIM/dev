@@ -1,0 +1,160 @@
+   ******************************************************************************
+   ** mxspr020.dat:          Transient Polymer-Water Incomplete Mixing         **
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   MXSPR020.DAT                                                             **
+   **                                                                                  **
+   ** MODEL:  20x1x1       POLYMER INJECTION   OILWATER SYSTEM   POWERLAW MIXING       **
+   **                      INCOMPLETE MIXING   NO ADSORPTION                           **
+   **                                                                                  **
+   **************************************************************************************
+   **                                                                                  **
+   ** It demonstrates the transient Todd-Longstaff incomplete mixing (*OMEGA_PW)       **
+   ** in polymer injection using the powerlaw mixng rule.                              **
+   **                                                                                  **
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************
+
+RESULTS SIMULATOR IMEX
+
+   ********************************************************************************
+   ** I/O Control Section
+   ********************************************************************************
+
+   *TITLE1 'Todd-Longstaff Incomplete Mixing'
+   *TITLE2 'Polymer Powerlaw Mixing'
+
+   *INUNIT *FIELD
+
+   *WPRN   *WELL 10
+   *WPRN   *GRID 10
+
+   *OUTPRN *WELL    *BRIEF
+   *OUTPRN *TABLES  *NONE
+   *OUTPRN *RES     *NONE
+
+   *WSRF   *GRID    2
+   *OUTSRF *GRID    *EFFPVIS *VISW *PCONC
+   *OUTSRF *SPECIAL 1 1 1  PCONC
+   *OUTSRF *SPECIAL 1 1 1  VISW
+   *OUTSRF *SPECIAL 1 1 1  EFFPVIS
+   *WRST 400
+
+   **************************************************************************
+   ** Reservoir Description Section
+   **************************************************************************
+   *GRID  *CART 20   1   1
+   *DI *CON 40.0
+   *DJ *CON 40.0
+   *DK *CON 40.0
+
+   *DEPTH 1 1 1 2000.0
+
+   *POR *CON
+        0.300   
+
+   *CPOR   3.0000E-6
+   *PRPOR 14.7                                                           
+
+   *PERMI *CON 200.0
+   *PERMJ *EQUALSI
+   *PERMK *EQUALSI
+
+   
+   *MODEL *POLYOW       ** OIL + WATER + POLYMER
+   **************************************************************************
+   ** Component Property section
+   **************************************************************************
+   *PVT
+   **  p      rs     bo     eg    viso    visg
+      515.0  180.0  1.21   159.0  0.91    0.0112      
+
+   *DENSITY *OIL    46.2
+   *DENSITY *GAS     0.0647
+   *DENSITY *WATER  62.2
+
+   *CO      1.9174E-5
+   *CVO     4.6E-5
+   *BWI     1.04
+   *CW      3.04E-6
+   *REFPW   14.7
+   *VWI     0.31
+   *CVW     0.0  
+
+   *PMIX *POWERLAW   0.50          ** Powerlaw viscosity mixing, no adsorption
+   *OMEGA_PW  *TRNS 0.1            ** Todd-Longstaff incomplete mixing parameter (Transient)
+   *PVISC     20.44                ** Reference polymer viscosity
+   *PREFCONC  0.7                  ** Reference polymer concentration
+
+
+   *ROCKFLUID
+   **************************************************************************        
+   ** Rock-fluid Proprty section
+   **************************************************************************
+   *RPT
+   *SWT
+   **  sw      krw      krog      
+      0.12     0.0      1.0
+      0.88     1.0      0.0     
+                    
+
+   *INITIAL
+   **************************************************************************
+   ** Initial Conditions Section
+   **************************************************************************
+   *USER_INPUT
+   *PRES *CON 4800.0
+   *SO   *CON 0.88
+
+
+   *NUMERICAL
+   **************************************************************************
+   ** Numerical Methods Control Section
+   **************************************************************************
+   *DTMAX     31.
+   *MAXCHANGE *POLYMER 0.02
+   *NORM      *POLYMER 0.01
+   *MINCYC 2
+
+
+   *RUN
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+   *DATE  1986  02  26
+   *DTWELL  1.00
+
+   *WELL 1    'WATER INJECTOR'
+   *WELL 2    'PRODUCER'
+
+   *ACT-DEFAULT *CONT *REPEAT
+   
+   *INJECTOR  1
+      *INCOMP    *WATER    0.7
+      *OPERATE   *MAX       *STW    10.0
+      **             rw    geofac  wfrac   skin
+      *GEOMETRY  *K  0.25   0.34    1.0     5.0
+      *PERF *GEO  1
+      ** if      jf     kf     ff
+          1      1      1     1.0
+
+   *PRODUCER  2            
+      *OPERATE   *MAX       *STL    10
+      **             rw    geofac  wfrac   skin
+      *GEOMETRY  *K  0.25   0.34    1.0     0.0
+      *PERF *GEO  2
+      ** if      jf     kf     ff
+          20      1      1      1.0
+
+   *TIME 2000
+   **INCOMPWL 'WATER INJECTOR'
+   **   0.35
+
+   *TIME 4500
+   **INCOMPWL 'WATER INJECTOR'
+   **   0.0
+
+   *TIME 10000
+   *STOP

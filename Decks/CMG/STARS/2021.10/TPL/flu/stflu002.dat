@@ -1,0 +1,268 @@
+
+*****************************************************************************
+** Template (stflu002.dat): Laboratory Steamflood in a 5 Spot Pattern      **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  STFLU002.DAT                                                             **
+**                                                                                  **
+** MODEL:  LABORATORY HEAVY OIL STEAM FLOOD             MODIFIED SI UNITS           **  
+**         TRIANGULAR PATTERN USING MODIFIERS           5X3X4 CARTESIAN GRID        **
+**                                                                                  **
+** USAGE:  LABORATORY STEAM FLOOD MODEL WITH OVERBURDEN/UNDERBURDEN EFFECTS         **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**    A laboratory steamflood of heavy oil in a 1/4 five-spot pattern               **
+**  configuration was simulated and matched.                                        **
+**                                                                                  **
+**  1)  Three-dimensional fluid flow.                                               **
+**                                                                                  **
+**  2)  Half of the 1/4 five-spot pattern was simulated with a parallel             **
+**      grid using the block modifier option.                                       **
+**                                                                                  **
+**  3)  Large change of oil viscosity with temperature causes sharp                 **
+**      changes in mobility at the steam front (5780 to 8.5 cp).                    **
+**                                                                                  **
+**  4)  Injection of steam into two layers simultaneously.                          **
+**                                                                                  **
+**  5)  Production from four layers simultaneously.                                 **
+**                                                                                  **
+**  6)  Overburden heat loss is modelled.                                           **
+**                                                                                  **
+**************************************************************************************
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Test Bed No. 3'
+*TITLE2 'Three-Dimensional Steam Physical Model Experiment of Coats et al'
+
+*INUNIT  *SI *EXCEPT  2 0  ** deg K instead of deg C
+             *EXCEPT  6 2  ** micro-m2 instead of md
+             *EXCEPT  9 0  ** kPa-day instead of cp
+*OUTUNIT *SI *EXCEPT  1 2  ** minutes instead of days
+             *EXCEPT  2 2  ** deg F instead of deg C
+             *EXCEPT  6 2  ** micro-m2 instead of md
+             *EXCEPT  9 0  ** kPa-day instead of cp
+             *EXCEPT 11 3  ** cm3 instead of m3
+             *EXCEPT 13 3  ** cm3 instead of m3
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *Y *X *SOLCONC *OBHLOSS *VISO
+*OUTPRN *WELL *ALL     
+*WRST 300
+*WPRN *GRID 300
+*WPRN *ITER 300
+
+*OUTSRF *GRID  *SO *SG *TEMP
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+
+*GRID *CART 5 3 4
+
+**  The triangular area of 1/8 of five-spot pattern is covered with a
+**  5x3 grid with grid lines parallel to the injector-producer line.
+**  These blocks are trimmed using block modifiers.
+**  In addition, a point-distributed grid is required in order to put
+**  grid nodes on the injector-producer line.  To do this, an oversized
+**  grid is specified, and then trimmed back using block modifiers.
+
+**  The interwell distance is divided into 6 equal segments, requiring
+**  NI = 7.  The 1/8 blocks containing the wells are lumped into the
+**  adjacent blocks, so NI = 5 instead.  The third corner at j = 4 is a
+**  1/4 block and is lumped into the adjacent block, giving NJ = 3.
+
+**  The 1/4 five-spot pattern is 1 ft square.  The interwell distance is
+**  1.414 ft = 0.431 m, giving a block size of 0.431/6 = 0.07184 m.
+
+**  Pay thickness is 6.4 " = 0.16256 m = four 0.04064 m blocks.
+
+*DI *CON 0.07184
+*DJ *CON 0.07184
+*DK *CON 0.04064
+
+*VAMOD  2  0.5        0.5   1.0   0.5
+*VAMOD  3  0.625      0.5   1.0   0.625
+*VAMOD  4  0.5        1.0   0.0   0.5      0.0  1.0   0.0
+*VAMOD  5  0.5        0.0   0.0   0.5      1.0  1.0   0.0
+*VAMOD  6  1.25       1.0   1.0   1.25
+
+*VATYPE *ALL   3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+               3 2 2 2 3
+               4 1 1 1 5
+               0 4 6 5 0
+
+*POR *CON 0.3063
+
+*PERMI *CON 2.122E+2
+*PERMJ *EQUALSI
+*PERMK *EQUALSI
+
+*END-GRID
+
+*CPOR 4.4E-7
+*ROCKCP 2.589E6
+*THCONR 1.496E5
+*THCONW 1.496E5
+*THCONO 1.496E5
+*THCONG 1.496E5
+*HLOSSPROP *OVERBUR  2.683E6 1.047E6
+           *UNDERBUR 2.683E6 1.047E6
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*COMPNAME       'WATER'  'DEAD OIL'
+**               -----    --------
+*CMM            0.01802      0.5
+*IDEALGAS
+*TCRIT           647.35     617.6
+*MOLDEN          55500     1924.6
+*CP              4.5e-7     7.3e-7
+*CT1             8.8e-4     7.2e-4
+
+*AVG           2.722e-16      0
+*BVG             1.075        0
+
+*CPG1              0          0
+*CPL1              0        1047
+*HVAPR             0        5580
+
+*VISCTABLE
+
+**      Temp
+       297.0   1.078e-11  6.6898e-8
+       310.9   7.928e-12  1.5972e-8
+       338.7   4.977e-12  2.1643e-9
+       366.5   3.565e-12  5.440e-10
+       394.3   2.662e-12  2.014e-10
+       422.0   2.107e-12  9.838e-11
+       449.8   1.892e-12  6.019e-11
+       533.2   1.464e-12  2.894e-11
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*ROCKFLUID
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.130      0.0        1.0
+    0.191      0.0051     0.999
+    0.250      0.0102     0.769
+    0.294      0.0168     0.7241
+    0.357      0.0275     0.6206
+    0.414      0.0424     0.504
+    0.490      0.0665     0.3714
+    0.577      0.097      0.3029
+    0.630      0.1148     0.1555
+    0.673      0.1259     0.0956
+    0.719      0.1381     0.0576
+    0.789      0.1636     0.0
+    1.0        1.0        0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+    0.200     0.17      0.0       0.69
+    0.395     0.112     0.0294    0.5218
+    0.433     0.1022    0.0461    0.489
+    0.515     0.0855    0.0883    0.4183
+    0.569     0.0761    0.1172    0.3717
+    0.614     0.0654    0.1433    0.3329
+    0.663     0.05      0.1764    0.2907
+    0.719     0.0372    0.217     0.2424
+    0.750     0.0285    0.2255    0.2156
+    0.805     0.0195    0.2919    0.1682
+    0.850     0.0121    0.3373    0.1294
+    0.899     0.0026    0.5169    0.0871
+    1.0       0.0       1.0       0.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*INITIAL
+
+*PRES *CON 482.6
+
+*SW *CON 0.179   ** So by difference, since Sg = 0
+
+*TEMP *CON 296.9
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*SDEGREE *GAUSS
+                                                     
+*NORM      *PRESS 100  *SATUR 0.4    *TEMP 30    *Y 0.4    *X 0.4 
+
+
+*RUN
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+*TIME 0
+
+   *DTWELL 1E-4
+
+   ** Injection specification
+   *WELL 1 'STEAM INJT' *VERT 1 1
+   *INJECTOR 'STEAM INJT'
+   *INCOMP WATER 1.0  0.0
+
+   *TINJW 468.5
+   *QUAL .697  ** Wet steam at 69.7 % quality
+   *OPERATE *STW   .053      ** Condensed steam equivalent
+   *PERFV 'STEAM INJT'   **  k   wi
+               1:2 1e-4    ** Inject into two layers
+
+   ** Production specification
+   *WELL 2 'PRODUCER' *VERT 5 1
+   *PRODUCER 'PRODUCER'
+   *OPERATE *BHP 482.6
+   *GEOMETRY  **  RW    CC    FF  SS
+            K  .0016 .307  .125   0
+   *PERFV *GEO 'PRODUCER'
+   1:4      1.0
+
+*TIME .0069444
+*TIME .0208333
+*TIME .0694444
+*STOP

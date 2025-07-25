@@ -1,0 +1,215 @@
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Test Bed No. 59'
+*title2 'Test upper and lower face transmissibility multipliers for Cartesian'
+*title3 'Grid with local refinement. Multipliers redefined in the fly.'
+
+*inunit  si except 2 0   ** deg K instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+*outunit si except 1 2   ** minutes instead of days
+            except 2 2   ** deg F instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+            except 11 3  ** cm3 instead of m3
+            except 13 3  ** cm3 instead of m3
+
+*outprn *grid pres sw so sg temp y x solconc obhloss viso
+*outprn *well *all
+*wprn *grid 300
+*wprn *iter 300
+
+**outsrf grid trmi trmj trmk trli trlj trlk
+
+*wrst
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 5 1 1
+
+*refine 3:4 1 1 *into 1 2 3
+
+*di *con 0.07184
+*dj *con 0.21552
+*dk *con 0.16256
+
+*por *con 0.3063
+*por rg 3 1 1 all  5*0.3063 0.0
+
+*permi con 2.122e2
+*permi rg 3 1 1 0.0 5*2.122e2 
+*permj con 2.122e2
+*permj rg 3 1 1 0.0 5*2.122e2 
+*permk con 2.122e2
+*permk rg 3 1 1 0.0 5*2.122e2 
+
+transi ijk 1 1 1  2.6
+
+*transi rg 4 1 1 all 0.0  2.42 2.43 2.44 2.45 2.46 
+*transj rg 4 1 1 all 2.01 2.02 2.03 2.04 2.05 2.06 
+*transk rg 4 1 1 all 2.21 2.22 2.23 2.24 2.25 2.26
+*tranli rg 3 1 1 all 2.47 2.48 2.49 2.50 2.51 2.52
+*tranlj rg 3 1 1 all 2.07 2.08 2.09 2.10 2.11 2.12
+*tranlk rg 3 1 1 all 2.27 2.28 2.29 2.30 2.31 2.32
+
+*end-grid
+
+*cpor 4.4e-7
+*rockcp 2.589e6
+*thconr 1.496e5
+*thconw 1.496e5
+*thcono 1.496e5
+*thcong 1.496e5
+*hlossprop overbur  2.683e6 1.047e6
+           underbur 2.683e6 1.047e6
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm            0.01802      0.5
+*idealgas
+*tcrit           647.35     617.6
+*molden          55500     1924.6
+*cp              4.5e-7     7.3e-7
+*ct1             8.8e-4     7.2e-4
+
+*avg           2.722e-16      0
+*bvg             1.075        0
+
+*cpg1              0          0
+*cpl1              0        1047
+*hvapr             0        5580
+
+*visctable
+
+**      Temp
+       297.0   1.078e-11  6.6898e-8
+       310.9   7.928e-12  1.5972e-8
+       338.7   4.977e-12  2.1643e-9
+       366.5   3.565e-12  5.440e-10
+       394.3   2.662e-12  2.014e-10
+       422.0   2.107e-12  9.838e-11
+       449.8   1.892e-12  6.019e-11
+       533.2   1.464e-12  2.894e-11
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.130      0.0        1.0
+    0.191      0.0051     0.999
+    0.250      0.0102     0.769
+    0.294      0.0168     0.7241
+    0.357      0.0275     0.6206
+    0.414      0.0424     0.504
+    0.490      0.0665     0.3714
+    0.577      0.097      0.3029
+    0.630      0.1148     0.1555
+    0.673      0.1259     0.0956
+    0.719      0.1381     0.0576
+    0.789      0.1636     0.0
+    1.0        1.0        0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+    0.200     0.17      0.0       0.69
+    0.395     0.112     0.0294    0.5218
+    0.433     0.1022    0.0461    0.489
+    0.515     0.0855    0.0883    0.4183
+    0.569     0.0761    0.1172    0.3717
+    0.614     0.0654    0.1433    0.3329
+    0.663     0.05      0.1764    0.2907
+    0.719     0.0372    0.217     0.2424
+    0.750     0.0285    0.2255    0.2156
+    0.805     0.0195    0.2919    0.1682
+    0.850     0.0121    0.3373    0.1294
+    0.899     0.0026    0.5169    0.0871
+    1.0       0.0       1.0       0.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*initial
+
+*pres *con 482.6
+
+*sw *con 0.179   ** So by difference, since Sg = 0
+
+*temp *con 296.9
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*numerical
+
+
+*run
+
+
+**  ==============  RECURRENT DATA  ======================
+
+time 0
+
+   dtwell 1e-4
+
+   well 1 'STEAM INJT'
+   well 2 'PRODUCER'
+
+   injector 'STEAM INJT' ** Injection specification
+   tinjw 468.5
+   qual .697  ** Wet steam at 69.7 % quality
+   incomp water  1.0  0.0
+   operate stw .053      ** Condensed steam equivalent
+   perf 'STEAM INJT' **  i j k / ir jr  kr   wi
+                         1 1 1   1e-4    ** Inject into 2 layers
+
+   producer 'PRODUCER'   ** Production specification
+   operate bhp 482.6
+   geometry k  .0016 .307 .125 0 ** rw cc ff ss
+   perf geo 'PRODUCER'  ** i j k / ir jr  kr
+                           5 1 1   1.0     ** Produce from 4 layers
+
+time .0069444 
+
+   transi ijk 1 1 1  2.6
+   transi ijk 2 1 1 4.4
+   tranli ijk 2 1 1 4.6
+   tranli ijk 4 1 1 2.5
+
+   *transi rg 4 1 1 all 2.41 2.42 2.43 2.44 2.45 2.46 
+   *transj rg 4 1 1 all 0.0 2.02 2.03 2.04 2.05 2.06 
+   *transk rg 4 1 1 all 2.21 2.22 2.23 2.24 2.25 2.26
+   *tranli rg 4 1 1 all 1.41 1.42 1.43 1.44 1.45 1.46 
+   *tranlj rg 4 1 1 all 1.01 1.02 1.03 1.04 1.05 1.06 
+   *tranlk rg 4 1 1 all 1.21 1.22 1.23 1.24 1.25 1.26
+
+
+time .0208333  
+time .0694444  
+stop

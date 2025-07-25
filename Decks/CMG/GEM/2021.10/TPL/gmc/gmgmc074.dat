@@ -1,0 +1,385 @@
+
+*****************************************************************************
+** Template  (gmgmc074.dat): Barton-Bandis Dual Porosity Model             **
+*****************************************************************************
+**************************************************************************************
+**                                                                                  **
+** FILE :  GMGMC074.DAT                                                             **
+**                                                                                  **
+** MODEL:  INVERTED 5 SPOT PATTERN      FIELD UNITS    8X8X1 CARTESIAN GRID         **
+**         3D FRACTURE NETWORK          1/4 PATTERN                                 **
+**         CAPILLARY PRESSURES AFFECT MATRIX-FRACTURE TRANSFER                      **
+**                                                                                  **
+**                                                                                  **
+** USAGE:  THERMAL DUAL POROSITY MODEL WITH CAPILLARY PRESSURE EFFECTS              **
+**                                                                                  **
+**************************************************************************************
+**************************************************************************************
+**                                                                                  **
+**       In this test problem, Barton-Bandis model is applied to a  dual            **
+**       porosity model for fracture closure.                                       **
+**       Hot water is injected into a 5-spot pattern containing oil.                **
+**       The reservoir is fractured in all directions and the dual porosity model   **
+**       is used to simulate the reservoir behaviour.                               **
+**                                                                                  **
+**       Gas-oil and oil-water capillary pressures in both the matrix and           **
+**       fracture affect matrix-fracture transfer term.                             **
+**                                                                                  **
+**       A combination of dual grids, LGR in the reservoir grid and use of          **
+**       Batron-Bandis model                                                        **
+**                                                                                  **
+**       Keyword *USTRESDIF allows use of the difference between the current and    **
+**       initial values of minimum principle effective stresses as the criterion    **
+**       for fracture opening and closure.                                          **
+**                                                                                  **
+**       This data set demonstrates use of *GPERMBB  in conjuction with *USTRESDIF. **
+**                                                                                  **
+**************************************************************************************
+** After stgeo089 and gmgmc050
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+*RESULTS *SIMULATOR *GEM
+
+*TITLE1 'GEM Geomechanics Template #74'
+*TITLE2 'Illustrate use of *GEOGRID with *REFINE and *DUALPERM'
+*TITLE3 'Barton-Bandis model with *USTRESDIF'
+
+*INUNIT *FIELD
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *VISW
+*OUTPRN *WELL *ALL
+*WPRN *GRID *TIME
+*WSRF *GRID 1
+*WSRF *GRIDDEFORM 1
+*OUTSRF *GRID  *PRES *SW *SO *SG *TEMP *VISO *STRESI *STRESJ *STRESK *PERM *STRESMXP
+               *STRESMNP *STRESNORM
+*OUTSRF *SPECIAL *TEMP      1 1 1 *MT
+                 *TEMP      1 1 1 *FR
+                 *STRESMNP  1 1 1 *MT
+                 *PERMI     1 1 1 *FR
+                 *STRESNORM 1 1 1 *MT
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID *CART 8 8 1        ** 2D areal cartesian grid
+*KDIR *DOWN
+
+*DI *CON 75
+*DJ *CON 75
+*DK *CON 30
+
+**  The whole reservoir is fractured in all 3 directions
+**  The element size in x and y direction is 10 ft and
+**  30 ft (block size) in z direction.
+
+*DUALPERM
+*SHAPE *GK
+*REFINE 1 1 1:1 INTO 5 5 1
+
+*DIFRAC *CON 10
+*DJFRAC *EQUALSI
+*DKFRAC *CON -1
+
+*POR MATRIX   CON 0.19
+*POR FRACTURE CON 0.01      **  Fracture properties
+
+*PERMI *MATRIX   *CON 1
+*PERMI *FRACTURE *CON 1     **  Fracture properties
+*PERMJ *MATRIX   *CON 1
+*PERMJ *FRACTURE *CON 1     **  Fracture properties
+*PERMK *MATRIX   *CON 1
+*PERMK *FRACTURE *CON 1     **  Fracture properties
+
+*TRANSI *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSJ *MATRIX   *IJK 3:4 2 1 1.6
+*TRANSI *FRACTURE *IJK 3:4 2 1 1.5
+*TRANSJ *FRACTURE *IJK 3:4 2 1 0.5
+
+*NULL  *MATRIX     *IJK  4:8  1:1  1:1   0
+*NULL  *FRACTURE   *IJK  4:8  1:1  1:1   0
+
+*CROCKTYPE 1
+  *CCPOR  *MATRIX 3.E-06
+  *CPRPOR *MATRIX 200
+  *CCPOR  *FRACTURE 3.E-06
+  *CPRPOR *FRACTURE 200
+*CROCKTYPE 2
+  *CCPOR  *MATRIX 3.E-06
+  *CPRPOR *MATRIX 200
+  *CCPOR  *FRACTURE 3.E-06
+  *CPRPOR *FRACTURE 200
+
+*CTYPE *MATRIX   *CON 1
+*CTYPE *FRACTURE *CON 2
+
+*END-GRID
+
+*CTPOR  54.8E-06 
+*TRPOR  120.
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL   *PR
+*NC    2    2
+*TRES        120.000
+*COMPNAME
+           'PS1'          'PS2'
+*SG         3.0000000E-01  9.2785600E-01
+*TB        -1.0000000E+02  4.8145263E+02
+*PCRIT      2.7007280E+01  1.0488707E+01
+*VCRIT      1.3706898E-01  1.4354780E+00
+*TCRIT      2.3784734E+02  9.1987506E+02
+*AC         4.1176000E-02  1.0650994E+00
+*MW         3.0398100E+01  4.0285700E+02
+*HCFLAG     0              0
+*BIN
+            1.2587594E-01
+*VSHIFT    -7.3458996E-02  2.5747694E-01
+*VISCOR *MODPEDERSEN
+*VISCOEFF   1.3040000E-04  2.7636000E+00  8.8536000E-03  1.4776000E+00
+            4.6974742E-01
+*OMEGA      4.5723553E-01  4.5723553E-01
+*OMEGB      7.7796074E-02  7.7796074E-02
+*PCHOR      8.4752965E+01  9.3278183E+02
+
+*ENTHCOEF
+            0.0000000E+00  2.7877075E-01  3.2911326E-04 -5.1310000E-08
+            0.0000000E+00  0.0000000E+00
+            0.0000000E+00 -2.0326851E-02  3.9996373E-04 -5.7426800E-08
+            0.0000000E+00  0.0000000E+00
+
+*AQUEOUS-DENSITY  *LINEAR
+
+*DENW 998.115
+*DENWS 998.9584  ** 998.115*1.000845
+ 
+*CW 4.3502e-007
+*REFPW 12000
+*VISW 0.571723
+
+*THERMAL *ON
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1    **  -----------  MATRIX  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcow
+**  ----      ------      ------      ------
+    0.25       0.0         0.92         4
+    0.30       0.02        0.705       2.95
+    0.40       0.055       0.42        1.65
+    0.50       0.10        0.24        0.85
+    0.60       0.145       0.11        0.3
+    0.70       0.20        0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog         Pcog
+**  ----     ------       ------        ------
+    0.25      0.45        0.0             16
+    0.30      0.372       0.0            12.4
+    0.35      0.312       0.0            9.68
+    0.40      0.257       0.0            7.76
+    0.45      0.225       0.0            6.24
+    0.50      0.175       0.0             5
+    0.55      0.142015    0.0             4
+    0.57      0.131232    7.9000E-4      3.52
+    0.60      0.115599    0.0049380      3.2
+    0.62      0.105551    0.0096790      2.92
+    0.65      0.091061    0.0197530      2.56
+    0.67      0.081805    0.0284440      2.28
+    0.70      0.068557    0.0444440      1.92
+    0.72      0.060169    0.0570860      1.68
+    0.75      0.048291    0.0790120      1.36
+    0.77      0.040870    0.0956050      1.2
+    0.80      0.030544    0.1234570      0.88
+    0.83      0.021273    0.1548640      0.64
+    0.85      0.015743    0.1777780      0.44
+    0.87      0.010799    0.2022720      0.28
+    0.90      0.004665    0.2419750      0.16
+    0.92      0.001649    0.2704200      0.08
+    0.94      0.0         0.3004440      0.04
+    1.        0.0         0.92           0.0
+
+
+*RPT 2    **  -----------  FRACTURE  ------------
+
+*SWT   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow        Pcog
+**  ----      ------      ------      ------
+    0.0        0.0         1.          4
+    0.10       0.05        0.77        1.85
+    0.20       0.11        0.587       0.9
+    0.25       0.145       0.519       0.725
+    0.30       0.18        0.45        0.55
+    0.40       0.26        0.33        0.4
+    0.50       0.355       0.24        0.29
+    0.60       0.475       0.173       0.2
+    0.70       0.585       0.102       0.16
+    0.80       0.715       0.057       0.11
+    0.90       0.85        0.021       0.05
+    0.95       0.91        0.0         0.03
+    1.         1.          0.0         0.0
+
+*SLT   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg          Krog       Pcog
+**  ----      ------       ------     ------
+    0.0        1.           0.0        16
+    0.05       0.95         0.0        11
+    0.10       0.90         0.10       7.4
+    0.20       0.80         0.20       3.6
+    0.25       0.75         0.25       2.9
+    0.30       0.70         0.30       2.2
+    0.40       0.60         0.40       1.6
+    0.50       0.50         0.50       1.16
+    0.60       0.40         0.60       0.8
+    0.70       0.30         0.70       0.64
+    0.80       0.20         0.80       0.44
+    0.90       0.10         0.90       0.2
+    0.95       0.0          0.95       0.1
+    1.         0.0          1.         0.0
+
+**   Assign rel perm sets
+
+*RTYPE *MATRIX   *CON 1
+*RTYPE *FRACTURE *CON 2
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+*USER_INPUT
+
+*PRES *MATRIX   *CON 200
+*PRES *FRACTURE *CON 200
+
+*SW *MATRIX   *CON 0.25
+*SW *FRACTURE *CON 0.25
+
+*TEMPER *MATRIX   *CON 120
+*TEMPER *FRACTURE *CON 120
+
+*ZGLOBALC  'PS1' *CON 0.07
+*ZGLOBALC  'PS2' *CON 0.97
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+*DTMAX 31.
+
+*NORM      *PRESS  145  
+*NORM      *SATUR  0.15 
+*NORM      *GMOLAR 0.15
+*NORM      *TEMP   10
+*MAXCHANGE *PRESS 2000.
+*MAXCHANGE *TEMP  50.
+*AIM *STAB *AND-THRESH 2 0.001
+
+**  ============== GEOMECHANICS SECTION =====================
+
+*GEOMECH          ** Main keyword for geomechanic option
+
+*GEOM3D           ** 3D Finite elements
+*GCOUPLING 2
+
+*GEOGRID *GCART 8 8 1 ** Cartesian grid
+*GDI *GCON  75  
+*GDJ *GCON  75  
+*GDK *GCON 30            
+
+*NITERGEO 200
+*FORCETOL 0.01
+
+*GEOROCK 1           ** rock type # 1 - matrix
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+
+*GEOROCK 2           ** rock type # 2 - fracture
+   *ELASTMOD 3.95E5
+   *POISSRATIO 0.3
+   *COHESION 100000
+   *THEXPCOEF 54.8E-06
+   ** B-B model      E0         Kni      FRS     Khf     Kccf   Krcf
+   *GPERMBB          6.5e-5     3e6     -50     100.    50.     5
+   *USTRESDIF         ** Using stress difference for fracture opening and closing
+*STRESS3D  500   500  500  0  0  0
+
+*GEOTYPE   *MATRIX   *IJK 1:8  1:8  1:1   1
+*GEOTYPE   *FRACTURE *IJK 1:8  1:8  1:1   2
+
+*GOUTSRF *GGRID *ALL
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1901 1 1.5
+
+   *DTWELL 0.01
+
+   *WELL 1 'INJTR'
+   *WELL 2 'PRODN'
+
+   *INJECTOR 'INJTR'
+   *INCOMP  *WATER
+   *OPERATE *MAX *STW 85.
+   *OPERATE *MAX *BHP 5000. 
+   *GEOMETRY *K .1 .432 1 0 ** rw cc ff S
+   *PERF 'INJTR'  ** i j k  wi
+          1 1 1 / 3 3 1 754.2344
+
+   *INJ-TEMP 'INJTR'
+       350.
+   
+   *PRODUCER 'PRODN'
+   *OPERATE *STL 85.
+   *OPERATE *MIN *BHP  20.   
+   *GEOMETRY *K .1 .432 1 0 ** rw cc ff S
+   *PERF *GEO 'PRODN'
+              8 8 1  1.0
+   *SHUTIN 'PRODN'
+
+*TIME 150
+
+   *SHUTIN 'INJTR'
+
+*TIME 300
+
+   *OPEN 'PRODN'
+
+*TIME 800
+
+   *WRST *TNEXT
+
+*TIME 1100
+
+   *SHUTIN 'PRODN'
+
+   ** Changing to BB Model for cycle # 2
+   *GEOROCK 2           ** rock type # 2
+      ** B-B model     E0        Kni     FRS    Khf    Kccf  Krcf
+      *GPERMBB        6.5e-5     3e6     -120    120.   70.    20
+              ** Using current stress for fracture opening and closing in absence of *USTRESDIF
+   *OPEN 'INJTR'
+
+   *WRST *TNEXT
+
+*TIME 1300
+
+   *SHUTIN 'INJTR'
+
+*TIME 1350
+
+   *OPEN 'PRODN'
+
+*TIME 2500
+
+*STOP

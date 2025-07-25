@@ -1,0 +1,247 @@
+
+*****************************************************************************
+** Template (stsmo011.dat): VE with Oil on Bottom, non-zero Pcow           **
+*****************************************************************************
+
+
+
+**                      OVERVIEW
+**                      ========
+
+**    Test and illustrate the Mass-Consistent vertical equilibrium
+**  option with oil heavier than water and non-zero capillary pressure.
+
+**  Special Features:
+
+**  1)  Based on Test Bed #62.
+
+**  2)  Keywords *DWOC and *DGOC define a water/oil/gas system.
+
+**  3)  Oil beneath GOC is quite undersaturated as defined by initial
+**      oil mole fraction of solution gas.  Oil composition in gas zone
+**      is adjusted to ensure liquid/vapour equilibrium.
+
+**  4)  Oil density at WOC is slightly larger than water density, so oil
+**      is on the bottom in this o/w/g system case.  Note that the water-oil
+**      transition zone is large because the water and oil phase densities
+**      are little different.
+
+**  5)  Search for word "STATIC" to find output for this calculation.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'STARS Simulator Options No. 11'
+*title2 'Oil/Water/Gas Ver. Eq. with Oil on Bottom, Non-Zero Pcow'
+*title3 'Based on Test Bed #62'
+
+*inunit field   ** Output iunits the same as input
+
+*outprn *grid pres sw so sg temp y x obhloss viso pcow pcog masdenw masdeno
+*outprn *well all
+outprn iter newton
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+*outsrf *grid pres sw so sg temp pcow pcog insetn
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 1 1 100   
+
+*di *con 5.0
+*dj *con 2.0
+*dk *con 1.0
+
+*depth top 1 1 100 0.
+
+*por *con 0.23
+
+*permi *con 41  **  Permeability is 41 md hoizontally
+*permj *equalsi
+*permk *con 53  **  Permeability is 53 md vertically
+
+*end-grid
+
+*cpor 8.8e-5
+*prpor 670
+*ctpor 5.4e-5
+*rockcp 34.5 ** in Btu/ft3-deg F
+
+**  Rock and fluid thermal conductivities in Btu/day-ft-deg F
+*thconr 38.16
+*thconw 8.98
+*thcono 1.67
+*thcong 0.48
+
+**  Thermal conductivity of overlying and underlying formation
+*hlossprop overbur 34.5 38.16 underbur 34.5 38.16
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 4 4 4   **  Standard water properties plus three oils
+
+*compname     'Water'   'Hevy Oil'  'Lite Oil'  'Soln Gas'
+**            --------  ----------  ----------  ----------
+
+*cmm            18        378.93      152.23      16.043
+*pcrit        3217.1      149.65      267.54      361.96
+*tcrit        705.47     1107.81      738.68     -116.59
+
+*massden         0          67          55          20
+*cp              0        1.5e-5      1.5e-5      1.5e-5
+*ct1             0       5.93e-4     3.11e-4     0.00123
+**Spec. Grav.              0.92        0.85        0.703
+
+*avg          1.169e-5   4.04e-6     4.04e-6      6.22e-5
+*bvg           1.075      1.1027      1.1027      0.8197
+*avisc           0       3.4238e-6   0.010807     0.0138
+*bvisc           0       10733.6       2459        205.9
+
+*cpl1            0        189.15      76.15        10.8
+*hvr             0          0        1839.68      525.65
+*ev              0          0          0.38        0.38
+
+**  Reference conditions
+*prsr 14.65
+*temr 77
+*psurf 14.65
+*tsurf 62
+*xnacl 0.015
+
+*kvtablim 50 1250 90 690   ** Low/high p & T
+
+*kvtable 'Hevy Oil'    ** Hev_Oil  (nonvapourizable at low T)
+
+7*0
+7*0
+7*0
+7*0
+7*0
+0.0007   0.0002   0.0002   0.0001    0.0001   0.0001   0.0001
+0.006    0.002    0.0014   0.0012    0.0011   0.001    0.001
+
+*kvtable 'Lite Oil'    ** Lit_Oil  (more vapourizable liquid part)
+
+0.0017   0.0005   0.0004   0.0004    0.0004   0.0004   0.0005
+0.0247   0.0063   0.0044   0.0038    0.0036   0.0035   0.0035
+0.1609   0.0381   0.0249   0.0201    0.0177   0.0165   0.0158
+0.6295   0.1425   0.0893   0.0693    0.0592   0.0532   0.0495
+1.7392   0.3864   0.2363   0.1792    0.1495   0.1316   0.1199
+3.6816   0.8238   0.4988   0.3733    0.3072   0.2667   0.2397
+6.3836   1.4416   0.8744   0.6515    0.5325   0.4588   0.4089
+
+*kvtable 'Soln Gas'    ** Soln_Gas  (soluble hydrocarbon gas - CH4)
+
+ 95.853  19.9007  11.4608   8.2140   6.4946   5.4297   4.7052
+124.741  25.6380  14.6273  10.3914   8.1470   6.7584   5.8130
+144.301  29.4742  16.7317  11.8309   9.2360   7.6293   6.5365
+154.848  31.4554  17.8091  12.5629   9.7860   8.0672   6.8984
+158.334  31.7949  17.9853  12.6776   9.8683   8.1295   6.9474
+157.186  30.7469  17.3906  12.2659   9.5532   7.8737   6.7318
+150.630  28.7399  16.1894  11.4273   8.9123   7.3561   6.2979
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      -----      ------      ------
+    0.514      0.0         1.0         .3
+    0.629      0.067      0.249        *int
+    0.670      0.092      0.120        *int
+    0.690      0.116      0.088        *int
+    0.724      0.151      0.041        *int
+    0.744      0.175      0.026        .0
+    0.773      0.204      0.010       -.1
+    0.829      0.224      0.0         -.2
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg        Krog        Pcog
+**  -----      ------     ------      ------
+    0.737      0.411      0.0          2.
+    0.787      0.233      0.076        1.5
+    0.818      0.149      0.146        1.
+    0.862      0.080      0.328        0.5
+    0.889      0.040      0.445        0.
+    0.917      0.013      0.573       -0.5
+    1.0        0.0        1.0         -1.
+
+*krtemtab  swr   sorw
+   104    .355   .247
+   400    .443   .198
+
+*sgr .02
+*sorg .1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*vertical *depth_ave
+
+*refdepth 70
+*refpres 717
+*dgoc 20
+*dwoc 70
+
+*temp *con 93
+
+**  Solution gas is below bubble point
+*mfrac_oil 'Hevy Oil' *con 0.65175
+*mfrac_oil 'Lite Oil' *con 0.2947
+*mfrac_oil 'Soln Gas' *con 0.05355
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*maxsteps 1
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1983 6 17.5
+
+   dtwell 1e-4
+
+   well 1 'CYC_1 INJT'
+
+   injector 'CYC_1 INJT'
+   incomp  water  1.0   0.0  0.0  0.0
+   tinjw 588
+   qual .71  ** Steam conditions at the wellhead
+   operate stw 100
+   perf 'CYC_1 INJT'  ** i j k  wi
+             1 1 1 21.5
+
+time 15
+stop

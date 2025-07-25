@@ -1,0 +1,216 @@
+   ******************************************************************************
+   ** mxwtt005.dat:       Radial Black-Oil Model for Well-Test Output          **
+   **                                                                          **                 
+   ******************************************************************************
+   **************************************************************************************
+   **                                                                                  **
+   ** FILE:   mxwtt005.DAT                                                             **
+   ** MODEL:  70x12x1                                                                  **      
+   **         RADIAL BLACK-OIL MODEL FOR WELL-TEST OUTPUT                              ** 
+   **                                                                                  **        
+   **************************************************************************************
+   **                                                                                  **
+   ** This is a 70x12x1 radial black-oil model to demonstrate the well-test drawdown   **
+   ** test in natural fractured reservoirs.                                            **
+   **                                                                                  **  
+   **************************************************************************************
+   ** CONTACT:    CMG,   (403)531-1300;   282-6495 (fax);support@cmgl.ca    (Internet) **
+   **************************************************************************************                                
+
+RESULTS SIMULATOR IMEX
+
+   *TITLE1
+   'Radial Black-Oil Model'                   
+   *TITLE2
+   'Well-Test'                                                     
+   *TITLE3
+   'Drawdown Test-DUALPOR'   
+
+   *INUNIT    *FIELD
+   
+   *WPRN      *WELL  5
+   *WPRN      *GRID 10
+   *WPRN      *ITER *NONE
+   *OUTPRN    *GRID *SO *SG *SW *PRES *IMEXMAP
+   *OUTPRN    *TABLES *NONE
+   *OUTPRN    *RES    *NONE
+
+   *WSRF      *GRID 1
+   *WSRF      *WELL 1
+   *OUTSRF *GRID *PRES *SO *SW *SG *POROS *VISO *VISW *VISG *KRW *KRO *KRG *PERM *BO *EG
+   
+   *OUTSRF *SPECIAL 1 1 1 *PRES
+   *OUTSRF *SPECIAL 1 1 1 *SO
+   *OUTSRF *SPECIAL 1 1 1 *SW
+   *OUTSRF *SPECIAL 1 1 1 *SG
+   *OUTSRF *SPECIAL 1 1 1 *POROS
+   *OUTSRF *SPECIAL 1 1 1 *VISO
+   *OUTSRF *SPECIAL 1 1 1 *VISW
+   *OUTSRF *SPECIAL 1 1 1 *VISG
+   *OUTSRF *SPECIAL 1 1 1 *KRO
+   *OUTSRF *SPECIAL 1 1 1 *KRW
+   *OUTSRF *SPECIAL 1 1 1 *KRG
+   
+   *WSRF *WELL-TEST 1
+   
+
+   **************************************************************************  
+   ** Reservoir description Section
+   **************************************************************************
+
+   *GRID *RADIAL    70    12   1 *RW 0.23
+   *DI IVAR
+   0.03790996   0.04415851   0.05143698   0.05991513   0.06979069   0.08129401   0.09469337
+   0.11030129   0.12848180   0.14965894   0.17432661   0.20306016   0.23652974   0.27551597
+   0.32092815   0.37382543   0.43544156   0.50721362   0.59081557   0.68819730   0.80163006
+   0.93375949   1.08766727   1.26694304   1.47576811   1.71901296   2.00235088   2.33239023
+   2.71682862   3.16463244   3.68624593   4.29383485   5.00157019   5.82595866   6.78622773   7.90477405   9.20768581
+   
+   10.72535121   12.49316723   14.55236517   16.95097233   19.74493216   22.99940903   26.79030807   31.20604560
+   36.34961117   42.34096974   49.31985958   57.44905145   66.91814495   77.94799061   90.79584089
+   
+   105.76135006   123.19356325   143.49905724   167.15142322   194.70231248   226.79430278   264.17588531
+   307.71892205   358.43898045   417.51901978   486.33698172   566.49792843   659.87147797   768.63540991   895.32645841
+   
+   1042.89947716   1214.79635640   1415.02629912
+
+   *DJ *CON 30
+   *DK *CON 100
+  
+   *DEPTH 1 1 1 9000
+  
+   *VOLMOD *MATRIX   *IJK 1 1 1 150
+   *VOLMOD *FRACTURE *IJK 1 1 1 150
+   
+   *DUALPOR  *SHAPE *GK
+   
+   *DIFRAC *CON 1
+   *DJFRAC *CON 1
+   *DKFRAC *CON 1
+   
+   *POR *MATRIX   *CON 0.10
+      *MOD 55:70 1:12 1:1 = 0
+   *POR *FRACTURE *CON 0.005
+      *MOD 55:70 1:12 1:1 = 0
+   
+   
+   *CPOR *MATRIX   4.0E-6
+   *CPOR *FRACTURE 4.0E-6
+   
+   *PRPOR *MATRIX   3600.
+   *PRPOR *FRACTURE 3600.
+
+   *PERMI *MATRIX *CON 0.00025
+   *PERMI *FRACTURE *CON 2.5
+   *PERMJ *MATRIX *CON 0.00025
+   *PERMJ *FRACTURE *CON 2.5
+   *PERMK *MATRIX *CON 0.00025
+   *PERMK *FRACTURE *CON 2.5
+
+   **************************************************************************
+   ** Component Properties Section
+   **************************************************************************
+
+   *MODEL *BLACKOIL                ** Three phase - three equation
+
+   *PVT 
+   **    p        rs       bo         eg      viso     visg
+      400.000   125.000   1.01200   169.490   1.17000 0.0130000
+      800.000   335.000   1.02550   338.980   1.14000 0.0135000
+     1200.000   500.000   1.03800   510.200   1.11000 0.0140000
+     1600.000   665.000   1.05100   680.270   1.08000 0.0145000
+     2000.000   828.000   1.06300   847.460   1.06000 0.0150000
+     2400.000   985.000   1.07500  1020.400   1.03000 0.0155000
+     2800.000  1130.000   1.08700  1190.500   1.00000 0.0160000
+     3200.000  1270.000   1.09850  1351.400 0.9800000 0.0165000
+     3600.000  1390.000   1.11000  1538.500 0.9500000 0.0170000
+     4000.000  1500.000   1.12000  1694.900 0.9400002 0.0175000
+     4400.000  1600.000   1.13000  1851.900 0.9200000 0.0180000
+     4800.000  1676.000   1.14000  2040.800 0.9100000 0.0185000
+     5200.000  1750.000   1.14800  2222.200 0.9000000 0.0190000
+     5600.000  1810.000   1.15500  2381.000 0.8900000 0.0195000
+
+   *DENSITY *OIL    45.0
+   *DENSITY *GAS     0.0702
+   *DENSITY *WATER  62.14
+   *CO               4.0e-6
+   *CVO              0.0   
+   *BWI              1.01420
+   *CW               4.0e-6 
+   *REFPW            14.7          
+   *VWI              0.96          
+   *CVW              0.0           
+
+
+  *******************************
+  ** Relative permeability data.
+  *******************************
+  *ROCKFLUID
+  *RPT 1
+  *SWT  ** SW KRW KRO PCOW
+   0.1 0 1 0
+   1   1 0 0
+   
+  *SLT  ** SL KRG KROG PCOG
+   0.1 1   0 0
+   0.3 0.7 0 0
+   1   0   1 0 
+                              
+
+   **************************************************************************
+   ** Initial Conditions Section
+   **************************************************************************   
+   *INITIAL
+   *USER_INPUT
+   
+   *PRES *MATRIX   *CON 3800.
+   *PRES *FRACTURE *CON 3800.
+    
+   *PB *MATRIX   *CON 100.
+   *PB *FRACTURE *CON 100.
+    
+   *SO *MATRIX   *CON 0.99
+   *SO *FRACTURE *CON 0.99
+    
+   *SW *MATRIX   *CON 0.01
+   *SW *FRACTURE *CON 0.01
+  
+   **************************************************************************   
+   ** Numerical Control Section
+   **************************************************************************
+
+   *NUMERICAL
+   *NCUTS        10
+   *DTMAX        0.1
+   *DTMIN        0.00001
+   *MAXSTEPS     9999
+   *NORM *PRESS  25.0
+   *NORM *SATUR  0.05
+   ** *AIM *THRESH  0.25  0.25
+   *AIM *OFF
+   
+   **************************************************************************
+   ** Well Data Section
+   **************************************************************************
+
+   *RUN 
+   *DATE 1994 01 01
+   *DTWELL 0.0001
+   *AIMSET *CON 1
+
+   *WELL 1 'Producer'
+   *PRODUCER 1
+
+   ** Primary operating constraint is oil rate
+   *OPERATE *MAX *STO 300.00 *STOP 
+   ** Subsequent operating constraint is bottomhole pressure.
+   *OPERATE *MIN *BHP 100.00 *STOP   
+   **             rad   geofac  wfrac  skin
+   *GEOMETRY  *K  0.23   0.5     1.0    0.0
+   *PERF *GEO 1
+      1 1 1 1.0
+
+   *TIME 20
+   *TIME 50
+   
+   *STOP

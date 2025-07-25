@@ -1,0 +1,321 @@
+**                          OVERVIEW
+**                          ========
+
+**   This template illustrates the application of *SWINIT for a water/oil system with *DUALPERM.
+**   *SWINIT will adjust Pcow block endpoint to ensure reasonable hydrostatic equilibrium
+**   for each cell.
+
+**   With *SWINIT, no-flow condition should be preserved. Therefore, the change of pressure
+**   at time steps should be small (no more than 0.5 psi), and saturation changes should
+**   be negligible (less than 0.0001), if no wells are opened. In comparison, when
+**   saturations are entered with *SW keyword, no Pcow adjustment will be made.
+
+**  Features:
+
+**  1)  With *SWINIT_FRAC *OFF, no Pcow scaling is performed for fracture blocks. This is
+**      acceptable because Pcow=0 is entered for fractures. There is no flow between fracture
+**      and matrix blocks because Krw=0 in fracture.
+
+**  2)  If Pcow /= 0 and non-zero Swinit is entered for fractures, *SWINIT_FRAC *ON is recommended
+**      so that Pcow adjustment is activated.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Simulator Options No. 103'
+*TITLE2 'Verify/Illustrate *SWINIT for Water/Oil *DUALPERM Model'
+*TITLE3 '*SWINIT_FRAC *OFF Enabled'
+
+inunit field
+
+outprn grid pres sw pcow pcog
+outprn well all
+outprn iter tss
+wprn grid 400
+wprn iter 400
+wrst 300
+prntorien 2 0
+
+outsrf grid  all **pres sw so pcow
+wsrf grid 1
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 1 10        ** 2D vertical cross-sectional cartesian grid
+
+
+di ivar 5 5 5 5 5
+dj con 5
+dk con 3
+
+dualperm             ** Fracture spacing mimics Lee's sigma=3 value
+difrac con 1.633     ** Reservoir has vertical fractures only
+djfrac equalsi
+dkfrac equalsi
+
+por matrix    con 0.28
+por fracture  con 0.02
+
+permi matrix   con 050
+permi fracture con 2000
+permj matrix   con 050
+permj fracture con 2000
+permk matrix   con 050
+permk fracture con 2000
+
+**refine 1:2 1:1 8 into 3 1 1
+
+*end-grid
+
+rocktype 1   **      Matrix properties
+cpor 5e-4
+rockcp 35
+thconr 24
+thconw 24
+thcono 24
+thcong 24
+hlossprop overbur 35 24 underbur 35 24
+
+rocktype 2 copy 1   **      Fracture properties
+
+thtype fracture con 2
+thtype matrix con 1
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+MODEL 3 3 3 1
+COMPNAME 'Water' 'Dead_Oil' 'Soln_Gas' 
+CMM
+0 239.654 26.073 
+PCRIT
+0 0 667.009 
+TCRIT
+0 0 -115.554 
+KV1
+0 0 16097.6 
+KV2
+0 0 -0.00754848 
+KV3
+0 0 41.2711 
+KV4
+0 0 -1583.98 
+KV5
+0 0 -446.782 
+PRSR 14.6488
+TEMR 158
+PSURF 14.6488
+TSURF 62.33
+MASSDEN
+63.3663 53.6743 26.3194 
+CP
+2.7e-006 6.7e-006 6.7e-006 
+CT1
+0.000215307 0.000561111 0.000561111 
+AVG
+0 0 1.39374e-005 
+BVG
+0 0 1 
+
+VISCTYPE 1
+VISCTABLE
+**temp water dead_oil solution_gas
+40.000000	1.710410	5941.820000	12.979200			
+59.000000	1.253980	3421.940000	11.794900			
+86.000000	0.882651	641.607000	3.934300			
+113.000000	0.660633	161.991000	1.642920			
+122.000000	0.608547	108.593000	1.284050			
+126.700000	0.582602	89.094000	1.138420			
+131.500000	0.558216	73.033500	1.008310			
+136.600000	0.534624	59.841600	0.895286			
+142.000000	0.510229	48.696200	0.791558			
+147.600000	0.484674	39.657900	0.701012			
+153.300000	0.463292	32.348900	0.621360			
+158.000000	0.448398	27.538400	0.565476			
+159.400000	0.444131	26.256900	0.549921			
+165.700000	0.423688	21.363800	0.488023			
+172.600000	0.403040	17.237300	0.431811			
+179.600000	0.384142	13.959600	0.382884			
+187.200000	0.366425	11.234700	0.338931			
+195.100000	0.348344	9.042420	0.300153			
+203.500000	0.329684	7.252000	0.265506			
+212.500000	0.310895	5.800660	0.234946			
+222.300000	0.293043	4.614730	0.207719			
+232.500000	0.278815	3.674720	0.183752			
+243.700000	0.263679	2.909500	0.162451			
+255.700000	0.247247	2.295510	0.143424			
+268.700000	0.231414	1.810280	0.126964			
+282.700000	0.216947	1.424700	0.112396			
+298.200000	0.206386	1.115710	0.099499			
+315.100000	0.194519	0.872289	0.088163			
+333.900000	0.182461	0.678804	0.078104			
+354.600000	0.170878	0.527946	0.069323			
+377.800000	0.159885	0.410137	0.061700			
+403.700000	0.148969	0.318226	0.054976			
+433.200000	0.137914	0.245119	0.048818			
+466.900000	0.127254	0.190690	0.043900			
+505.600000	0.116868	0.147941	0.039432			
+550.900000	0.104693	0.114508	0.035409			
+604.800000	0.094867	0.089192	0.032045			
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+rpt 1    **  -----------  MATRIX  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw          Krw          Krow
+**  ----      --------      --------
+    0.45      0.0           0.4        1.0
+    0.47      0.000056      0.361      int
+    0.5       0.000552      0.30625    int
+    0.55      0.00312       0.225      int
+    0.6       0.00861       0.15625    int
+    0.65      0.01768       0.1        int
+    0.7       0.03088       0.05625    int
+    0.75      0.04871       0.025      int
+    0.77      0.05724       0.016      int
+    0.8       0.07162       0.00625    int
+    0.82      0.08229       0.00225    int
+    0.85      0.1           0.0        0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl          Krg          Krog
+**  ----      --------      --------
+    0.45      0.2           0.0
+    0.55      0.142015      0.0
+    0.57      0.131232      0.00079
+    0.6       0.115599      0.004938
+    0.62      0.105551      0.009679
+    0.65      0.091061      0.019753
+    0.67      0.081805      0.028444
+    0.7       0.068557      0.044444
+    0.72      0.060169      0.057086
+    0.75      0.048291      0.079012
+    0.77      0.04087       0.095605
+    0.8       0.030544      0.123457
+    0.83      0.021273      0.154864
+    0.85      0.015743      0.177778
+    0.87      0.010799      0.202272
+    0.9       0.004665      0.241975
+    0.92      0.001649      0.27042
+    0.94      0.0           0.300444
+    1.0       0.0           0.4
+
+
+rpt 2    **  -----------  FRACTURE  ------------
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw        Krw         Krow
+**  ----      ------      ------
+    0.0        0.0          1.0	    **0.5
+    0.5	       0.5	    0.5	    **int
+    1.0        1.0          0.0	    **0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg         Krog
+**  ----      ------      ------
+    0.0        1.0           0.0
+    1.0        0.0           1.0
+
+**   Assign rel perm sets
+
+krtype matrix con 1
+krtype fracture con 2
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+*VERTICAL *DEPTH_AVE 
+refpres 240
+refblock 1 1 5
+
+DWOC 24.0
+
+*SWINIT_CPADJST *SCALE
+
+*SWINIT MATRIX IJK
+  1,1,1 0.43
+  1,1,2 0.44
+  1,1,3 0.45
+  1,1,4 0.46
+  1,1,5 0.47
+  1,1,6 0.48
+  1,1,7 0.49
+  1,1,8 0.50
+  1,1,9 0.51
+  1,1,10 0.52
+
+**SWINIT FRACTURE IJK
+  **1,1,1  0.11
+  **1,1,2  0.12
+  **1,1,3  0.13
+  **1,1,4  0.14
+  **1,1,5  0.0
+  **1,1,6  0.16
+  **1,1,7  0.17
+  **1,1,8  0.18
+  **1,1,9  0.19
+  **1,1,10 0.20
+
+**sw fracture con 0.0001
+
+*SWINIT_FRAC *OFF **ON     **OFF is default
+**SWINIT_ADJMOB OFF **ON   **OFF is default
+
+temp matrix   con 41
+temp fracture con 41
+
+MFRAC_OIL 'Soln_Gas' *FRACTURE CON     0.1
+MFRAC_OIL 'Soln_Gas' *MATRIX CON     0.1
+MFRAC_OIL 'Dead_Oil' *FRACTURE CON     0.9
+MFRAC_OIL 'Dead_Oil' *MATRIX CON     0.9
+
+intype con 1
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+newtoncyc 10
+sdegree 1
+sorder rcmrb
+dtmax 90
+upstream klevel
+
+norm      press 200  satur  .15   temp 120  y .15   x .15
+converge varonly press 5 satur 0.01
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+date 1973 9 25.5
+   dtwell .004
+time 45 
+time 90
+time 150
+time 210
+time 365
+time 730
+
+STOP

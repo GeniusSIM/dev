@@ -1,0 +1,282 @@
+
+
+**                       OVERVIEW
+**                       ========
+
+
+** Cyclic Steam Stimulation
+
+** Dead Oil (Aberfeldy Properties) and Water
+
+** This run is of a 5 x 5 x 6 coarse grid with a hybrid cylindrical
+** block around a well located in the middle column of blocks.
+** The cylindrical grid has 4 radial refinements, and some Z.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+
+
+RESULTS SIMULATOR STARS
+
+checkonly
+*interrupt *stop
+
+title1 'STARS Test Bed No. 34b'
+title2 'Full hybrid test (3 directions, non-uniform properties)'
+title3 'Axial refinement'
+
+inunit  field
+
+outprn grid pres sw so sg temp y
+outprn well all
+wprn grid 300
+wprn iter 300
+
+outsrf grid temp
+
+outsrf special blockvar temp 3,1,1
+               blockvar temp 1,1,1 / 1,1,3
+               blockvar temp 1,1,1 / 2,1,3
+               blockvar temp 1,1,1 / 1,1,4
+               blockvar temp 1,1,1 / 1,1,2
+               blockvar temp 2,1,1 / 1,1,1
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+grid cart 5 5 6
+
+refine 1:5 1 1  into  2 4 4
+hybrid  rw 0.3 idir **rwi 3.0  5.735  16.7
+
+refine 1 1:5 3  into  3 4 2
+hybrid  rw 0.3 jdir **rwi 3 6
+
+refine 3 5 3:4    into  4 4 1
+hybrid  rw 0.3 kdir
+
+di con 131.24
+dj con 131.24
+** Slightly below upper limit of allowed aspect range for blocks (1,1:5,3)
+dk kvar 41.5  6.561 51.87 19.683 2*6.561
+** Slightly above upper limit gives error
+**dk kvar 41.5  6.561 51.88 19.683 2*6.561
+
+por con 0.35
+permi con 2000
+permj equalsi
+permk equalsi * 0.1
+
+end-grid
+
+cpor 1.0e-4
+
+rockcp 33.0
+thconr 42.24
+thconw 42.24
+thcono 42.24
+thcong 42.24
+**hlossprop **overbur  33.0   35.28
+            ** underbur 33.0   35.28
+hlossprop -k 33.0   35.28
+          +k 33.0   35.28
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2   ** Components are water and dead oil.  Most water
+              ** properties are defaulted (=0).  Dead oil K values
+              ** are zero, and no gas properties are needed.
+
+compname       'WATER'   'DEAD OIL'
+**              -----     --------
+cmm             18.02      600.0
+pcrit          3206.2       0           ** flag for ideal gas
+tcrit           705.4        0
+molden            0        0.10113
+cp                0        5.0e-6
+ct1               0        5.0E-4
+
+cpl1              0         300
+
+avg            1.13e-5       0
+bvg             1.075        0
+
+visctable
+**   Temp
+      74          0       1275
+     100          0        380
+     150          0         91.2
+     200          0         28.8
+     250          0         13.5
+     300          0          7.9
+     350          0          5.2
+     500          0          2
+
+prsr 14.7
+temr 74.0
+tsurf 60.0
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.2        0.0        0.8475
+    0.25       0.0045     0.71
+    0.3        0.01       0.6
+    0.35       0.02       0.51
+    0.4        0.03       0.43
+    0.45       0.04       0.355
+    0.5        0.05       0.287
+    0.6        0.075      0.16
+    0.65       0.09       0.1175
+    0.7        0.105      0.057
+    0.75       0.12       0.02
+    0.79       0.135      0.0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog
+**  -----     ------    ------
+    0.285     0.127     0.0
+    0.35      0.105     0.015
+    0.4       0.09      0.025
+    0.45      0.073     0.037
+    0.5       0.06      0.05
+    0.55      0.045     0.065
+    0.6       0.035     0.085
+    0.65      0.027     0.1175
+    0.7       0.02      0.137
+    0.75      0.015     0.175
+    0.8       0.012     0.225
+    0.85      0.007     0.29
+    0.9       0.0       0.39
+    1.0       0.0       0.8475
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+**vertical depth_ave  refpres 200.0  refblock  1  1  1
+
+pres con 2000
+
+sw kvar  6*0.2   ** So by difference, since Sg = 0
+
+temp con 74.0
+
+** The following are nr = 2, ntheta = 4 and nz = 4
+temp  rg 1 1 1  all   80  81     0  82     0  83     0  84
+                      80  81     0  82     0  83     0  84
+                      80  81     0  82     0  83     0  84
+                      80  81     0  82     0  83     0  84
+temp  rg 2 1 1  all   90  91     0  92     0  93     0  94
+                      90  91     0  92     0  93     0  94
+                      90  91     0  92     0  93     0  94
+                      90  91     0  92     0  93     0  94
+temp  rg 3 1 1  all  100 101     0 102     0 103     0 104
+                     100 101     0 102     0 103     0 104
+                     100 101     0 102     0 103     0 104
+                     100 101     0 102     0 103     0 104
+temp  rg 4 1 1  all  110 111     0 112     0 113     0 114
+                     110 111     0 112     0 113     0 114
+                     110 111     0 112     0 113     0 114
+                     110 111     0 112     0 113     0 114
+temp  rg 5 1 1  all  120 121     0 122     0 123     0 124
+                     120 121     0 122     0 123     0 124
+                     120 121     0 122     0 123     0 124
+                     120 121     0 122     0 123     0 124
+
+** The following are nr = 3, ntheta = 4 and nz = 2.
+temp  rg 1 1 3  all  130 131 132    0 133 134    0 135 136    0 137 138
+                     130 131 132    0 133 134    0 135 136    0 137 138
+temp  rg 1 2 3  all  140 141 142    0 143 144    0 145 146    0 147 148
+                     140 141 142    0 143 144    0 145 146    0 147 148
+temp  rg 1 3 3  all  150 151 152    0 153 154    0 155 156    0 157 158
+                     150 151 152    0 153 154    0 155 156    0 157 158
+temp  rg 1 4 3  all  160 161 162    0 163 164    0 165 166    0 167 168
+                     160 161 162    0 163 164    0 165 166    0 167 168
+temp  rg 1 5 3  all  170 171 172    0 173 174    0 175 176    0 177 178
+                     170 171 172    0 173 174    0 175 176    0 177 178
+
+temp  rg 3 5 3  all  200 201 202 203  ** The following are
+                       0 204 205 206  **       nr = 4
+                       0 207 208 209  **   ntheta = 4
+                       0 210 211 212  **       nz = 1
+temp  rg 3 5 4  all  220 221 222 223
+                       0 224 225 226
+                       0 227 228 229
+                       0 230 231 232
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical   ** All these can be defaulted.  The definitions
+            ** here match the previous data.
+
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1e-2
+
+   well 1 'STEAM INJT'
+   well 2 'PRODUCER'
+
+   injector  mobweight 'STEAM INJT'   ** Injection specification
+   incomp  water  1.0  0.0
+   tinjw 480
+   qual .7  ** Wet steam at 70 % quality
+   operate     stw 629.0   ** Condensed steam equivalent
+   operate max bhp 750.0
+   perf 'STEAM INJT'  **  UBA   wi
+               1 1 1 / 1  1  1  45161.279 **50.902
+               2 1 1 / 1  1  1  45161.279 **50.902
+               3 1 1 / 1  1  1 135482.95  **152.705
+               4 1 1 / 1  1  1 135482.95  **152.705
+               5 1 1 / 1  1  1  45161.279 **50.902
+
+   producer 'PRODUCER'              ** Production specification
+   operate     stl 500.0
+   operate min bhp 17.0
+   perf 'PRODUCER'  **   UBA   wi
+               1 1 1 / 1  1  1  45161.279 **50.902
+               2 1 1 / 1  1  1  45161.279 **50.902
+               3 1 1 / 1  1  1 135482.95  **152.705
+               4 1 1 / 1  1  1 135482.95  **152.705
+               5 1 1 / 1  1  1  45161.279 **50.902
+
+    shutin 'PRODUCER'
+
+time 10
+
+   shutin 'STEAM INJT'
+
+time 17
+
+   open 'PRODUCER'
+
+time 150

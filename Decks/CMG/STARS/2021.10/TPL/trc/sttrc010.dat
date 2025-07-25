@@ -1,0 +1,261 @@
+
+**                      OVERVIEW
+**                      ========
+
+**    This template demonstrates the application of passive tracer options.
+
+**    Three well tracers are used to track the front advancement in water flooding.
+**    Input tracer molecular weight allows the output of tracer mass rate for each
+**    well.
+
+**    Flux boundary output file "sttrc010.flxb" for *FLXB-TYPE *FLUX is generated
+**    by this template.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*INTERRUPT *STOP
+
+*TITLE1 'STARS Tracer Template #10'
+*TITLE2 'Flux Boundary with Well Tracer - Full-Field Run'
+*TITLE3 '*FLXB-TYPE *FLUX'
+
+*INUNIT  *SI
+
+*WRST          *TIME
+*WPRN    *GRID *TIME
+*OUTPRN  *WELL *ALL
+*OUTPRN  *GRID *SG     *SO     *SW  *PRES
+*WSRF    *WELL 1
+*WSRF    *GRID *TIME
+
+*OUTSRF  *GRID *SG  *SO  *SW  *PRES *TRRMOL
+OUTSRF WELL DOWNHOLE MOLE LAYER ALL COMPONENT ALL
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*GRID  *CART  30  30  1
+*DI  *IVAR  4.99851345  28*9.9970269  4.99851345
+*DJ  *JVAR  4.99851345  28*9.9970269  4.99851345
+*DK  *CON   10.0
+*DEPTH  *TOP 1 1 1  10000.0
+*POR  *CON  0.1
+
+*PERMI *CON  10.0
+*MOD 1:30 1:1 1:1 = 100
+     30:30 1:30 1:1 = 25
+
+*PERMJ *EQUALSI
+*PERMK *EQUALSI  *  0.10
+
+FLXB-NAMES
+'FLXB1' 1
+
+*FLXB-DEF *IJK
+15:30 1:15 1 1
+
+FLXB-TYPE *FLUX
+*FLXB-OUT 'sttrc010'
+
+*END-GRID
+
+*PRPOR  1379.0
+*CPOR   6.0E-7
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+*MODEL     3 3 3 1
+
+*COMPNAME 'Water'    'Dead_Oil' 'Soln_Gas'
+
+*KV1       0.E+00     0.E+00    4.90967079E+05
+*KV2       0.E+00     0.E+00    4.1753156E-05
+*KV3       0.E+00     0.E+00    1.17625585E+01
+*KV4       0.E+00     0.E+00   -8.799912E+02
+*KV5       0.E+00     0.E+00   -2.6599E+02
+
+*CMM       0          0.18      3.15252E-02
+
+*PCRIT     0.0E+0     0.0E+0    4.59886336E+3
+*TCRIT     0.0E+0     0.0E+0   -8.19746165E+1
+
+*SURFLASH W O G
+*PRSR     101
+*TEMR     35
+*PSURF    1.01E+2
+*TSURF    1.7E+1
+
+*MASSDEN   0  7.50325675E+2 5.79970829E+2
+*CP        0      1.136E-6      1.136E-6
+*CT1       0  9.95E-4       9.95E-4
+*CT2       0.0E+0 0.0E+0 0.0E+0
+
+*VISCTABLE
+          5           2.72428     74.1347     13.6463
+          15          2.036806    12.01382    2.211436
+          25          1.599495    3.173126    0.584091
+          35          1.29        1.11        0.2043226
+          45          1.072469    0.466175    0.0858108
+          70          0.729204    0.087228    0.01605643
+          95          0.536983    0.024915    0.00458621
+          120         0.418194    0.00915551  0.001685295
+          145         0.3406076   0.00397743  0.000732144
+          170         0.29227     0.00194696  0.000358386
+          195         0.255843    0.00104219  0.0001918406
+          220         0.226928    0.00059803  0.0001100818
+          245         0.2038545   0.00036278  0.0000667773
+          270         0.1840585   0.00023030  0.0000423922
+          295         0.166106    0.00015185  0.0000279507
+          320         0.1531137   0.00010338  0.00001902902
+          345         0.140849    0.00007234  0.00001331584
+          370         0.130576    0.00005184  0.0000095424
+
+*VSMIXCOMP 'Soln_Gas'
+*VSMIXENDP 0.06 0.64
+*VSMIXFUNC 0.06 0.114169 0.1455445 0.2044324 0.244082 0.2827276 0.306598 0.380838 0.4591 0.551514 0.64
+
+*NTRCR 3
+*TRCRNAME 'TRC-INJ1' 'TRC-INJ2' 'TRC-INJ3'
+*TRCR-ASSOC
+** Associate component  Associated tracer
+'Water' 'TRC-INJ1' 'TRC-INJ2' 'TRC-INJ3'
+
+*MW-TRCR
+0.018 0.018 0.018
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+*RPT 1
+
+*SWT
+**    SW     KRW    KROW    PCOW
+            0.200  0.0000  1.0000  195.84
+            0.229  0.0001  0.7407   95.20
+            0.255  0.0003  0.6829   60.00
+            0.308  0.0012  0.5722   22.00
+            0.334  0.0023  0.5194   18.80
+            0.412  0.0102  0.3715   12.60
+            0.464  0.0219  0.1526    8.43
+            0.557  0.0416  0.0822    4.40
+            0.606  0.0721  0.0000    1.32
+            0.647  0.1448  0.0000    0.00
+            0.700  0.1780  0.0000    0.00
+            0.800  0.2604  0.0000    0.00
+            1.000  1.0000  0.0000    0.00
+
+*SLT
+**    SL     KRG    KROG    PCOG
+            0.200  1.0000  0.0000 3891.60
+            0.316  0.6784  0.0000  579.60
+            0.435  0.6215  0.0000  372.40
+            0.562  0.5456  0.0000  242.50
+            0.614  0.3939  0.0020   60.80
+            0.702  0.1399  0.0280   37.21
+            0.812  0.0515  0.1721   13.65
+            0.875  0.0297  0.3395   10.45
+            0.906  0.0226  0.4395    9.00
+            0.937  0.0173  0.5500    7.51
+            0.969  0.0131  0.6702    5.90
+            1.000  0.0000  1.0000    0.00
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+*PRES CON   34000.0
+
+*PBC 'Soln_Gas' *CON 30000.
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*TFORM *ZT
+*ISOTHERMAL
+*CONVERGE *TOTRES 1.E-04
+*DTMAX 121.0
+
+
+
+*RUN
+
+**  ==============  RECURRENT DATA  ======================
+
+*DATE 1995 01 01
+
+   *DTWELL 0.1
+
+   *WELL  1 'OIL'      *VERT 30   1
+   *WELL  2 'WTRINJ1'  *VERT  1  30
+   *WELL  3 'WTRINJ2'  *VERT  1   1
+   *WELL  4 'WTRINJ3'  *VERT 30  30
+
+   *PRODUCER 'OIL'
+   *OPERATE  *MAX *STL     16.81
+   
+   **             rad  geofac wfrac skin
+   *GEOMETRY *K   1.0  0.56   0.25   0.0
+   *PERFV    *GEO 'OIL'
+   ** KF    FF
+      1    1.0
+
+   *INJECTOR 'WTRINJ1'
+   *TINJW 35.
+   *INCOMP   *WATER 1. 0. 0.
+   *OPERATE  *MAX *STW    16.81
+   *OPERATE  *MAX *BHP   80000.0  *CONT  *REPEAT
+   **             rad  geofac wfrac skin
+   *PERFV    *GEO 'WTRINJ1'
+   ** KF    FF
+      1    1.0
+
+   *INJECTOR 'WTRINJ2'
+   *TINJW 35.
+   *INCOMP   *WATER 1. 0. 0.
+   *OPERATE  *MAX *STW    16.81
+   *OPERATE  *MAX *BHP   80000.0  *CONT  *REPEAT
+   **             rad  geofac wfrac skin
+   *PERFV    *GEO 'WTRINJ2'
+   ** KF    FF
+      1   1.0
+
+   *INJECTOR 'WTRINJ3'
+   *TINJW 35.
+   *INCOMP   *WATER 1. 0. 0.
+   *OPERATE  *MAX *STW    16.81
+   *OPERATE  *MAX *BHP   80000.0  *CONT  *REPEAT
+   **             rad  geofac wfrac skin
+   *PERFV    *GEO 'WTRINJ3'
+   ** KF    FF
+      1    1.0
+
+
+    TRCR-INJCONC 'WTRINJ1' 
+    'TRC-INJ1' 1.0
+
+    TRCR-INJCONC 'WTRINJ2'
+    'TRC-INJ2' 1.0
+
+    TRCR-INJCONC 'WTRINJ3'
+    'TRC-INJ3' 1.0
+
+TIME 100
+TIME 500
+TIME 1000
+TIME 1500
+TIME 2000
+TIME 3000
+TIME 4000 
+TIME 5000
+STOP

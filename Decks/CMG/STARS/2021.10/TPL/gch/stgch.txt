@@ -1,0 +1,93 @@
+
+
+     STARS Data Files Illustrating "Geochemistry"
+     --------------------------------------------
+
+stgch001.dat:
+  title1 'STARS Geochem Model Template #1'
+  title2 'Acetic acid and NaOH flood in core'
+  title3 'Test and illustrate acid dissociation and pH changes'
+
+stgch002.dat:
+  title1 'STARS Geochem Model Template #2'
+  title3 'Test and illustrate water chemistry with adsorption and precipitation'
+  title2 'NaCO3 flood in core, STARS-ME Template #002'
+
+stgch003.dat:
+  title1 'STARS Geochem Model Template #3'
+  title2 'ASP flood in core with adspn and precn'
+  title3 'Based on STARS-ME stmeg003.dat'
+
+stgch005.dat:
+  title1 'STARS Geochem Model Template #5'
+  title2 'Complex water chemistry'
+  title3 'Test and illustrate complex geochemistry'
+
+stgch006.dat:
+  title1 'STARS Geochem Model Template #6'
+  title2 'ASP flood in stoichastic reservoir'
+  title3 'ASP flood with geochemistry'
+
+stgch007.dat:
+  title1 'STARS Geochem Model Template #7'
+  title2 'ASP flood in core with pH dept adspn'
+  title3 'STGCH003 with pH dept surf adsorption'
+
+stgch008.dat:
+  title1 'STARS Geochem Model Template #8'
+  title2 'ASP flood in stoichastic reservoir'
+  title3 'STGCH006.DAT with explicit geochem calculations'
+
+stgch009.dat:
+  title1 'STARS Geochem Model Template #9'
+  title2 'CO2 K-value and geochemistry'
+  title3 'Test and illustrate liquid-gas geochem'
+
+stgch010.dat:
+  title1 'STARS Geochem Model Template #10'
+  title2 'Lowsal Effect, Relperm Interpolation via Ca++ species'
+
+stgch011.dat:
+  title1 'STARS Geochem Model Template #11'
+  title2 'Lowsal Effect, Relperm Interpolation via sorbed Ca++ species'
+
+stgch012.dat:
+  title1 'STARS Geochem Model Template #12'
+  title2 'NaCO3 flood in core'
+  title3 'STGCH002 with stationary equil solids'
+
+stgch013.dat:
+  title1 'STARS Geochem Model Template #13'
+  title2 'NaCO3 flood in core'
+  title3 'Test and illustrate water chemistry with Temperature dependence'
+
+stgch021.dat:
+  TITLE1 'STARS Geochem Model Template #21'
+  TITLE2 'NaCO3 Flood in Core with *TST Solid'
+  TITLE3 'Based on STGCH002'
+
+stgch022.dat:
+  TITLE1 'STARS Geochem Model Template #22'
+  TITLE2 'Water Chemistry with Exothermic Dissolution'
+  TITLE3 'KCl/NaCl Flood in Core'
+
+stgch023.dat:
+  TITLE1 'STARS Geochem Model Template #23'
+  TITLE2 'Water Chemistry with Exothermic Dissolution and *TST'
+  TITLE3 'KCl/NaCl Flood in Core'
+
+stgch024.dat:
+  TITLE1 'STARS Geochem Model Template #24'
+  TITLE2 'NaCO3 Flood in Core with Non-Geochem Solid'
+  TITLE3 'Based on STGCH002'
+
+stgch025.dat:
+  TITLE1 'STARS Geochem Model Template #25'
+  TITLE2 'NaCO3 Flood in Core with *COMP-GEO Solid'
+  TITLE3 'Based on STGCH012'
+
+stgch026.dat:
+  TITLE1 'STARS Geochem Model Template #26'
+  TITLE2 'NaCO3 Flood in Core with *EQLTRAP Solid'
+  TITLE3 'Based on STGCH012'
+

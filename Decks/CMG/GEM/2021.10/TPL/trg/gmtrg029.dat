@@ -1,0 +1,222 @@
+**--------------------------------------------------------------------**
+** GMTRG029.DAT:  Group Cyclic Controls - zero cycle part in maximum  **
+**                time                                                **
+**--------------------------------------------------------------------**
+**--------------------------------------------------------------------**
+**                                                                    **
+** FILE:  GMTRG029.DAT                                                **
+**                                                                    **
+** MODEL: CART 7x7x3 GRID          TRIGGER ON WELL WATER and GAS CUM'S**
+**        6 COMPONENTS             PRIMARY FOLLOWED BY WAG PROCESS    **
+**        FIELD UNITS                                                 **
+**                                                                    **
+**--------------------------------------------------------------------**
+**                                                                    **
+** This template is based on the SPE 5 problem.  It models primary    **
+** production and a WAG process.  The wag process is controlled by    **
+** group cycling with the cycle lengths are based on gas and          **
+** water volumes injected.                                            **
+**                                                                    **
+** This case is a revised version of template GMSPR002.DAT. In        **
+** addition to the maximum water rate constraint for the water        **
+** injector and a maximum gas rate constraint for the gas injector, a **
+** maximum bottom hole pressure constraint is added for the two       **
+** injection wells. Following 2 years of primary production, the WAG  **
+** phase is initiated, water injection followed by gas injection.     **
+**                                                                    **
+** The ideal scenario would result in water injection rate of 12,000  **
+** barrels a day for 1 year cycle period for a total cycle injection  **
+** of 12,000 * 365 days = 4.38E6 barrels. The gas injection target is **
+** 1.2E7 scf/day or 1.2E7 * 365 = 4.38E9 scf for a 1 year cycle.      **
+**                                                                    **
+** However because of the imposed BHP limitation it is not always     **
+** possible to meet the daily injection target for the water injector.**
+** Since the cycle                                                    **
+** duration is controlled by cumulative injection, the cycle time     **
+** varies as necessary to meet the cumlative injection targets. Run   **
+** for 9 water injection cycles and 8 complete gas injection          **
+** cycles - to 2006/1/1 - note that the first water and the last      **
+** 2 water cycles last longer that 1 year                             **
+**                                                                    **
+**--------------------------------------------------------------------**
+** Test handling of zero cycle part maximum time                      **
+**                                                                    **
+**--------------------------------------------------------------------**
+** CONTACT CMG at (403)531-1300 or support@cmgl.ca                    **
+**--------------------------------------------------------------------**
+
+*RESULTS *SIMULATOR *GEM
+*TITLE1 'GROUP CYCLING CONTROL'
+*TITLE2 'WAG process with cycle duration based on cum. injection targets'
+*TITLE2 '5th SPE Problem'
+*INUNIT  *FIELD
+
+*WSRF *GRID *TIME
+*WSRF *WELL 1
+*OUTSRF *GRID *SO *SW *SG *PRES
+*OUTSRF *WELL *PAVG
+*WPRN *WELL 1
+
+*OUTSRF *WELL *SW  1 3 3 
+*OUTSRF *WELL *PCW 1 3 3
+*OUTSRF *WELL *SG  1 3 3 
+*OUTSRF *WELL *KRG 1 3 3
+*WRST 100  
+*DIARY *WELL-INFO
+
+**--------------------------------------------------RESERVOIR DATA------
+*GRID *CART 7 7 3
+*DEPTH *TOP 1 1 1 975.0
+*DI *CON 500.0
+*DJ *CON 500.0
+*DK *KVAR 50.0 30.0 20.0
+*POR *CON 0.30
+*PERMI *KVAR 200.0 50.0 500.0
+*PERMJ *EQUALSI
+*PERMK *KVAR  25.0 50.0  50.0
+*CPOR  5.0E-06
+*PRPOR  3990.30
+**--------------------------------------------------FLUID COMPONENT DATA
+*MODEL *PR
+*NC 6 6
+*TRES  160.0
+*PHASEID *DEN
+*HCFLAG       0         0         0         0         0         0
+*PCRIT    45.44     41.94     29.73     20.69     13.61     11.02
+*VCRIT 0.099800  0.200500  0.369800  0.629700    1.0423    1.3412
+*TCRIT    190.6     369.8     507.4     617.7     705.6     766.7
+*AC      0.0130    0.1524    0.3007    0.4885    0.6500    0.8500
+*MW       16.04     44.10     86.18    142.29    206.00    282.00
+*COMPNAME  'C1'      'C3'      'C6'     'C10'     'C15'     'C20'
+*BIN         0.
+           2*0.
+           3*0.
+           0.05     0.005      2*0.
+           0.05     0.005      3*0.
+*RHOW    1571.10
+*CW      3.3E-06
+*REFPW   14.6960
+*VISW    0.70
+**--------------------------------------------------ROCK FLUID----------
+*ROCKFLUID
+*SIGMA      0.1   1.0   0.00001
+*RPT  
+
+*SGT
+       0.0       0.0   1.00000       0.0
+ 0.0500000       0.0 0.8800000       0.0
+ 0.0889000 0.0010000 0.7023000       0.0
+ 0.1778000 0.0100000 0.4705000       0.0
+ 0.2667000 0.0300000 0.2963000 0.0010000
+ 0.3556000 0.0500000 0.1715000 0.0100000
+ 0.4444000 0.1000000 0.0878000 0.0300000
+ 0.5333000 0.2000000 0.0370000 0.8000000
+ 0.6222000 0.3500000 0.0110000 3.0000000
+ 0.6500000 0.3900000       0.0   4.00000
+ 0.7111000 0.5600000       0.0   8.00000
+ 0.8000000   1.00000       0.0  30.00000
+*SWT
+ 0.2000000       0.0   1.00000  45.00000   
+ 0.2899000 0.0022000 0.6769000  19.03000   
+ 0.3778000 0.0180000 0.4153000  10.07000    
+ 0.4667000 0.0607000 0.2178000   4.90000    
+ 0.5556000 0.1438000 0.0835000   1.80000    
+ 0.6444000 0.2809000 0.0123000 0.5000000    
+ 0.7000000 0.4089000       0.0 0.0500000    
+ 0.7333000 0.4855000       0.0 0.0100000    
+ 0.8222000 0.7709000       0.0       0.0    
+ 0.9111000   1.00000       0.0       0.0    
+   1.00000   1.00000       0.0       0.0    
+**--------------------------------------------------INITIAL CONDITION---
+*INITIAL
+*VERTICAL *OFF
+*PRES *KVAR 4000.0  3990.3  3984.3
+*SW   *CON     0.2
+*ZGLOBAL  *CON
+ 0.50  0.03  0.07  0.20  0.15  0.05
+**--------------------------------------------------NUMERICAL-----------
+*NUMERICAL
+*NORM  *PRESS  1000.0
+*NORM  *SATUR  0.15
+*NORM  *GMOLAR 0.15
+**--------------------------------------------------WELL DATA-----------
+*RUN
+*DATE  1986 1 1
+   *DTMAX  10.0 
+   *DTMIN    0.1
+   *DTWELL   1.0
+   *AIMWELL *WELLN
+
+   *WELL 1 'PROD'
+   *PRODUCER 1                              ** First year primary prod.
+      *OPERATE *MAX *STO  12000.0
+      *OPERATE *MIN *BHP   1000.0
+
+   *GEOMETRY *K  0.25  0.34  1.0  0.0
+      *PERF *GEO 1
+      7 7 1  1.0
+
+*DATE 1987 1 1
+   *AIMSET  *CON 0
+   *AIMWELL *WELLN                          ** Second year primary prod.
+*DATE 1988 1 1
+   *DTWELL 2.0
+   *AIMSET  *CON 0
+   *AIMWELL *WELLN
+   *GROUP 'cyc_group1' *ATTACHTO 'FIELD'
+   *WELL 2 'INJ-H2O' *ATTACHTO 'cyc_group1'  
+   *INJECTOR 2
+      *INCOMP  *WATER                       ** Water injection
+      *OPERATE *MAX *STW 12000.0            ** WAG of 1 year cycle (target...)
+      *OPERATE *MAX *BHP 4200.0             ** Max BHP, cannot always meet STW target
+      *PERF *GEO 2
+      1 1 3 1.0
+
+   *WELL 3 'INJ-GAS' *ATTACHTO 'cyc_group1'  
+   *INJECTOR 3                              ** Gas injection
+      *INCOMP *SOLVENT  0.77  0.20  0.03  0.0  0.0  0.0
+      *OPERATE *MAX *STG 1.20E+7 *CONT *REPEAT  
+      *OPERATE *MAX *BHP 4200.0
+
+      *PERF *GEO 3
+      1 1 3 1.0
+
+   *APPOR-METHOD *WATI 'cyc_group1' *IP
+   *APPOR-METHOD *GASI 'cyc_group1' *IP
+
+
+** Note zero maximum cycle part time; that cycle part is skipped
+
+   *GCONCYCLE_START 'cyc_group1'
+      *cycstreams 'WATI' 'GASI' 
+      *nparts 3
+      *ncycles 40
+      *targettypes
+        'WATI' 'STW' 'STW' 'STW'
+        'GASI' 'STG' 'STG' 'STG'
+      *maxrates
+        'WATI' 1.2E+4 0.     0.
+        'GASI' 0.   0. 1.2E+7 
+      *maxtimes 75. 0 75.
+      *dtwcyc 0.1 0.1 0.1
+   *GCONCYCLE_END
+ 
+*DATE 1989 1 1
+*DATE 1990 1 1
+*DATE 1991 1 1
+*DATE 1992 1 1
+*DATE 1993 1 1
+*DATE 1994 1 1
+*DATE 1995 1 1
+*DATE 1996 1 1
+*DATE 1997 1 1
+*DATE 1998 1 1
+*DATE 1999 1 1
+*DATE 2000 1 1
+*DATE 2001 1 1
+*DATE 2002 1 1
+*DATE 2003 1 1
+*DATE 2004 1 1
+*DATE 2005 1 1
+*DATE 2006 1 1
+*STOP

@@ -1,0 +1,205 @@
+
+
+
+**                       OVERVIEW
+**                       ========
+
+**  PURPOSE:  Verify and illustrate the usage of *MINTEMP below
+**            water freezing point when no water component
+**            is present.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+interrupt *stop
+
+title1 'Verification Run #67'
+title2 'Verify T < 0 C with NUMW = 0'
+
+inunit field
+
+wprn grid 1
+wprn iter 1
+outprn grid pres so sg y x temp cchloss
+outprn well all
+outprn iter newton
+
+outsrf grid  pres sw so sg temp
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 1 1 12  ** 12 blocks in the K direction (normal vertical)
+
+**  Tube I.D. = 2.17 inches.  Cross-sectional area is pi*(d/2)**2
+**  = 0.02568 ft2 = L*L.  so equivalent block side is L = 0.1602 ft.
+**  Total tube length is 2.646 ft;  block = 2.646/12 = .22048 ft
+*di *con 0.1602   
+*dj *con 0.1602   
+*dk *con 0.22048
+
+*por *con 0.4142
+*permi *con 12700    
+*permj *equalsi    
+*permk *equalsi
+*end-grid
+*rockcp 35.02
+*thconr 1
+*thconw 0.36
+*thcono 0.077
+*thcong 0.0833
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+model 2 2 2 0
+
+**  The strategy for getting densities is to:
+**     a) use the initial saturation point as reference p and T,
+**     b) get oil phase compressibility from undersaturated leg,
+**     c) solve for dead oil and solution gas mole densities at
+**        two saturation points, and
+**     d) use thermal expansion to get surface dead oil density.
+
+**  At p = pb = 4014.7 psi, solution gas per unit live oil volume is
+**  Rs * gasden / Bo =
+**  (1270 scf/stb) * (.060546 lbm/scf) / (1.695 rb/stb) * (5.61457 rcf/rb)
+**  = 8.080 lbm/rcf.  Since total mass per rcf is 37.046, the dead oil
+**  is 37.046 - 8.080 = 28.966 lbm/rcf;  multiply this by 1.695 rcf/scf
+**  to get 49.097 lbm/scf for surface dead oil density.  Since oil Mw
+**  is 100 lbm/lbmol, surface density is 0.49097 lbmol/scf.
+
+prsr 4014.7
+temr 200
+
+compname      'OIL'    'SOLN GAS'
+
+**  Dead oil molecular weight is arbitrary.  Solution gas value is
+**  gas gravity (0.792) times air value (28.8lbm/lbmol).
+cmm            100        22.81   ** lb/lbmol
+
+**  Get densities by solving mixing rule at 4014.7 psi and 3014.7 psi.
+molden        0.46039     0.94337   ** lbmol/ft3
+
+**  Oil phase compressibility (same for each component) is calculated
+**  from undersaturated legf where 1-5000cp = Bo(9014.7)/Bo(4014.7).
+cp           7.97891e-6  5.15071e-5 ** 1/psi
+
+**  Compressibility cp will not get correct density at psurf, so use
+**  thermal expansion with (Tref-Tsurf) to correct it to 0.49097 lbmol/scf.
+ct1         6.357035e-4     0     ** 1/F
+
+**  The Rs versus pb curve is very close to Rs(pb) = .05634*pb.  Expression
+**  for K value is 1 + (oil den)/(Rs * gas den) which fits into
+**  correlation form (kv1/p + kv2 + kv3*p) * exp(kv4/(T-kv5)).
+kv1             0        3852.5
+kv2             0      1.54825E-5
+kv3             0       0.79596
+kv4             1           0     ** Disables water default
+
+avisc          1.5633   .20160    ** cp from mixing rule
+
+tcrit          300         10
+idealgas
+
+**  Surface conditions will determine the SCF and STB volumes
+**  associated with the moles of interest.  Since surface conditions
+**  can vary, we must find the surface conditions from the data.
+**  Surface gas density is Bg times reservoir gas density.  Choosing
+**  the values at 4014.7 psi gives 0.004554 rcf/scf * 13.2952 lbm/rcf
+**  = 0.060546 lbm/scf.  Since the gas gravity is 0.792, the molecular
+**  weight is 0.792 * 28.8 lbm/lbmol (air Mw) = 22.81 lbm/lbmol.
+**  Therefore, the surface gas phase density is 0.060546 lbm/scf /
+**  22.81 lbm/lbmol = 0.0026544 lbmol/scf which corresonds to 1 atm
+**  and 56.4 deg F from the ideal gas law which is used when *PCRIT
+**  is absent.
+psurf 14.7
+tsurf 56.4
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+rockfluid
+
+swt   **  Water-oil relative permeabilities (trivial function)
+
+**   Sw         Krw       Krow
+**  ----      -------    -------
+     0           0          1
+    0.8          1          0
+
+slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg       Krog
+**  ----      -------    ------
+      0          1          0
+    0.15       0.98         0
+    0.3        0.94         0
+    0.4        0.87       0.0001
+    0.5        0.72       0.001
+    0.55       0.6        0.01
+    0.6        0.41       0.021
+    0.7        0.19       0.09
+    0.75       0.125      0.2
+    0.8        0.075      0.35
+    0.88       0.025      0.7
+    0.95       0.005      0.98
+    0.98         0        0.997
+    0.999        0          1
+      1          0          1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+initial
+
+vertical depth_ave
+refpres 4800
+refblock 1 1 2
+
+mfrac_oil 'OIL'      con .44986
+mfrac_oil 'SOLN GAS' con .55014  ** Initial GOR is 1270 scf/stb
+
+temp con -30
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+numerical
+
+mintemp -40
+tform zt
+maxsteps 5
+
+run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 20
+
+   well 1 'Producer 1'
+
+   producer 'Producer 1'
+   operate bhp 4800
+   perf 'Producer 1'
+           ** i j k  wi
+              1 1 1  1.
+
+   heatr ijk 1 1 1:2  1
+
+time 3650

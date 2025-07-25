@@ -1,0 +1,756 @@
+
+
+     STARS Data Files Illustrating "Wells and Well Management"
+     ---------------------------------------------------------
+
+stwwm001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stwwm002.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stwwm003.dat:
+  title1 'STARS Test Bed No. 20'
+  title2 'Single-Well Cycling with Wellbore Heatloss Option'
+  title3 'and Nine-Point Option on Cylindrical Grid'
+
+stwwm005.dat:
+  title1 'STARS Test Bed No. 34'
+  title2 'Near-Well Phenomena, Case #1'
+  title3 'Region Around Well Modelled with Hybrid Grid Option'
+
+stwwm009.dat:
+  title1 'STARS Well Management Template No. 9'
+  title2 '4-Well Waterflood with Group Control'
+  title3 'Voidage Replacement and Work-Over'
+
+stwwm010.dat:
+  title1 'STARS Well Management Template No. 10'
+  title2 'Combined Gas Cap-Solution Gas-Aquifer Drive'
+  title3 'Gas Cycling, Well Workover, Group Well Control'
+
+stwwm011.dat:
+  title1 'STARS Well Management Template No. 11'
+  title2 'Gas Recycling with Additional Makeup Gas'
+
+stwwm012.dat:
+  title1 'STARS Well Management Template No. 12'
+  title2 'Miscible Flood with Gas Cycling and Group Control'
+
+stwwm013.dat:
+  title1 'STARS Well Management Template No. 13'
+  title2 'Miscible Flood with Nested Group Control and Autodrill'
+
+stwwm014.dat:
+  title1 'STARS Well Management Template No. 14'
+  title2 'Miscible Flood with Group Control, Autodrill, *WELLIST and *ACT-DEFAULT'
+
+stwwm015.dat:
+  title1 'STARS Well Management Template No. 15'
+  title2 'Miscible Flood with Group Control, Autodrill, Gas Re-injection'
+
+stwwm016.dat:
+  title1 'STARS Well Management Template No. 16'
+  title2 'Test/Illustrate *LAYERXYZ'
+  title3 'Based on STTST08'
+
+stwwm017.dat:
+  title1 'STARS Well Management Template No. 17'
+  title2 'Test/Illustrate Multilateral Well'
+  title3 'Based on STFLU018'
+
+stwwm018.dat:
+  title1 'STARS Well Management Template No. 18'
+  title2 'Test/Illustrate Multilateral Well with Null Blocks'
+  title3 'Based on STWWM017'
+
+stwwm019.dat:
+  title1 'STARS Well Management Template No. 19'
+  title2 'Test/Illustrate *GRAV-FRIC-HLOS Head Method'
+  title3 'Based on STHRW007'
+
+stwwm020.dat:
+  title1 'STARS Well Management Template No. 20'
+  title2 'Test/Illustrate Multilateral Well with *GRAV-FRIC Head Method'
+  title3 'Based on STWWM018'
+
+stwwm021.dat:
+  title1 'STARS Well Management Template No. 21'
+  title2 'Replace Discretized Wellbore with Source/Sink *GRAV-FRIC-HLOS Well'
+  title3 'Based on STTST70'
+
+stwwm022.dat:
+  title1 'STARS Well Management Template No. 22'
+  title2 'Test/Illustrate Fully-Mixed Crossflow Option'
+  title3 'Based on STWWM020'
+
+stwwm023.dat:
+  title1 'STARS Well Management Template No. 23'
+  title2 'Test Completions Through Pinched-out, Null and Zero-Porosity Blocks'
+  title3 'Based on STTST26'
+
+stwwm024.dat:
+  title1 'STARS Well Management Template No. 24'
+  title2 'Test/Illustrate *STO_COMP and *STG_COMP'
+  title3 'Based on STTST20'
+
+stwwm025.dat:
+  title1 'STARS Well Management Template No. 25'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options'
+  title3 'Based on STTST02'
+
+stwwm026.dat:
+  title1 'STARS Well Management Template No. 26'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options with S/S *SAMODEL'
+  title3 'Based on STTST69'
+
+stwwm027.dat:
+  title1 'STARS Well Management Template No. 27'
+  title2 'Test/Illustrate Multi-Phase Co-Injection Options with FW *SAMODEL'
+  title3 'Based on STTST69'
+
+stwwm028.dat:
+  title1 'STARS Well Management Template No. 28'
+  title2 'Steam Injection with S/S Limited Entry Perforations (LEP)'
+  title3 'Based on STWWM021'
+
+stwwm029.dat:
+  title1 'STARS Well Management Template No. 29'
+  title2 'Well before type is defined, *WLISTSHUT, and'
+  title3 'Inactive layers shown as closed in RESULTS'
+
+stwwm030.dat:
+  title1 'STARS Well Management Template No. 30'
+  title2 'Semi-Analytical Wellbore Heatloss with PUMP option'
+  title3 'Based on STTST69'
+
+stwwm031.dat:
+  title1 'STARS Well Management Template No. 31'
+  title2 'Steam Injection with FlexWell Limited Entry Perforations (LEP)'
+  title3 'Based on STWWM028'
+
+stwwm032.dat:
+  title1 'STARS Well Management Template No. 32'
+  title2 'Steam Injection with FlexWell in Corner-Point Grid'
+  title3 'Based on STTST14 and MXGEO016'
+
+stwwm036.dat:
+  title1 'STARS Well Management Template #36'
+  title2 'Group/Well On-time Fraction & Group Target Apportionment'
+
+stwwm037.dat:
+  title1 'STARS Well Management Template #37'
+  title2 'Matrix/Fracture Qualifiers in Perforation References'
+  title3 'Based on STTST28'
+
+stwwm038.dat:
+  title1 'STARS Well Management Template No. 38'
+  title2 'Fluid Redistribution via Modelshut Wells'
+  title3 'Drawdown Constraints'
+
+stwwm039.dat:
+  title1 'STARS Well Management Template No. 39'
+  title2 'Fluid Redistribution in a Communicating Well'
+  title3 'Modelshut, Drawdown, Low rate'
+
+stwwm040.dat:
+  title1 'STARS Well Management Template No. 40'
+  title2 '4-Well Waterflood with Group Control'
+  title3 'Sector Pressure Maintenance'
+
+stwwm041.dat:
+  title1 'STARS Well Management Template No. 41'
+  title2 'Group Control Steam Cycling'
+  title3 'Based on VERIFY32'
+
+stwwm042.dat:
+  title1 'STARS Well Management Template No. 42'
+  title2 'Unlimited Number of Group Levels'
+
+stwwm043.dat:
+  title1 'STARS Well Management Template No. 43'
+  title2 'Compositional Water Recycling with Group Control'
+
+stwwm044.dat:
+  title1 'STARS Well Management Template No. 44'
+  title2 '2-D Cyclic Steam Injection, Testing Trigger Options'
+  title3 '*TRIGGER *ON_ELAPSED and *ON_SECTOR'
+
+stwwm045.dat:
+  title1 'STARS Well Management Template No. 45'
+  title2 '2-D Cyclic Steam Injection, Testing Trigger Options'
+  title3 '*TRIGGER *ON_ELAPSED, *ON_SECTOR and *ON_WELL'
+
+stwwm046.dat:
+  title1 'STARS Well Management Template No. 46'
+  title2 'Test/Illustrate Isothermal *PTUBE1 with WHP Constraint'
+
+stwwm047.dat:
+  title1 'STARS Well Management Template No. 47'
+  title2 'Miscible Flood with Nested Group Control and Autodrill'
+
+stwwm048.dat:
+  title1 'STARS Well Management Template No. 48'
+  title2 'Verify/Illustrate *TARGET *STEAM Feature - Base Case'
+  title3 'Based on STWWM027'
+
+stwwm050.dat:
+  title1 'STARS Well Management Template No. 50'
+  title2 'Test/Illustrate Gas Injection with *MANIFOLD, *ITUBE1'
+  title3 'and *PTUBE1 with ALQ Values'
+
+stwwm051.dat:
+  title1 'STARS Well Management Template No. 51'
+  title2 'Illustrate/Verify *MONITOR *WHP *AUTOWELL'
+  title3 'Based on STWWM021'
+
+stwwm052.dat:
+  title1 'STARS Well Management Template No. 52'
+  title2 'Group Control Steam Cycling with STF Group Target'
+  title3 'Based on VERIFY32'
+
+stwwm053.dat:
+  title1 'STARS Well Management Template No. 53'
+  title2 'Cycling Group Control with STO Group Target'
+  title3 'Based on STTST02'
+
+stwwm054.dat:
+  title1 'STARS Well Management Template No. 54'
+  title2 'Group Control with STO Group Target'
+  title3 'Based on STTST02'
+
+stwwm055.dat:
+  title1 'STARS Well Management Template No. 55'
+  title2 'Group Control with STF Group Target'
+  title3 'Based on STTST02'
+
+stwwm056.dat:
+  title1 'STARS Well Management Template No. 56'
+  title2 'STO Group Target with Guide Rates'
+  title3 'Based on STTST02'
+
+stwwm057.dat:
+  title1 'STARS Well Management Template No. 57'
+  title2 'STF Group Target with Guide Rates'
+  title3 'Based on STTST02'
+
+stwwm058.dat:
+  title1 'STARS Well Management Template No. 58'
+  title2 'Layer Lumping; Trigger Based on Avg Sector Temperature'
+  title3 'Based on STWWM020'
+
+stwwm059.dat:
+  title1 'STARS Well Management Template No. 59'
+  title2 'FlexWell with T/A, SAGD Production- Annulus Only'
+  title3 'Based on STTST69'
+
+stwwm060.dat:
+  title1 'STARS Well Management Template No. 60'
+  title2 'FlexWell SAGD Production in Tubing & Annulus'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm061.dat:
+  title1 'STARS Well Management Template No. 61'
+  title2 'FlexWell with T/A, Variable Tubulars, SAGD Production in T/A'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm062.dat:
+  title1 'STARS Well Management Template No. 62'
+  title2 'FlexWell with T/A, SAGD Production, SAM - Annulus Only'
+  title3 'Based on STWWM059/STTST69'
+
+stwwm063.dat:
+  title1 'STARS Well Management Template No. 63'
+  title2 'Replace S/S *GRAV-FRIC-HLOS Well with FlexWell - Cyclic steam injection'
+  title3 'Based on STWWM021'
+
+stwwm064.dat:
+  title1 'STARS Well Management Template No. 64'
+  title2 'FlexWell, Multi-Phase Co-Injection, SAGD Annulus Production Only'
+  title3 'Based on STWWM026'
+
+stwwm065.dat:
+  title1 'STARS Well Management Template No. 65'
+  title2 'FlexWell, Multi-Phase Co-Inj, SAGD T/A Production, Operating Constraint'
+  title3 'Based on STWWM026'
+
+stwwm066.dat:
+  title1 'STARS Well Management Template No. 66'
+  title2 'FlexWell, Multi-Phase Co-Injection, SAGD T/A Production'
+  title3 'Based on STWWM026'
+
+stwwm067.dat:
+  title1 'STARS Well Management Template No. 67'
+  title2 'Miscible Flood with Reference Volume Replacement'
+  title3 'Based on STTST13'
+
+stwwm068.dat:
+  title1 'STARS Well Management Template No. 68'
+  title2 'FlexWell, *PACKER and *FCD-ORIF for Annulus'
+  title3 'SAGD production- annulus only'
+
+stwwm069.dat:
+  title1 'STARS Well Management Template No. 69'
+  title2 'FlexWell, *PACKER and *FCD-ORIF for Tubing'
+  title3 'SAGD production- annulus only'
+
+stwwm070.dat:
+  title1 'STARS Well Management Template No. 70'
+  title2 'Flexible Wellbore with *REPLACE'
+
+stwwm071.dat:
+  title1 'STARS Well Management Template No. 71'
+  title2 'SAGD with Flexible Wellbore and Instrumentation Tubing'
+  title3 'SAGD production - Annulus only'
+
+stwwm072.dat:
+  title1 'STARS Well Management Template No. 72'
+  title2 'Steam Cycling with Flexible Wellbore and Instrumentation Tubing'
+  title3 'Cyclic steam injection'
+
+stwwm073.dat:
+  title1 'STARS Well Management Template No. 73'
+  title2 '*DYNAGRID with FlexWell, Variable Tubulars, SAGD Production in T/A'
+  title3 'Based on STWWM061'
+
+stwwm074.dat:
+  title1 'STARS Well Management Template No. 74'
+  title2 'Verify/Illustrate *PERF_FLX with *REFLAYER'
+  title3 'Based on STTST06'
+
+stwwm075.dat:
+  title1 'STARS Well Management Template No. 75'
+  title2 'Verify/Illustrate *FCDL-PARAM *ORIF on Tubing'
+  title3 'Based on STTST69'
+
+stwwm076.dat:
+  title1 'STARS Well Management Template No. 76'
+  title2 'Verify/Illustrate *FCDL-PARAM *VENTURI in Injection cycle'
+  title3 'Based on STTST06'
+
+stwwm077.dat:
+  title1 'STARS Well Management Template No. 77'
+  title2 'Verify/Illustrate *FCDL-PARAM *VENTURI-INJ in Injection cycle'
+  title3 'Based on STTST06'
+
+stwwm078.dat:
+  title1 'STARS Well Management Template No. 78'
+  title2 'Verify/Illustrate Re-perforation of Recurrently Refined Block'
+  title3 'Based on STWWM040'
+
+stwwm079.dat:
+  title1 'STARS Well Management Template No. 79'
+  title2 'Verify/Illustrate *GL_PORT for Gas Lift Location in *PHWELLBORE'
+  title3 'Based on STTST69, Using FlexWell'
+
+stwwm080.dat:
+  title1 'STARS Well Management Template No. 80'
+  title2 'Verify/Illustrate *FLX_WELLBORE *WP Withdrawal Point'
+  title3 'Based on STTST06'
+
+stwwm081.dat:
+  title1 'STARS Well Management Template No. 81'
+  title2 'Verify/Illustrate *MONITOR *AUTOLAYER1'
+  title3 'Based on STWWM047'
+
+stwwm082.dat:
+  title1 'STARS Well Management Template No. 82'
+  title2 'Verify/Illustrate *MONITOR *SHUTLAYER1'
+  title3 'Based on VERIFY68'
+
+stwwm083.dat:
+  title1 'STARS Well Management Template No. 83'
+  title2 'Verify/Illustrate *OPERATE-HIST and *ALTER-HIST'
+  title3 'Operate Well in History-matching Mode'
+
+stwwm084.dat:
+  title1 'STARS Well Management Template No. 84'
+  title2 'FlexWell *SHUT-WELL *ON for Shut-in Production Tubing'
+  title3 'Based on STWWM059'
+
+stwwm085.dat:
+  title1 'STARS Well Management Template No. 85'
+  title2 'FlexWell *SHUT-WELL *COND-ONLY for Shut-in Production Tubing'
+  title3 'Based on STWWM059'
+
+stwwm086.dat:
+  title1 'STARS Well Management Template No. 86'
+  title2 'FlexWell *SHUT-WELL *COND-ONLY for Shut-in Injector'
+  title3 'Based on STWWM063'
+
+stwwm087.dat:
+  title1 'STARS Well Management Template No. 87'
+  title2 'Verify/Illustrate GOR Well Cutback Constraint (*OPERATE *GOR *STG)'
+
+stwwm088.dat:
+  title1 'STARS Well Management Template No. 88'
+  title2 'Verify/Illustrate Mole-Based *INCOMP for Multi-Phase Co-Injection'
+  title3 'Based on STWWM025'
+
+stwwm089.dat:
+  title1 'STARS Well Management Template No. 89'
+  title2 'Illustrate/Verify *INJ-TEMP and *QUALWL'
+  title3 'Based on STTST28'
+
+stwwm090.dat:
+  title1 'STARS Well Management Template No. 90'
+  title2 'Illustrate/Verify *SETPI *MULT & *MULTO to Modify Well Indices'
+  title3 'Based on STWWM025'
+
+stwwm091.dat:
+  title1 'STARS Well Management Template No. 91'
+  title2 'Illustrate/Verify *SETPI (*WAT,*OIL,*LIQ,*GAS) to Modify Well Indices'
+  title3 'Based on STTST08'
+
+stwwm092.dat:
+  title1 'STARS Well Management Template No. 92'
+  title2 'Verify/Illustrate *GLIFT *GLR for Gas Lift'
+  title3 'Based on STWWM079'
+
+stwwm093.dat:
+  title1 'STARS Well Management Template No. 93'
+  title2 'Verify/Illustrate *INCOMPWL:  Reset Injected-Fluid Composition'
+  title3 'Based on STWWM067'
+
+stwwm094.dat:
+  title1 'STARS Well Management Template No. 94'
+  title2 'Verify/Illustrate *GLIFT *OPT and *GLOPT, with *PTUBE1'
+  title3 'Based on MXWWN047'
+
+stwwm095.dat:
+  title1 'STARS Well Management Template #95'
+  title2 'Illustrate/Verify *OUTBOARD with GAP Linkage'
+  title3 'Based on STWWM037'
+
+stwwm096.dat:
+  title1 'STARS Well Management Template No. 96'
+  title2 'Verify/Illustrate *HEATER_CABLE in FlexWell Producer Tubing'
+  title3 'Based on STWWM021'
+
+stwwm097.dat:
+  title1 'STARS Well Management Template No. 97'
+  title2 'Verify/Illustrate *FCDTABLE for FlexWell Injector Tubing'
+  title3 'Based on STWWM069'
+
+stwwm098.dat:
+  title1 'STARS Well Management Template No. 98'
+  title2 'Verify/Illustrate *ITUBE1 and *PTUBE1 Enthalpy Tables'
+  title3 'Based on STTST68.'
+
+stwwm099.dat:
+  title1 'STARS Well Management Template No. 99'
+  title2 'Verify *ITUBE1/*PTUBE1 Enthalpy Tables with *HEAD-METHOD *GRAV-FRIC-HLOS'
+  title3 'Based on STWWM021'
+
+stwwm100.dat:
+  title1 'STARS Well Management Template No. 100'
+  title2 'Verify/Illustrate *FCDTABLE for Tubing/Annulus in Injector/Producer'
+  title3 'SAGD Injection and Production'
+
+stwwm101.dat:
+  title1 'STARS Well Management Template No. 101'
+  title2 'Verify/Illustrate *WELGEO with Miscible Flood and Gas Cycling'
+  title3 'Based on STWWM012'
+
+stwwm102.dat:
+  title1 'STARS Well Management Template No. 102'
+  title2 'Verify/Illustrate FlexWell Concentric Tubing (Inner Shorter)'
+  title3 'Based on STTST69'
+
+stwwm103.dat:
+  title1 'STARS Well Management Template No. 103'
+  title2 'Verify/Illustrate FlexWell Concentric Tubing (Outer Shorter)'
+  title3 'Based on STTST69'
+
+stwwm104.dat:
+  title1 'STARS Well Management Template No. 104'
+  title2 'Verify/Illustrate *HEATER_CABLE with *PHWELLBORE *SAMODEL'
+  title3 'Based on STWWM021'
+
+stwwm105.dat:
+  title1 'STARS Well Management Template No. 105'
+  title2 'Verify/Illustrate Group Control with *APPOR-METHOD *STFI *INGUIDE'
+  title3 'Based on STWWM055'
+
+stwwm106.dat:
+  title1 'STARS Well Management Template No. 106'
+  title2 'Test/Illustrate *STEAMTRAP *SELECT_PERF and *ALL_PERF with S/S Well'
+  title3 'SAGD wellpair'
+
+stwwm107.dat:
+  title1 'STARS Well Management Template No. 107'
+  title2 'Test/Illustrate *STEAMTRAP *SELECT_PERF and *ALL_PERF with FlexWell'
+  title3 'Based on STWWM071'
+
+stwwm108.dat:
+  title1 'STARS Well Management Template No. 108'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Both Tubings Open'
+  title3 'Based on STTST69'
+
+stwwm109.dat:
+  title1 'STARS Well Management Template No. 109'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Inner Tubing Shut-In'
+  title3 'Based on STWWM108'
+
+stwwm110.dat:
+  title1 'STARS Well Management Template No. 110'
+  title2 '*SAMODEL with FlexWell Concentric Tubings - Outer Tubing Shut-In'
+  title3 'Based on STWWM109'
+
+stwwm111.dat:
+  title1 'STARS Well Management Template No. 111'
+  title2 'Verify/Illustrate Group Control with *GCONI *GTARGET *BHO'
+  title3 'Based on STWWM054'
+
+stwwm112.dat:
+  title1 'STARS Well Management Template No. 112'
+  title2 'Verify/Illustrate Manifold Oil Injection *MANIFOLD *OILI'
+  title3 '*ITUBE1 with STF Values'
+
+stwwm113.dat:
+  title1 'STARS Well Management Template No. 113'
+  title2 'Verify/Illustrate Pressure Maintenance by Oil Injection'
+  title3 '*INGUIDE with *PRIOR-RATE *WBHP'
+
+stwwm114.dat:
+  title1 'STARS Well Management Template No. 114'
+  title2 'Verify/Illustrate Recycling with Oil Injection *GCONI *RECYCLE *OIL'
+  title3 'Based on STWWM040'
+
+stwwm115.dat:
+  title1 'STARS Well Management Template No. 115'
+  title2 'Verify/Illustrate Oil Recycling Production Target *GCONP *RECYCLE *OIL'
+  title3 'With *APPOR-METHOD *PROD - Based on STWWM114'
+
+stwwm116.dat:
+  title1 'STARS Well Management Template No. 116'
+  title2 'Test/Illustrate *GASTRAP with S/S Wellbore Model'
+  title3 'ES-SAGD process'
+
+stwwm117.dat:
+  title1 'STARS Well Management Template No. 117'
+  title2 'Test/Illustrate *GASTRAP with FlexWell'
+  title3 'SAGD production - Annulus only'
+
+stwwm118.dat:
+  title1 'STARS Well Management Template No. 118'
+  title2 'Verify/Illustrate Steam Injection Control via *OUTBOARD'
+  title3 'Based on STTST08'
+
+stwwm119.dat:
+  title1 'STARS Well Management Template No. 119'
+  title2 'Verify/Illustrate Re-definition of Well Monitoring Constraints'
+  title3 'Four-Well Waterflood with Group Control'
+
+stwwm120.dat:
+  title1 'STARS Well Management Template No. 120'
+  title2 'Compositional Gas and Water Recycling with Group Control'
+  title3 'Based on STWWM043'
+
+stwwm121.dat:
+  title1 'STARS Well Management Template No. 121'
+  title2 'Group Component Mole Percentage Monitor *GCONM *MAX *Mx'
+  title3 'Based on STWWM047'
+
+stwwm122.dat:
+  title1 'STARS Well Management Template No. 122'
+  title2 'Wellbore Instability Monitoring *RATSTAB with Hydraulic Tables'
+
+stwwm123.dat:
+  title1 'STARS Well Management Template No. 123'
+  title2 'Illustrate/Verify List-Driven *PERF/*PERFV Format'
+  title3 'for *WI, *DIR, *GEO, *RE, *SKIN, *RW.  Based on STWWM017'
+
+stwwm124.dat:
+  title1 'STARS Well Management Template No. 124'
+  title2 'Verify/Illustrate *FCDTABLE with Total Mass Flow Rate'
+  title3 'Based on STWWM100'
+
+stwwm125.dat:
+  title1 'STARS Well Management Template No. 125'
+  title2 'Verify/Illustrate *FCDL + *FCDL-PARAM *ORIF on Tubing'
+  title3 'Based on STWWM075'
+
+stwwm126.dat:
+  title1 'STARS Test Bed No. 126'
+  title2 'Illustrate/Verify *WIRANGE (Auto Thresholding of Well Indices)'
+
+stwwm127.dat
+  title1 'STARS Well Management Template No. 127'
+  title2 'Verify/Illustrate *HYRADIUS for *HEAD-METHOD'
+  title3 'Based on STWWM021'
+
+stwwm128.dat:
+  title1 'STARS Well Management Template No. 128'
+  title2 'Verify/Illustrate *TWELLBORE with *PTUBE1 *WHT for Trigger Action'
+
+stwwm129.dat:
+  title1 'STARS Well Management Template No. 129'
+  title2 'Verify/Illustrate *LAYER-CTRL'
+  title3 'Based on STTST08'
+
+stwwm130.dat:
+  title1 'STARS Well Management Template No. 130'
+  title2 'Test/Illustrate *FLX_WELLBORE option *FLX_INITIAL'
+  title3 'Based on STWWM060'
+
+stwwm131.dat:
+  title1 'STARS Well Management Template No. 131'
+  title2 'Test/Illustrate *STEAMTRAP2 *ALL_PERF for Soft Steam Trap'
+  title3 'Based on STWWM071'
+
+stwwm132.dat:
+  title1 'STARS Well Management Template No. 132'
+  title2 'Test/Illustrate *STEAMTRAP2 *ALL_PERF_ANN for Soft Steam Trap'
+  title3 'Based on STWWM131'
+
+stwwm133.dat:
+  title1 'STARS Well Management Template No. 133'
+  title2 'Verify/Illustrate *OUTSRF *WELL *WELLPI, both Flexwells and S/S Wells'
+  title3 'Based on STWWM100'
+
+stwwm134.dat:
+  title1 'STARS Well Management Template No. 134'
+  title2 'Verify/Illustrate *FW-MOBW-DENSITY *ON'
+  title3 'Based on STWWM068'
+
+stwwm135.dat:
+  title1 'STARS Well Management Template No. 135'
+  title2 'Verify/Illustrate *OPERATE *WCUTBACK *STEAM1'
+  title3 'Based on STWWM002/STTST07'
+
+stwwm136.dat:
+  title1 'STARS Well Management Template No. 136'
+  title2 'Verify/Illustrate *FLX_WELLBORE Sub-keyword *SEGREGATION'
+  title3 'Based on STTST69'
+
+stwwm137.dat:
+  title1 'STARS Well Management Template No. 137'
+  title2 'Verify/Illustrate *TWELLBORE via *PTUBE1 for *WHT Constraint'
+  title3 'Based on STWWM128'
+
+stwwm138.dat:
+  title1 'STARS Well Management Template No. 138'
+  title2 'Group Controls *GCONP and *GCONI with *CONT *REPEAT'
+  title3 'Based on STWWM012'
+
+stwwm139.dat:
+  title1 'STARS Well Management Template No. 139'
+  title2 'Verify/Illustrate Skin-Tuner Multiplier *SKIN-TUNER'
+  title3 'Base on STWWM083'
+
+stwwm140.dat:
+  title1 'STARS Well Management Template No. 140'
+  title2 'Verify/Illustrate *BHG_COMP for FlexWell and S/S'
+  title3 'Based on STWWM064'
+
+stwwm141.dat:
+  title1 'STARS Well Management Template No. 141'
+  title2 'Verify/Illustrate *VAR_WDTP for Nonuniform Wellbore Properties'
+  title3 'Based on STWWM103'
+
+stwwm142.dat:
+  title1 'STARS Well Management Template No. 142'
+  title2 'Verify/Illustrate *KRPERF with FlexWell'
+  title3 'Based on STWWM136'
+
+stwwm143.dat:
+  title1 'STARS Well Management Template No. 143'
+  title2 'Verify/Illustrate *KRPERF with S/S well, and Rel Perms in *PERF Line'
+  title3 'Based on STWWM010'
+
+stwwm144.dat:
+  title1 'STARS Well Management Template No. 144'
+  title2 'Verify/Illustrate *MONITOR *GLR'
+  title3 'Based on STWWM047'
+
+stwwm145.dat:
+  title1 'STARS Well Management Template No. 145'
+  title2 'Test/Illustrate *STP2WL-PARAM and Special History *SUBCOOL'
+  title3 'Based on STWWM131'
+
+stwwm146.dat:
+  title1 'STARS Well Management Template No. 146'
+  title2 'Verify/Illustrate *WALL_CP and *WALL_HCN Temperature Dependence'
+  title3 'Based on STWWM141'
+
+stwwm147.dat:
+  title1 'STARS Well Management Template No. 147'
+  title2 'Verify/Illustrate *HEAD-METHOD *ZERO-HEAD'
+  title3 'Based on STWWM010'
+
+stwwm149.dat:
+  title1 'STARS Well Management Template No. 149'
+  title2 'Verify/Illustrate *TRGVAR keyword'
+  title3 'Based on STWWM078'
+
+stwwm150.dat:
+  title1 'STARS Well Management Template No. 150'
+  title2 'General Injection Option with *INCOMP *MIXTURE-Z and *HINJW'
+  title3 'Based on STWWM062'
+
+stwwm151.dat:
+  title1 'STARS Well Management Template No. 151'
+  title2 'FlexWell, *FCDTABLE with *SUBCOOL Dependency'
+  title3 'SAGD Production- Annulus Only'
+
+stwwm152.dat:
+  title1 'STARS Well Management Template No. 152'
+  title2 'Verify/Illustrate *GCONI *SORSECT'
+  title3 'Based on STWWM040'
+
+stwwm153.dat:
+  TITLE1 'STARS Well Management Template No. 153'
+  TITLE2 'Verify/Illustrate *TRIGGER option *MPAS'
+  TITLE3 'Based on STWWM128'
+
+stwwm154.dat:
+  TITLE1 'STARS Well Management Template No. 154'
+  TITLE2 'Verify/Illustrate *TRGVARS'
+  TITLE3 'Based on STWWM149'
+
+stwwm155.dat:
+  TITLE1 'STARS Well Management Template No. 155'
+  TITLE2 'Verify/Illustrate *TRIGGER option *TIME_DELAY'
+  TITLE3 'Based on STWWM014'
+
+stwwm156.dat:
+  title1 'STARS Well Management Template No. 156'
+  title2 'Verify/Illustrate *FLX_WELLBORE Option *SEGREGATION *NOSLIP'
+  title3 'Based on STWWM136'
+
+stwwm157.dat:
+  TITLE1 'STARS Well Management Template No. 157'
+  TITLE2 'Illustrate *TRIGGER IF/THEN/ELSEIf/ENDIF Options'
+  TITLE3 'Based on STWWM045'
+
+stwwm158.dat:
+  title1 'STARS Well Management Template No. 158'
+  title2 'Verify/Illustrate *GCON-AQUIFER'
+  title3 'Group Control with Aquifer Influx'
+
+stwwm159.dat:
+  TITLE1 'STARS Well Management Template No. 159'
+  TITLE2 'Flexible Wellbore with *FW-COUPLING'
+  TITLE3 'Based on STWWM145'
+
+stwwm160.dat:
+  TITLE1 'STARS Well Management Template No. 160'
+  TITLE2 'Steam-Solvent Injection with *RAMPCTRL'
+  TITLE3 'Based on STWWM026'
+
+stwwm161.dat:
+  TITLE1 'STARS Well Management Template No. 161'
+  TITLE2 'Grid-Independent Well with *WBRANCH'
+  TITLE3 'Based on STGRO090'
+
+stwwm162.dat:
+  TITLE1 'STARS Well Management Template No. 162'
+  TITLE2 'Grid-Independent Well with *WBRANCH and *DYNAGRID'
+  TITLE3 'Based on STWWM161'
+
+

@@ -1,0 +1,30 @@
+
+            TRACER OPTIONS
+            --------------
+
+Templates in the Tracer Options (TRC) directory:
+
+GMTRC001.DAT -- Slim Tube Simulation with a Tracer
+GMTRC002.DAT -- Slim Tube Simulation With Dispersion and a Tracer
+GMTRC003.DAT -- Slim Tube Simulation With Molecular Diffusion and a Tracer
+GMTRC004.DAT -- Water Flooding in a 2D Model with 3 Well Tracers
+GMTRC005.DAT -- Water Flooding with 3 Regional Tracers
+GMTRC006.DAT -- Solvent/Dry Gas Injection with an Aquifer Tracer
+GMTRC007.DAT -- Barton-Bandis Dual Porosity Model with Dynagrid and Tracers
+GMTRC008.DAT -- Polymer Slug Injection with Tracers
+GMTRC009.DAT -- Gas Recycling in a Fractured Reservoir with Tracer
+GMTRC010.DAT -- Monitoring Solvent Injection through Tracers
+GMTRC011.dat -- Tracking Water Injection by a Tracer
+GMTRC012.DAT -- Tracking Polymer Injection by a Tracer - high order flux
+GMTRC013.DAT -- Tracking Polymer Injection by a Tracer - high order flux
+                for Tracer only.
+GMTRC014.DAT -- Water Flooding in a 2D Model with 3 Well Tracers - 
+                Flux Type Flux boundary parent run                
+GMTRC015.DAT -- Water Flooding in a 2D Model with 3 Well Tracers - 
+                Flux Type Flux boundary reduced run
+GMTRC016.DAT -- Water Flooding in a 2D Model with 3 Well Tracers - 
+                Pressure Type Flux boundary parent run                
+GMTRC017.DAT -- Water Flooding in a 2D Model with 3 Well Tracers - 
+                Pressure Type Flux boundary reduced run
+GMTRC018.dat -- Tracking movement of components through regional tracers
+GMTRC019.DAT -- Tracer injection specification for a shutin injector 

@@ -1,0 +1,228 @@
+
+
+
+**                        OVERVIEW
+**                        ========
+
+
+**  PURPOSE:  Show that the *AQUIFER *BOTTOM option works as expected
+**            with LGR.
+
+**  USAGE:    Compare to "verify05.dat" to verify aquifer with LGR.
+**            SRF's should compare exactly except for block addresses.
+
+**  RESULTS:  Look at distribution of aquifer blocks along bottom
+**            of reservoir.  Look at resulting temperatures and well
+**            performance.  SRF is ideal for using "diff", in which
+**            only the block addresses in the special history title
+**            differ.
+
+**  CONTEXT:  Primary purpose is to test the installation of LGR handling
+**            in the aquifer code in Sept 1994.
+
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*title1 'Verification Run #6'
+*title2 'Test *AQUIFER *BOTTOM Option with LGR'
+
+*inunit  si except 2 0   ** deg K instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+*outunit si except 1 2   ** minutes instead of days
+            except 2 2   ** deg F instead of deg C
+            except 6 2   ** micro-m2 instead of md
+            except 9 0   ** kPa-day instead of cp
+            except 11 3  ** cm3 instead of m3
+            except 13 3  ** cm3 instead of m3
+
+*outprn *grid pres sw so sg temp y x solconc obhloss viso
+*outprn *well *all
+*wrst 300
+*wprn *grid 300
+*wprn *iter 300
+
+outsrf grid so sg temp
+
+outsrf special blockvar temp 3,2,1
+               blockvar temp 1,1,1 / 2,2,1
+               blockvar temp 2,1,1 / 2,1,1
+*aqstat on
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *cart 3 3 3
+
+*refine 1:3 1:3 1:3 *into 3 3 3
+
+*di *con 0.21552     
+*dj *con 0.21552     
+*dk *con 0.12192
+
+*por *con 0.3063
+*permi *con 2.122e2
+*permj *equalsi
+*permk *equalsi
+
+*aquifer *res_edge bottom
+*AQMETHOD semi-analytical
+*aqgeom rectang infinite
+*AQPROP  0.0  0.3 0.9869  0.0 0.0 0.0
+*AQVISC 1.1574E-11
+*aqcomp 4.43E-07
+*aqleak *on
+*hfprop 2.589E+06 1.496E+05 
+
+*end-grid
+
+*cpor 4.4e-7
+*rockcp 2.589e6
+*thconr 1.496e5
+*thconw 1.496e5
+*thcono 1.496e5
+*thcong 1.496e5
+*hlossprop overbur  2.683e6 1.047e6
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 2 2 2   ** Components are water and dead oil.  Most water
+               ** properties are defaulted (=0).  Dead oil K values
+               ** are zero, and no gas properties are needed.
+
+*compname       'WATER'  'DEAD OIL'
+**               -----    --------
+*cmm            0.01802      0.5
+*idealgas
+*tcrit           647.35     617.6
+*molden          55500     1924.6
+*cp              4.5e-7     7.3e-7
+*ct1             8.8e-4     7.2e-4
+
+*avg           2.722e-16      0
+*bvg             1.075        0
+
+*cpg1              0          0
+*cpl1              0        1047
+*hvapr             0        5580
+
+*visctable
+
+**      Temp
+       277.0   1.078e-11  6.6898e-8
+       297.0   1.078e-11  6.6898e-8
+       310.9   7.928e-12  1.5972e-8
+       338.7   4.977e-12  2.1643e-9
+       366.5   3.565e-12  5.440e-10
+       394.3   2.662e-12  2.014e-10
+       422.0   2.107e-12  9.838e-11
+       449.8   1.892e-12  6.019e-11
+       533.2   1.464e-12  2.894e-11
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow
+**  -----      ------     ------
+    0.130      0.0        1.0
+    0.191      0.0051     0.999
+    0.250      0.0102     0.769
+    0.294      0.0168     0.7241
+    0.357      0.0275     0.6206
+    0.414      0.0424     0.504
+    0.490      0.0665     0.3714
+    0.577      0.097      0.3029
+    0.630      0.1148     0.1555
+    0.673      0.1259     0.0956
+    0.719      0.1381     0.0576
+    0.789      0.1636     0.0
+    1.0        1.0        0.0
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl        Krg       Krog      Pcog
+**  -----     ------    ------    ------
+    0.200     0.17      0.0       0.69
+    0.395     0.112     0.0294    0.5218
+    0.433     0.1022    0.0461    0.489
+    0.515     0.0855    0.0883    0.4183
+    0.569     0.0761    0.1172    0.3717
+    0.614     0.0654    0.1433    0.3329
+    0.663     0.05      0.1764    0.2907
+    0.719     0.0372    0.217     0.2424
+    0.750     0.0285    0.2255    0.2156
+    0.805     0.0195    0.2919    0.1682
+    0.850     0.0121    0.3373    0.1294
+    0.899     0.0026    0.5169    0.0871
+    1.0       0.0       1.0       0.0
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+*vertical *depth_ave
+*refpres 482.6
+*refblock 1 1 1 / 1 1 1
+
+*sw *rg 1:3 1:3 1  *ijk 1:3 1:3 1  .2
+
+*temp *con 296.9
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+** Use *GAUSS and *RCMRB like sttst22
+*sdegree gauss  
+
+*norm     press 100 satur 0.4   temp 30  y 0.4   x 0.4
+
+*run
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1e-4
+
+   well 1 'STEAM INJT' 
+   injector 'STEAM INJT'   ** Injection specification
+   tinjw 468.5
+   qual .697  ** Wet steam at 69.7 % quality
+   incomp  water  1.0   0.0
+   operate stw .053        ** Condensed steam equivalent
+   perf 'STEAM INJT'
+           **  UBA              wi
+               3 3 2 /  3  3 2  1e-4    ** Inject into 2 layers
+  
+   well 2 'PRODUCER' 
+   producer 'PRODUCER'     ** Production specification
+   operate bhp 482.6
+   geometry k  .0016 .307 .125 0 ** rw cc ff ss
+   perf geo 'PRODUCER'
+               ** UBA              wi
+                  1 1 1 /  1  1 1  1.0     ** Produce from 4 layers
+time .0069444 
+time .01
+time .069444
+stop

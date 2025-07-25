@@ -1,0 +1,19 @@
+
+
+     STARS Data Files Illustrating "SPE Problems"
+     --------------------------------------------
+
+stspe001.dat:
+  title1 'STARS Test Bed No. 6'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 1A:  2-D CYCLIC STEAM INJECTION'
+
+stspe002.dat:
+  title1 'STARS Test Bed No. 7'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 2A:  Steam Flood with Dead Oil'
+
+stspe003.dat:
+  title1 'STARS Test Bed No. 8'
+  title2 'Fourth SPE Comparative Solution Project'
+  title3 'Problem 3A:  Steam Flood with Three-Component Live Oil'

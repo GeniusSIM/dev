@@ -1,0 +1,481 @@
+** **************************************************************************************
+**
+**  Use *RPT_INTRP *COMP in a surfactant flood for interpolation of rock-fluid properties.
+** 
+** Special Features:                                                               
+**   1) Surfactant effects on residual oil detrapping are modelled by interpolating 
+**      between relative permeability sets according to a capillary number which depends
+**      on temperature and surfactant concentration.
+** 
+**   2) The second level interpolation between RPT 1 and RPT 2 is applied to model 
+**      wettability alternation as surfactant adsores on the rock matrix
+** **************************************************************************************
+
+
+
+** ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Simulator Options No. 59'
+*TITLE2 'Verify/Illustrate *RPT_INTRP *COMP for Surfactant Flood'
+
+*INUNIT *FIELD  *EXCEPT  2 1  ** deg C instead of deg F
+                *EXCEPT  7 0  ** kg instead of lb
+                *EXCEPT  8 0  ** gmol instead of lbmol
+                *EXCEPT 11 1  ** ft3 instead of bbl
+
+*OUTPRN *GRID *PRES *SW *SO *SG *TEMP *X *W  *ADSORP  *KRINTER *IFT *MASFR *ADSPCMP  
+*OUTPRN *WELL *ALL
+
+wsrf grid 1
+OUTSRF SPECIAL BLOCKVAR SW 2,1,3 
+               BLOCKVAR SW 3,1,3 
+               BLOCKVAR SO 2,1,3 
+               BLOCKVAR SO 3,1,3 
+               BLOCKVAR SG 2,1,3 
+               BLOCKVAR SG 3,1,3 
+               BLOCKVAR RPNW 2,1,3 
+               BLOCKVAR RPNW 3,1,3 
+               BLOCKVAR RPWT 2,1,3 
+               BLOCKVAR RPWT 3,1,3 
+               BLOCKVAR KRO 2,1,3 
+               BLOCKVAR KRO 3,1,3 
+               BLOCKVAR KRW 2,1,3 
+               BLOCKVAR KRW 3,1,3 
+               BLOCKVAR KRG 2,1,3 
+               BLOCKVAR KRG 3,1,3 
+               BLOCKVAR X 2,1,3  'CHEM'
+               BLOCKVAR X 3,1,3  'CHEM'
+               BLOCKVAR LOGCAPN 2,1,3 
+               BLOCKVAR LOGCAPN 3,1,3 
+               BLOCKVAR ADSORP 2,1,3  'CHEM'
+               BLOCKVAR ADSORP 3,1,3  'CHEM'
+OUTSRF WELL COMPONENT ALL
+
+
+**$ ***************************************************************************
+**$ Definition of fundamental cartesian grid
+**$ ***************************************************************************
+GRID VARI 9 1 4
+KDIR UP
+DI IVAR 
+ 9*256.25
+DJ JVAR 
+ 2306.7
+DK ALL
+ 9*170 9*75 9*79 9*35
+DTOP
+ 9*0
+
+** Trim grid to 1/8 element of a five-spot pattern
+VAMOD 1  0.02778  0.11111 0 0.02778
+VAMOD 2  0.22222  0.33333 0 0.22222 0.11111 0 0
+VAMOD 3  0.44444  0.55556 0 0.44444 0.33333 0 0
+VAMOD 4  0.66667  0.77778 0 0.66667 0.55556 0 0
+VAMOD 5  0.83333  0.77778 0 0.83333 0.77778 0 0
+VAMOD 6  0.66667  0.55556 0 0.66667 0.77778 0 0
+VAMOD 7  0.44444  0.33333 0 0.44444 0.55556 0 0
+VAMOD 8  0.22222  0.11111 0 0.22222 0.33333 0 0
+VAMOD 9  0.02778  0 0 0.02778 0.11111 0 0
+**$ Property: Block Vol/Area Modifier Type  Max: 9  Min: 1
+VATYPE ALL 
+ 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6 7 8 9 1 2 3 4 5 6
+ 7 8 9
+
+**$ Property: Porosity  Max: 0.126  Min: 0.126
+POR CON        0.126
+**$ Property: Permeability I (md)   Max: 327  Min: 41
+PERMI KVAR 
+ 226 2*327 41
+PERMJ EQUALSI
+**$ Property: Permeability K (md)   Max: 33  Min: 4
+PERMK KVAR 
+ 23 2*33 4
+
+
+*END-GRID
+ROCKTYPE 1
+
+*PRPOR 3600
+
+*ROCKCP 63
+*THCONR 43.2
+*THCONW 43.2
+*THCONO 43.2
+*THCONG 43.2
+
+*HLOSSPROP *OVERBUR 63 43.2 *UNDERBUR 63 43.2
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*MODEL 4 4 4     ** North Sea light oil
+
+*COMPNAME   'WATER'   'CHEM'    'OIL'    'GAS'
+**         -------  -------    -----    -----
+*CMM         0.018     0.43      0.1     0.028
+*MOLDEN      1566     65.56     204.1     730
+*CP          3e-6      3e-6     1e-6     1e-6
+*CT1        2.33e-4  2.33e-4    1e-4     1e-4
+*PCRIT       3200      632       453     492.4
+*TCRIT        374      134       175      -147
+
+*CPL1          0      0.2417   0.2417   0.008815
+
+*RANGECHECK *OFF
+*SOLID_DEN 'CHEM' 28190.8 0 0
+*RANGECHECK *ON
+*SOLID_CP 'CHEM' 0.016112889 0    ** (17 J/gmole-C) * ( 1 Btu / 1055.056 J )
+
+*WATPHASE
+*VISCTABLE
+**   Temp
+      5       0       50        2.24     2.24
+     93.3     0       10        0.8      0.8
+     200      0       10        0.8      0.8
+
+*OILPHASE
+*VISCTABLE
+**   Temp
+      5       1.5     50        2.24     2.24
+     93.3     0.3     10        0.8      0.8
+     200      0.3     10        0.8      0.8
+*LIQPHASE
+
+*PRSR 14.65
+*TEMR 15
+*PSURF 14.65
+*TSURF 15
+
+
+*GASLIQKV          ** The following are gas-liquid K values
+
+*KVTABLIM  580 4640  5 100
+
+*KVTABLE 'WATER'   ** Want no water in gas phase (override default)
+8*0
+8*0
+
+*KVTABLE 'GAS'
+1.733  1.27   1.049  0.918  0.785  0.757  0.705  0.685
+3.895  2.944  2.437  2.132  1.825  1.759  1.639  1.592
+
+
+*LIQLIQKV   ** The following are the liquid-liquid K values at 5 concentrations
+
+*KVTABLIM  3000 6000  5 100
+kvkeycomp 'CHEM' global 0 0.008
+
+*KVTABLE 'WATER'         ** Each component has a P-T dependent table at
+   *KEYCOMP              ** the following values of z(CHEM):
+      2*0.
+      2*0.               **  0.0  0.002  0.004  0.006  0.008
+   *KEYCOMP
+      2*7E-4
+      2*7E-4
+   *KEYCOMP
+      2*0.0037
+      2*0.0037
+   *KEYCOMP
+      2*0.0125
+      2*0.0125
+   *KEYCOMP
+      2*0.0398
+      2*0.0398
+
+*KVTABLE 'CHEM'
+   *KEYCOMP
+      2*0.1
+      2*0.1
+   *KEYCOMP
+      2*0.1458
+      2*0.1458
+   *KEYCOMP
+      2*0.1741
+      2*0.1741
+   *KEYCOMP
+      2*0.2204
+      2*0.2204
+   *KEYCOMP
+      2*0.3025
+      2*0.3025
+
+*KVTABLE 'OIL'
+   *KEYCOMP
+      2*1E-4
+      2*1E-4
+   *KEYCOMP
+      2*0.0314
+      2*0.0314
+   *KEYCOMP
+      2*0.1214
+      2*0.1214
+   *KEYCOMP
+      2*0.259
+      2*0.259
+   *KEYCOMP
+      2*0.433
+      2*0.433
+
+*KVTABLE 'GAS'
+   *KEYCOMP
+      2*1E-4
+      2*1E-4
+   *KEYCOMP
+      2*0.0314
+      2*0.0314
+   *KEYCOMP
+      2*0.1214
+      2*0.1214
+   *KEYCOMP
+      2*0.259
+      2*0.259
+   *KEYCOMP
+      2*0.433
+      2*0.433
+
+** Since component CHEM's w/o K value is less than 1, the default *SURFLASH
+** assumes all CHEM's SR2 reporting is in the oil phase.  Force CHEM's
+** surface phase to be water to match the injection.
+SURFLASH W W O G
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+*ROCKFLUID
+
+
+RPT 1 WATWET
+
+** RPT 1 has Kr and Pc featured the absorbed component ('CHEM' ADS) at upper bound  
+
+SWT
+**$        Sw       krw      krow
+         0.25         0      0.893
+          0.3     0.039      0.76
+          0.4     0.132      0.54
+          0.5     0.254      0.36
+          0.7     0.524      0.08
+         0.80     0.692         0
+
+SLT
+**$        Sl       krg           krog
+          0.4      0.35              0
+          0.5     0.287  0.09978359264
+          0.6     0.225   0.2058826025
+          0.7     0.162   0.3625049505
+          0.8       0.1   0.5494413013
+         0.96        0.          0.893
+
+
+
+RPT 2 
+
+** RPT 2 is a regular rock type (without second level interpolation) 
+
+
+SWT
+**$        Sw       krw      krow
+         0.25         0      0.893
+          0.3     0.039      0.76
+          0.4     0.132      0.54
+          0.5     0.254      0.36
+          0.7     0.524      0.08
+         0.80     0.692         0
+
+SLT
+**$        Sl       krg           krog
+          0.4      0.35              0
+          0.5     0.287  0.09978359264
+          0.6     0.225   0.2058826025
+          0.7     0.162   0.3625049505
+          0.8       0.1   0.5494413013
+         0.96        0.          0.893
+krocw 0.8
+swcon 0.39
+
+
+RPT 3 OILWET 
+
+   *RPT_INTRP  ** Use RPT 3 as the lower bound for interpolation of ADS 'CHEM'
+      *COMP 'CHEM' ADS
+      *LOWER_BOUND 0.0
+      *UPPER_BOUND 0.00566
+      *UPPERB_RPT 1  ** Use RPT 1 as the upper bound for interpolation
+      *EPSL_kro 1e-2
+      *EPSL_krw 1e-2
+
+**  RPT 3 has also the Kr and Pc interpolation between 2 sets:  high versus low IFT situations.
+*INTCOMP 'CHEM' *OIL
+*INTLIN   ** Linear interpolation of X(surfactant)
+
+*IFTTABLE   ** Surfactant chosen to work best at initial reservoir T
+
+*TEMP 5        ** 5 deg C Table
+
+**       oil mole frac      IFT
+**       -------------    --------
+             0.            30
+             0.0005         3
+             0.001          0.3
+             0.002          0.03
+             0.003          0.003
+             0.004          0.003
+
+*TEMP 95       ** 95 deg C Table
+
+**       oil mole frac      IFT
+**       -------------    --------
+             0.            10
+             0.0005         1
+             0.001          0.1
+             0.002          0.01
+             0.003          0.001
+             0.004          0.001
+
+
+**  Set #1:  High IFT, corresponding to no surfactant
+**  -------------------------------------------------
+
+*KRINTRP 1
+
+*DTRAPW -5
+*DTRAPN -5  ** Critical cap num for detrapping to begin
+
+
+SWT
+**$        Sw       krw      krow
+          0.1         0      0.65
+          0.2     0.039      0.39
+          0.3     0.093      0.23
+          0.4      0.18      0.12
+          0.5      0.28      0.05
+         0.65      0.42         0
+
+SLT 
+**$        Sl       krg      krog
+          0.35     0.35         0
+          0.5      0.19      0.07
+          0.6       0.1      0.12
+          0.7      0.06      0.20
+          0.8      0.02      0.30
+         0.85         0      0.42
+
+
+ 
+**  Set #2:  Low IFT, corresponding to high surfactant concentration
+**  ----------------------------------------------------------------
+
+*KRINTRP 2 copy 3 1 
+*DTRAPW -1.68
+*DTRAPN -2.222
+sorw 0.25
+
+
+** Only the lower-bound-rock-types and regular rock types will be assigned to grids
+
+KRTYPE kvar 3 3 3 2
+
+
+**  Adsorption Data
+
+*ADSCOMP 'CHEM' *WATER   ** Reversible adsorption of aqueous surfactant
+*ADSLANG *TEMP      ** Langmuir isotherms at 2 tempertures
+  5  20 0 1000
+ 95   2 0 1000
+*ADMAXT .02   ** No flow modications from adsorption
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+*INITIAL
+
+** Automatic static vertical equilibrium
+vertical depth_ave
+*REFPRES 3994.3
+*REFBLOCK 1 1 4
+** Oil reservoir has gas cap above and aquifer below
+**$ Property: Water Saturation  Max: 1  Min: 0.22
+SW KVAR 
+ 1 3*0.22
+**$ Property: Oil Saturation  Max: 0.78  Min: 0
+SO KVAR 
+ 0 2*0.78 0
+**$ Property: Temperature (C)   Max: 93.3  Min: 93.3
+TEMP CON         93.3
+**$ Property: Gas Mole Fraction(GAS)  Max: 1  Min: 1
+MFRAC_GAS 'GAS' CON            1
+**$ Property: Oil Mole Fraction(OIL)  Max: 0.4  Min: 0.4
+MFRAC_OIL 'OIL' CON          0.4
+**$ Property: Oil Mole Fraction(GAS)  Max: 0.6  Min: 0.6
+MFRAC_OIL 'GAS' CON          0.6
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+*NUMERICAL
+
+*SDEGREE 2
+*TFORM *ZT
+*DTMAX 61
+
+*NORM      *PRESS 150  *ZO .1    *TEMP 50  *ZNCG .1    *ZAQ .1
+
+
+**  ==============  RECURRENT DATA  ======================
+
+*RUN
+
+*TIME 0
+
+   *DTWELL 1
+                              
+   TRANSK   *IJK 1:9 1 3  0.01   ** Isolate gascap from pay zone
+
+   WELL  'In-1'
+   WELL  'Pr-1'
+
+   *PRODUCER 'Pr-1'
+     *OPERATE *STL 8768
+     *OPERATE *MIN *BHP 3400
+     GEOMETRY  K  0.25  0.249  1.  0.
+     PERF  GEO  'Pr-1'
+     9 1 3  0.5  OPEN    FLOW-TO  'SURFACE'  REFLAYER
+     9 1 2  0.5  OPEN    FLOW-TO  1
+
+   *INJECTOR 'In-1'
+     *INCOMP *WATER .99614 .00386 0 0  ** Surfactant slug
+     *TINJW 5     ** Cold water injection
+     *OPERATE STW 8768 
+     *GEOMETRY  K  .25 .249 1 0  ** rw cc ff ss
+     PERF  WI  'In-1'
+     1 1 2  0.06797  OPEN    FLOW-FROM  'SURFACE'  REFLAYER
+     1 1 3  0.0716   OPEN    FLOW-FROM  1
+
+*TIME 365
+*TIME 730
+
+   *DTWELL 1
+
+   ** Change composition of injected aqueous phase 
+   *INJECTOR 'In-1'
+   *INCOMP *WATER 1 0 0 0  ** No surfactant in injected water
+   *TINJW 5     ** Cold water injection
+   *OPERATE STW 8768
+ 
+*TIME 1095
+*TIME 1460
+*TIME 1825
+*TIME 2190
+*TIME 2555
+*TIME 2920
+*TIME 3285
+*TIME 3650
+*STOP

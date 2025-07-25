@@ -1,0 +1,230 @@
+
+
+**                          OVERVIEW
+**                          ========
+
+**    This test problem uses the component-in-phase well operation
+**  constraints *STO_COMP and *STG_COMP.
+
+
+**  ==============  INPUT/OUTPUT CONTROL  ======================
+
+RESULTS SIMULATOR STARS
+
+*interrupt *stop
+
+*TITLE1 'STARS Well Management Template No. 24'
+*TITLE2 'Test/Illustrate *STO_COMP and *STG_COMP'
+*TITLE3 'Based on STTST20'
+
+*inunit field   ** Output iunits the same as input
+
+*outprn *grid pres sw so sg temp y x obhloss viso
+*outprn *well all
+outprn iter newton
+*wprn *grid 1 **time
+*wprn *iter 1 **time
+
+outsrf grid  pres sw so sg temp
+outsrf well component all
+
+
+
+**  ==============  GRID AND RESERVOIR DEFINITION  =================
+
+*grid *radial 10 1 5  *rw 0.0  ** Radial cross-sectional grid
+                               ** Zero inner radius matches previous treatment
+*kdir *down
+*ninepoint *ik
+
+**  Logarithmic spacing in the radial direction (in feet)
+*di *ivar 0.713 1.25 2.18 3.82 6.69 11.7 20.5 35.8 62.7 1090
+*dj *con 360  ** Full circle
+*dk *con 22.2
+
+*depth *top 1 1 1 2310
+
+*por *con 0.23
+*permi *con 4000  **  Permeability is 41 md hoizontally
+*permj *equalsi
+*permk *con 5000  **  Permeability is 53 md vertically
+*end-grid
+
+*cpor 8.8e-5
+*prpor 670
+*ctpor 5.4e-5
+*rockcp 34.5 ** in Btu/ft3-deg F
+**  Rock and fluid thermal conductivities in Btu/day-ft-deg F
+*thconr 38.16
+*thconw 8.98
+*thcono 1.67
+*thcong 0.48
+
+**  Thermal conductivity of overlying and underlying formation
+*hlossprop overbur 34.5 38.16 underbur 34.5 38.16
+
+
+
+**  ==============  FLUID DEFINITIONS  ======================
+
+
+*model 5 5 5
+
+*compname     'Water'   'Hevy Oil'  'Lite Oil'    'CH4'     'C2H6'
+**            --------  ----------  ----------   -------   --------
+
+*cmm            18        378.93      152.23      16.043     30
+*pcrit        3217.1      149.65      267.54      667.2     708.3
+*tcrit        705.47     1107.81      738.68     -116.59    90.05
+
+**massden        0         57.4         53          44       45   ** lb/ft3
+*molden          0        0.1515      0.3485       2.746    1.5
+*cp              0        1.5e-5      1.5e-5      1.5e-5   1.5e-5
+*ct1             0       5.93e-4     3.11e-4     0.00123   0.00123
+**Spec. Grav.              0.92        0.85        0.703    0.719
+
+*avisc           0       3.4238e-6   0.010807     0.0138    0.0138
+*bvisc           0       10733.6       2459        205.9    205.9
+
+*kv1             0          0          2.74e5     7.91e4    1.28e5
+*kv4             0          0          -8424      -1584     -2720
+*kv5             0          0          -206       -447      -429
+
+**  Reference conditions
+*prsr 14.65
+*temr 77
+*psurf 14.65
+*tsurf 62
+*xnacl 0.015
+
+
+
+**  ==============  ROCK-FLUID PROPERTIES  ======================
+
+
+*rockfluid
+
+*swt   **  Water-oil relative permeabilities
+
+**   Sw         Krw        Krow        Pcow
+**  -----      -----      ------      ------
+    0.514      0.0         1.0          7.2
+    0.609      0.053      0.289         2.6
+    0.629      0.067      0.249         2.2
+    0.655      0.081      0.161         1.8
+    0.670      0.092      0.120         1.6
+    0.684      0.109      0.097         1.5
+    0.690      0.116      0.088         1.4
+    0.713      0.134      0.053         1.2
+    0.724      0.151      0.041         1.2
+    0.733      0.160      0.033         1.1
+    0.744      0.175      0.026         1.0
+    0.760      0.186      0.016         1.0
+    0.773      0.204      0.010         1.0
+    0.788      0.215      0.006         1.0
+    0.797      0.220      0.0042        1.0
+    0.804      0.222      0.0032        1.0
+    0.810      0.224      0.0025        0.9
+    0.829      0.224      0.0           0.7
+
+*slt   **  Liquid-gas relative permeabilities
+
+**   Sl         Krg        Krog        Pcog
+**  -----      ------     ------      ------
+    0.737      0.411      0.0          26.7
+    0.761      0.310      0.035        25.7
+    0.787      0.233      0.076        25.4
+    0.803      0.185      0.109        24.7
+    0.818      0.149      0.146        24.1
+    0.841      0.111      0.235        23.4
+    0.862      0.080      0.328        22.3
+    0.878      0.054      0.383        22.0
+    0.889      0.040      0.445        21.0
+    0.906      0.021      0.516        20.0
+    0.917      0.013      0.573        19.5
+    0.924      0.0093     0.608        19.1
+    1.0        0.0        1.0          15.9
+
+*krtemtab  swr   sorw
+   104    .355   .247
+   400    .443   .198
+
+*sgr .02
+*sorg .1
+
+
+
+**  ==============  INITIAL CONDITIONS  ======================
+
+
+*initial
+
+**pres *con 717
+*vertical *depth_ave
+   *refpres 717
+   *refdepth 2310
+   *dwoc 2424.28
+
+*temp *con 93
+
+**  Solution gas is below bubble point
+*mfrac_oil 'Hevy Oil' *con 0.65175
+*mfrac_oil 'Lite Oil' *con 0.2947
+*mfrac_oil 'CH4'      *con 0.02855
+*mfrac_oil 'C2H6'     *con 0.025
+
+
+
+**  ==============  NUMERICAL CONTROL  ======================
+
+
+*numerical   ** All these can be defaulted.  The definitions
+             ** here match the previous data.
+
+*rangecheck *off
+*norm press 400
+*rangecheck *on
+
+
+*run
+
+
+
+**  ==============  RECURRENT DATA  ======================
+
+
+time 0
+
+   dtwell 1
+
+   well 1 'CYC_1 PROD'
+   producer 'CYC_1 PROD'
+   operate bhp 400
+   operate max sto_comp 'Hevy Oil' 60
+   perf geo 'CYC_1 PROD'
+          ** i j k    fh
+             1 1 1:5  1.0
+
+time 60
+
+   dtwell 1
+   producer 'CYC_1 PROD'
+   operate bhp 400
+   operate max sto_comp 'Lite Oil' 15
+
+time 120
+
+   dtwell 1
+   producer 'CYC_1 PROD'
+   operate bhp 400
+   operate max stg_comp 'CH4' 800
+
+time 180
+
+   dtwell 1
+   producer 'CYC_1 PROD'
+   operate bhp 400
+   operate max stg_comp 'C2H6' 600
+
+time 365
+stop
